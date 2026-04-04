@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p core curriculum)",
+      "Bash(mv FINN_Soul.md FINN_Context.md FINN_Curriculum_Wiki.md FINN_Weekly_Structure.md core/)",
+      "Bash(mv FINN_Month01.md FINN_Month02.md FINN_Month03.md FINN_Month04.md FINN_Month05.md FINN_Month06.md curriculum/)"
+    ]
+  }
+}
