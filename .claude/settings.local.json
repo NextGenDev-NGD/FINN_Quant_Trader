@@ -3,7 +3,27 @@
     "allow": [
       "Bash(mkdir -p core curriculum)",
       "Bash(mv FINN_Soul.md FINN_Context.md FINN_Curriculum_Wiki.md FINN_Weekly_Structure.md core/)",
-      "Bash(mv FINN_Month01.md FINN_Month02.md FINN_Month03.md FINN_Month04.md FINN_Month05.md FINN_Month06.md curriculum/)"
+      "Bash(mv FINN_Month01.md FINN_Month02.md FINN_Month03.md FINN_Month04.md FINN_Month05.md FINN_Month06.md curriculum/)",
+      "WebSearch",
+      "WebFetch(domain:www.youtube.com)",
+      "WebFetch(domain:optiver.com)",
+      "WebFetch(domain:www.reddit.com)",
+      "WebFetch(domain:algotrading101.com)",
+      "WebFetch(domain:becomingquant.com)",
+      "WebFetch(domain:ed.ted.com)",
+      "WebFetch(domain:www.interactivebrokers.com)",
+      "WebFetch(domain:bookmap.com)",
+      "WebFetch(domain:pythonfintech.com)",
+      "WebFetch(domain:www.britannica.com)",
+      "WebFetch(domain:alpaca.markets)",
+      "WebFetch(domain:www.codearmo.com)",
+      "WebFetch(domain:www.wenvenn.com)",
+      "WebFetch(domain:www.quantstart.com)",
+      "WebFetch(domain:www.machinelearningplus.com)",
+      "WebFetch(domain:medium.com)",
+      "Bash(wc:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:blog.quantinsti.com)"
     ]
   }
 }
