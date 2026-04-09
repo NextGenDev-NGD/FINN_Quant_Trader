@@ -46,3 +46,58 @@
 **Status:** Repository structure now matches the layout described in `README.md` and `FINN_Context.md`.
 
 ---
+
+### [2026-04-08] — Daily Class Files Introduced (D001)
+
+**Time:** April 8, 2026
+
+**Changes:**
+- Created `curriculum/daily/` folder — new layer between weekly lesson plans and live delivery
+- Created `FINN_D001.md` — Day 1, Monday April 13, 2026 (Week 1)
+  - Teleprompter-format script covering both the morning DMB and evening theory session
+  - Structure: 60 min material + 30 min dedicated Q&A per evening session
+  - Written in first-person FINN voice for live delivery — not a lesson plan
+  - Populated with real market context from April 8, 2026:
+    - Iran ceasefire → S&P 500 +2.51%, oil -16%, VIX 25.78, BTC $71,906
+    - Bank earnings week (JPMorgan, Goldman, Wells Fargo)
+    - 10-year yield at 4.33%
+
+**Format decisions for daily files:**
+- Single file per calendar day (AM + PM sessions combined)
+- Bold time stamps at every transition, `[ASK]` / `[SHOW]` action cues inline
+- Q&A is its own named 30-min block with seed questions and FINN-ask guidance
+- Deliverables table at the bottom, file footer references source weekly file
+
+**Status:** Day 1 complete. D002 (Wednesday April 15) and D003 (Friday April 17) pending.
+Format approved before proceeding to remaining days.
+
+---
+
+### [2026-04-08] — Claude Context Files Created
+
+**Time:** April 8, 2026
+
+**Changes:**
+- Created `CLAUDE.md` (repo root) — Claude Code operating guide: task playbooks, file token budget table, naming conventions, code conventions, FINN voice quick-reference
+- Created `core/FINN_CurriculumIndex.md` — Dense 24-week index: dates, themes, notebook names, milestones, async weeks, content thread map. Replaces reading monthly files for scheduling/context.
+- Created `core/FINN_WeeklySchema.md` — Exact weekly file template with all section headers, timing blocks, code block format, async day format. Replaces reading existing weekly files for format reference.
+
+**Purpose:** Optimize token usage and reduce read overhead when Claude creates or reviews curriculum files in future sessions.
+
+---
+
+### [2026-04-08] — Weekly Lesson Files Completed (W21–W24)
+
+**Time:** April 8, 2026
+
+**Changes:**
+- Created 4 weekly lesson files under `curriculum/weekly/`, completing the full 24-week set:
+  - `FINN_W21.md` — Capstone Launch (Aug 31–Sep 5): CapstonePipeline v2.0, first live capstone trades, Report Section 1
+  - `FINN_W22.md` — Deep Execution + Full Analytics (Sep 7–12): Labor Day async package, 4-month analytics notebook, Report Sections 2–4
+  - `FINN_W23.md` — Analysis, Writing & Honest Assessment (Sep 14–19): AI contribution visualization, all 5 capstone charts, Report Sections 5–7
+  - `FINN_W24.md` — Presentation, Finale & Course Close (Sep 21–26): Dress rehearsal, Milestone 4 presentations, course close ritual
+- All 24 of 24 weekly files are now complete
+
+**Status:** Curriculum complete. Full 24-week weekly file coverage from W01 (April 13, 2026) through W24 (September 26, 2026).
+
+---

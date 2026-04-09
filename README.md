@@ -24,6 +24,8 @@ The course runs Monday/Wednesday/Friday evenings (8:00–9:30 PM EST) plus a Dai
 
 **If you are resuming a session with FINN (AI):** Load `FINN_Context.md` and `FINN_Soul.md` at session start. FINN will reorient fully from those two files.
 
+**If you are Claude Code working in this repo:** Read `CLAUDE.md` first. It contains task playbooks, token budget guidance, and format conventions optimized for efficient curriculum work.
+
 ---
 
 ## Complete File Index
@@ -36,6 +38,8 @@ The course runs Monday/Wednesday/Friday evenings (8:00–9:30 PM EST) plus a Dai
 | `FINN_Soul.md` | Persona sentiment and character — who FINN is, teaching voice, values, philosophy | Before operating as or interacting with FINN |
 | `FINN_Curriculum_Wiki.md` | Master knowledge base — all concepts, tools, Python code, resources, glossary | Ongoing reference throughout the course |
 | `FINN_Weekly_Structure.md` | Session templates — static blueprint for every DMB, Monday, Wednesday, Friday class | Building weekly lesson plans; running sessions |
+| `FINN_CurriculumIndex.md` | Dense 24-week index — dates, themes, notebook names, milestones, async weeks, content threads | Fast scheduling lookups; start of any curriculum creation session |
+| `FINN_WeeklySchema.md` | Exact weekly file template — all section headers, timing, format conventions | Creating new weekly files; auditing format of existing files |
 
 ### Monthly Lesson Plans — The Course in Action
 
