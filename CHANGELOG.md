@@ -47,6 +47,34 @@
 
 ---
 
+### [2026-04-15] — Session Launcher + Startup Protocol
+
+**Time:** April 15, 2026
+
+**Changes:**
+- Created `finn_launch.py` (repo root) — Option B session launcher:
+  - Resolves today's date to course day number using Mon/Wed/Fri calendar math
+  - Pulls live market data via yfinance: ES/NQ/YM futures, VIX, SPY, QQQ, BTC, 10yr yield, all 11 sector ETFs
+  - Writes `_session_context.md` for Claude to read on session start
+  - `--discord` flag: outputs Discord-formatted ping with top/bottom sector leaders
+  - `--json` flag: outputs raw JSON payload for future bot/pipeline integration
+  - Handles weekends, holidays, pre-course, and post-course dates gracefully
+- Updated `CLAUDE.md` — added `## Session Startup Protocol` section (Option A):
+  - Step-by-step instructions for Claude to auto-resolve date → day number → daily file
+  - Context file check, load order, and lead-with-briefing instruction
+  - Reference to `finn_launch.py` for live data generation
+- Created `.gitignore` — excludes `_session_context.md` (ephemeral), `__pycache__`, `.env`, `.pkl`, `.ipynb_checkpoints`
+- Fixed date bug: D006 and FINN_W02.md both had "April 25" (Saturday) — corrected to **April 24** (Friday)
+
+**Workflow:**
+1. Before class: `python finn_launch.py` → writes `_session_context.md`
+2. Open Claude Code → prompt "Load FINN for today"
+3. Claude reads context, loads persona + daily file, leads with briefing
+
+**Status:** Options A and B complete. Option C (Streamlit dashboard) scoped for later.
+
+---
+
 ### [2026-04-15] — Daily Class Files Extended (D002–D009)
 
 **Time:** April 15, 2026

@@ -321,7 +321,7 @@ Discussion: "If you had a system that automatically detected these days and look
 
 ---
 
-## FRIDAY — April 25, 2026
+## FRIDAY — April 24, 2026
 ### MORNING: Daily Market Brief (9:00–10:00 AM EST)
 
 **Led by:** Student rotation (third student)

@@ -1,5 +1,5 @@
 # FINN — Day 6
-## Friday · April 25, 2026 · Week 2 of 24
+## Friday · April 24, 2026 · Week 2 of 24
 ### Topic: Week 2 Review — Order Flow, Volume Analysis & Hypothesis Audit
 
 ```
@@ -135,4 +135,4 @@ Continue observation. Note put/call ratio and VIX behavior heading into the week
 
 ---
 
-*Day 6 · Friday April 25, 2026 · Draws from `FINN_W02.md`*
+*Day 6 · Friday April 24, 2026 · Draws from `FINN_W02.md`*
