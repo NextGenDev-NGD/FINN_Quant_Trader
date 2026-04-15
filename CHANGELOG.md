@@ -47,6 +47,28 @@
 
 ---
 
+### [2026-04-15] — Daily Class Files Extended (D002–D009)
+
+**Time:** April 15, 2026
+
+**Changes:**
+- Created 8 daily files under `curriculum/daily/`, completing Weeks 1–3:
+  - `FINN_D002.md` — Wednesday April 15 (W01): Python Environment + First Market Data Pull
+  - `FINN_D003.md` — Friday April 17 (W01): Week 1 Review — Hypothesis Audit, Charts & Sector Rotation
+  - `FINN_D004.md` — Monday April 20 (W02): Order Types, Microstructure & The True Cost of Trading
+  - `FINN_D005.md` — Wednesday April 22 (W02): OHLCV Deep Dive + Volume Anomalies + Spread Proxy
+  - `FINN_D006.md` — Friday April 25 (W02): Week 2 Review — Order Flow, Volume Analysis & Hypothesis Audit
+  - `FINN_D007.md` — Monday April 27 (W03): The 9-Step Quant Workflow & Core Performance Metrics
+  - `FINN_D008.md` — Wednesday April 29 (W03): Building Performance Metrics from Scratch in Python
+  - `FINN_D009.md` — Friday May 1 (W03): Metrics in Context, Market Autopsy & Milestone 1 Preview
+- All files follow D001 format: MORNING DMB section + EVENING session section + DELIVERABLES table
+- Saturday/Sunday excluded — only Mon/Wed/Fri class days included
+- FINN voice consistent throughout: direct, Socratic, practitioner-toned
+
+**Status:** D001–D009 complete. Weeks 1–3 fully covered. D010 onward (Week 4) pending.
+
+---
+
 ### [2026-04-08] — Daily Class Files Introduced (D001)
 
 **Time:** April 8, 2026
