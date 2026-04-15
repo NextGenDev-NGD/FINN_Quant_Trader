@@ -3,6 +3,34 @@
 
 ---
 
+<!--
+SESSION NOTES — April 15, 2026
+────────────────────────────────────────────────────────────────────────────────
+What we built today:
+  1. Daily files D002–D009 — all Mon/Wed/Fri sessions for Weeks 1–3
+       W01: Python env + first data pull, Week 1 review
+       W02: Order types/microstructure, OHLCV deep dive, Week 2 review
+       W03: Quant workflow + metrics theory, metrics workshop, M1 preview
+  2. finn_launch.py — session launcher: date resolver + live yfinance
+       market snapshot + _session_context.md writer; --discord and
+       --json flags stubbed for future Discord bot integration
+  3. CLAUDE.md — Session Startup Protocol added (Option A)
+  4. .gitignore — created
+  5. Date bug fixed: D006 + W02 had April 25 (Sat) → corrected to April 24
+
+Decisions made:
+  - Daily files cover 8pm EST class days only (Mon/Wed/Fri)
+  - Option C (Streamlit dashboard) scoped for a future session
+  - Discord bot will consume finn_launch.py --json output when built
+
+Picked up next session:
+  - D010+ (Week 4 onward)
+  - Discord bot integration
+────────────────────────────────────────────────────────────────────────────────
+-->
+
+---
+
 ### [2026-04-04] — Initial Repository Organization
 
 **Time:** April 4, 2026
