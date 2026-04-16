@@ -7,7 +7,7 @@ MORNING   9:00–10:00 AM EST   60 min   Instructor-led (Week 1)
 EVENING   8:00–9:30  PM EST   90 min   10 min framing · 40 min guided build · 25 min independent · 15 min share-out
 ```
 
-> **Prep:** `finnenv` activated. `W01_workshop_market_data_starter.ipynb` pulled from GitHub and open. TradingView ready.
+> **Prep:** `finnenv` activated via `C:\Users\[username]\finnenv\Scripts\Activate.ps1` (PowerShell — venv, not conda). `W01_workshop_market_data_starter.ipynb` pulled from GitHub and open. TradingView ready.
 
 ---
 

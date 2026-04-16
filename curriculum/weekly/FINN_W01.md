@@ -210,8 +210,8 @@ Add Wednesday hypotheses to the log. Reference Monday's hypotheses — are they 
 **Curriculum Source:** Wiki Section 4.1, 4.2, Code Pattern 1
 
 #### Pre-Session Setup
-- [ ] `finnenv` environment activated and working on every student machine
-- [ ] `yfinance`, `pandas`, `matplotlib`, `numpy` installed and importable
+- [ ] `finnenv` activated via `C:\Users\[username]\finnenv\Scripts\Activate.ps1` (PowerShell — venv, not conda)
+- [ ] `yfinance`, `pandas`, `numpy`, `matplotlib` installed and importable inside `finnenv`
 - [ ] GitHub repo cloned locally — starter notebook pulled
 - [ ] Starter notebook: `W01_workshop_market_data_starter.ipynb` open and ready
 
@@ -234,6 +234,8 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings('ignore')
 
 print("pandas:", pd.__version__)
 print("numpy:", np.__version__)
@@ -246,7 +248,8 @@ print("All imports successful.")
 ```python
 # Fetch 1 year of daily OHLCV data for SPY
 ticker = "SPY"
-df = yf.download(ticker, period="1y", interval="1d")
+df = yf.download(ticker, period="1y", interval="1d", progress=False)
+df.columns = [c[0] if isinstance(c, tuple) else c for c in df.columns]
 
 print(f"Shape: {df.shape}")        # How many rows and columns?
 print(f"\nColumn names:\n{df.columns.tolist()}")
@@ -338,8 +341,9 @@ Fetch data for all 5 tickers in a single loop. Normalize all closing prices to 1
 tickers = ['SPY', 'QQQ', 'AAPL', 'MSFT', 'your_choice']
 normalized = {}
 for t in tickers:
-    data = yf.download(t, period="1y", interval="1d")['Close']
-    normalized[t] = data / data.iloc[0] * 100
+    data = yf.download(t, period="1y", interval="1d", progress=False)
+    data.columns = [c[0] if isinstance(c, tuple) else c for c in data.columns]
+    normalized[t] = data['Close'] / data['Close'].iloc[0] * 100
 
 pd.DataFrame(normalized).plot(figsize=(12, 6), title="Normalized Price Performance")
 plt.ylabel("Indexed to 100")

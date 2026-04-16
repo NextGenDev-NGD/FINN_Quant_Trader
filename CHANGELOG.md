@@ -31,6 +31,67 @@ Picked up next session:
 
 ---
 
+### [2026-04-16] — W01 + D002 Code Corrections (venv, warnings, yfinance conventions)
+
+**Time:** April 16, 2026
+
+**Files changed:**
+- `curriculum/weekly/FINN_W01.md`
+- `curriculum/daily/FINN_D002.md`
+
+**Changes:**
+- `FINN_W01.md` — Pre-Session Setup: replaced generic "finnenv activated" with explicit venv activation path (`Activate.ps1` — not conda)
+- `FINN_W01.md` — Step 1 code: added `import warnings` and `warnings.filterwarnings('ignore')` (missing from original)
+- `FINN_W01.md` — Step 2 code: added `progress=False` to `yf.download()` call and column flattening line (`df.columns = [c[0] if isinstance(c, tuple) else c for c in df.columns]`)
+- `FINN_W01.md` — Extension challenge code: added `progress=False` and column flattening before `['Close']` access
+- `FINN_D002.md` — Prep line: added explicit venv activation path (`Activate.ps1` — not conda)
+
+**Reason:** Code in W01 and D002 did not match the verified environment documented in `FINN_D002_Install_Guide.md`. Corrections align all files with the actual working setup confirmed during the April 16 live session.
+
+**Status:** All code blocks in W01 and D002 now match verified session output.
+
+---
+
+### [2026-04-16] — D002 Jupyter Session Transcript Created
+
+**Time:** April 16, 2026
+
+**Changes:**
+- Created `curriculum/daily/FINN_D002_Jupyter_Session.md` — full annotated transcript of the D002 evening guided build session:
+  - Environment activation walkthrough (venv, not conda — PowerShell Activate.ps1)
+  - Steps 1–6 complete with actual student output, FINN annotations, and teaching notes
+  - Key concepts table: OHLCV, DatetimeIndex, pct_change(), case sensitivity, NaN, volume vs direction
+  - Real data observations: SPY 1-year range $508–$701, highest volume day Nov 20, 2025 (165M shares, -1.52%)
+  - Institutional behavior explained: accumulation vs distribution, sentiment aggregation
+  - Deliverable reminder and muddiest point prompt included
+- Intended for class distribution — shareable reference for all students
+
+**Status:** D002 guided build Steps 1–6 complete. Independent work block pending.
+
+---
+
+### [2026-04-16] — D002 Install Guide + finnenv Setup (Windows 11)
+
+**Time:** April 16, 2026
+
+**Changes:**
+- Created `curriculum/daily/FINN_D002_Install_Guide.md` — complete Python environment setup guide for Windows 11 fresh install:
+  - Full step-by-step install sequence: Python 3.11 via winget → venv → pip install → kernel registration → verification
+  - Written in FINN voice, targeted at student + FINN as guide
+  - Annotated commands explaining purpose of each install component
+  - Known issues + resolutions table covering all blockers hit during live setup
+  - Verified package version table (target state reference)
+  - Closing summary explaining what each package enables across the 6-month course
+
+**Key decision logged in guide:**
+- `pandas_ta` permanently replaced by `ta` (version 0.11.0) — original repo deleted/private, no Python 3.11 PyPI wheel exists. `ta` covers all required indicators. Syntax translation will be handled by FINN at point of first use (Week 3). Decision note embedded in install guide for future reference.
+
+**Environment verified on:** Windows 11 Home · Python 3.11.9 · `finnenv` (venv) · April 16, 2026
+
+**Status:** `finnenv` operational. D002 guided build ready to proceed.
+
+---
+
 ### [2026-04-04] — Initial Repository Organization
 
 **Time:** April 4, 2026
