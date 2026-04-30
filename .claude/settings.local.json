@@ -23,7 +23,10 @@
       "WebFetch(domain:medium.com)",
       "Bash(wc:*)",
       "Bash(ls:*)",
-      "WebFetch(domain:blog.quantinsti.com)"
+      "WebFetch(domain:blog.quantinsti.com)",
+      "Bash(python -c \"import pandas; print\\('ok'\\)\")",
+      "Bash(python3 -c \"import pandas; print\\('ok'\\)\")",
+      "Bash(/c/Users/icarr/AppData/Local/Programs/Python/Python312/python.exe *)"
     ]
   }
 }
