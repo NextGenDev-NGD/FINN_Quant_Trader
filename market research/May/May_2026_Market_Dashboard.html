@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>May 2026 Market Intelligence Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #0f172a; color: #e2e8f0; scroll-behavior: smooth; }
+  ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: #0f172a; } ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+  /* RSI Track */
+  .rsi-track { position: relative; height: 7px; border-radius: 4px; background: linear-gradient(to right, #ef4444 0% 30%, #22c55e 30% 70%, #f97316 70% 85%, #ef4444 85% 100%); }
+  .rsi-marker { position: absolute; top: -4px; width: 3px; height: 15px; background: white; border-radius: 2px; transform: translateX(-50%); box-shadow: 0 0 4px rgba(255,255,255,0.6); }
+
+  /* Heatmap */
+  .hcell { border-radius: 6px; padding: 10px 6px; text-align: center; font-weight: 700; font-size: 0.72rem; cursor: default; transition: transform 0.15s; }
+  .hcell:hover { transform: scale(1.06); z-index: 10; position: relative; }
+  .hp3  { background: #064e3b; color: #6ee7b7; }
+  .hp2  { background: #065f46; color: #a7f3d0; }
+  .hp1  { background: #166534; color: #bbf7d0; }
+  .hflat{ background: #1e293b; color: #64748b; }
+  .hn1  { background: #431407; color: #fca5a5; }
+  .hn2  { background: #7f1d1d; color: #fca5a5; }
+  .hn3  { background: #450a0a; color: #fecaca; }
+  .hup  { background: #1e3a5f; color: #93c5fd; } /* for macro-up-is-bad like VIX */
+
+  /* Ticker card */
+  .tcard { background: #1e293b; border-radius: 12px; border: 1px solid #334155; transition: transform 0.18s, border-color 0.18s; }
+  .tcard:hover { transform: translateY(-3px); border-color: #475569; }
+
+  /* Badge */
+  .badge { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 9999px; }
+  .b-bull    { background: #064e3b; color: #34d399; }
+  .b-bear    { background: #450a0a; color: #f87171; }
+  .b-neutral { background: #1e293b; color: #94a3b8; border: 1px solid #475569; }
+  .b-binary  { background: #422006; color: #fbbf24; }
+  .b-ctrn    { background: #0c4a6e; color: #38bdf8; }
+  .b-caution { background: #2d1b00; color: #fb923c; }
+
+  /* Chart */
+  .chart-wrap { position: relative; width: 100%; height: 300px; }
+
+  /* Section anchor offset */
+  section[id] { scroll-margin-top: 56px; }
+
+  /* Sticky nav */
+  #sticky-nav { position: sticky; top: 0; z-index: 50; background: rgba(15,23,42,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid #1e293b; }
+
+  /* Divergence */
+  .dcard { background: #1e293b; border-left: 4px solid #f97316; border-radius: 0 10px 10px 0; }
+
+  /* Timeline */
+  .tl-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+
+  /* Stat mini */
+  .stat-mini { text-align: center; }
+  .stat-mini .val { font-size: 1.4rem; font-weight: 800; line-height: 1.1; }
+  .stat-mini .lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; margin-top: 2px; }
+
+  /* Table row */
+  tr.bull-row td:first-child { border-left: 3px solid #22c55e; }
+  tr.bear-row td:first-child { border-left: 3px solid #ef4444; }
+  tr.neut-row td:first-child { border-left: 3px solid #64748b; }
+  tr.bina-row td:first-child { border-left: 3px solid #f59e0b; }
+  tr.ctrn-row td:first-child { border-left: 3px solid #38bdf8; }
+</style>
+</head>
+<body class="antialiased pb-20">
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO HEADER
+════════════════════════════════════════════════════════════════ -->
+<header class="bg-gradient-to-br from-[#0a1628] via-[#0f2044] to-[#0a1628] pt-14 pb-10 px-4 border-b border-slate-700">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
+      <div>
+        <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-2">FINN · Market Intelligence</p>
+        <h1 class="text-4xl md:text-5xl font-black text-white leading-tight">May 2026 Market<br>Intelligence Dashboard</h1>
+        <p class="text-slate-400 mt-3 text-sm">FOMC Decision Day · April 29, 2026 · Post-Q1 Earnings · Live data: Apr 28 open → Apr 29 close</p>
+      </div>
+      <div class="bg-slate-800/60 border border-slate-600 rounded-xl p-4 text-sm min-w-[220px]">
+        <p class="text-xs text-slate-500 uppercase tracking-wider mb-2 font-semibold">Regime Status</p>
+        <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span><span class="text-slate-300">Fed: <strong class="text-white">HOLD 3.50–3.75%</strong></span></div>
+        <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-red-400 inline-block"></span><span class="text-slate-300">PCE: <strong class="text-white">3.5%</strong> (above target)</span></div>
+        <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-orange-400 inline-block"></span><span class="text-slate-300">Powell exits <strong class="text-white">May 15</strong></span></div>
+        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span><span class="text-slate-300">Oil surge: <strong class="text-red-300">+8.5% (2D)</strong></span></div>
+      </div>
+    </div>
+
+    <!-- Macro Pill Strip -->
+    <div class="flex flex-wrap gap-3">
+      <div class="bg-slate-800 border border-slate-600 rounded-full px-4 py-2 flex items-center gap-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wide">Fed Rate</span>
+        <span class="text-white font-bold text-sm">3.50–3.75%</span>
+        <span class="text-amber-400 text-xs font-bold">HOLD</span>
+      </div>
+      <div class="bg-slate-800 border border-slate-600 rounded-full px-4 py-2 flex items-center gap-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wide">VIX</span>
+        <span class="text-white font-bold text-sm">18.78</span>
+        <span class="text-orange-400 text-xs">▲ +2.62%</span>
+      </div>
+      <div class="bg-slate-800 border border-slate-600 rounded-full px-4 py-2 flex items-center gap-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wide">10-Yr Yield</span>
+        <span class="text-white font-bold text-sm">4.42%</span>
+        <span class="text-red-400 text-xs">▲ +1.08%</span>
+      </div>
+      <div class="bg-slate-800 border border-slate-600 rounded-full px-4 py-2 flex items-center gap-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wide">PCE</span>
+        <span class="text-white font-bold text-sm">3.5%</span>
+        <span class="text-red-400 text-xs">Above 2% target</span>
+      </div>
+      <div class="bg-red-900/60 border border-red-700 rounded-full px-4 py-2 flex items-center gap-2">
+        <span class="text-xs text-red-300 uppercase tracking-wide">Oil (USO)</span>
+        <span class="text-white font-bold text-sm">+8.50%</span>
+        <span class="text-red-300 text-xs font-bold">2D · PRIMARY RISK</span>
+      </div>
+      <div class="bg-slate-800 border border-slate-600 rounded-full px-4 py-2 flex items-center gap-2">
+        <span class="text-xs text-slate-400 uppercase tracking-wide">Unemployment</span>
+        <span class="text-white font-bold text-sm">4.3%</span>
+        <span class="text-slate-400 text-xs">Unchanged</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STICKY NAV
+════════════════════════════════════════════════════════════════ -->
+<nav id="sticky-nav" class="py-2 px-4">
+  <div class="max-w-7xl mx-auto flex gap-1 overflow-x-auto text-xs font-semibold">
+    <a href="#fomc"        class="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 whitespace-nowrap transition">FOMC</a>
+    <a href="#earnings"    class="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 whitespace-nowrap transition">Q1 Earnings</a>
+    <a href="#heatmap"     class="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 whitespace-nowrap transition">Heatmap</a>
+    <a href="#tickers"     class="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 whitespace-nowrap transition">Ticker Analysis</a>
+    <a href="#divergences" class="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 whitespace-nowrap transition">Divergences</a>
+    <a href="#strategy"    class="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 whitespace-nowrap transition">Strategy</a>
+    <a href="#watchlist"   class="px-3 py-1.5 rounded-full text-slate-400 hover:text-white hover:bg-slate-700 whitespace-nowrap transition">Watch List</a>
+  </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 space-y-16 pt-10">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 — FOMC REGIME SNAPSHOT
+════════════════════════════════════════════════════════════════ -->
+<section id="fomc">
+  <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-1">Section 01</p>
+  <h2 class="text-2xl font-black text-white mb-6">FOMC Regime Snapshot</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+    <!-- Rate Decision -->
+    <div class="tcard p-6 border-t-4 border-amber-500">
+      <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Rate Decision</p>
+      <p class="text-3xl font-black text-amber-400 mb-1">HOLD</p>
+      <p class="text-xl font-bold text-white mb-3">3.50% – 3.75%</p>
+      <p class="text-slate-400 text-sm leading-relaxed italic border-l-2 border-slate-600 pl-3">"Monetary policy is not on a preset course, and we will make our decisions on a meeting-by-meeting basis."<br><span class="text-slate-500 not-italic">— Chair Powell, April 29, 2026</span></p>
+    </div>
+    <!-- Inflation Signal -->
+    <div class="tcard p-6 border-t-4 border-red-500">
+      <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Inflation Signal</p>
+      <p class="text-3xl font-black text-red-400 mb-1">PCE 3.5%</p>
+      <p class="text-slate-300 text-sm mb-3">Core PCE: <strong class="text-white">3.2%</strong> · Both above 2% target</p>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between"><span class="text-slate-400">Primary driver</span><span class="text-red-300 font-semibold">Oil / Middle East</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Secondary driver</span><span class="text-orange-300 font-semibold">Tariff goods costs</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">June cut probability</span><span class="text-red-400 font-bold">Very Low</span></div>
+      </div>
+    </div>
+    <!-- Leadership Transition -->
+    <div class="tcard p-6 border-t-4 border-violet-500">
+      <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Leadership Transition</p>
+      <p class="text-3xl font-black text-violet-400 mb-1">May 15</p>
+      <p class="text-slate-300 text-sm mb-3">Powell's term as Chair ends</p>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between"><span class="text-slate-400">Successor</span><span class="text-white font-semibold">Kevin Warsh</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Warsh profile</span><span class="text-orange-300 font-semibold">Hawkish</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Priority signals</span><span class="text-slate-300">Smaller balance sheet</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">Market read</span><span class="text-red-300 font-semibold">Uncertainty priced</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Dates Timeline -->
+  <div class="tcard p-6">
+    <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-5">Key Dates — May 2026</p>
+    <div class="flex flex-col md:flex-row gap-0 md:gap-0 relative">
+      <!-- connector line desktop -->
+      <div class="hidden md:block absolute top-[18px] left-[32px] right-[32px] h-0.5 bg-slate-700 z-0"></div>
+      <!-- events -->
+      <div class="flex md:flex-col items-start md:items-center gap-3 md:gap-2 flex-1 relative z-10 pb-4 md:pb-0">
+        <div class="tl-dot bg-blue-500 border-2 border-slate-900"></div>
+        <div class="md:text-center">
+          <p class="text-xs font-black text-white">May 1</p>
+          <p class="text-xs text-slate-400">Week 1 Opens</p>
+          <p class="text-xs text-slate-500">FOMC digestion</p>
+        </div>
+      </div>
+      <div class="flex md:flex-col items-start md:items-center gap-3 md:gap-2 flex-1 relative z-10 pb-4 md:pb-0">
+        <div class="tl-dot bg-amber-400 border-2 border-slate-900"></div>
+        <div class="md:text-center">
+          <p class="text-xs font-black text-white">May 5–7</p>
+          <p class="text-xs text-amber-300 font-semibold">MSFT · NVDA</p>
+          <p class="text-xs text-slate-500">Earnings binary</p>
+        </div>
+      </div>
+      <div class="flex md:flex-col items-start md:items-center gap-3 md:gap-2 flex-1 relative z-10 pb-4 md:pb-0">
+        <div class="tl-dot bg-orange-500 border-2 border-slate-900"></div>
+        <div class="md:text-center">
+          <p class="text-xs font-black text-white">May 8</p>
+          <p class="text-xs text-orange-300 font-semibold">BLS Jobs Report</p>
+          <p class="text-xs text-slate-500">Labor direction</p>
+        </div>
+      </div>
+      <div class="flex md:flex-col items-start md:items-center gap-3 md:gap-2 flex-1 relative z-10 pb-4 md:pb-0">
+        <div class="tl-dot bg-red-500 border-2 border-slate-900 ring-2 ring-red-400/40"></div>
+        <div class="md:text-center">
+          <p class="text-xs font-black text-red-300">May 12</p>
+          <p class="text-xs text-red-300 font-black">CPI RELEASE</p>
+          <p class="text-xs text-red-400">Reprices everything</p>
+        </div>
+      </div>
+      <div class="flex md:flex-col items-start md:items-center gap-3 md:gap-2 flex-1 relative z-10">
+        <div class="tl-dot bg-violet-500 border-2 border-slate-900 ring-2 ring-violet-400/40"></div>
+        <div class="md:text-center">
+          <p class="text-xs font-black text-violet-300">May 15</p>
+          <p class="text-xs text-violet-300 font-black">WARSH SWORN IN</p>
+          <p class="text-xs text-slate-500">Regime change</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3 — Q1 EARNINGS SCORECARD
+════════════════════════════════════════════════════════════════ -->
+<section id="earnings">
+  <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-1">Section 02</p>
+  <h2 class="text-2xl font-black text-white mb-6">Q1 2026 Earnings Scorecard</h2>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="tcard p-5 text-center border-t-4 border-cyan-500">
+      <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Blended EPS Growth</p>
+      <p class="text-4xl font-black text-cyan-400">15.1%</p>
+      <p class="text-xs text-emerald-400 mt-2">▲ from 13.1% est.</p>
+      <p class="text-xs text-slate-500 mt-1">6th consecutive double-digit quarter</p>
+    </div>
+    <div class="tcard p-5 text-center border-t-4 border-emerald-500">
+      <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Revenue Growth</p>
+      <p class="text-4xl font-black text-emerald-400">10.3%</p>
+      <p class="text-xs text-slate-400 mt-2">Highest since Q3 2022</p>
+      <p class="text-xs text-slate-500 mt-1">Blended actuals</p>
+    </div>
+    <div class="tcard p-5 text-center border-t-4 border-violet-500">
+      <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Net Profit Margin</p>
+      <p class="text-4xl font-black text-violet-400">13.4%</p>
+      <p class="text-xs text-violet-300 mt-2 font-bold">ALL-TIME RECORD</p>
+      <p class="text-xs text-slate-500 mt-1">Highest since FactSet 2009</p>
+    </div>
+    <div class="tcard p-5 text-center border-t-4 border-orange-500">
+      <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">EPS Beat Rate</p>
+      <p class="text-4xl font-black text-orange-400">84%</p>
+      <p class="text-xs text-slate-400 mt-2">Revenue beat: 81%</p>
+      <p class="text-xs text-slate-500 mt-1">Historical avg ~73%</p>
+    </div>
+  </div>
+
+  <!-- Sector Chart + Margin Table -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="tcard p-6">
+      <h3 class="text-sm font-bold text-white mb-1">Sector EPS Growth — Q1 2026</h3>
+      <p class="text-xs text-slate-500 mb-4">IT sector at +46% is masking moderate growth in the S&P 493</p>
+      <div class="chart-wrap"><canvas id="sectorChart"></canvas></div>
+    </div>
+    <div class="tcard p-6">
+      <h3 class="text-sm font-bold text-white mb-1">Sector Performance Summary</h3>
+      <p class="text-xs text-slate-500 mb-4">Blended actuals as of April 29, 2026</p>
+      <div class="overflow-auto">
+        <table class="w-full text-xs">
+          <thead><tr class="text-slate-500 border-b border-slate-700">
+            <th class="text-left py-1.5 pr-3">Sector</th>
+            <th class="text-right pr-3">EPS</th>
+            <th class="text-right pr-3">Rev</th>
+            <th class="text-right">Margin</th>
+          </tr></thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr><td class="py-1.5 pr-3 text-slate-300">Information Tech</td><td class="text-right pr-3 text-emerald-400 font-bold">+46.0%</td><td class="text-right pr-3 text-emerald-400">+15.0%</td><td class="text-right text-slate-300">29.1%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Financials</td><td class="text-right pr-3 text-emerald-400 font-bold">+18.5%</td><td class="text-right pr-3 text-emerald-400">+12.1%</td><td class="text-right text-slate-300">18.5%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Materials</td><td class="text-right pr-3 text-emerald-400">+14.2%</td><td class="text-right pr-3 text-emerald-400">+9.8%</td><td class="text-right text-slate-300">12.3%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Industrials</td><td class="text-right pr-3 text-emerald-400">+12.8%</td><td class="text-right pr-3 text-emerald-400">+10.2%</td><td class="text-right text-slate-300">11.1%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Consumer Staples</td><td class="text-right pr-3 text-slate-400">+6.4%</td><td class="text-right pr-3 text-slate-400">+3.5%</td><td class="text-right text-slate-300">19.0%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Utilities</td><td class="text-right pr-3 text-slate-400">+5.2%</td><td class="text-right pr-3 text-slate-400">+4.8%</td><td class="text-right text-slate-300">15.1%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Real Estate</td><td class="text-right pr-3 text-slate-400">+3.1%</td><td class="text-right pr-3 text-slate-400">+5.5%</td><td class="text-right text-slate-300">12.4%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Energy</td><td class="text-right pr-3 text-red-400">−6.5%</td><td class="text-right pr-3 text-slate-400">+4.2%</td><td class="text-right text-slate-300">6.6%</td></tr>
+            <tr><td class="py-1.5 pr-3 text-slate-300">Health Care</td><td class="text-right pr-3 text-red-400">−9.2%</td><td class="text-right pr-3 text-slate-400">+6.8%</td><td class="text-right text-slate-300">10.5%</td></tr>
+            <tr class="border-t border-slate-600"><td class="py-2 pr-3 font-bold text-white">S&P 500 Blended</td><td class="text-right pr-3 text-cyan-400 font-black">+15.1%</td><td class="text-right pr-3 text-cyan-400 font-bold">+10.3%</td><td class="text-right text-violet-300 font-bold">13.4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4 — LIVE MARKET HEATMAP
+════════════════════════════════════════════════════════════════ -->
+<section id="heatmap">
+  <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-1">Section 03</p>
+  <h2 class="text-2xl font-black text-white mb-2">Live Market Heatmap</h2>
+  <p class="text-slate-400 text-sm mb-6">April 28 open → April 29 close · Color = 2-day % change magnitude</p>
+
+  <!-- Legend -->
+  <div class="flex flex-wrap gap-2 mb-6 text-xs">
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded bg-[#064e3b]"></div><span class="text-slate-400">> +5%</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded bg-[#065f46]"></div><span class="text-slate-400">+2 to +5%</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded bg-[#166534]"></div><span class="text-slate-400">0 to +2%</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded bg-[#1e293b]"></div><span class="text-slate-400">Flat</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded bg-[#431407]"></div><span class="text-slate-400">0 to −2%</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded bg-[#7f1d1d]"></div><span class="text-slate-400">−2 to −5%</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-3 h-3 rounded bg-[#450a0a]"></div><span class="text-slate-400">> −5%</span></div>
+  </div>
+
+  <div class="space-y-5">
+    <!-- Broad Market -->
+    <div>
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Broad Market</p>
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+        <div class="hcell hp1" title="S&P 500 ETF"><div>SPY</div><div class="text-[0.7rem] opacity-80 font-normal">−0.03%</div><div class="text-[0.6rem] opacity-60">$711.58</div></div>
+        <div class="hcell hp1" title="Nasdaq 100"><div>QQQ</div><div class="text-[0.7rem] opacity-80 font-normal">+0.63%</div><div class="text-[0.6rem] opacity-60">$661.57</div></div>
+        <div class="hcell hup" title="VIX — up is risk signal"><div>VIX</div><div class="text-[0.7rem] opacity-80 font-normal">+2.62%</div><div class="text-[0.6rem] opacity-60">18.78</div></div>
+        <div class="hcell hup" title="10-Year Yield — up = no cuts"><div>10-Yr</div><div class="text-[0.7rem] opacity-80 font-normal">+1.08%</div><div class="text-[0.6rem] opacity-60">4.42%</div></div>
+      </div>
+    </div>
+    <!-- Mag 7 / Tech -->
+    <div>
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Mag 7 / Tech</p>
+      <div class="grid grid-cols-4 md:grid-cols-7 gap-2">
+        <div class="hcell hp3" title="Intel — earnings re-rating event"><div>INTC</div><div class="text-[0.7rem] opacity-80 font-normal">+16.57%</div><div class="text-[0.6rem] opacity-60">$94.75</div></div>
+        <div class="hcell hp1" title="Amazon — AWS +28%"><div>AMZN</div><div class="text-[0.7rem] opacity-80 font-normal">+1.80%</div><div class="text-[0.6rem] opacity-60">$263.04</div></div>
+        <div class="hcell hp1" title="Alphabet — earnings confirmed positive"><div>GOOGL</div><div class="text-[0.7rem] opacity-80 font-normal">+0.40%</div><div class="text-[0.6rem] opacity-60">$349.94</div></div>
+        <div class="hcell hflat" title="Nvidia — flat, pre-earnings hold"><div>NVDA</div><div class="text-[0.7rem] opacity-80 font-normal">−0.11%</div><div class="text-[0.6rem] opacity-60">$209.25</div></div>
+        <div class="hcell hflat" title="Microsoft — flat, pre-earnings hold"><div>MSFT</div><div class="text-[0.7rem] opacity-80 font-normal">−0.03%</div><div class="text-[0.6rem] opacity-60">$424.46</div></div>
+        <div class="hcell hn1" title="Meta — capex overhang"><div>META</div><div class="text-[0.7rem] opacity-80 font-normal">−0.76%</div><div class="text-[0.6rem] opacity-60">$669.12</div></div>
+        <div class="hcell hn1" title="Tesla — underperforming peers"><div>TSLA</div><div class="text-[0.7rem] opacity-80 font-normal">−0.50%</div><div class="text-[0.6rem] opacity-60">$372.80</div></div>
+      </div>
+    </div>
+    <!-- Semiconductors -->
+    <div>
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Semiconductors</p>
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+        <div class="hcell hp3" title="Semis 3x Leveraged ETF"><div>SOXL</div><div class="text-[0.7rem] opacity-80 font-normal">+8.48%</div><div class="text-[0.6rem] opacity-60">$117.97</div></div>
+        <div class="hcell hp2" title="VanEck Semiconductor ETF"><div>SMH</div><div class="text-[0.7rem] opacity-80 font-normal">+2.33%</div><div class="text-[0.6rem] opacity-60">$499.58</div></div>
+      </div>
+    </div>
+    <!-- Financials -->
+    <div>
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Financials</p>
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+        <div class="hcell hn2" title="Goldman Sachs — sold off on record earnings"><div>GS</div><div class="text-[0.7rem] opacity-80 font-normal">−3.79%</div><div class="text-[0.6rem] opacity-60">$905.60</div></div>
+        <div class="hcell hn1" title="Financials ETF"><div>XLF</div><div class="text-[0.7rem] opacity-80 font-normal">−0.54%</div><div class="text-[0.6rem] opacity-60">$51.92</div></div>
+      </div>
+    </div>
+    <!-- Energy -->
+    <div>
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Energy</p>
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+        <div class="hcell hp3" title="Oil ETF — primary inflation driver"><div>USO</div><div class="text-[0.7rem] opacity-80 font-normal">+8.48%</div><div class="text-[0.6rem] opacity-60">$150.63</div></div>
+        <div class="hcell hp2" title="Energy Sector ETF"><div>XLE</div><div class="text-[0.7rem] opacity-80 font-normal">+2.27%</div><div class="text-[0.6rem] opacity-60">$59.03</div></div>
+      </div>
+    </div>
+    <!-- Airlines -->
+    <div>
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Airlines</p>
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+        <div class="hcell hn2" title="Alaska Air — suspended guidance, fuel losses"><div>ALK</div><div class="text-[0.7rem] opacity-80 font-normal">−4.49%</div><div class="text-[0.6rem] opacity-60">$38.31</div></div>
+        <div class="hcell hn1" title="Southwest — record revenue, unhedged on oil"><div>LUV</div><div class="text-[0.7rem] opacity-80 font-normal">−1.95%</div><div class="text-[0.6rem] opacity-60">$37.22</div></div>
+      </div>
+    </div>
+    <!-- Crypto + Commodities -->
+    <div>
+      <p class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Crypto · Commodities · Defensives</p>
+      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
+        <div class="hcell hn1" title="Bitcoin — decoupled from risk-on tech"><div>BTC</div><div class="text-[0.7rem] opacity-80 font-normal">−2.08%</div><div class="text-[0.6rem] opacity-60">$75,772</div></div>
+        <div class="hcell hn1" title="Ethereum — below SMA20, weaker than BTC"><div>ETH</div><div class="text-[0.7rem] opacity-80 font-normal">−2.20%</div><div class="text-[0.6rem] opacity-60">$2,253</div></div>
+        <div class="hcell hn1" title="Gold — NOT responding to oil inflation signal"><div>GLD</div><div class="text-[0.7rem] opacity-80 font-normal">−0.79%</div><div class="text-[0.6rem] opacity-60">$417.41</div></div>
+        <div class="hcell hn1" title="Procter & Gamble — no defensive rotation"><div>PG</div><div class="text-[0.7rem] opacity-80 font-normal">−2.38%</div><div class="text-[0.6rem] opacity-60">$146.46</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 5 — TICKER DEEP DIVE
+════════════════════════════════════════════════════════════════ -->
+<section id="tickers">
+  <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-1">Section 04</p>
+  <h2 class="text-2xl font-black text-white mb-2">Ticker Deep Dive</h2>
+  <p class="text-slate-400 text-sm mb-8">RSI gauge · 2D and 30D returns · Strategy lean per ticker</p>
+
+  <!-- RSI Legend -->
+  <div class="tcard p-4 mb-6 flex flex-wrap gap-4 items-center text-xs">
+    <span class="text-slate-500 font-bold">RSI Guide:</span>
+    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span><span class="text-slate-400">0–30 Oversold</span></span>
+    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span><span class="text-slate-400">30–70 Normal</span></span>
+    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-orange-500 inline-block"></span><span class="text-slate-400">70–85 Elevated</span></span>
+    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-600 inline-block"></span><span class="text-slate-400">85+ Overbought</span></span>
+  </div>
+
+  <!-- ── MAG 7 / TECH ── -->
+  <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 mt-6">Mag 7 / Tech</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+
+    <!-- INTC -->
+    <div class="tcard p-5 border-l-4 border-emerald-400">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">INTC</p><p class="text-xs text-slate-400">Intel Corporation</p></div>
+        <span class="badge b-bear">Mean Revert Risk</span>
+      </div>
+      <p class="text-2xl font-black text-emerald-400 mb-1">+16.57% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">EPS $0.29 vs $0.01 est. · DCAI +22% · Tesla 14A/18A lead customer confirmed</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 87.3</span><span class="text-red-400 font-bold">Extremely Overbought</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:87.3%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+45.2%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+115%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+42.8%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">1.49x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-amber-300 bg-amber-900/30 rounded p-2">⚠ Bear call spread or put for consolidation play. Do not chase at RSI 87 after a 115% 30D run. Wait for RSI ~65 before new longs.</p>
+    </div>
+
+    <!-- AMZN -->
+    <div class="tcard p-5 border-l-4 border-emerald-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">AMZN</p><p class="text-xs text-slate-400">Amazon</p></div>
+        <span class="badge b-bull">Bullish · Wait</span>
+      </div>
+      <p class="text-2xl font-black text-emerald-400 mb-1">+1.80% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">AWS +28% (fastest in 15 qtrs) · Net sales $181.5B · FCF collapsed to $1.2B TTM on $200B capex plan</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 83.3</span><span class="text-orange-400 font-bold">Overbought</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:83.3%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+3.0%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+22.2%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+8.8%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">1.08x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-cyan-300 bg-cyan-900/20 rounded p-2">Bull call spread on 2–3% pullback toward $255. RSI 83 limits upside room for new entries.</p>
+    </div>
+
+    <!-- NVDA -->
+    <div class="tcard p-5 border-l-4 border-amber-400">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">NVDA</p><p class="text-xs text-slate-400">Nvidia</p></div>
+        <span class="badge b-binary">Binary · Earnings</span>
+      </div>
+      <p class="text-2xl font-black text-slate-400 mb-1">−0.11% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Did NOT follow INTC's AI/CPU rally. GPU vs. CPU narratives are being distinguished by the market.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 74.8</span><span class="text-orange-300 font-bold">Elevated</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:74.8%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+3.3%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+15.0%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+7.3%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.98x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-amber-300 bg-amber-900/20 rounded p-2">Earnings strangle — buy both sides to capture binary move. Enter early in week before IV expansion.</p>
+    </div>
+
+    <!-- MSFT -->
+    <div class="tcard p-5 border-l-4 border-amber-400">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">MSFT</p><p class="text-xs text-slate-400">Microsoft</p></div>
+        <span class="badge b-binary">Binary · Earnings</span>
+      </div>
+      <p class="text-2xl font-black text-slate-400 mb-1">−0.03% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Holding pattern pre-earnings. Azure growth vs. AWS 28% reaccel is the market's benchmark question.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 73.5</span><span class="text-orange-300 font-bold">Elevated</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:73.5%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−1.9%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+6.3%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+5.7%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.92x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-amber-300 bg-amber-900/20 rounded p-2">Strangle pre-earnings. Enter on day-after-earnings reaction once direction is known.</p>
+    </div>
+
+    <!-- GOOGL -->
+    <div class="tcard p-5 border-l-4 border-emerald-600">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">GOOGL</p><p class="text-xs text-slate-400">Alphabet</p></div>
+        <span class="badge b-bull">Mild Bullish</span>
+      </div>
+      <p class="text-2xl font-black text-emerald-400 mb-1">+0.40% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Earnings already reported positively. Cloud + search intact. Institutional accumulation confirmed (vol 1.13x).</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 77.6</span><span class="text-orange-300 font-bold">Elevated</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:77.6%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+3.1%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+12.6%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+6.6%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">1.13x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-cyan-300 bg-cyan-900/20 rounded p-2">Bull call spread. Set RSI alert at 80 — trim if reached without new catalyst.</p>
+    </div>
+
+    <!-- META -->
+    <div class="tcard p-5 border-l-4 border-slate-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">META</p><p class="text-xs text-slate-400">Meta Platforms</p></div>
+        <span class="badge b-neutral">Neutral</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−0.76% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Revenue $56.3B beat. But $125–$145B capex raise + $19.2B annual Reality Labs loss = market indecision.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 65.6</span><span class="text-slate-400">Neutral</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:65.6%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−0.8%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+7.5%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+4.0%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.88x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-slate-300 bg-slate-800 rounded p-2">Iron condor / short strangle. Range-bound $650–$690. Collect premium on sideways drift.</p>
+    </div>
+
+    <!-- TSLA -->
+    <div class="tcard p-5 border-l-4 border-red-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">TSLA</p><p class="text-xs text-slate-400">Tesla</p></div>
+        <span class="badge b-bear">Bearish</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−0.50% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Below SMA50. Negative 30D while QQQ is +9.8%. Intel 14A/18A partnership did not move the stock. Confirmed relative weakness.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 63.5</span><span class="text-slate-400">Neutral-Elevated</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:63.5%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−3.8%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−6.6%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">+0.5%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.67x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-red-300 bg-red-900/20 rounded p-2">Put spreads. Target $350 retest. Stop above $385 (above SMA20 resistance). High short interest = squeeze risk.</p>
+    </div>
+
+  </div>
+
+  <!-- ── SEMICONDUCTORS ── -->
+  <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 mt-6">Semiconductors</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+    <!-- SMH -->
+    <div class="tcard p-5 border-l-4 border-orange-400">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">SMH</p><p class="text-xs text-slate-400">VanEck Semiconductor ETF</p></div>
+        <span class="badge b-caution">Bull Thesis · Bad Entry</span>
+      </div>
+      <p class="text-2xl font-black text-emerald-400 mb-1">+2.33% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">INTC's earnings pulled the full sector. Agentic AI on CPUs = new thesis for the space. RSI 84.6 is the most overbought ETF in dataset.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 84.6</span><span class="text-red-400 font-bold">Overbought</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:84.6%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+4.8%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+25.9%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+10.7%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">1.09x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-amber-300 bg-amber-900/20 rounded p-2">Wait for RSI pullback to 65–70 before new longs. Thesis intact; entry timing is the issue.</p>
+    </div>
+    <!-- SOXL -->
+    <div class="tcard p-5 border-l-4 border-orange-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">SOXL</p><p class="text-xs text-slate-400">Semis 3x Leveraged ETF</p></div>
+        <span class="badge b-caution">Bull Thesis · Bad Entry</span>
+      </div>
+      <p class="text-2xl font-black text-emerald-400 mb-1">+8.48% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Leveraged play on semiconductor re-rating. 3x amplifies any mean reversion. +114.7% in 30 days is historically crowded.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 77.5</span><span class="text-orange-400 font-bold">Elevated</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:77.5%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+11.7%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+114.7%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+34.1%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.86x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-amber-300 bg-amber-900/20 rounded p-2">Bear call spread for near-term consolidation. If long: use collar to protect gains at RSI 77.</p>
+    </div>
+  </div>
+
+  <!-- ── FINANCIALS ── -->
+  <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 mt-6">Financials</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+    <!-- GS -->
+    <div class="tcard p-5 border-l-4 border-amber-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">GS</p><p class="text-xs text-slate-400">Goldman Sachs</p></div>
+        <span class="badge b-caution">Cautious Bull at SMA20</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−3.79% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Record Q1: IB fees +48%, ROE 19.8%, returned $6.38B to shareholders. Sold off anyway. Market pricing Warsh uncertainty, not NIM expansion.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 50.6</span><span class="text-slate-400">Neutral · At SMA20</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:50.6%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−3.1%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+12.2%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">−0.1%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.80x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-amber-300 bg-amber-900/20 rounded p-2">Bull put spread at SMA20 support (~$905). Long entry if SMA20 holds. Hard stop 3% below. Catalyst: Warsh signals yield curve tolerance.</p>
+    </div>
+    <!-- XLF -->
+    <div class="tcard p-5 border-l-4 border-slate-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">XLF</p><p class="text-xs text-slate-400">Financials ETF</p></div>
+        <span class="badge b-neutral">Neutral · Wait</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−0.54% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Sector-wide wait-and-see. Rising yields are the structural tailwind but Warsh transition prevents institutional positioning until policy is clear.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 56.7</span><span class="text-slate-400">Neutral</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:56.7%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−0.6%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+5.3%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+1.0%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.59x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-slate-300 bg-slate-800 rounded p-2">No directional trade before May 15. Sell puts at $51.50 support for income if desired.</p>
+    </div>
+  </div>
+
+  <!-- ── ENERGY ── -->
+  <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 mt-6">Energy</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+    <!-- USO -->
+    <div class="tcard p-5 border-l-4 border-orange-400">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">USO</p><p class="text-xs text-slate-400">Oil ETF · Primary Risk Variable</p></div>
+        <span class="badge b-caution">Cautious Bull</span>
+      </div>
+      <p class="text-2xl font-black text-emerald-400 mb-1">+8.48% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Middle East conflict driving surge. Powell named this explicitly as the primary inflation risk. BUT: below-average volume (0.44x) on the big move is a yellow flag.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 68.5</span><span class="text-slate-400">Elevated — not overbought</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:68.5%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+16.4%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+26.8%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+15.7%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-red-400 font-bold">0.44x</div><div class="lbl">Vol Ratio ⚠</div></div>
+      </div>
+      <p class="text-xs text-amber-300 bg-amber-900/20 rounded p-2">Watch Week 1 volume. Low-volume geopolitical spikes reverse. High-volume follow-through = sustained inflation signal. This is the single most important number to track.</p>
+    </div>
+    <!-- XLE -->
+    <div class="tcard p-5 border-l-4 border-emerald-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">XLE</p><p class="text-xs text-slate-400">Energy Sector ETF</p></div>
+        <span class="badge b-bull">Bullish</span>
+      </div>
+      <p class="text-2xl font-black text-emerald-400 mb-1">+2.27% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Oil +8.5% · Energy equities only +2.3%. The gap between commodity price and equity price historically closes. XLE is the re-pricing lag play.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 59.7</span><span class="text-slate-400">Mid-Range · Most room to run</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:59.7%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+4.4%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+1.6%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-300">+3.0%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.77x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-cyan-300 bg-cyan-900/20 rounded p-2">Bull call spread on XLE. Higher conviction than USO options. Energy equities must catch up if oil sustains.</p>
+    </div>
+  </div>
+
+  <!-- ── AIRLINES ── -->
+  <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 mt-6">Airlines</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+    <!-- ALK -->
+    <div class="tcard p-5 border-l-4 border-red-600">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">ALK</p><p class="text-xs text-slate-400">Alaska Air Group</p></div>
+        <span class="badge b-bear">Bearish · High Conviction</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−4.49% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Net loss −$193M. Fuel adds $100M Q1, expected $600M in Q2. Full-year guidance SUSPENDED. No transformation story. Largest individual equity decline in dataset.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 45.6</span><span class="text-slate-400">Below mid-range</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:45.6%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−6.1%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−1.6%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−5.2%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.68x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-red-300 bg-red-900/20 rounded p-2">Puts / short. $37 put for May. SMA20 is resistance on any bounce. Only bull catalyst: Middle East de-escalation.</p>
+    </div>
+    <!-- LUV -->
+    <div class="tcard p-5 border-l-4 border-red-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">LUV</p><p class="text-xs text-slate-400">Southwest Airlines</p></div>
+        <span class="badge b-bear">Bearish</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−1.95% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Record Q1 revenue, returned to profitability. But assigned seating transformation cannot outrun oil at $200/barrel with ZERO fuel hedging.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 40.1</span><span class="text-orange-400 font-bold">Approaching Oversold</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:40.1%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−5.4%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−9.5%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−5.8%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.64x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-red-300 bg-red-900/20 rounded p-2">Put spreads — $36/$33 strike. No long until USO shows reversal signal.</p>
+    </div>
+  </div>
+
+  <!-- ── CRYPTO + COMMODITIES ── -->
+  <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 mt-6">Crypto · Commodities · Defensives</p>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
+    <!-- BTC -->
+    <div class="tcard p-5 border-l-4 border-slate-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">BTC</p><p class="text-xs text-slate-400">Bitcoin</p></div>
+        <span class="badge b-neutral">Neutral</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−2.08% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Sold off on the same day QQQ gained +0.46%. Decoupled from risk-on. Higher-for-longer rates = USD strength headwind. No debasement bid currently.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 54.8</span><span class="text-slate-400">Neutral</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:54.8%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−1.6%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+14.3%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">+0.6%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.99x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-slate-300 bg-slate-800 rounded p-2">No new longs. Small long only with tight stop below $74,000 (SMA50). Catalyst: Warsh signals dovish → crypto pops.</p>
+    </div>
+    <!-- ETH -->
+    <div class="tcard p-5 border-l-4 border-red-600">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">ETH</p><p class="text-xs text-slate-400">Ethereum</p></div>
+        <span class="badge b-bear">Mild Bearish</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−2.20% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Below SMA20. Underperforming BTC. ETH is the higher-beta crypto — if BTC sells off, ETH falls harder. RSI 42 has not produced a bounce yet.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 42.0</span><span class="text-orange-400 font-bold">Approaching Oversold</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:42%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−2.0%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-emerald-400">+12.1%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−2.2%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.98x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-red-300 bg-red-900/20 rounded p-2">No trade. Avoid adding to ETH positions until SMA20 reclaimed. Watch BTC for directional lead.</p>
+    </div>
+    <!-- GLD -->
+    <div class="tcard p-5 border-l-4 border-cyan-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">GLD</p><p class="text-xs text-slate-400">Gold ETF</p></div>
+        <span class="badge b-ctrn">Contrarian Bull</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−0.79% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Oil +26.8% in 30 days. Gold −9.1%. Ignoring the inflation signal entirely. RSI 34.8 = lowest RSI in the full dataset. Classic oversold bounce setup.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 34.8</span><span class="text-cyan-400 font-bold">Near Oversold — Bounce Watch</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:34.8%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-red-400">−4.1%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−9.1%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−3.9%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.86x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-cyan-300 bg-cyan-900/20 rounded p-2">Contrarian call spread. Entry $413–$418, target SMA20 (~$435), stop $408. Primary catalyst: May 12 CPI hot print.</p>
+    </div>
+    <!-- PG -->
+    <div class="tcard p-5 border-l-4 border-slate-500">
+      <div class="flex justify-between items-start mb-3">
+        <div><p class="text-xl font-black text-white">PG</p><p class="text-xs text-slate-400">Procter & Gamble</p></div>
+        <span class="badge b-neutral">Neutral · No Trade</span>
+      </div>
+      <p class="text-2xl font-black text-red-400 mb-1">−2.38% <span class="text-sm text-slate-400 font-normal">2D</span></p>
+      <p class="text-sm text-slate-300 mb-3">Defensive rotation is NOT happening. Below SMA50. Money is not hiding in staples — it is rotating toward earnings catalysts. PG is a yield instrument, not a momentum trade.</p>
+      <div class="mb-3">
+        <div class="flex justify-between text-xs text-slate-500 mb-1"><span>RSI 51.9</span><span class="text-slate-400">Neutral</span></div>
+        <div class="rsi-track"><div class="rsi-marker" style="left:51.9%"></div></div>
+      </div>
+      <div class="flex gap-3 text-xs mb-3">
+        <div class="stat-mini"><div class="val text-emerald-400">+3.3%</div><div class="lbl">5D</div></div>
+        <div class="stat-mini"><div class="val text-red-400">−2.6%</div><div class="lbl">30D</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">+1.7%</div><div class="lbl">vs SMA20</div></div>
+        <div class="stat-mini"><div class="val text-slate-400">0.93x</div><div class="lbl">Vol Ratio</div></div>
+      </div>
+      <p class="text-xs text-slate-300 bg-slate-800 rounded p-2">No trade. Sell covered calls against existing positions for income only.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 6 — CROSS-ASSET DIVERGENCES
+════════════════════════════════════════════════════════════════ -->
+<section id="divergences" class="bg-slate-900/60 rounded-2xl p-8 -mx-4 md:mx-0">
+  <p class="text-xs font-bold tracking-widest text-orange-400 uppercase mb-1">Section 05</p>
+  <h2 class="text-2xl font-black text-white mb-2">Cross-Asset Divergences</h2>
+  <p class="text-slate-400 text-sm mb-8">Where market behavior contradicted the expected narrative. These are the most signal-rich data points in the window.</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div class="dcard p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-orange-400 text-lg font-black">01</span>
+        <p class="font-bold text-white text-sm">Gold Ignored the Oil Inflation Signal</p>
+      </div>
+      <div class="flex gap-3 mb-3 text-xs">
+        <div class="bg-slate-800 rounded p-2 flex-1"><p class="text-slate-500 mb-1">Expected</p><p class="text-slate-300">Oil +8.5% → Gold rally as inflation hedge</p></div>
+        <div class="text-orange-400 self-center font-black">→</div>
+        <div class="bg-red-900/30 rounded p-2 flex-1"><p class="text-red-400 mb-1">Actual</p><p class="text-red-300">GLD −0.79% · 30D −9.1%</p></div>
+      </div>
+      <p class="text-xs text-slate-400">Oil spike read as temporary geopolitical event, not structural inflation. OR USD strengthening on higher-for-longer narrative suppresses gold. Institutions chose energy equities (XLE) over gold as their inflation hedge.</p>
+    </div>
+
+    <div class="dcard p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-orange-400 text-lg font-black">02</span>
+        <p class="font-bold text-white text-sm">Goldman Sold Off on Record Earnings</p>
+      </div>
+      <div class="flex gap-3 mb-3 text-xs">
+        <div class="bg-slate-800 rounded p-2 flex-1"><p class="text-slate-500 mb-1">Expected</p><p class="text-slate-300">Record IB fees +48%, ROE 19.8% → GS rallies</p></div>
+        <div class="text-orange-400 self-center font-black">→</div>
+        <div class="bg-red-900/30 rounded p-2 flex-1"><p class="text-red-400 mb-1">Actual</p><p class="text-red-300">GS −3.76% over 2 days</p></div>
+      </div>
+      <p class="text-xs text-slate-400">Classic "buy the rumor, sell the news." Warsh uncertainty priced as policy risk, not steepening tailwind. Market chose to wait for Warsh clarity before re-entering financials.</p>
+    </div>
+
+    <div class="dcard p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-orange-400 text-lg font-black">03</span>
+        <p class="font-bold text-white text-sm">NVDA Did Not Follow INTC's AI Rally</p>
+      </div>
+      <div class="flex gap-3 mb-3 text-xs">
+        <div class="bg-slate-800 rounded p-2 flex-1"><p class="text-slate-500 mb-1">Expected</p><p class="text-slate-300">INTC AI beat → semiconductor sector lifts NVDA</p></div>
+        <div class="text-orange-400 self-center font-black">→</div>
+        <div class="bg-red-900/30 rounded p-2 flex-1"><p class="text-red-400 mb-1">Actual</p><p class="text-red-300">NVDA −0.11% · Flat</p></div>
+      </div>
+      <p class="text-xs text-slate-400">Market is distinguishing CPU-AI (INTC: agentic inference) from GPU-AI (NVDA: training). These are competing narratives, not complementary. A sustained CPU-AI thesis is a mild structural headwind for NVDA's "only AI chip" positioning.</p>
+    </div>
+
+    <div class="dcard p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-orange-400 text-lg font-black">04</span>
+        <p class="font-bold text-white text-sm">Crypto Decoupled from Tech Risk-On</p>
+      </div>
+      <div class="flex gap-3 mb-3 text-xs">
+        <div class="bg-slate-800 rounded p-2 flex-1"><p class="text-slate-500 mb-1">Expected</p><p class="text-slate-300">QQQ +0.46% risk-on day → BTC/ETH rally</p></div>
+        <div class="text-orange-400 self-center font-black">→</div>
+        <div class="bg-red-900/30 rounded p-2 flex-1"><p class="text-red-400 mb-1">Actual</p><p class="text-red-300">BTC −2.08% · ETH −2.20%</p></div>
+      </div>
+      <p class="text-xs text-slate-400">Higher-for-longer rates suppress the debasement/easy-money narrative that typically drives crypto. USD strengthening on FOMC hold = direct headwind. Correlation with tech equities has broken in this window.</p>
+    </div>
+
+    <div class="dcard p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-orange-400 text-lg font-black">05</span>
+        <p class="font-bold text-white text-sm">TSLA Ignored Its Intel Partnership</p>
+      </div>
+      <div class="flex gap-3 mb-3 text-xs">
+        <div class="bg-slate-800 rounded p-2 flex-1"><p class="text-slate-500 mb-1">Expected</p><p class="text-slate-300">Tesla named as INTC 14A/18A lead customer → TSLA bullish</p></div>
+        <div class="text-orange-400 self-center font-black">→</div>
+        <div class="bg-red-900/30 rounded p-2 flex-1"><p class="text-red-400 mb-1">Actual</p><p class="text-red-300">TSLA −0.50% · Below SMA50</p></div>
+      </div>
+      <p class="text-xs text-slate-400">TSLA investors do not care about chip partnerships. They want delivery numbers, margin data, and Musk execution focus. The stock is in a confirmed relative underperformance vs. peers (−6.6% 30D while QQQ is +9.8%).</p>
+    </div>
+
+    <div class="dcard p-5">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-orange-400 text-lg font-black">06</span>
+        <p class="font-bold text-white text-sm">No Defensive Rotation (PG Sold Off Too)</p>
+      </div>
+      <div class="flex gap-3 mb-3 text-xs">
+        <div class="bg-slate-800 rounded p-2 flex-1"><p class="text-slate-500 mb-1">Expected</p><p class="text-slate-300">Market uncertainty → money hides in consumer staples</p></div>
+        <div class="text-orange-400 self-center font-black">→</div>
+        <div class="bg-red-900/30 rounded p-2 flex-1"><p class="text-red-400 mb-1">Actual</p><p class="text-red-300">PG −2.38% · Below SMA50</p></div>
+      </div>
+      <p class="text-xs text-slate-400">This is NOT a fear-driven market. The rotation is earnings-driven, not safety-driven. Investors are moving toward fundamental catalysts (INTC, AMZN), not toward safe havens. Defensive positioning is absent.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 7 — MAY WEEK 1 STRATEGY SCORECARD
+════════════════════════════════════════════════════════════════ -->
+<section id="strategy">
+  <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-1">Section 06</p>
+  <h2 class="text-2xl font-black text-white mb-2">May Week 1 Strategy Scorecard</h2>
+  <p class="text-slate-400 text-sm mb-6">Direction · Options structure · Key trigger · Primary risk. All positions require defined risk.</p>
+
+  <div class="tcard overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs md:text-sm">
+        <thead>
+          <tr class="bg-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+            <th class="text-left px-4 py-3">Ticker</th>
+            <th class="text-left px-4 py-3">Lean</th>
+            <th class="text-left px-4 py-3 hidden md:table-cell">Strategy Type</th>
+            <th class="text-left px-4 py-3 hidden lg:table-cell">Key Trigger</th>
+            <th class="text-left px-4 py-3 hidden xl:table-cell">Primary Risk</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800">
+          <tr class="bull-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">AMZN</td><td class="px-4 py-3"><span class="badge b-bull">Bullish · Wait</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Bull call spread on 2–3% pullback</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">AWS guidance continuation</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">RSI 83 — chasing risk</td></tr>
+          <tr class="neut-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">META</td><td class="px-4 py-3"><span class="badge b-neutral">Neutral</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Iron condor / short strangle $650–$690</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">No catalyst — range-bound</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Capex guidance revision higher</td></tr>
+          <tr class="bull-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">GS</td><td class="px-4 py-3"><span class="badge b-caution">Cautious Bull</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Bull put spread at SMA20 support</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Warsh yields policy clarity</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">SMA20 break = distribution</td></tr>
+          <tr class="bear-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">INTC</td><td class="px-4 py-3"><span class="badge b-bear">Bearish ST</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Bear call spread / short-term put</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">RSI 87 + 115% 30D = crowded</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Volume squeeze continuation</td></tr>
+          <tr class="neut-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">PG</td><td class="px-4 py-3"><span class="badge b-neutral">Neutral</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Covered call on existing position</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">No catalyst</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Below SMA50, no momentum</td></tr>
+          <tr class="bear-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">LUV</td><td class="px-4 py-3"><span class="badge b-bear">Bearish</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Put spread $36/$33</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Oil sustained at current levels</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Middle East de-escalation</td></tr>
+          <tr class="bear-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">ALK</td><td class="px-4 py-3"><span class="badge b-bear">Bearish · High Conv.</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Puts / short. $37 put May</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Oil + suspended guidance</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Same: geopolitical reversal</td></tr>
+          <tr class="neut-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">SPY</td><td class="px-4 py-3"><span class="badge b-neutral">Neutral</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Wait for May 12 CPI print</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">CPI direction signal</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Hot CPI = breakdown</td></tr>
+          <tr class="bull-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">QQQ</td><td class="px-4 py-3"><span class="badge b-bull">Mild Bullish</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Long if NVDA/MSFT beat estimates</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Earnings week results</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">RSI 81 limits upside room</td></tr>
+          <tr class="neut-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">XLF</td><td class="px-4 py-3"><span class="badge b-neutral">Neutral</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Wait. Sell $51 put for income</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">May 15 Warsh transition</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Uncertainty priced in</td></tr>
+          <tr class="bear-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">SOXL / SMH</td><td class="px-4 py-3"><span class="badge b-caution">Bull · Bad Entry</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Wait RSI 65–70. Bear call spread ST.</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">INTC follow-through volume</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Mean reversion from RSI 84</td></tr>
+          <tr class="bull-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">XLE</td><td class="px-4 py-3"><span class="badge b-bull">Bullish</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Bull call spread</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Energy equities lag oil — gap closes</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Oil reversal</td></tr>
+          <tr class="bull-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">USO</td><td class="px-4 py-3"><span class="badge b-caution">Cautious Bull</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Smaller position — confirm volume</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Vol ratio must exceed 0.8x</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Low-vol spike reversal</td></tr>
+          <tr class="bina-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">NVDA</td><td class="px-4 py-3"><span class="badge b-binary">Binary</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Strangle pre-earnings</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Beat + data center guidance</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">"Peak GPU" narrative</td></tr>
+          <tr class="bina-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">MSFT</td><td class="px-4 py-3"><span class="badge b-binary">Binary</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Strangle pre-earnings</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Azure growth rate vs AWS 28%</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Cloud guidance miss</td></tr>
+          <tr class="bull-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">GOOGL</td><td class="px-4 py-3"><span class="badge b-bull">Mild Bullish</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Bull call spread</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Earnings already positive</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">RSI 77 limits upside</td></tr>
+          <tr class="bear-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">TSLA</td><td class="px-4 py-3"><span class="badge b-bear">Bearish</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Put spreads. Stop above $385.</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Confirmed relative weakness</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Short squeeze (high SI)</td></tr>
+          <tr class="ctrn-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">GLD</td><td class="px-4 py-3"><span class="badge b-ctrn">Contrarian Bull</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">Call spread. Entry $413–$418.</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">May 12 CPI hot print</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">USD continues to strengthen</td></tr>
+          <tr class="neut-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">BTC</td><td class="px-4 py-3"><span class="badge b-neutral">Neutral</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">No new longs. Tight stop $74K.</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">Rate cut repricing</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">Higher-for-longer confirmed</td></tr>
+          <tr class="bear-row hover:bg-slate-800/50"><td class="px-4 py-3 font-bold text-white">ETH</td><td class="px-4 py-3"><span class="badge b-bear">Mild Bearish</span></td><td class="px-4 py-3 text-slate-300 hidden md:table-cell">No trade / avoid</td><td class="px-4 py-3 text-slate-400 hidden lg:table-cell">SMA20 reclaim needed</td><td class="px-4 py-3 text-slate-500 hidden xl:table-cell">BTC-led sell-off</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 8 — WATCH LIST
+════════════════════════════════════════════════════════════════ -->
+<section id="watchlist" class="bg-gradient-to-br from-slate-900 to-[#0a1628] rounded-2xl p-8 -mx-4 md:mx-0 border border-slate-700">
+  <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-1">Section 07</p>
+  <h2 class="text-2xl font-black text-white mb-2">Week 1 Watch List</h2>
+  <p class="text-slate-400 text-sm mb-8">Three conditions that determine whether May strategies hold or reverse</p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-slate-800/60 border border-orange-700/40 rounded-xl p-6">
+      <div class="text-3xl mb-3">🛢️</div>
+      <h3 class="text-orange-300 font-black text-lg mb-2">Confirm the Oil Move</h3>
+      <p class="text-slate-400 text-sm leading-relaxed mb-3">USO surged +8.5% on a volume ratio of <strong class="text-white">0.44x</strong> — well below average. Low-volume geopolitical spikes reverse. High-volume follow-through means the inflation calculus has permanently shifted.</p>
+      <p class="text-xs text-orange-300 bg-orange-900/20 rounded p-2 font-semibold">Watch: Does USO volume exceed 0.8x average in Week 1? If yes — every bearish energy and airline thesis strengthens, and May 12 CPI will print hot.</p>
+    </div>
+    <div class="bg-slate-800/60 border border-amber-700/40 rounded-xl p-6">
+      <div class="text-3xl mb-3">📊</div>
+      <h3 class="text-amber-300 font-black text-lg mb-2">NVDA + MSFT Earnings</h3>
+      <p class="text-slate-400 text-sm leading-relaxed mb-3">These two prints set the direction for QQQ and the broader tech earnings narrative. MSFT Azure growth will be benchmarked against AWS's 28% reacceleration. NVDA guidance determines if AI capex has a demand floor.</p>
+      <p class="text-xs text-amber-300 bg-amber-900/20 rounded p-2 font-semibold">Both beat → QQQ breaks out. Either misses → tech multiple compression begins. Enter strangles before IV expansion.</p>
+    </div>
+    <div class="bg-slate-800/60 border border-red-700/40 rounded-xl p-6">
+      <div class="text-3xl mb-3">📅</div>
+      <h3 class="text-red-300 font-black text-lg mb-2">May 12 CPI</h3>
+      <p class="text-slate-400 text-sm leading-relaxed mb-3">PCE is already at 3.5%. Oil is up 26.8% in 30 days. A hot CPI print eliminates any probability of a June cut and kills every multiple-expansion story in this document. This is the single event that reprices all positions.</p>
+      <p class="text-xs text-red-300 bg-red-900/20 rounded p-2 font-semibold">Hot CPI (>3.5%): GLD contrarian bull activates · XLE strengthens · QQQ/SPY under pressure · GS Warsh thesis delayed further. All Week 1 positions should be sized to survive this binary.</p>
+    </div>
+  </div>
+
+  <!-- Regime Summary -->
+  <div class="mt-8 border-t border-slate-700 pt-6">
+    <p class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">Regime Summary</p>
+    <p class="text-slate-300 leading-relaxed text-sm max-w-4xl">The market entering May 2026 is in a <strong class="text-white">selective earnings rotation with macro headwinds building in the background</strong>. SPY at −0.03% is the wrong number to watch — INTC is up 16%, ALK is down 4.5%, oil is up 8.5%, and the Fed just confirmed it is not cutting rates while engineering a leadership transition. Human behavior is saying: <em class="text-cyan-300">trust the earnings, ignore the macro — for now.</em> The "for now" ends on May 12. Position accordingly.</p>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════════ -->
+<footer class="mt-16 border-t border-slate-800 py-6 px-4">
+  <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3 text-xs text-slate-600">
+    <p>FINN · May 2026 Market Intelligence Dashboard · Generated April 29, 2026</p>
+    <p>Data: yfinance live pull · Q1 Earnings Analysis · FOMC Transcript · 60-day lookback</p>
+    <p class="text-slate-700">Update triggers: May 8 BLS · May 12 CPI · May 15 Warsh</p>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CHART.JS
+════════════════════════════════════════════════════════════════ -->
+<script>
+// Sector EPS Growth Chart
+const sectorCtx = document.getElementById('sectorChart').getContext('2d');
+new Chart(sectorCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Info Tech','Financials','Materials','Industrials','S&P 500','Cons. Staples','Utilities','Real Estate','Energy','Health Care'],
+    datasets: [{
+      label: 'EPS Growth %',
+      data: [46.0, 18.5, 14.2, 12.8, 15.1, 6.4, 5.2, 3.1, -6.5, -9.2],
+      backgroundColor: [
+        '#06b6d4','#22c55e','#22c55e','#22c55e',
+        '#a855f7',
+        '#94a3b8','#94a3b8','#94a3b8',
+        '#ef4444','#ef4444'
+      ],
+      borderRadius: 5,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => ` ${ctx.parsed.x > 0 ? '+' : ''}${ctx.parsed.x}%`
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: '#1e293b' },
+        ticks: { color: '#64748b', callback: v => v + '%' }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { color: '#94a3b8', font: { size: 11 } }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q1 2026 Earnings Market Sentiment</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; color: #0f172a; }
+.chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+@media (min-width: 768px) { .chart-container { height: 400px; } }
+.metric-card { transition: transform 0.2s; }
+.metric-card:hover { transform: translateY(-5px); }
+</style>
+</head>
+<body class="antialiased pb-20">
+
+<div class="bg-[#1e3a8a] text-white py-16 px-4 shadow-lg mb-10">
+<div class="max-w-6xl mx-auto">
+<h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Q1 2026 Earnings: Market Sentiment & Analysis</h1>
+<p class="text-xl md:text-2xl text-cyan-200 max-w-3xl">A robust start to 2026 driven by Big Tech dominance, surging bank revenues, and aggressive AI capital expenditures.</p>
+</div>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 space-y-12">
+
+<section>
+<h2 class="text-3xl font-bold border-b-4 border-cyan-500 pb-2 mb-6 inline-block">Macroeconomic Overview</h2>
+<p class="text-lg text-slate-600 mb-8 max-w-4xl">The first quarter of 2026 has significantly exceeded market expectations, showcasing a resilient economy and powerful corporate performance. With a blended earnings growth rate surging to 15.1%, the S&P 500 is on track for its sixth consecutive quarter of double-digit expansion.</p>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="metric-card bg-white rounded-xl shadow-md p-6 border-l-8 border-cyan-500">
+<p class="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-1">Blended EPS Growth</p>
+<p class="text-4xl font-bold text-[#1e3a8a]">15.1%</p>
+<p class="text-sm text-emerald-600 mt-2 font-medium">&#9650; Up from 13.0% est.</p>
+</div>
+<div class="metric-card bg-white rounded-xl shadow-md p-6 border-l-8 border-orange-500">
+<p class="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-1">Revenue Growth</p>
+<p class="text-4xl font-bold text-[#1e3a8a]">9.9%</p>
+<p class="text-sm text-slate-600 mt-2 font-medium">Highest since Q3 2022</p>
+</div>
+<div class="metric-card bg-white rounded-xl shadow-md p-6 border-l-8 border-violet-500">
+<p class="text-sm uppercase tracking-wider text-slate-500 font-semibold mb-1">Earnings Beat Rate</p>
+<p class="text-4xl font-bold text-[#1e3a8a]">78.5%</p>
+<p class="text-sm text-emerald-600 mt-2 font-medium">&#9650; Strong positive surprise</p>
+</div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="bg-white rounded-xl shadow-md p-6">
+<h3 class="text-xl font-bold mb-2 text-center text-slate-800">Earnings Estimate Outcomes</h3>
+<p class="text-sm text-slate-500 text-center mb-4">Proportion of companies surpassing Q1 EPS targets.</p>
+<div class="chart-container">
+<canvas id="beatRateChart"></canvas>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-md p-6">
+<h3 class="text-xl font-bold mb-2 text-center text-slate-800">Sector vs. Market Growth</h3>
+<p class="text-sm text-slate-500 text-center mb-4">Information Technology is the primary engine of the 15.1% blended growth.</p>
+<div class="chart-container">
+<canvas id="growthComparisonChart"></canvas>
+</div>
+</div>
+</div>
+</section>
+
+<section>
+<h2 class="text-3xl font-bold border-b-4 border-orange-500 pb-2 mb-6 mt-12 inline-block">Stock Sentiment & Impact Analysis</h2>
+<p class="text-lg text-slate-600 mb-8 max-w-4xl">While top-line numbers are strong, the underlying sentiment varies drastically by sector and company strategy. Investors are rewarding immediate revenue generation while penalizing massive, long-term capital expenditures that squeeze short-term margins.</p>
+
+<div class="bg-white rounded-xl shadow-md p-6 mb-8">
+<h3 class="text-xl font-bold mb-4 text-center text-slate-800">Bullish to Bearish Sentiment Spectrum</h3>
+<div class="chart-container" style="max-width: 800px; height: 400px;">
+<canvas id="sentimentChart"></canvas>
+</div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+<div class="bg-emerald-500 text-white px-4 py-2 font-bold flex justify-between items-center">
+<span>Amazon (AMZN)</span>
+<span class="bg-white text-emerald-600 text-xs px-2 py-1 rounded-full uppercase tracking-wide">Bullish</span>
+</div>
+<div class="p-6">
+<p class="text-3xl font-black text-slate-800 mb-2">AWS +28%</p>
+<p class="text-slate-600 text-sm leading-relaxed">Amazon's report is a powerful bullish signal. The massive 28% growth in AWS proves that enterprise cloud spending is accelerating and that Amazon is successfully monetizing AI demand right now, rather than just promising future returns.</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+<div class="bg-emerald-500 text-white px-4 py-2 font-bold flex justify-between items-center">
+<span>Goldman Sachs (GS)</span>
+<span class="bg-white text-emerald-600 text-xs px-2 py-1 rounded-full uppercase tracking-wide">Bullish</span>
+</div>
+<div class="p-6">
+<p class="text-3xl font-black text-slate-800 mb-2">+$6B Capital Return</p>
+<p class="text-slate-600 text-sm leading-relaxed">Highly bullish indicator for the financial sector. The surge in investment banking fees and record trading revenue shows robust market activity. Returning $6 billion to shareholders cements confidence in their balance sheet.</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+<div class="bg-slate-500 text-white px-4 py-2 font-bold flex justify-between items-center">
+<span>Procter & Gamble (PG)</span>
+<span class="bg-white text-slate-600 text-xs px-2 py-1 rounded-full uppercase tracking-wide">Neutral / Defensive</span>
+</div>
+<div class="p-6">
+<p class="text-3xl font-black text-slate-800 mb-2">Stable Anchor</p>
+<p class="text-slate-600 text-sm leading-relaxed">In a market hyper-focused on tech volatility, PG acts as a defensive stronghold. It remains a neutral-to-bullish hold for risk-averse portfolios seeking stability and reliable dividends amid overarching economic shifts.</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+<div class="bg-red-500 text-white px-4 py-2 font-bold flex justify-between items-center">
+<span>Meta (META)</span>
+<span class="bg-white text-red-600 text-xs px-2 py-1 rounded-full uppercase tracking-wide">Bearish (Short-Term)</span>
+</div>
+<div class="p-6">
+<p class="text-3xl font-black text-slate-800 mb-2">$125B+ AI Capex</p>
+<p class="text-slate-600 text-sm leading-relaxed">Despite a massive $56.3B revenue beat, the stock dipped heavily. Investors are bearish on the staggering $125B-$145B capital expenditure guidance for AI. The market fears timeline delays for ROI on this immense infrastructure spending.</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+<div class="bg-red-400 text-white px-4 py-2 font-bold flex justify-between items-center">
+<span>Intel (INTC)</span>
+<span class="bg-white text-red-600 text-xs px-2 py-1 rounded-full uppercase tracking-wide">Bearish</span>
+</div>
+<div class="p-6">
+<p class="text-3xl font-black text-slate-800 mb-2">Lagging Competitors</p>
+<p class="text-slate-600 text-sm leading-relaxed">While in focus, Intel is viewed with bearish sentiment relative to peers. It is currently perceived as lagging in the immediate AI hardware race, struggling to capture the momentum seen by competitors driving the 45% IT sector growth.</p>
+</div>
+</div>
+
+<div class="bg-white rounded-xl shadow-md overflow-hidden border border-slate-200">
+<div class="bg-orange-400 text-white px-4 py-2 font-bold flex justify-between items-center">
+<span>Airlines (ALK, LUV)</span>
+<span class="bg-white text-orange-600 text-xs px-2 py-1 rounded-full uppercase tracking-wide">Cautious / Bearish</span>
+</div>
+<div class="p-6">
+<p class="text-3xl font-black text-slate-800 mb-2">Demand vs. Costs</p>
+<p class="text-slate-600 text-sm leading-relaxed">Sentiment is cautious to bearish. While travel demand exists, investors are heavily monitoring them for signs of consumer spending slowdowns and the impact of fluctuating operational costs.</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<section>
+<h2 class="text-3xl font-bold border-b-4 border-violet-500 pb-2 mb-6 mt-12 inline-block">Upcoming Market Focus</h2>
+<div class="bg-slate-800 text-white rounded-xl shadow-md p-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<h3 class="text-xl font-bold text-cyan-300 mb-4 flex items-center">
+<span class="text-2xl mr-2">&#9888;</span> AI Capital Expenditure
+</h3>
+<p class="text-slate-300 leading-relaxed">
+The primary metric dictating Big Tech valuations for the rest of 2026. The market is demanding proof that massive infrastructure investments (like Meta's) will translate into near-term profitability, punishing companies that guide for high spend without immediate AI revenue realization.
+</p>
+</div>
+<div>
+<h3 class="text-xl font-bold text-orange-300 mb-4 flex items-center">
+<span class="text-2xl mr-2">&#9881;</span> Loan-Loss Provisions
+</h3>
+<p class="text-slate-300 leading-relaxed">
+Despite strong trading revenues, analysts are hyper-focused on the loan-loss provisions within bank reports. Increases in these reserves act as a leading indicator for potential credit defaults and broader economic slowdowns, counterbalancing the high-growth tech narrative.
+</p>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+
+<script>
+const wrapLabels = (labels) => {
+    return labels.map(label => {
+        if (label.length <= 16) return label;
+        const words = label.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > 16) {
+                if (currentLine) lines.push(currentLine.trim());
+                currentLine = word + ' ';
+            } else {
+                currentLine += word + ' ';
+            }
+        });
+        if (currentLine) lines.push(currentLine.trim());
+        return lines;
+    });
+};
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        }
+    }
+};
+
+const beatCtx = document.getElementById('beatRateChart').getContext('2d');
+new Chart(beatCtx, {
+    type: 'doughnut',
+    data: {
+        labels: wrapLabels(['Surpassed EPS Estimates', 'Missed or Met Estimates']),
+        datasets: [{
+            data: [78.5, 21.5],
+            backgroundColor: ['#06b6d4', '#e2e8f0'],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+            legend: { position: 'bottom' },
+            tooltip: tooltipConfig
+        }
+    }
+});
+
+const growthCtx = document.getElementById('growthComparisonChart').getContext('2d');
+new Chart(growthCtx, {
+    type: 'bar',
+    data: {
+        labels: wrapLabels(['Information Technology Sector', 'S&P 500 EPS Blended', 'S&P 500 Revenue']),
+        datasets: [{
+            label: 'Growth Percentage',
+            data: [45.0, 15.1, 9.9],
+            backgroundColor: ['#1e3a8a', '#06b6d4', '#f97316'],
+            borderRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: { beginAtZero: true, grid: { display: false } },
+            x: { grid: { display: false } }
+        },
+        plugins: {
+            legend: { display: false },
+            tooltip: tooltipConfig
+        }
+    }
+});
+
+const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
+new Chart(sentimentCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Amazon (AMZN)', 'Goldman Sachs (GS)', 'Procter & Gamble (PG)', 'Airlines (ALK/LUV)', 'Intel (INTC)', 'Meta (META)'],
+        datasets: [{
+            label: 'Sentiment Score (Estimated)',
+            data: [85, 75, 55, 40, 30, 25],
+            backgroundColor: [
+                '#10b981', 
+                '#10b981', 
+                '#94a3b8', 
+                '#fb923c', 
+                '#ef4444', 
+                '#ef4444'  
+            ],
+            borderRadius: 4
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: { 
+                min: 0, 
+                max: 100, 
+                grid: { color: '#e2e8f0' },
+                ticks: { display: false }
+            },
+            y: { grid: { display: false } }
+        },
+        plugins: {
+            legend: { display: false },
+            tooltip: tooltipConfig
+        }
+    }
+});
+</script>
+</body>
+</html>

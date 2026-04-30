@@ -31,6 +31,59 @@ Picked up next session:
 
 ---
 
+### [2026-04-29] — May 2026 Market Intelligence Dashboard (HTML Infographic)
+
+**Time:** April 29, 2026
+
+**Files created:**
+- `market research/May/May_2026_Market_Dashboard.html`
+
+**Contents:**
+- Single-file HTML infographic (1,065 lines) — opens in any browser, no build step
+- Stack: Tailwind CSS CDN + Chart.js CDN + vanilla JS
+- 7 sections with sticky navigation:
+  1. **Command Header** — macro pill strip (Fed rate, VIX, 10-yr yield, PCE, Oil 2D move, unemployment)
+  2. **FOMC Regime Snapshot** — rate/inflation/Warsh transition cards + visual May key-dates timeline (May 1 · May 5–7 earnings · May 8 BLS · May 12 CPI · May 15 Warsh)
+  3. **Q1 Earnings Scorecard** — 4 KPI cards (EPS 15.1%, Rev 10.3%, Margin 13.4% record, Beat Rate 84%) + horizontal Chart.js sector EPS bar + sector performance table
+  4. **Live Market Heatmap** — color-coded grid, all 23 instruments grouped by category, magnitude-scaled green/red cells, Apr 28 open → Apr 29 close 2D returns
+  5. **Ticker Deep Dive** — all 23 tickers with RSI visual gauge, 2D/5D/30D returns, SMA20 position, volume ratio, per-ticker strategy lean callout; organized by group (Mag 7, Semis, Financials, Energy, Airlines, Crypto/Commodities)
+  6. **Cross-Asset Divergences** — 6 "Expected → Actual → Why" behavioral signal cards (gold/oil, GS selloff, NVDA/INTC, crypto decoupling, TSLA/INTC, no defensive rotation)
+  7. **May Week 1 Strategy Scorecard** — full table with direction badges, options structure, key trigger, primary risk for all 20 tickers
+  8. **Watch List** — 3-column footer: USO volume confirmation · NVDA/MSFT earnings binary · May 12 CPI repricing event + regime summary paragraph
+
+**Corrections from reference file (`Q1 Earnings InfoPage.html`):**
+- INTC corrected from Bearish → Mean Revert Risk (actual: +16.57% 2D, RSI 87.3, earnings re-rating event)
+- GS corrected from Bullish → Cautious Bull at SMA20 (actual: −3.79% 2D on record earnings)
+- PG corrected from "Defensive Stronghold" → Neutral/No Trade (actual: below SMA50, no defensive rotation occurring)
+- Added 17 tickers not in reference: NVDA, MSFT, GOOGL, TSLA, SMH, SOXL, XLE, USO, BTC, ETH, GLD, QQQ, XLF, SPY, VIX, 10-Yr Yield
+
+**Data source:** `market research/May/May_2026_Market_Context.md` (compiled same session)  
+**Status:** Complete. Static snapshot — data locked to April 29, 2026 close.
+
+---
+
+### [2026-04-29] — May 2026 Market Context File Created
+
+**Time:** April 29, 2026
+
+**Files created:**
+- `market research/May/May_2026_Market_Context.md`
+
+**Contents:**
+- Full macro environment snapshot: FOMC hold at 3.5–3.75%, PCE 3.5%, Powell final press conference, Warsh transition (May 15)
+- Q1 2026 S&P 500 earnings scorecard: 15.1% blended EPS growth, record 13.4% net margin
+- Live yfinance data pull — Apr 28 open → Apr 29 close — for 23 instruments across all major groups: Mag 7 (AMZN, META, MSFT, GOOGL, NVDA, TSLA, INTC), ETFs (SPY, QQQ, XLF, SOXL, SMH, XLE), macro (VIX, 10-yr yield), energy (USO), crypto (BTC, ETH), gold (GLD), airlines (LUV, ALK)
+- 60-day RSI, SMA20, SMA50, volume ratio, and momentum analysis per ticker
+- Cross-asset divergences identified: gold ignoring oil spike, crypto decoupling from risk-on tech, GS selloff on record earnings, NVDA not following INTC AI narrative
+- Per-ticker strategy lean: directional bias, options structure, swing entry/stop levels
+- May Week 1 strategy scorecard with trigger conditions and primary risks
+- Key date calendar: May 8 BLS, May 12 CPI, May 15 Warsh transition
+
+**Purpose:** Base context file for May 2026 Week 1 options and swing trade strategy development.  
+**Status:** Complete. Update triggers: May 8 BLS print + May 12 CPI + May 15 Warsh.
+
+---
+
 ### [2026-04-16] — W01 + D002 Code Corrections (venv, warnings, yfinance conventions)
 
 **Time:** April 16, 2026
