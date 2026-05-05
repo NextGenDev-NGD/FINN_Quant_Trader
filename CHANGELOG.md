@@ -31,6 +31,22 @@ Picked up next session:
 
 ---
 
+### [2026-05-04] — Daily Class Files D010–D015 (Weeks 4–5)
+
+**Time:** May 4, 2026
+
+**Files created:**
+- `curriculum/daily/FINN_D010.md` — Monday May 4 (W04): Month 1 Integration Review — Lightning Round, Concept Pairs, Milestone Simulation
+- `curriculum/daily/FINN_D011.md` — Wednesday May 6 (W04): Workshop — Full Single-Stock Analysis Notebook (no guided build)
+- `curriculum/daily/FINN_D012.md` — Friday May 8 (W04): Milestone 1 Oral Assessment + Month 1 Close + Month 2 Preview
+- `curriculum/daily/FINN_D013.md` — Monday May 11 (W05): Statistics Theory — Hypothesis Testing, IC, Stationarity, Autocorrelation
+- `curriculum/daily/FINN_D014.md` — Wednesday May 13 (W05): Workshop — ADF Test, t-Test, IC & Rolling IC on Real Market Data
+- `curriculum/daily/FINN_D015.md` — Friday May 15 (W05): Market Autopsy through a Statistical Lens + Week 6 Preview
+
+**Status:** D001–D015 complete. Weeks 1–5 fully covered. D016 onward (Week 6) pending.
+
+---
+
 ### [2026-04-29] — May 2026 Market Intelligence Dashboard (HTML Infographic)
 
 **Time:** April 29, 2026
