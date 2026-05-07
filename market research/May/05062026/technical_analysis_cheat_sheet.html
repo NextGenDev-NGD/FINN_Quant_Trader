@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Technical Analysis Cheat Sheet</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #0d1117;
+  --surf:    #161b22;
+  --surf2:   #21262d;
+  --border:  #30363d;
+  --text:    #e6edf3;
+  --muted:   #8b949e;
+  --green:   #3fb950;
+  --red:     #f85149;
+  --gold:    #f0b232;
+  --orange:  #fb8500;
+  --blue:    #58a6ff;
+  --purple:  #bc8cff;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,17,23,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 12px 14px;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+nav a:hover { color: var(--text); border-bottom-color: var(--gold); }
+
+/* ── HEADER ── */
+.page-header {
+  background: linear-gradient(160deg, #0d1117 0%, #111820 60%, #141e2e 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 32px 36px;
+  text-align: center;
+}
+.page-header h1 { font-size: 2rem; font-weight: 800; color: var(--gold); letter-spacing: -1px; }
+.page-header .sub { color: var(--muted); font-size: 13px; margin-top: 8px; }
+.page-header .pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+.pill {
+  background: var(--surf2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── LAYOUT ── */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+section { padding: 44px 0; border-bottom: 1px solid var(--border); }
+
+.sec-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+.card:hover { border-color: #484f58; transition: border-color .2s; }
+
+.card h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; }
+.card p, .card li { font-size: 12px; color: var(--muted); line-height: 1.65; }
+.card ul { padding-left: 14px; margin-top: 6px; }
+.card li { margin-bottom: 3px; }
+
+/* ── TIER BADGES ── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .5px;
+  margin-bottom: 8px;
+}
+.s  { background: var(--gold);   color: #0d1117; }
+.a  { background: var(--orange); color: #0d1117; }
+.b  { background: var(--blue);   color: #0d1117; }
+.c  { background: var(--surf2);  color: var(--muted); border: 1px solid var(--muted); }
+.d  { background: #3b1414; color: #f5a0a0; border: 1px solid #6b2121; }
+.f  { background: #1a0a0a; color: var(--red); border: 1px solid #5a1010; }
+
+.tier-s { border-color: var(--gold) !important; }
+.tier-a { border-color: var(--orange) !important; }
+.tier-b { border-color: var(--blue) !important; }
+.tier-c { border-color: #484f58 !important; }
+.tier-d { border-color: #6b2121 !important; }
+.tier-f { border-color: #5a1010 !important; }
+
+/* ── PATTERN CARDS ── */
+.pat-card {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.pat-card svg { margin-bottom: 10px; }
+.pat-card h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 4px; }
+.pat-card .dir { font-size: 11px; font-weight: 700; margin-bottom: 8px; }
+.pat-card p { font-size: 11px; color: var(--muted); line-height: 1.55; }
+.bull { color: var(--green); }
+.bear { color: var(--red); }
+.neut { color: var(--muted); }
+
+/* ── RULE TAGS ── */
+.rules { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.rule {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.rule.g { border-color: var(--green); color: var(--green); }
+.rule.r { border-color: var(--red); color: var(--red); }
+.rule.b { border-color: var(--blue); color: var(--blue); }
+.rule.o { border-color: var(--gold); color: var(--gold); }
+
+/* ── FORMULA ── */
+.formula {
+  background: var(--surf2);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 4px 4px 0;
+  padding: 10px 14px;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 12px;
+  color: var(--gold);
+  margin: 10px 0;
+  line-height: 1.7;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  background: rgba(240,178,50,0.08);
+  border: 1px solid rgba(240,178,50,0.3);
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--gold);
+  margin-top: 16px;
+}
+
+/* ── ANATOMY ── */
+.anatomy-wrap {
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.anatomy-desc {
+  flex: 1;
+  min-width: 280px;
+  max-width: 420px;
+}
+.anatomy-desc h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
+.anatomy-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.anatomy-row:last-child { border-bottom: none; }
+.anat-label { font-size: 11px; font-weight: 700; min-width: 100px; }
+.anat-desc { font-size: 11px; color: var(--muted); }
+
+/* ── DIAGRAM LABELS (SVG) ── */
+.dl  { font-size: 10.5px; fill: var(--muted); font-family: -apple-system, sans-serif; }
+.dlg { font-size: 10.5px; fill: var(--green); font-weight: 700; font-family: -apple-system, sans-serif; }
+.dlr { font-size: 10.5px; fill: var(--red); font-weight: 700; font-family: -apple-system, sans-serif; }
+.dlo { font-size: 10.5px; fill: var(--gold); font-weight: 700; font-family: -apple-system, sans-serif; }
+.dlb { font-size: 10.5px; fill: var(--blue); font-weight: 700; font-family: -apple-system, sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#anatomy">Anatomy</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#tiers">Tier List</a>
+  <a href="#structure">Market Structure</a>
+  <a href="#volume">Volume Tools</a>
+  <a href="#supdem">Supply &amp; Demand</a>
+  <a href="#atr">ATR &amp; Risk</a>
+</nav>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="container">
+    <h1>Technical Analysis Cheat Sheet</h1>
+    <p class="sub">FINN · Price Action · Volume · Market Structure · Risk Management</p>
+    <div class="pills">
+      <span class="pill">Price Action</span>
+      <span class="pill">Candlestick Patterns</span>
+      <span class="pill">Volume Profile</span>
+      <span class="pill">Market Structure</span>
+      <span class="pill">Supply &amp; Demand</span>
+      <span class="pill">ATR Risk</span>
+      <span class="pill">VWAP</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 1: CANDLESTICK ANATOMY                 -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="anatomy">
+<div class="container">
+  <h2 class="sec-title">Candlestick Anatomy</h2>
+
+  <div class="anatomy-wrap">
+
+    <!-- Bullish Candle SVG -->
+    <div style="text-align:center;">
+      <p style="font-size:12px; font-weight:700; color:var(--green); margin-bottom:8px;">BULLISH CANDLE</p>
+      <svg viewBox="0 0 180 220" width="180" height="220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Wick -->
+        <line x1="54" y1="18" x2="54" y2="48" stroke="#3fb950" stroke-width="2"/>
+        <line x1="54" y1="148" x2="54" y2="182" stroke="#3fb950" stroke-width="2"/>
+        <!-- Body -->
+        <rect x="40" y="48" width="28" height="100" rx="2" fill="#3fb950" opacity="0.85"/>
+        <!-- Leader lines & labels -->
+        <line x1="54" y1="18" x2="90" y2="18" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="22" class="dlg">HIGH</text>
+        <line x1="54" y1="48" x2="90" y2="48" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="52" class="dlg">CLOSE (top of body)</text>
+        <line x1="40" y1="98" x2="10" y2="98" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="2" y="95" class="dlg" text-anchor="end">BODY</text>
+        <text x="2" y="106" class="dl" text-anchor="end">(price range)</text>
+        <line x1="54" y1="148" x2="90" y2="148" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="152" class="dlg">OPEN (bottom of body)</text>
+        <line x1="54" y1="182" x2="90" y2="182" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="186" class="dlg">LOW</text>
+        <!-- Wick labels -->
+        <text x="94" y="33" class="dl" style="fill:#3fb950; opacity:0.7;">upper shadow</text>
+        <text x="94" y="168" class="dl" style="fill:#3fb950; opacity:0.7;">lower shadow</text>
+      </svg>
+    </div>
+
+    <!-- Bearish Candle SVG -->
+    <div style="text-align:center;">
+      <p style="font-size:12px; font-weight:700; color:var(--red); margin-bottom:8px;">BEARISH CANDLE</p>
+      <svg viewBox="0 0 180 220" width="180" height="220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="54" y1="18" x2="54" y2="48" stroke="#f85149" stroke-width="2"/>
+        <line x1="54" y1="148" x2="54" y2="182" stroke="#f85149" stroke-width="2"/>
+        <rect x="40" y="48" width="28" height="100" rx="2" fill="#f85149" opacity="0.85"/>
+        <line x1="54" y1="18" x2="90" y2="18" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="22" class="dlr">HIGH</text>
+        <line x1="54" y1="48" x2="90" y2="48" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="52" class="dlr">OPEN (top of body)</text>
+        <line x1="40" y1="98" x2="10" y2="98" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="2" y="95" class="dlr" text-anchor="end">BODY</text>
+        <text x="2" y="106" class="dl" text-anchor="end">(price range)</text>
+        <line x1="54" y1="148" x2="90" y2="148" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="152" class="dlr">CLOSE (bottom of body)</text>
+        <line x1="54" y1="182" x2="90" y2="182" stroke="#30363d" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="94" y="186" class="dlr">LOW</text>
+        <text x="94" y="33" class="dl" style="fill:#f85149; opacity:0.7;">upper shadow</text>
+        <text x="94" y="168" class="dl" style="fill:#f85149; opacity:0.7;">lower shadow</text>
+      </svg>
+    </div>
+
+    <!-- Reading rules -->
+    <div class="anatomy-desc">
+      <h4>How to Read a Candle</h4>
+      <div class="anatomy-row">
+        <span class="anat-label" style="color:var(--green);">Large Body</span>
+        <span class="anat-desc">Strong conviction. Buyers (green) or sellers (red) dominated the session decisively. High follow-through probability.</span>
+      </div>
+      <div class="anatomy-row">
+        <span class="anat-label" style="color:var(--muted);">Small Body</span>
+        <span class="anat-desc">Indecision or balance. Neither side dominated. Watch for a decisive break in either direction.</span>
+      </div>
+      <div class="anatomy-row">
+        <span class="anat-label" style="color:var(--gold);">Long Upper Wick</span>
+        <span class="anat-desc">Price rallied and was rejected. Bears pushed back and won the session's high. Bearish signal — especially at resistance.</span>
+      </div>
+      <div class="anatomy-row">
+        <span class="anat-label" style="color:var(--gold);">Long Lower Wick</span>
+        <span class="anat-desc">Price sold off and was bought back. Bulls rejected the lows. Bullish signal — especially at support.</span>
+      </div>
+      <div class="anatomy-row">
+        <span class="anat-label" style="color:var(--muted);">No Wicks</span>
+        <span class="anat-desc">Marubozu candle. Price opened and closed at extremes — strongest possible momentum candle.</span>
+      </div>
+      <div class="anatomy-row">
+        <span class="anat-label" style="color:var(--blue);">Gaps</span>
+        <span class="anat-desc">Open ≠ prior close. Strong overnight demand (gap up) or supply (gap down). Often unfilled on strong trends.</span>
+      </div>
+      <div class="callout">
+        <strong>Body size matters most.</strong> A candle's body tells you who won; the wicks tell you who tried and failed.
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 2: CANDLESTICK PATTERNS               -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="patterns">
+<div class="container">
+  <h2 class="sec-title">Key Candlestick Patterns</h2>
+  <div class="grid-4">
+
+    <!-- 1. Bullish Engulfing -->
+    <div class="pat-card">
+      <svg viewBox="0 0 72 110" width="72" height="110" xmlns="http://www.w3.org/2000/svg">
+        <!-- C1 small bearish -->
+        <line x1="18" y1="28" x2="18" y2="40" stroke="#f85149" stroke-width="2"/>
+        <rect x="11" y="40" width="14" height="28" rx="1" fill="#f85149" opacity="0.85"/>
+        <line x1="18" y1="68" x2="18" y2="80" stroke="#f85149" stroke-width="2"/>
+        <!-- C2 large bullish -->
+        <line x1="54" y1="12" x2="54" y2="22" stroke="#3fb950" stroke-width="2"/>
+        <rect x="47" y="22" width="14" height="68" rx="1" fill="#3fb950" opacity="0.85"/>
+        <line x1="54" y1="90" x2="54" y2="100" stroke="#3fb950" stroke-width="2"/>
+        <!-- Engulf markers -->
+        <line x1="25" y1="40" x2="44" y2="22" stroke="#f0b232" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+        <line x1="25" y1="68" x2="44" y2="90" stroke="#f0b232" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+      </svg>
+      <h4>Bullish Engulfing</h4>
+      <p class="dir bull">▲ BULLISH REVERSAL</p>
+      <p>Large green candle fully engulfs prior red candle's body. Strongest at bottom of downtrend. Body must overlap 100%.</p>
+      <div class="rules">
+        <span class="rule g">At support</span>
+        <span class="rule g">High volume</span>
+        <span class="rule">2-candle</span>
+      </div>
+    </div>
+
+    <!-- 2. Bearish Engulfing -->
+    <div class="pat-card">
+      <svg viewBox="0 0 72 110" width="72" height="110" xmlns="http://www.w3.org/2000/svg">
+        <!-- C1 small bullish -->
+        <line x1="18" y1="28" x2="18" y2="38" stroke="#3fb950" stroke-width="2"/>
+        <rect x="11" y="38" width="14" height="28" rx="1" fill="#3fb950" opacity="0.85"/>
+        <line x1="18" y1="66" x2="18" y2="78" stroke="#3fb950" stroke-width="2"/>
+        <!-- C2 large bearish -->
+        <line x1="54" y1="12" x2="54" y2="22" stroke="#f85149" stroke-width="2"/>
+        <rect x="47" y="22" width="14" height="68" rx="1" fill="#f85149" opacity="0.85"/>
+        <line x1="54" y1="90" x2="54" y2="100" stroke="#f85149" stroke-width="2"/>
+        <line x1="25" y1="38" x2="44" y2="22" stroke="#f0b232" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+        <line x1="25" y1="66" x2="44" y2="90" stroke="#f0b232" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>
+      </svg>
+      <h4>Bearish Engulfing</h4>
+      <p class="dir bear">▼ BEARISH REVERSAL</p>
+      <p>Large red candle fully engulfs prior green candle's body. Strongest at top of uptrend or at resistance levels.</p>
+      <div class="rules">
+        <span class="rule r">At resistance</span>
+        <span class="rule r">High volume</span>
+        <span class="rule">2-candle</span>
+      </div>
+    </div>
+
+    <!-- 3. Hammer -->
+    <div class="pat-card">
+      <svg viewBox="0 0 40 110" width="40" height="110" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="18" x2="20" y2="28" stroke="#3fb950" stroke-width="2"/>
+        <rect x="13" y="28" width="14" height="12" rx="1" fill="#3fb950" opacity="0.85"/>
+        <line x1="20" y1="40" x2="20" y2="95" stroke="#3fb950" stroke-width="2"/>
+        <!-- Ratio indicator -->
+        <line x1="5" y1="40" x2="5" y2="95" stroke="#f0b232" stroke-width="1" opacity="0.5"/>
+        <line x1="3" y1="40" x2="7" y2="40" stroke="#f0b232" stroke-width="1" opacity="0.5"/>
+        <line x1="3" y1="95" x2="7" y2="95" stroke="#f0b232" stroke-width="1" opacity="0.5"/>
+      </svg>
+      <h4>Hammer</h4>
+      <p class="dir bull">▲ BULLISH REVERSAL</p>
+      <p>Small body at top, long lower wick ≥ 2× body length. Price was rejected at lows. Must occur after a downtrend.</p>
+      <div class="rules">
+        <span class="rule g">After downtrend</span>
+        <span class="rule">Wick ≥ 2× body</span>
+      </div>
+    </div>
+
+    <!-- 4. Shooting Star -->
+    <div class="pat-card">
+      <svg viewBox="0 0 40 110" width="40" height="110" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="15" x2="20" y2="70" stroke="#f85149" stroke-width="2"/>
+        <rect x="13" y="70" width="14" height="12" rx="1" fill="#f85149" opacity="0.85"/>
+        <line x1="20" y1="82" x2="20" y2="92" stroke="#f85149" stroke-width="2"/>
+        <line x1="5" y1="15" x2="5" y2="70" stroke="#f0b232" stroke-width="1" opacity="0.5"/>
+        <line x1="3" y1="15" x2="7" y2="15" stroke="#f0b232" stroke-width="1" opacity="0.5"/>
+        <line x1="3" y1="70" x2="7" y2="70" stroke="#f0b232" stroke-width="1" opacity="0.5"/>
+      </svg>
+      <h4>Shooting Star</h4>
+      <p class="dir bear">▼ BEARISH REVERSAL</p>
+      <p>Small body at bottom, long upper wick ≥ 2× body. Price rallied and was fully rejected. Must occur after an uptrend.</p>
+      <div class="rules">
+        <span class="rule r">After uptrend</span>
+        <span class="rule">Wick ≥ 2× body</span>
+      </div>
+    </div>
+
+    <!-- 5. Doji -->
+    <div class="pat-card">
+      <svg viewBox="0 0 40 110" width="40" height="110" xmlns="http://www.w3.org/2000/svg">
+        <!-- Standard doji -->
+        <line x1="20" y1="18" x2="20" y2="54" stroke="#8b949e" stroke-width="2"/>
+        <rect x="13" y="54" width="14" height="3" rx="1" fill="#8b949e"/>
+        <line x1="20" y1="57" x2="20" y2="93" stroke="#8b949e" stroke-width="2"/>
+        <text x="20" y="106" text-anchor="middle" style="font-size:9px; fill:#8b949e;">Open ≈ Close</text>
+      </svg>
+      <h4>Doji</h4>
+      <p class="dir neut">◆ INDECISION</p>
+      <p>Open and close nearly equal. Complete balance of buyers and sellers. Signals potential reversal when at an extreme. Dragonfly / Gravestone variants are directional.</p>
+      <div class="rules">
+        <span class="rule">Context-dependent</span>
+        <span class="rule o">Confirm next candle</span>
+      </div>
+    </div>
+
+    <!-- 6. Pin Bar -->
+    <div class="pat-card">
+      <svg viewBox="0 0 40 110" width="40" height="110" xmlns="http://www.w3.org/2000/svg">
+        <!-- Bullish pin bar: tiny body, huge lower wick, tiny upper wick -->
+        <line x1="20" y1="18" x2="20" y2="26" stroke="#3fb950" stroke-width="2"/>
+        <rect x="13" y="26" width="14" height="8" rx="1" fill="#3fb950" opacity="0.85"/>
+        <line x1="20" y1="34" x2="20" y2="96" stroke="#3fb950" stroke-width="2"/>
+        <!-- nose indicator -->
+        <circle cx="20" cy="96" r="3" fill="none" stroke="#f0b232" stroke-width="1.5" opacity="0.7"/>
+      </svg>
+      <h4>Pin Bar</h4>
+      <p class="dir bull">▲ STRONG REVERSAL</p>
+      <p>Tiny body with an extreme wick (the "nose"). The wick punctures a key level and is rejected hard. Wick ≥ 3× body for high quality. Best at S/R, POC, or VWAP.</p>
+      <div class="rules">
+        <span class="rule g">At key level</span>
+        <span class="rule">Wick ≥ 3× body</span>
+      </div>
+    </div>
+
+    <!-- 7. Inside Bar -->
+    <div class="pat-card">
+      <svg viewBox="0 0 72 110" width="72" height="110" xmlns="http://www.w3.org/2000/svg">
+        <!-- Mother bar (large bearish) -->
+        <line x1="18" y1="12" x2="18" y2="22" stroke="#f85149" stroke-width="2"/>
+        <rect x="11" y="22" width="14" height="70" rx="1" fill="#f85149" opacity="0.7"/>
+        <line x1="18" y1="92" x2="18" y2="100" stroke="#f85149" stroke-width="2"/>
+        <!-- Inside bar (small bullish, inside range) -->
+        <line x1="54" y1="38" x2="54" y2="44" stroke="#3fb950" stroke-width="2"/>
+        <rect x="47" y="44" width="14" height="30" rx="1" fill="#3fb950" opacity="0.85"/>
+        <line x1="54" y1="74" x2="54" y2="80" stroke="#3fb950" stroke-width="2"/>
+        <!-- Range lines -->
+        <line x1="5" y1="22" x2="68" y2="22" stroke="#f0b232" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+        <line x1="5" y1="100" x2="68" y2="100" stroke="#f0b232" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+        <text x="36" y="110" text-anchor="middle" style="font-size:8.5px; fill:#f0b232; opacity:0.8;">IB within MB range</text>
+      </svg>
+      <h4>Inside Bar</h4>
+      <p class="dir neut">◆ CONTINUATION / BREAKOUT</p>
+      <p>Second candle (IB) is completely within the first candle's (mother bar) high-low range. A pause before the next move. Trade the breakout of the mother bar.</p>
+      <div class="rules">
+        <span class="rule b">Break high = bull</span>
+        <span class="rule r">Break low = bear</span>
+      </div>
+    </div>
+
+    <!-- 8. Morning Star -->
+    <div class="pat-card">
+      <svg viewBox="0 0 100 110" width="100" height="110" xmlns="http://www.w3.org/2000/svg">
+        <!-- C1 bearish -->
+        <line x1="16" y1="12" x2="16" y2="22" stroke="#f85149" stroke-width="2"/>
+        <rect x="9" y="22" width="14" height="38" rx="1" fill="#f85149" opacity="0.85"/>
+        <line x1="16" y1="60" x2="16" y2="70" stroke="#f85149" stroke-width="2"/>
+        <!-- C2 small/doji -->
+        <line x1="50" y1="62" x2="50" y2="68" stroke="#8b949e" stroke-width="2"/>
+        <rect x="43" y="68" width="14" height="8" rx="1" fill="#8b949e" opacity="0.7"/>
+        <line x1="50" y1="76" x2="50" y2="82" stroke="#8b949e" stroke-width="2"/>
+        <!-- C3 bullish -->
+        <line x1="84" y1="14" x2="84" y2="24" stroke="#3fb950" stroke-width="2"/>
+        <rect x="77" y="24" width="14" height="38" rx="1" fill="#3fb950" opacity="0.85"/>
+        <line x1="84" y1="62" x2="84" y2="72" stroke="#3fb950" stroke-width="2"/>
+        <!-- Midpoint line C1 -->
+        <line x1="0" y1="41" x2="100" y2="41" stroke="#f0b232" stroke-width="1" stroke-dasharray="3,2" opacity="0.4"/>
+        <text x="50" y="108" text-anchor="middle" style="font-size:8.5px; fill:#3fb950; opacity:0.8;">C3 closes above C1 midpoint</text>
+      </svg>
+      <h4>Morning Star</h4>
+      <p class="dir bull">▲ BULLISH REVERSAL (3-candle)</p>
+      <p>Bearish → small indecision → strong bullish. Third candle must close above 50% of first candle's body. Evening Star is the inverse bearish version.</p>
+      <div class="rules">
+        <span class="rule g">3-candle pattern</span>
+        <span class="rule">C3 closes above 50%</span>
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 3: TIER LIST                          -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="tiers">
+<div class="container">
+  <h2 class="sec-title">Technical Analysis Tier List</h2>
+  <p style="font-size:12px; color:var(--muted); margin-bottom:24px;">Ranked by a 15-year professional day trader. Based strictly on practical, real-time reliability.</p>
+
+  <!-- S-TIER -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+      <span class="badge s">S-TIER</span>
+      <span style="font-size:12px; color:var(--gold); font-weight:600;">GOD TIER — Master these, discard the rest</span>
+    </div>
+    <div class="grid-3">
+      <div class="card tier-s">
+        <span class="badge s">S</span>
+        <h4>Price Action</h4>
+        <p>Pure reading of price — no indicators. Engulfing candles, inside bars, pin bars, and candlestick structures that signal reversals and continuations.</p>
+        <div class="rules" style="margin-top:10px;">
+          <span class="rule o">No lag</span>
+          <span class="rule o">No formulas</span>
+          <span class="rule o">Direct market reading</span>
+        </div>
+      </div>
+      <div class="card tier-s">
+        <span class="badge s">S</span>
+        <h4>Volume Profile</h4>
+        <p>Shows the volume traded at each price level — not time. Reveals where institutions positioned and creates natural support/resistance. POC acts as a magnet.</p>
+        <div class="rules" style="margin-top:10px;">
+          <span class="rule o">X-ray into structure</span>
+          <span class="rule o">Institutional footprint</span>
+        </div>
+      </div>
+      <div class="card tier-s">
+        <span class="badge s">S</span>
+        <h4>Footprint Charts</h4>
+        <p>Shows buyer vs. seller volume at each price inside each candle. The deepest layer of order flow — who is actually fighting for each tick.</p>
+        <div class="rules" style="margin-top:10px;">
+          <span class="rule o">Requires L2 data</span>
+          <span class="rule o">Most powerful tool</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A-TIER -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+      <span class="badge a">A-TIER</span>
+      <span style="font-size:12px; color:var(--orange); font-weight:600;">Professional grade — explains WHY price moves</span>
+    </div>
+    <div class="grid-4">
+      <div class="card tier-a">
+        <span class="badge a">A</span>
+        <h4>Supply &amp; Demand Zones</h4>
+        <p>Price zones showing institutional interest. Formed by aggressive moves away from consolidation. Explains the cause behind price reactions.</p>
+      </div>
+      <div class="card tier-a">
+        <span class="badge a">A</span>
+        <h4>Market Structure</h4>
+        <p>Reading trend direction through swing highs/lows. Break of Structure (BOS) = trend continuation. Change of Character (CHoCH) = reversal incoming.</p>
+      </div>
+      <div class="card tier-a">
+        <span class="badge a">A</span>
+        <h4>Volume (Raw)</h4>
+        <p>Total shares/contracts traded per bar. The ultimate "truth detector" — big volume validates moves, low volume signals traps and false breakouts.</p>
+      </div>
+      <div class="card tier-a">
+        <span class="badge a">A</span>
+        <h4>Market Profile</h4>
+        <p>Shows time spent at each price level (TPO). Value Area covers 70% of trade. Point of Control (POC) = most time spent. Reveals fair vs. auction value.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- B-TIER -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+      <span class="badge b">B-TIER</span>
+      <span style="font-size:12px; color:var(--blue); font-weight:600;">Reliable tools — widely used, self-fulfilling</span>
+    </div>
+    <div class="grid-4" style="grid-template-columns: repeat(5,1fr);">
+      <div class="card tier-b">
+        <span class="badge b">B</span>
+        <h4>Support &amp; Resistance</h4>
+        <p>Horizontal price levels from prior highs/lows and round numbers. Reliable because widely watched — creates self-fulfilling reactions.</p>
+      </div>
+      <div class="card tier-b">
+        <span class="badge b">B</span>
+        <h4>Moving Averages</h4>
+        <p>20/50/200 EMA/SMA. Golden cross (50&gt;200) signals institutional buying. Effective primarily because millions of traders watch the same lines.</p>
+      </div>
+      <div class="card tier-b">
+        <span class="badge b">B</span>
+        <h4>VWAP</h4>
+        <p>Volume Weighted Average Price = "fair price" of the day. Institutions benchmark execution to VWAP. Acts as intraday support/resistance. Resets daily.</p>
+      </div>
+      <div class="card tier-b">
+        <span class="badge b">B</span>
+        <h4>Pivot Points</h4>
+        <p>Calculated from prior day H/L/C. PP, R1/R2, S1/S2 levels used by algorithms and trading bots. Free, objective, and actually respected by price.</p>
+      </div>
+      <div class="card tier-b">
+        <span class="badge b">B</span>
+        <h4>ATR</h4>
+        <p>Average True Range = volatility measurement. Essential for stop sizing and position sizing. Adapts to current market conditions automatically.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- C-TIER -->
+  <div style="margin-bottom:16px;">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+      <span class="badge c">C-TIER</span>
+      <span style="font-size:12px; color:var(--muted); font-weight:600;">Overrated — limited use cases, mostly lagging</span>
+    </div>
+    <div class="grid-4" style="grid-template-columns: repeat(5,1fr);">
+      <div class="card tier-c">
+        <span class="badge c">C</span>
+        <h4>RSI</h4>
+        <p>0–100 momentum oscillator. Overbought/oversold signals are often wrong in trends. <em>Divergence only</em> has real predictive value.</p>
+      </div>
+      <div class="card tier-c">
+        <span class="badge c">C</span>
+        <h4>Fibonacci Levels</h4>
+        <p>38.2%, 50%, 61.8% retracements. Works mostly by self-fulfilling prophecy. Confirmation tool only — never use as sole reason to enter.</p>
+      </div>
+      <div class="card tier-c">
+        <span class="badge c">C</span>
+        <h4>MACD</h4>
+        <p>Difference of 12/26 EMAs. Crossovers are heavily lagged. Divergence is somewhat useful. A complicated way to display simple moving average information.</p>
+      </div>
+      <div class="card tier-c">
+        <span class="badge c">C</span>
+        <h4>Heikin Ashi</h4>
+        <p>Smoothed candles. Good for trend visualization, but hides actual wick data — you will miss precise entry/exit levels. Training wheels, not professional use.</p>
+      </div>
+      <div class="card tier-c">
+        <span class="badge c">C</span>
+        <h4>Bollinger Bands</h4>
+        <p>2σ bands around a 20 SMA. Squeeze signals potential volatility expansion but gives zero directional information. Only one useful signal from this tool.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- D/F TIER -->
+  <div>
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+      <span class="badge d">D-TIER</span><span class="badge f" style="margin-left:4px;">F-TIER</span>
+      <span style="font-size:12px; color:var(--red); font-weight:600;">Avoid — subjective, unreliable, or statistically random</span>
+    </div>
+    <div class="grid-4" style="grid-template-columns: repeat(6,1fr); gap:12px;">
+      <div class="card tier-d">
+        <span class="badge d">D</span>
+        <h4>Elliott Wave</h4>
+        <p>5-wave up, 3-wave down. So subjective that two analysts count different waves on the same chart. Unusable in real-time.</p>
+      </div>
+      <div class="card tier-d">
+        <span class="badge d">D</span>
+        <h4>Harmonic Patterns</h4>
+        <p>Bat, butterfly, crab — require precise Fibonacci measurements. One measuring error cascades to failed trades. Overly complex, mediocre results.</p>
+      </div>
+      <div class="card tier-d">
+        <span class="badge d">D</span>
+        <h4>Diagonal Trendlines</h4>
+        <p>Subjective lines every trader draws differently. Only horizontal S/R levels (fixed price) are reliable. Diagonal lines are wishful thinking.</p>
+      </div>
+      <div class="card tier-f">
+        <span class="badge f">F</span>
+        <h4>Moon Phases</h4>
+        <p>Trading on lunar cycles. Backtested over months = 50% accuracy. Statistically identical to a coin flip. No practical value.</p>
+      </div>
+      <div class="card tier-f">
+        <span class="badge f">F</span>
+        <h4>Gann Angles</h4>
+        <p>Diagonal lines at precise angles assuming geometric market movement. Markets do not follow geometry. Random noise dressed as structure.</p>
+      </div>
+      <div class="card tier-f">
+        <span class="badge f">F</span>
+        <h4>Parabolic SAR</h4>
+        <p>Dots above/below price. Flips frequently in consolidation, triggering a chain of whipsaws. Causes consistent losses in ranging markets.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 4: MARKET STRUCTURE                   -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="structure">
+<div class="container">
+  <h2 class="sec-title">Market Structure — BOS &amp; CHoCH</h2>
+  <div class="grid-2" style="gap:32px; align-items:start;">
+
+    <!-- Diagram -->
+    <div>
+      <svg viewBox="0 0 520 200" width="100%" style="max-width:520px;" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="520" height="200" fill="#161b22" rx="6"/>
+
+        <!-- Uptrend zone label -->
+        <text x="10" y="16" style="font-size:9px; fill:#3fb950; font-family:-apple-system,sans-serif; font-weight:700;">UPTREND</text>
+        <!-- Reversal zone label -->
+        <text x="310" y="16" style="font-size:9px; fill:#f85149; font-family:-apple-system,sans-serif; font-weight:700;">REVERSAL</text>
+
+        <!-- Price line (uptrend then reversal) -->
+        <polyline
+          points="20,160 70,105 110,125 170,72 215,92 265,78 315,112 360,88 415,138 475,110"
+          fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-linejoin="round"/>
+
+        <!-- Trend divider -->
+        <line x1="285" y1="20" x2="285" y2="185" stroke="#30363d" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- HL2 horizontal (BOS trigger level) -->
+        <line x1="215" y1="92" x2="340" y2="92" stroke="#f0b232" stroke-width="1" stroke-dasharray="5,3" opacity="0.8"/>
+        <text x="342" y="96" style="font-size:9px; fill:#f0b232; font-family:-apple-system,sans-serif;">HL₂ level</text>
+
+        <!-- Swing point labels -->
+        <!-- L1 -->
+        <circle cx="20" cy="160" r="3" fill="#3fb950" opacity="0.8"/>
+        <text x="14" y="174" style="font-size:9px; fill:#3fb950; font-family:-apple-system,sans-serif;">L₁</text>
+        <!-- HH1 -->
+        <circle cx="70" cy="105" r="3" fill="#3fb950" opacity="0.8"/>
+        <text x="62" y="99" style="font-size:9px; fill:#3fb950; font-family:-apple-system,sans-serif;">HH₁</text>
+        <!-- HL1 -->
+        <circle cx="110" cy="125" r="3" fill="#3fb950" opacity="0.8"/>
+        <text x="100" y="138" style="font-size:9px; fill:#3fb950; font-family:-apple-system,sans-serif;">HL₁</text>
+        <!-- HH2 -->
+        <circle cx="170" cy="72" r="3" fill="#3fb950" opacity="0.8"/>
+        <text x="162" y="66" style="font-size:9px; fill:#3fb950; font-family:-apple-system,sans-serif;">HH₂</text>
+        <!-- HL2 -->
+        <circle cx="215" cy="92" r="4" fill="#f0b232"/>
+        <text x="200" y="106" style="font-size:9px; fill:#f0b232; font-family:-apple-system,sans-serif; font-weight:700;">HL₂</text>
+        <!-- LH (lower high - first warning) -->
+        <circle cx="265" cy="78" r="3" fill="#fb8500"/>
+        <text x="254" y="72" style="font-size:9px; fill:#fb8500; font-family:-apple-system,sans-serif; font-weight:700;">LH ⚠</text>
+
+        <!-- BOS arrow -->
+        <circle cx="315" cy="112" r="4" fill="#f85149"/>
+        <text x="305" y="128" style="font-size:9px; fill:#f85149; font-family:-apple-system,sans-serif; font-weight:700;">BOS ↓</text>
+        <text x="290" y="138" style="font-size:8px; fill:#f85149; font-family:-apple-system,sans-serif; opacity:0.8;">broke HL₂</text>
+
+        <!-- LH2 -->
+        <circle cx="360" cy="88" r="3" fill="#f85149" opacity="0.8"/>
+        <text x="350" y="82" style="font-size:9px; fill:#f85149; font-family:-apple-system,sans-serif;">LH₂</text>
+
+        <!-- CHoCH -->
+        <circle cx="415" cy="138" r="4" fill="#f85149"/>
+        <text x="400" y="154" style="font-size:9px; fill:#f85149; font-family:-apple-system,sans-serif; font-weight:700;">CHoCH</text>
+        <text x="396" y="164" style="font-size:8px; fill:#f85149; font-family:-apple-system,sans-serif; opacity:0.8;">new LL confirmed</text>
+
+        <!-- Uptrend annotation -->
+        <text x="140" y="185" text-anchor="middle" style="font-size:9px; fill:#3fb950; font-family:-apple-system,sans-serif; opacity:0.8;">HH + HL = Uptrend</text>
+        <!-- Reversal annotation -->
+        <text x="400" y="185" text-anchor="middle" style="font-size:9px; fill:#f85149; font-family:-apple-system,sans-serif; opacity:0.8;">LH + LL = Downtrend</text>
+      </svg>
+    </div>
+
+    <!-- Explanation cards -->
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="card" style="border-left:3px solid var(--green);">
+        <h4 style="color:var(--green);">Uptrend Structure</h4>
+        <p>Series of <strong>Higher Highs (HH)</strong> and <strong>Higher Lows (HL)</strong>. As long as the most recent HL holds, the trend is intact. Trade with the trend — not against it.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--orange);">
+        <h4 style="color:var(--orange);">Lower High (LH) — First Warning</h4>
+        <p>Price fails to make a new high. The uptrend is weakening. Not yet a reversal — but stop adding to longs and tighten stops on existing positions.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--red);">
+        <h4 style="color:var(--red);">Break of Structure (BOS)</h4>
+        <p>Price breaks <em>below</em> the most recent Higher Low. The trend's foundation is cracked. For a downtrend BOS, price breaks above the most recent Lower High.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--red);">
+        <h4 style="color:var(--red);">Change of Character (CHoCH)</h4>
+        <p>A new <strong>Lower Low</strong> forms after the BOS. The uptrend is officially over — a confirmed downtrend has begun. This is the full reversal signal.</p>
+      </div>
+      <div class="callout" style="font-size:11px;">
+        <strong>BOS ≠ CHoCH.</strong> BOS is the warning — the first structural crack. CHoCH is the confirmation — the new trend is now printing its first Lower Low or Higher High.
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 5: VOLUME TOOLS                       -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="volume">
+<div class="container">
+  <h2 class="sec-title">Volume Tools — Profile &amp; VWAP</h2>
+  <div class="grid-2" style="gap:32px; align-items:start;">
+
+    <!-- Volume Profile diagram -->
+    <div>
+      <p style="font-size:11px; color:var(--muted); margin-bottom:12px; font-weight:600;">VOLUME PROFILE</p>
+      <svg viewBox="0 0 340 260" width="100%" style="max-width:340px;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="260" fill="#161b22" rx="6"/>
+
+        <!-- Price axis -->
+        <line x1="60" y1="15" x2="60" y2="245" stroke="#30363d" stroke-width="1"/>
+        <!-- Price labels -->
+        <text x="52" y="28" text-anchor="end" class="dl">$108</text>
+        <text x="52" y="54" text-anchor="end" class="dl">$105</text>
+        <text x="52" y="80" text-anchor="end" class="dl">$103</text>
+        <text x="52" y="106" text-anchor="end" class="dl">$101</text>
+        <text x="52" y="132" text-anchor="end" class="dl">$100</text>
+        <text x="52" y="158" text-anchor="end" class="dl">$99</text>
+        <text x="52" y="184" text-anchor="end" class="dl">$97</text>
+        <text x="52" y="210" text-anchor="end" class="dl">$95</text>
+        <text x="52" y="236" text-anchor="end" class="dl">$93</text>
+
+        <!-- Volume bars (horizontal, extending right) -->
+        <!-- LVN top -->
+        <rect x="61" y="20" width="40" height="22" rx="2" fill="#58a6ff" opacity="0.35"/>
+        <!-- HVN -->
+        <rect x="61" y="46" width="110" height="22" rx="2" fill="#58a6ff" opacity="0.5"/>
+        <!-- VAH marker -->
+        <rect x="61" y="72" width="90" height="22" rx="2" fill="#3fb950" opacity="0.45"/>
+        <!-- Above POC -->
+        <rect x="61" y="98" width="130" height="22" rx="2" fill="#3fb950" opacity="0.55"/>
+        <!-- POC - longest bar -->
+        <rect x="61" y="124" width="210" height="22" rx="2" fill="#f0b232" opacity="0.8"/>
+        <!-- Below POC -->
+        <rect x="61" y="150" width="140" height="22" rx="2" fill="#3fb950" opacity="0.55"/>
+        <!-- VAL marker -->
+        <rect x="61" y="176" width="100" height="22" rx="2" fill="#3fb950" opacity="0.45"/>
+        <!-- HVN bottom -->
+        <rect x="61" y="202" width="120" height="22" rx="2" fill="#58a6ff" opacity="0.5"/>
+        <!-- LVN bottom -->
+        <rect x="61" y="228" width="35" height="22" rx="2" fill="#58a6ff" opacity="0.35"/>
+
+        <!-- VAH line -->
+        <line x1="60" y1="72" x2="330" y2="72" stroke="#3fb950" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+        <text x="295" y="69" class="dlg" style="font-size:9px;">VAH</text>
+
+        <!-- POC line -->
+        <line x1="60" y1="124" x2="330" y2="124" stroke="#f0b232" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.9"/>
+        <text x="295" y="121" class="dlo" style="font-size:9px;">POC</text>
+
+        <!-- VAL line -->
+        <line x1="60" y1="198" x2="330" y2="198" stroke="#3fb950" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+        <text x="295" y="195" class="dlg" style="font-size:9px;">VAL</text>
+
+        <!-- Value Area brace -->
+        <rect x="278" y="72" width="4" height="126" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.4"/>
+        <text x="285" y="138" class="dlg" style="font-size:8.5px;">VA</text>
+        <text x="283" y="148" class="dlg" style="font-size:8.5px;">70%</text>
+
+        <!-- Labels -->
+        <text x="185" y="140" class="dlo" style="font-size:10px;">POC — most traded level</text>
+        <text x="170" y="62" class="dl" style="font-size:9px; fill:#58a6ff;">HVN = strong S/R</text>
+        <text x="105" y="244" class="dl" style="font-size:9px; fill:#30363d;">LVN = fast moves</text>
+      </svg>
+    </div>
+
+    <!-- Volume Profile explanation + VWAP -->
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h4 style="color:var(--gold);">Point of Control (POC)</h4>
+        <p>The single price level with the highest traded volume. Price treats POC as a magnet — it will frequently return to it. When price is above POC it acts as support; below POC it acts as resistance.</p>
+        <p style="margin-top:6px;"><strong style="color:var(--gold);">Naked POC:</strong> A prior session's POC that price has not returned to since. Strong magnet — will usually get revisited.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--green);">
+        <h4 style="color:var(--green);">Value Area (VAH / VAL)</h4>
+        <p>The price range containing <strong>70% of a session's volume</strong>. VAH and VAL are natural boundaries. Price returning inside the value area from outside tends to travel to the POC. Price breaking and holding outside VA tends to continue in that direction.</p>
+        <div class="rules" style="margin-top:8px;">
+          <span class="rule g">VAH = resistance</span>
+          <span class="rule r">VAL = support</span>
+          <span class="rule o">70% rule</span>
+        </div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--blue);">
+        <h4 style="color:var(--blue);">HVN vs LVN</h4>
+        <p><strong style="color:var(--blue);">High Volume Nodes (HVN):</strong> Strong S/R. Price slows and consolidates here — lots of orders to work through.<br><br>
+        <strong style="color:var(--muted);">Low Volume Nodes (LVN):</strong> Little resistance. Price moves fast through these areas. Between an HVN and LVN, expect acceleration once the HVN breaks.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--blue);">
+        <h4 style="color:var(--blue);">VWAP — Volume Weighted Average Price</h4>
+        <p>The "fair price" for the day, weighted by volume. Institutions use VWAP as an execution benchmark — they try to buy below it and sell above it.<br><br>
+        <strong>Standard deviation bands</strong> (±1σ, ±2σ) define the expected range. Price at VWAP+2σ is extended; at VWAP it is at fair value.<br><br>
+        <strong>Anchored VWAP:</strong> VWAP anchored from a specific event (earnings, major low). Tracks institutions who positioned at that event.</p>
+        <div class="rules" style="margin-top:8px;">
+          <span class="rule b">Resets daily</span>
+          <span class="rule b">Mean reversion at extremes</span>
+          <span class="rule b">Trend anchor intraday</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 6: SUPPLY & DEMAND ZONES              -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="supdem">
+<div class="container">
+  <h2 class="sec-title">Supply &amp; Demand Zones</h2>
+  <div class="grid-2" style="gap:32px; align-items:start;">
+
+    <!-- Diagram -->
+    <div>
+      <svg viewBox="0 0 340 280" width="100%" style="max-width:340px;" xmlns="http://www.w3.org/2000/svg">
+        <rect width="340" height="280" fill="#161b22" rx="6"/>
+
+        <!-- Supply zone (top) -->
+        <rect x="20" y="28" width="300" height="30" rx="3" fill="#f85149" opacity="0.15"/>
+        <line x1="20" y1="28" x2="320" y2="28" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+        <line x1="20" y1="58" x2="320" y2="58" stroke="#f85149" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+        <text x="26" y="47" style="font-size:10px; fill:#f85149; font-family:-apple-system,sans-serif; font-weight:700;">SUPPLY ZONE (unfilled)</text>
+
+        <!-- Demand zone (bottom) -->
+        <rect x="20" y="218" width="300" height="30" rx="3" fill="#3fb950" opacity="0.15"/>
+        <line x1="20" y1="218" x2="320" y2="218" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+        <line x1="20" y1="248" x2="320" y2="248" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.7"/>
+        <text x="26" y="237" style="font-size:10px; fill:#3fb950; font-family:-apple-system,sans-serif; font-weight:700;">DEMAND ZONE (unfilled)</text>
+
+        <!-- Price path showing Drop-Base-Rally -->
+        <!-- Drop from supply -->
+        <polyline points="280,28 280,58 260,110 230,130" fill="none" stroke="#f85149" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Base consolidation -->
+        <polyline points="230,130 220,138 210,132 200,140 190,134 180,140 170,135" fill="none" stroke="#8b949e" stroke-width="1.5" stroke-linejoin="round"/>
+        <!-- Rally from demand -->
+        <polyline points="170,135 150,110 120,88 90,65 60,43" fill="none" stroke="#3fb950" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Arrow up -->
+        <polygon points="60,43 55,55 65,55" fill="#3fb950" opacity="0.8"/>
+
+        <!-- Base zone highlight -->
+        <rect x="165" y="128" width="70" height="16" rx="2" fill="#8b949e" opacity="0.2"/>
+        <text x="200" y="160" text-anchor="middle" style="font-size:9px; fill:#8b949e; font-family:-apple-system,sans-serif;">BASE (consolidation)</text>
+
+        <!-- Labels -->
+        <text x="290" y="80" style="font-size:9px; fill:#f85149; font-family:-apple-system,sans-serif;">DROP</text>
+        <text x="125" y="85" style="font-size:9px; fill:#3fb950; font-family:-apple-system,sans-serif;">RALLY</text>
+
+        <!-- Pattern label -->
+        <text x="170" y="270" text-anchor="middle" style="font-size:10px; fill:#f0b232; font-family:-apple-system,sans-serif; font-weight:700;">DROP → BASE → RALLY</text>
+      </svg>
+    </div>
+
+    <!-- Explanation -->
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="card" style="border-left:3px solid var(--red);">
+        <h4 style="color:var(--red);">Supply Zone</h4>
+        <p>A price area where price previously consolidated, then dropped aggressively. Institutions were selling. When price returns here, those same institutions are likely to sell again — creating resistance.</p>
+        <p style="margin-top:6px;"><strong style="color:var(--gold);">Drop-Base-Drop:</strong> Price drops → consolidates → drops again. Zone forms at the top of that base.</p>
+        <p style="margin-top:6px;"><strong style="color:var(--gold);">Rally-Base-Drop:</strong> Price rallies → consolidates → reverses sharply lower. Zone forms at the base.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--green);">
+        <h4 style="color:var(--green);">Demand Zone</h4>
+        <p>A price area where price consolidated and then rallied aggressively. Institutional buyers were accumulating. When price returns, they buy again — creating support.</p>
+        <p style="margin-top:6px;"><strong style="color:var(--gold);">Rally-Base-Rally:</strong> Price rallies → consolidates → rallies again. Zone at base.</p>
+        <p style="margin-top:6px;"><strong style="color:var(--gold);">Drop-Base-Rally:</strong> Price drops → consolidates → reverses sharply higher.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h4 style="color:var(--gold);">Zone Quality Criteria</h4>
+        <ul>
+          <li><strong>Fresh zone:</strong> Never been retested — strongest version. A zone loses strength each time price touches it (orders get filled).</li>
+          <li><strong>Strong departure:</strong> The bigger the move away from the zone, the more unfilled orders remain at that level.</li>
+          <li><strong>Time:</strong> Older zones weaken as institutional interests change. Zones from major market events (earnings, macro) are the most durable.</li>
+          <li><strong>Tight consolidation:</strong> A narrow, well-defined base indicates precision institutional positioning — cleaner entry levels.</li>
+        </ul>
+      </div>
+      <div class="callout" style="font-size:11px;">
+        Supply/Demand zones answer <em>why</em> price reacts, not just <em>where</em>. They are the institutional fingerprint on the chart.
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SECTION 7: ATR & RISK MANAGEMENT              -->
+<!-- ══════════════════════════════════════════════ -->
+<section id="atr">
+<div class="container">
+  <h2 class="sec-title">ATR &amp; Risk Management</h2>
+  <div class="grid-2" style="gap:24px;">
+
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h4 style="color:var(--gold);">What ATR Measures</h4>
+        <p>Average True Range — the average daily volatility over the last N periods (standard: <strong>14</strong>). "True Range" = max of: (High−Low), (High−Prior Close), (Low−Prior Close). ATR always adapts to current market conditions.</p>
+        <div class="formula">ATR(14) = Average of True Range over last 14 bars<br>True Range = max( H−L, |H−Prev C|, |L−Prev C| )</div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--red);">
+        <h4 style="color:var(--red);">ATR Stop Loss Sizing</h4>
+        <p>Set stops at a multiple of ATR below entry — not at arbitrary levels. This adapts your stop to current volatility automatically.</p>
+        <div class="formula">Stop = Entry Price − (ATR × multiplier)<br><br>Conservative : 1.0× ATR<br>Standard    : 1.5× ATR<br>Aggressive  : 2.0× ATR</div>
+        <p style="margin-top:8px; font-size:12px; color:var(--muted);">Example: Stock at $50.00, ATR = $1.20, 1.5× multiplier → Stop at $50.00 − $1.80 = <strong style="color:var(--red);">$48.20</strong></p>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="card" style="border-left:3px solid var(--green);">
+        <h4 style="color:var(--green);">Position Sizing with ATR</h4>
+        <p>Determine how many shares to buy so that if stopped out, you lose exactly your risk budget. Keeps risk consistent regardless of stock volatility.</p>
+        <div class="formula">Risk per trade = Account × Risk %<br>Stop distance  = ATR × multiplier<br>Shares         = Risk per trade ÷ Stop distance</div>
+        <p style="margin-top:8px; font-size:12px; color:var(--muted);">Example: $10,000 account, 1% risk = $100. ATR = $1.20, stop = 1.5× = $1.80. Shares = $100 ÷ $1.80 = <strong style="color:var(--green);">55 shares</strong></p>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--blue);">
+        <h4 style="color:var(--blue);">ATR as Volatility Filter</h4>
+        <p>Use ATR to screen for trading opportunities that match your strategy's requirements:</p>
+        <ul style="margin-top:8px;">
+          <li><strong>Momentum strategies:</strong> ATR expanding → volatility increasing → stronger moves expected</li>
+          <li><strong>Mean reversion:</strong> ATR contracting → range-bound → fade moves at extremes</li>
+          <li><strong>Minimum ATR threshold:</strong> Avoid stocks with ATR &lt; $0.50 — too little movement for meaningful risk/reward</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--gold);">
+        <h4>Risk:Reward &amp; ATR Together</h4>
+        <div class="formula">Target = Entry + (Stop Distance × R:R ratio)<br><br>Stop dist = 1.5× ATR = $1.80<br>2:1 target = Entry + $3.60<br>3:1 target = Entry + $5.40</div>
+        <div class="rules" style="margin-top:10px;">
+          <span class="rule o">Minimum 2:1 R:R</span>
+          <span class="rule g">3:1 preferred</span>
+          <span class="rule">Never &lt; 1.5:1</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- QUICK REFERENCE FOOTER                        -->
+<!-- ══════════════════════════════════════════════ -->
+<section style="border-bottom:none; padding-bottom:60px;">
+<div class="container">
+  <h2 class="sec-title">Quick Reference — Rules of Thumb</h2>
+  <div class="grid-4">
+    <div class="card" style="border-color:var(--gold);">
+      <h4 style="color:var(--gold);">Price Action Rules</h4>
+      <ul>
+        <li>Engulfing body must fully cover prior body</li>
+        <li>Hammer/Pin wick ≥ 2–3× body length</li>
+        <li>Always confirm with next candle close</li>
+        <li>Pattern + key level = high-probability setup</li>
+        <li>Volume confirmation = required</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:var(--blue);">
+      <h4 style="color:var(--blue);">Volume Rules</h4>
+      <ul>
+        <li>Value Area = 70% of session volume</li>
+        <li>POC = most traded price = magnet</li>
+        <li>Breakout on low volume = likely fake</li>
+        <li>Naked POC always gets revisited</li>
+        <li>HVN = slowdown; LVN = fast move</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:var(--orange);">
+      <h4 style="color:var(--orange);">Structure Rules</h4>
+      <ul>
+        <li>Trade WITH the structure, not against it</li>
+        <li>BOS = first warning, not entry signal</li>
+        <li>CHoCH = trend officially changed</li>
+        <li>LH before BOS = early warning sign</li>
+        <li>Fresh supply/demand = strongest setups</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:var(--green);">
+      <h4 style="color:var(--green);">Risk Rules</h4>
+      <ul>
+        <li>Never risk &gt; 1–2% of account per trade</li>
+        <li>Stop = 1.5× ATR from entry</li>
+        <li>Minimum 2:1 risk-to-reward</li>
+        <li>Size position: Risk $ ÷ Stop distance</li>
+        <li>ATR expanding = bigger stops needed</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top:32px; padding:20px; background:var(--surf); border:1px solid var(--border); border-radius:8px; text-align:center;">
+    <p style="font-size:12px; color:var(--muted); max-width:700px; margin:0 auto; line-height:1.8;">
+      <strong style="color:var(--gold);">The core framework:</strong> Read <span style="color:#3fb950;">price action</span> to know what is happening now. Use <span style="color:#58a6ff;">volume</span> to confirm who is in control. Use <span style="color:#fb8500;">market structure</span> to know which direction to trade. Use <span style="color:#3fb950;">supply/demand zones</span> to find where to enter. Use <span style="color:#f0b232;">ATR</span> to know how much to risk. Master these five — ignore the rest.
+    </p>
+  </div>
+
+  <p style="text-align:center; margin-top:20px; font-size:11px; color:#30363d;">
+    FINN Technical Analysis Reference · Source: Expert Day Trader Tier List (15 Years Experience) · May 2026
+  </p>
+</div>
+</section>
+
+</body>
+</html>

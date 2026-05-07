@@ -31,6 +31,37 @@ Picked up next session:
 
 ---
 
+### [2026-05-06] — Technical Analysis Cheat Sheet (HTML Infographic)
+
+**Time:** May 6, 2026 — Day 11 session
+
+**Files created:**
+- `market research/May/05062026/technical_analysis_cheat_sheet.html`
+
+**Source material:**
+- `market research/May/05062026/Ranking Technical Analysis Tools from Expert Day Trader.md` — video summary (tier list, 15-year day trader)
+- `market research/May/05062026/TierList_image.png` — reference image
+
+**Contents:**
+- Single-file HTML infographic — opens in any browser, no build step, dark trading theme
+- Sticky navigation across 7 sections
+- Annotated candlestick anatomy diagrams (bullish + bearish, labeled with leader lines)
+- 8 candlestick patterns with hand-drawn inline SVGs: Bullish Engulfing, Bearish Engulfing, Hammer, Shooting Star, Doji, Pin Bar, Inside Bar, Morning Star — each with practical rules and confirmation criteria
+- Full S–F tier list (18 tools) with color-coded cards: S-Tier (Price Action, Volume Profile, Footprint), A–F tiers with ranked explanations
+- Market Structure diagram — annotated SVG price path showing HH/HL uptrend → LH warning → BOS → CHoCH with labeled swing points
+- Volume Profile diagram — horizontal bar chart with POC, VAH/VAL, HVN/LVN labeled; includes 70% value area rule and Naked POC explanation
+- Supply & Demand Zones diagram — SVG price path showing Drop-Base-Rally with zone bands; covers RBR/DBD/RBD/DBR zone types and freshness criteria
+- ATR section — True Range formula, 1×/1.5×/2× stop sizing, position sizing formula with worked examples, volatility filter use cases
+- Quick reference footer — 4 rule-of-thumb cards (Price Action, Volume, Structure, Risk)
+
+**Research basis:** Deep research agent pull covering quantitative thresholds — pin bar wick ratios, inside bar breakout rates (70–80% with trend), VWAP standard deviation bands (±1 SD = 68%, ±2 SD = 95%), naked POC revisit rate (~80% within 10 sessions), Value Area 70% rule, zone quality scoring (max 7), ATR multiplier standards.
+
+**Context:** New material not previously in the FINN curriculum. These tools (price action patterns, Volume Profile, Market Structure BOS/CHoCH, Supply & Demand zones) supplement the existing quant/systematic framework as discretionary-layer concepts. No curriculum files modified.
+
+**Status:** Complete. Static reference file — no update triggers.
+
+---
+
 ### [2026-05-04] — Daily Class Files D010–D015 (Weeks 4–5)
 
 **Time:** May 4, 2026
