@@ -11,8 +11,8 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 
 ### Knowledge Base Build — Gap Integration (Tier 1 + Tier 2)
 **Status:** ⬜ Ready to begin — Session A1
-**Planning doc:** `market research/May/05082026/finn_kb_execution_plan.md`
-**Gap analysis:** `market research/May/05082026/finn_gap_analysis.md`
+**Planning doc:** `research/planning/finn_kb_execution_plan.md`
+**Gap analysis:** `research/planning/finn_gap_analysis.md`
 **Progress:** 0 / 19 sessions complete
 
 **Last completed:** Planning — execution plan written (May 8, 2026)
@@ -67,10 +67,10 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 **Completed:** May 8, 2026
 **What was built:** Full competitor analysis against two Udemy trading courses.
 **Key files created:**
-- `market research/May/05082026/udemy_curriculum_context.md`
-- `market research/May/05082026/FINN_curriculum_context.md`
-- `market research/May/05082026/finn_gap_analysis.md`
-- `market research/May/05082026/finn_kb_execution_plan.md`
+- `research/competitors/udemy_curriculum_context.md`
+- `research/competitors/FINN_curriculum_context.md`
+- `research/planning/finn_gap_analysis.md`
+- `research/planning/finn_kb_execution_plan.md`
 
 ---
 

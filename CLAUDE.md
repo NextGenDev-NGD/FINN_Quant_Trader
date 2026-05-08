@@ -87,12 +87,12 @@ Read only: `core/FINN_CurriculumIndex.md` — answers almost all scheduling and 
 
 ### TASK: Find a concept, definition, or curriculum resource
 
-1. Read `knowledge base/FINN_ResourceIndex.md` — maps every topic to its handbook section, infographic, and curriculum location
-2. For term definitions: `knowledge base/FINN_Glossary.md`
-3. For visual reference: `knowledge base/infographics/ig_[topic].html`
-4. For student-facing explanation: `knowledge base/handbook/FINN_HB_P[N].md`
+1. Read `resources/FINN_ResourceIndex.md` — maps every topic to its handbook section, infographic, and curriculum location
+2. For term definitions: `resources/FINN_Glossary.md`
+3. For visual reference: `resources/infographics/ig_[topic].html`
+4. For student-facing explanation: `resources/handbook/FINN_HB_P[N].md`
 
-*Note: The resource index and knowledge base are built incrementally. If a resource is listed but not yet created, check `FINN_ProjectStatus.md` for the session that builds it.*
+*Note: The resource library is built incrementally across ~16 sessions. If a file is listed but not yet created, check `FINN_ProjectStatus.md` for the session that builds it.*
 
 ---
 
@@ -102,6 +102,7 @@ Read only: `core/FINN_CurriculumIndex.md` — answers almost all scheduling and 
 |------|----------|------|---------------|
 | `CLAUDE.md` | root | ~120 lines | Full read (this file) |
 | `FINN_ProjectStatus.md` | root | ~80 lines | Full read — load at start of any multi-session project session |
+| `FINN_RepoIndex.md` | root | ~130 lines | Full read — structural map; load when orientation or navigation is needed |
 | `README.md` | root | ~165 lines | Full read |
 | `CHANGELOG.md` | root | ~60 lines | Full read |
 | `FINN_Soul.md` | `core/` | ~530 lines | Full read |

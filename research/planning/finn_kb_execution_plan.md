@@ -19,10 +19,10 @@ The architecture has five layers:
 
 ## New Folder Structure
 
-The `knowledge base/` folder becomes the library root. All new content lives here.
+The `resources/` folder becomes the library root. All new content lives here.
 
 ```
-knowledge base/
+resources/
 ├── FINN_ResourceIndex.md              ← MASTER INDEX — Claude loads this; students navigate by it
 ├── FINN_Glossary.md                   ← Complete terminology reference (~65 terms)
 │
@@ -146,7 +146,7 @@ Each session is designed to fit within token limits. Sessions are additive — e
 ### PHASE A — Foundation (2 sessions)
 
 **Session A1 — Folder Creation + Index Skeleton + Glossary**
-- Create `knowledge base/handbook/` and `knowledge base/infographics/` directories
+- Create `resources/handbook/` and `resources/infographics/` directories
 - Create `FINN_ResourceIndex.md` — skeleton with all section headers and file pointers (populated as sessions complete)
 - Create `FINN_Glossary.md` — complete glossary (~65 terms)
 - Update `CLAUDE.md` — add `FINN_ResourceIndex.md` to the file map table
@@ -399,19 +399,19 @@ After Phase A is complete, update `CLAUDE.md`:
 
 | File | Location | Size | Read Strategy |
 |------|----------|------|---------------|
-| `FINN_ResourceIndex.md` | `knowledge base/` | ~150 lines | Full read — use as navigation map for any resource task |
-| `FINN_Glossary.md` | `knowledge base/` | ~200 lines | Full read or grep for specific term |
-| `FINN_HB_P[1-6].md` | `knowledge base/handbook/` | ~200–400 lines each | Full read per part when working on related content |
+| `FINN_ResourceIndex.md` | `resources/` | ~150 lines | Full read — use as navigation map for any resource task |
+| `FINN_Glossary.md` | `resources/` | ~200 lines | Full read or grep for specific term |
+| `FINN_HB_P[1-6].md` | `resources/handbook/` | ~200–400 lines each | Full read per part when working on related content |
 
 2. **New Task Playbook entry:**
 
 ```
 ### TASK: Find a concept definition or locate curriculum resources
 
-1. Read `knowledge base/FINN_ResourceIndex.md` — answers almost all resource location questions
-2. For term definitions: `knowledge base/FINN_Glossary.md`
-3. For visual reference: `knowledge base/infographics/ig_[topic].html`
-4. For student-facing explanation: `knowledge base/handbook/FINN_HB_P[N].md`
+1. Read `resources/FINN_ResourceIndex.md` — answers almost all resource location questions
+2. For term definitions: `resources/FINN_Glossary.md`
+3. For visual reference: `resources/infographics/ig_[topic].html`
+4. For student-facing explanation: `resources/handbook/FINN_HB_P[N].md`
 ```
 
 ---
