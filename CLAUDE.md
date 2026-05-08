@@ -100,7 +100,7 @@ Read only: `core/FINN_CurriculumIndex.md` — answers almost all scheduling and 
 
 | File | Location | Size | Read Strategy |
 |------|----------|------|---------------|
-| `CLAUDE.md` | root | ~120 lines | Full read (this file) |
+| `CLAUDE.md` | root | ~230 lines | Full read (this file) |
 | `FINN_ProjectStatus.md` | root | ~80 lines | Full read — load at start of any multi-session project session |
 | `FINN_RepoIndex.md` | root | ~130 lines | Full read — structural map; load when orientation or navigation is needed |
 | `README.md` | root | ~165 lines | Full read |
@@ -113,6 +113,9 @@ Read only: `core/FINN_CurriculumIndex.md` — answers almost all scheduling and 
 | `FINN_WeeklySchema.md` | `core/` | ~120 lines | Full read |
 | `FINN_Month01–06.md` | `curriculum/monthly/` | 500–2,100 lines | Chunk by week — see table above |
 | `FINN_W01–W24.md` | `curriculum/weekly/` | ~400–600 lines | Full read (single call) |
+| `FINN_ResourceIndex.md` | `resources/` | ~150 lines | Full read — use as navigation map for any resource task |
+| `FINN_Glossary.md` | `resources/` | ~200 lines | Full read or grep for specific term |
+| `FINN_HB_P[1-6].md` | `resources/handbook/` | ~200–400 lines each | Full read per part when working on related content |
 
 **Hard rule:** Never load `FINN_Curriculum_Wiki.md` or `FINN_Weekly_Structure.md` into full context. They are reference libraries — search or chunk them.
 

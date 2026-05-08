@@ -10,49 +10,19 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 ## Active Projects
 
 ### Knowledge Base Build — Gap Integration (Tier 1 + Tier 2)
-**Status:** ⬜ Ready to begin — Session A1
+**Status:** 🟡 In progress — Session B2 next
 **Planning doc:** `research/planning/finn_kb_execution_plan.md`
 **Gap analysis:** `research/planning/finn_gap_analysis.md`
-**Progress:** 0 / 19 sessions complete
+**Progress:** 3 / 19 sessions complete
 
-**Last completed:** Planning — execution plan written (May 8, 2026)
+**Last completed:** Session B1 (May 8, 2026) — Created `resources/handbook/FINN_HB_P2_ChartReading.md` (7 sections: candlesticks §2.1, S&R §2.2, trendlines §2.3, continuation patterns §2.4, reversal patterns §2.5, gap types §2.6, Heikin Ashi §2.7). Updated ResourceIndex to mark HB P2 ✅.
 
-**Next session (A1):**
-- Create `knowledge base/handbook/` and `knowledge base/infographics/` subdirectories
-- Create `knowledge base/FINN_ResourceIndex.md` — skeleton with all section headers and file pointers
-- Create `knowledge base/FINN_Glossary.md` — full glossary (~65 terms, alphabetical)
-- Edit `CLAUDE.md` — add `FINN_ProjectStatus.md` and `FINN_ResourceIndex.md` to file map; add task playbook entry for resource lookup
+**Next session (B2):**
+- Write `resources/handbook/FINN_HB_P3_OrderExecution.md` — 3 sections: complete order taxonomy (§3.1), short selling basics (§3.2), order routing and best execution (§3.3)
+- Write `resources/handbook/FINN_HB_P4_MarketContext.md` — 5 sections: trader's daily routine (§4.1), information sources map (§4.2), reading the market open (§4.3), types of trading days (§4.4), market traps (§4.5)
+- Update `resources/FINN_ResourceIndex.md` — mark HB P3 and HB P4 as ✅ Built (B2)
 
-**Full session sequence (from planning doc):**
-
-| Session | Phase | What Gets Built |
-|---------|-------|-----------------|
-| A1 | Foundation | Folder structure + Index skeleton + Glossary + CLAUDE.md update |
-| A2 | Foundation | Handbook Part 1 (Getting Started: trade types, platforms, brokers) |
-| B1 | Handbook | Part 2 (Chart Reading: candlesticks, S&R, trendlines, patterns, gaps, Heikin Ashi) |
-| B2 | Handbook | Parts 3 + 4 (Order Execution + Market Context) |
-| B3 | Handbook | Parts 5 + 6 (Psychology + Market Reference) |
-| C1 | Infographics | Candlesticks, S&R, Trendlines, Gaps |
-| C2 | Infographics | Trade Types, Order Types, Broker Comparison |
-| C3 | Infographics | Platform Guides (TradingView, Webull, Finviz) + Info Sources |
-| C4 | Infographics | Chart Patterns, Fibonacci, Heikin Ashi, Volume |
-| C5 | Infographics | Psychology, Sentiment, Market Open, Day Types, Traps, MTF |
-| C6 | Infographics | FINN-Specific (Quant Workflow, Metrics, Risk Rules, Multi-Signal) + Index finalized |
-| D1 | Monthly | FINN_Month01.md + FINN_Month02.md — resource callouts + W02 additions |
-| D2 | Monthly | FINN_Month03.md through FINN_Month06.md |
-| E1 | Weekly | W01–W04 — S&R block, trendline block, gap typing, platform references |
-| E2 | Weekly | W05–W08 — Live Chart Walk format + indicator infographic references |
-| E3 | Weekly | W09–W12 — Journal template update + psychology reference |
-| E4 | Weekly | W13–W24 — resource callout pass (lighter touch) |
-| F1 | Daily | D001–D012 — observation assignment additions |
-| F2 | Daily | D013–D072 — targeted additions only |
-
-**When complete, the knowledge base will contain:**
-- `FINN_ResourceIndex.md` — master navigation index
-- `FINN_Glossary.md` — ~65 terms defined
-- `handbook/` — 6 handbook part files covering all 27 Tier 1 + Tier 2 gaps
-- `infographics/` — 26 HTML visual reference files
-- Updated monthly, weekly, and daily curriculum files with embedded resource references
+*Full session sequence and KB scope: see `research/planning/finn_kb_execution_plan.md`*
 
 ---
 

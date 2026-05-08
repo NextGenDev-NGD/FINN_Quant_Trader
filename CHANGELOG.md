@@ -31,6 +31,48 @@ Picked up next session:
 
 ---
 
+### [2026-05-08] — Knowledge Base Session B1 — Handbook Part 2
+
+**Files created:**
+- `resources/handbook/FINN_HB_P2_ChartReading.md` — 7-section chart reading reference: §2.1 candlestick patterns (anatomy, 10 single-candle, 6 two-candle, 4 three-candle patterns; interpretation rules), §2.2 S&R (types, how to draw zones, strength indicators, invalidation), §2.3 trendlines (drawing method, channels, valid breaks, false breaks), §2.4 continuation patterns (flag, pennant, ascending/descending/symmetrical triangle, rectangle, rising/falling wedge), §2.5 reversal patterns (double top/bottom, H&S/inverse, cup and handle, rounding bottom), §2.6 gap types (common, breakaway, runaway, exhaustion + gap fill concept + FINN code reference), §2.7 Heikin Ashi (formula, visual properties, when to use/not use)
+
+**Files modified:**
+- `resources/FINN_ResourceIndex.md` — HB P2 marked ✅ Built (B1); build status updated
+- `FINN_ProjectStatus.md` — Session B1 marked complete; Session B2 defined as next
+
+**Gaps addressed:** #1 (candlesticks), #3 (trendlines), #4 (S&R), #5/#6 (chart patterns), #15 (gaps), #18 (Heikin Ashi)
+**Status:** Session B1 complete. 3 / 19 sessions done.
+
+---
+
+### [2026-05-08] — Knowledge Base Session A2 — Handbook Part 1
+
+**Files created:**
+- `resources/handbook/FINN_HB_P1_GettingStarted.md` — 5-section student reference covering: §1.1 trade type taxonomy (8 styles, FINN recommendation), §1.2 TradingView setup (chart config, indicators, watchlists, alerts, templates), §1.3 Webull paper trading setup (account, order entry, stop-loss, OCO, P&L), §1.4 Finviz DMB workflow (home page, heatmap, screener, news, futures), §1.5 broker comparison (6 brokers × 8 criteria + notes)
+
+**Files modified:**
+- `resources/FINN_ResourceIndex.md` — HB P1 marked ✅ Built (A2); build status table updated
+- `FINN_ProjectStatus.md` — Session A2 marked complete; Session B1 defined as next
+
+**Gaps addressed:** #1 (trade types), #38 (TradingView), #39 (Webull), #40 (Finviz), #42 (broker comparison)
+**Status:** Session A2 complete. Phase A — Foundation is fully done.
+
+---
+
+### [2026-05-08] — Knowledge Base Session A1 — ResourceIndex + Glossary
+
+**Files created:**
+- `resources/FINN_ResourceIndex.md` — master navigation index: 29-topic coverage map, all 33 resource files listed with build status, phase tracker
+- `resources/FINN_Glossary.md` — complete terminology reference: ~72 terms, alphabetical, each with definition + first FINN week + cross-reference to handbook/infographic
+
+**Files modified:**
+- `CLAUDE.md` — added `FINN_ResourceIndex.md`, `FINN_Glossary.md`, and `FINN_HB_P[1-6].md` rows to the file map table; updated CLAUDE.md line count
+- `FINN_ProjectStatus.md` — Session A1 marked complete; Session A2 defined as next
+
+**Status:** Session A1 complete. Session A2 (Handbook Part 1) is next.
+
+---
+
 ### [2026-05-06] — Technical Analysis Cheat Sheet (HTML Infographic)
 
 **Time:** May 6, 2026 — Day 11 session
