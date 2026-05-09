@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Multi-Signal Scoring</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --muted: #8b949e;
+    --purple: #bc8cff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header {
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .finn-tag { font-size: 11px; color: var(--blue); letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+  h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .badge { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: var(--muted); }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px; margin-top: 20px;
+  }
+
+  .framing-box {
+    background: var(--card); border: 1px solid var(--blue); border-left: 4px solid var(--blue);
+    border-radius: 6px; padding: 12px 16px; margin-bottom: 20px;
+  }
+  .framing-box p { color: var(--text); font-size: 12px; }
+  .framing-box strong { color: var(--blue); }
+
+  /* Framework overview — 2-col */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .overview-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .overview-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .overview-title span { color: var(--blue); }
+
+  /* Signal component rows */
+  .signal-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 50px 80px;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .signal-row:last-child { border-bottom: none; }
+  .sig-weight-circle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(88,166,255,0.12);
+    border: 1px solid var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .sig-name { font-size: 11px; font-weight: 600; color: var(--text); }
+  .sig-sub { font-size: 10px; color: var(--muted); }
+  .sig-weight { font-size: 12px; font-weight: 700; color: var(--amber); text-align: right; }
+  .sig-veto {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 5px;
+    border-radius: 3px;
+    text-align: center;
+  }
+  .veto-yes { background: rgba(248,81,73,.15); color: var(--red); }
+  .veto-no  { background: rgba(139,148,158,.1); color: var(--muted); }
+
+  /* Score calculation box */
+  .calc-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin-top: 10px;
+  }
+  .calc-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  pre.calc-formula {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--purple);
+    white-space: pre;
+    line-height: 1.6;
+  }
+
+  /* Score interpretation table */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .score-table th {
+    background: var(--bg); color: var(--muted); font-size: 10px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; padding: 8px 12px;
+    text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .score-table td {
+    padding: 8px 12px; font-size: 11px; border-bottom: 1px solid var(--border); vertical-align: middle;
+  }
+  .score-table tr:last-child td { border-bottom: none; }
+  .score-table tr:hover td { background: rgba(88,166,255,.04); }
+
+  .score-range { font-weight: 700; font-family: monospace; font-size: 13px; }
+  .score-great  { color: var(--green); }
+  .score-good   { color: var(--blue); }
+  .score-ok     { color: var(--amber); }
+  .score-bad    { color: var(--red); }
+
+  .bar-cell { width: 120px; }
+  .bar-bg {
+    background: var(--border);
+    border-radius: 3px;
+    height: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .tag { display:inline-block; padding:2px 7px; border-radius:3px; font-size:10px; font-weight:600; }
+  .tag-g { background:rgba(63,185,80,.15); color:var(--green); }
+  .tag-b { background:rgba(88,166,255,.12); color:var(--blue); }
+  .tag-a { background:rgba(210,153,34,.15); color:var(--amber); }
+  .tag-r { background:rgba(248,81,73,.15); color:var(--red); }
+
+  /* Veto logic box */
+  .veto-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .veto-title {
+    font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 10px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .veto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .veto-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px;
+  }
+  .veto-signal-name {
+    font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 3px;
+  }
+  .veto-condition {
+    font-size: 10px; color: var(--amber); font-family: monospace;
+    background: rgba(210,153,34,.08);
+    border: 1px solid rgba(210,153,34,.2);
+    border-radius: 3px;
+    padding: 3px 6px;
+    margin-bottom: 5px;
+  }
+  .veto-effect {
+    font-size: 10px; color: var(--muted); line-height: 1.4;
+  }
+
+  /* Python snippet */
+  .code-section {
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden; margin-bottom: 20px;
+  }
+  .code-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 14px; border-bottom: 1px solid var(--border); background: var(--bg);
+  }
+  .code-title { font-size: 11px; font-weight: 700; color: var(--text); }
+  .code-lang  { font-size: 10px; color: var(--muted); }
+  pre.code-block {
+    padding: 12px 14px; font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 11px; line-height: 1.6; color: var(--text); overflow-x: auto; white-space: pre;
+  }
+  .c-comment { color: var(--muted); }
+  .c-keyword  { color: var(--purple); }
+  .c-func     { color: var(--blue); }
+  .c-string   { color: var(--green); }
+  .c-num      { color: var(--amber); }
+
+  .finn-voice {
+    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--amber);
+    border-radius: 6px; padding: 12px 16px; margin-top: 20px;
+  }
+  .finn-voice-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; }
+
+  @media print {
+    body { background: white; color: black; padding: 12px; }
+    .overview-card, .veto-box, .code-section, .score-table, .framing-box, .finn-voice { border-color: #ccc !important; }
+    pre.code-block, .calc-box { background: #f6f8fa; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <h1>Multi-Signal Scoring</h1>
+      <div class="subtitle">Weighted composite score — combining signals, applying veto logic, and sizing to conviction</div>
+    </div>
+    <div class="badge">Tier 2 · FINN-Specific</div>
+  </div>
+</div>
+
+<div class="framing-box">
+  <p><strong>FINN framing rule:</strong> A single signal with IC 0.05 is a guess with better-than-random odds. Three uncorrelated signals combined into a weighted composite can achieve an IC that none of them could alone. But signals must be combined deliberately — not stacked, not averaged blindly, and not allowed to vote if a veto condition is active. <strong>Build the composite. Enforce the vetoes. Size to the score.</strong></p>
+</div>
+
+<div class="section-label">Signal Components — Weights and Veto Flags</div>
+<div class="overview-grid">
+
+  <div class="overview-card">
+    <div class="overview-title">FINN <span>Composite Signal Components</span></div>
+    <!-- Header row -->
+    <div class="signal-row" style="border-bottom:1px solid var(--border); padding-bottom:4px; margin-bottom:2px;">
+      <div style="font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;">#</div>
+      <div style="font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;">SIGNAL</div>
+      <div style="font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;text-align:right;">WEIGHT</div>
+      <div style="font-size:9px;color:var(--muted);font-weight:700;letter-spacing:1px;text-align:center;">VETO?</div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">T</div>
+      <div><div class="sig-name">Trend Signal</div><div class="sig-sub">20/50 EMA position + slope</div></div>
+      <div class="sig-weight">30%</div>
+      <div class="sig-veto veto-yes">VETO</div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">M</div>
+      <div><div class="sig-name">Momentum Signal</div><div class="sig-sub">RSI 14 normalized + MACD histogram</div></div>
+      <div class="sig-weight">25%</div>
+      <div class="sig-veto veto-no">—</div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">V</div>
+      <div><div class="sig-name">Volume Signal</div><div class="sig-sub">Volume ratio vs. 20-day avg + OBV slope</div></div>
+      <div class="sig-weight">25%</div>
+      <div class="sig-veto veto-yes">VETO</div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">S</div>
+      <div><div class="sig-name">Sentiment Signal</div><div class="sig-sub">Fear & Greed contrarian score (weekly)</div></div>
+      <div class="sig-weight">10%</div>
+      <div class="sig-veto veto-no">—</div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">P</div>
+      <div><div class="sig-name">Pattern Signal</div><div class="sig-sub">Chart pattern confirmation (binary: 0 or 1)</div></div>
+      <div class="sig-weight">10%</div>
+      <div class="sig-veto veto-no">—</div>
+    </div>
+    <div class="calc-box">
+      <div class="calc-label">Composite Score Formula</div>
+      <pre class="calc-formula">Score = Σ(signal_i × weight_i)
+      subject to: veto conditions = False
+Range: 0.0 – 1.0 (long) | −1.0 – 0.0 (short)</pre>
+    </div>
+  </div>
+
+  <div class="overview-card">
+    <div class="overview-title">Signal <span>Normalization Rules</span></div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">T</div>
+      <div><div class="sig-name">Trend: normalize to [0, 1]</div><div class="sig-sub">1 = strong uptrend, 0 = strong downtrend<br>Use EMA slope percentile rank over 252 days</div></div>
+      <div></div><div></div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">M</div>
+      <div><div class="sig-name">Momentum: normalize to [0, 1]</div><div class="sig-sub">RSI: (RSI − 30) / 40, clipped to [0,1]<br>MACD: sign + normalized histogram magnitude</div></div>
+      <div></div><div></div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">V</div>
+      <div><div class="sig-name">Volume: normalize to [0, 1]</div><div class="sig-sub">vol_ratio = current / 20d avg, percentile rank<br>0.5 = average, &gt;0.7 = confirming volume</div></div>
+      <div></div><div></div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">S</div>
+      <div><div class="sig-name">Sentiment: contrarian flip</div><div class="sig-sub">Fear &amp; Greed: extreme fear → 1.0 (bullish contrarian)<br>Extreme greed → 0.0 (bearish contrarian)</div></div>
+      <div></div><div></div>
+    </div>
+    <div class="signal-row">
+      <div class="sig-weight-circle">P</div>
+      <div><div class="sig-name">Pattern: binary</div><div class="sig-sub">Bullish pattern confirmed → 1.0<br>No pattern or bearish → 0.0</div></div>
+      <div></div><div></div>
+    </div>
+    <div class="calc-box">
+      <div class="calc-label">Correlation Check — Required Before Combining</div>
+      <pre class="calc-formula">All pairs must have |corr| &lt; 0.6
+High correlation = not adding new information
+Run: df[signals].corr() and inspect matrix</pre>
+    </div>
+  </div>
+
+</div><!-- end overview grid -->
+
+<!-- Score interpretation table -->
+<div class="section-label">Score Interpretation — Entry Rules</div>
+<table class="score-table">
+  <thead>
+    <tr>
+      <th>Composite Score</th>
+      <th>Signal Strength</th>
+      <th>Visual</th>
+      <th>Entry Rule</th>
+      <th>Position Size</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="score-range score-great">0.80 – 1.00</span></td>
+      <td>Very Strong Bullish</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:100%;background:var(--green);"></div></div></td>
+      <td>All vetoes clear + 4–5 components agree</td>
+      <td>Full size (100% of max position)</td>
+      <td><span class="tag tag-g">Enter long</span></td>
+    </tr>
+    <tr>
+      <td><span class="score-range score-good">0.60 – 0.79</span></td>
+      <td>Strong Bullish</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:75%;background:var(--blue);"></div></div></td>
+      <td>Vetoes clear + 3+ components agree</td>
+      <td>75% of max position</td>
+      <td><span class="tag tag-b">Enter long</span></td>
+    </tr>
+    <tr>
+      <td><span class="score-range score-ok">0.45 – 0.59</span></td>
+      <td>Weak Bullish</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:45%;background:var(--amber);"></div></div></td>
+      <td>Borderline — wait for one more confirming signal</td>
+      <td>50% of max or skip</td>
+      <td><span class="tag tag-a">Watch/Wait</span></td>
+    </tr>
+    <tr>
+      <td><span class="score-range" style="color:var(--muted);">0.40 – 0.44</span></td>
+      <td>Neutral</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:40%;background:var(--border);"></div></div></td>
+      <td>No directional edge — no position</td>
+      <td>No position</td>
+      <td><span class="tag" style="background:rgba(139,148,158,.12);color:var(--muted);">Stay flat</span></td>
+    </tr>
+    <tr>
+      <td><span class="score-range score-bad">0.20 – 0.39</span></td>
+      <td>Weak Bearish</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:25%;background:var(--amber);margin-left:auto;right:0;left:auto;"></div></div></td>
+      <td>Borderline short — same rules apply</td>
+      <td>50% short or skip</td>
+      <td><span class="tag tag-a">Watch/Wait</span></td>
+    </tr>
+    <tr>
+      <td><span class="score-range score-bad">0.00 – 0.19</span></td>
+      <td>Strong Bearish</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:80%;background:var(--red);"></div></div></td>
+      <td>All vetoes clear + 3–5 components bearish</td>
+      <td>Full short (if shortable)</td>
+      <td><span class="tag tag-r">Enter short</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Veto logic -->
+<div class="veto-box">
+  <div class="veto-title">⊘ Veto Logic — Score Overrides</div>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">A veto condition forces the composite score to 0.5 (neutral/no trade) regardless of what the other signals say. Vetoes exist because certain conditions invalidate the signal entirely — not just reduce its confidence.</p>
+  <div class="veto-grid">
+    <div class="veto-card">
+      <div class="veto-signal-name">Trend Veto</div>
+      <div class="veto-condition">Counter-trend signal</div>
+      <div class="veto-effect">If daily trend is down but composite score &gt; 0.60, Trend Veto overrides. Score → 0.5. Reason: you cannot go long against a confirmed daily downtrend regardless of sub-signal alignment.</div>
+    </div>
+    <div class="veto-card">
+      <div class="veto-signal-name">Volume Veto</div>
+      <div class="veto-condition">Volume ratio &lt; 0.5 on breakout</div>
+      <div class="veto-effect">If a breakout signal fires but 20-day volume ratio is below 0.5 (below-average participation), Volume Veto overrides. Score → 0.5. Low-volume breakouts fail at an unacceptable rate.</div>
+    </div>
+    <div class="veto-card">
+      <div class="veto-signal-name">Earnings Veto</div>
+      <div class="veto-condition">Earnings within 3 trading days</div>
+      <div class="veto-effect">If the target stock has an earnings event within 3 trading days, all long/short signals are vetoed. Earnings binary risk invalidates any pre-earnings technical signal.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Python snippet -->
+<div class="section-label">Python Reference — Composite Score Calculation</div>
+<div class="code-section">
+  <div class="code-header">
+    <div class="code-title">multi_signal_composite.py — FINN scoring engine</div>
+    <div class="code-lang">Python 3.11</div>
+  </div>
+  <pre class="code-block"><span class="c-keyword">import</span> pandas <span class="c-keyword">as</span> pd
+<span class="c-keyword">import</span> numpy <span class="c-keyword">as</span> np
+
+WEIGHTS = {
+    <span class="c-string">'trend'</span>:     <span class="c-num">0.30</span>,
+    <span class="c-string">'momentum'</span>:  <span class="c-num">0.25</span>,
+    <span class="c-string">'volume'</span>:    <span class="c-num">0.25</span>,
+    <span class="c-string">'sentiment'</span>: <span class="c-num">0.10</span>,
+    <span class="c-string">'pattern'</span>:   <span class="c-num">0.10</span>,
+}
+
+<span class="c-keyword">def</span> <span class="c-func">composite_score</span>(signals: dict, vetoes: dict) -&gt; float:
+    <span class="c-comment"># Enforce vetoes first</span>
+    <span class="c-keyword">if</span> vetoes.get(<span class="c-string">'trend'</span>) <span class="c-keyword">or</span> vetoes.get(<span class="c-string">'volume'</span>) <span class="c-keyword">or</span> vetoes.get(<span class="c-string">'earnings'</span>):
+        <span class="c-keyword">return</span> <span class="c-num">0.5</span>  <span class="c-comment"># neutral — no trade</span>
+
+    score = <span class="c-func">sum</span>(signals[k] * WEIGHTS[k] <span class="c-keyword">for</span> k <span class="c-keyword">in</span> WEIGHTS <span class="c-keyword">if</span> k <span class="c-keyword">in</span> signals)
+    <span class="c-keyword">return</span> np.<span class="c-func">clip</span>(score, <span class="c-num">0.0</span>, <span class="c-num">1.0</span>)
+
+<span class="c-keyword">def</span> <span class="c-func">position_size_multiplier</span>(score: float) -&gt; float:
+    <span class="c-keyword">if</span>   score &gt;= <span class="c-num">0.80</span>: <span class="c-keyword">return</span> <span class="c-num">1.00</span>
+    <span class="c-keyword">elif</span> score &gt;= <span class="c-num">0.60</span>: <span class="c-keyword">return</span> <span class="c-num">0.75</span>
+    <span class="c-keyword">elif</span> score &gt;= <span class="c-num">0.45</span>: <span class="c-keyword">return</span> <span class="c-num">0.50</span>
+    <span class="c-keyword">else</span>:               <span class="c-keyword">return</span> <span class="c-num">0.00</span>  <span class="c-comment"># no trade</span>
+
+<span class="c-comment"># Correlation guard — run before combining signals</span>
+<span class="c-keyword">def</span> <span class="c-func">check_signal_correlation</span>(signal_df: pd.DataFrame, threshold=<span class="c-num">0.6</span>) -&gt; bool:
+    corr = signal_df.<span class="c-func">corr</span>()
+    mask = np.<span class="c-func">triu</span>(np.<span class="c-func">ones</span>(corr.shape, dtype=<span class="c-func">bool</span>), k=<span class="c-num">1</span>)
+    <span class="c-keyword">return</span> (corr.<span class="c-func">where</span>(mask).<span class="c-func">abs</span>() &lt; threshold).<span class="c-func">all</span>().<span class="c-func">all</span>()</pre>
+</div>
+
+<div class="finn-voice">
+  <div class="finn-voice-label">FINN</div>
+  <p>"A composite score is not a magic number — it is a disciplined way of aggregating information that would otherwise get lost in trader subjectivity. The point of the veto system is to prevent confirmation bias from overriding hard conditions. When the volume veto fires, you do not negotiate with it. The score goes to 0.5. That is not a rule with exceptions. That is the rule."</p>
+</div>
+
+</body>
+</html>

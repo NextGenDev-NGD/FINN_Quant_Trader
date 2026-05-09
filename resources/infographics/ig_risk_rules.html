@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — 6 Non-Negotiable Risk Rules</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --muted: #8b949e;
+    --purple: #bc8cff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header {
+    border-bottom: 2px solid var(--red);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .finn-tag { font-size: 11px; color: var(--red); letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+  h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .badge { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: var(--muted); }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px; margin-top: 20px;
+  }
+
+  /* Opening statement */
+  .opening {
+    background: var(--card);
+    border: 1px solid var(--red);
+    border-left: 4px solid var(--red);
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+  }
+  .opening p { font-size: 13px; color: var(--text); font-weight: 600; }
+  .opening .sub { font-size: 11px; color: var(--muted); margin-top: 5px; font-weight: 400; }
+
+  /* Rule cards — 3-column grid, 2 rows */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .rule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .rule-top {
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .rule-num-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--red);
+    flex-shrink: 0;
+    background: rgba(248,81,73,0.08);
+  }
+  .rule-title-wrap {}
+  .rule-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .rule-short {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  .rule-body { padding: 10px 14px 12px; }
+
+  .rule-spec {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+  }
+  .rule-spec-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .rule-spec-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--amber);
+    font-family: 'Consolas', 'Courier New', monospace;
+  }
+
+  .rule-desc {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .rule-why {
+    font-size: 10px;
+    color: var(--text);
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+    display: flex;
+    gap: 5px;
+    align-items: flex-start;
+  }
+  .why-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--green);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* What breaks each rule */
+  .breaks-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .breaks-table th {
+    background: var(--bg); color: var(--muted); font-size: 10px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; padding: 8px 12px;
+    text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .breaks-table td {
+    padding: 8px 12px; font-size: 11px; border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .breaks-table tr:last-child td { border-bottom: none; }
+  .breaks-table tr:hover td { background: rgba(248,81,73,.04); }
+
+  .rule-ref { font-weight: 700; color: var(--red); }
+  .break-what { color: var(--text); }
+  .break-consequence { color: var(--muted); }
+
+  /* Kill switch box */
+  .kill-switch {
+    background: rgba(248,81,73,0.07);
+    border: 1px solid var(--red);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .kill-icon { font-size: 24px; flex-shrink: 0; line-height: 1; color: var(--red); }
+  .kill-text {}
+  .kill-title { font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 5px; }
+  .kill-conditions { list-style: none; padding: 0; }
+  .kill-conditions li {
+    font-size: 11px;
+    color: var(--text);
+    padding: 3px 0;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    border-bottom: 1px solid rgba(248,81,73,0.2);
+  }
+  .kill-conditions li:last-child { border-bottom: none; }
+  .kill-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+  .finn-voice {
+    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--amber);
+    border-radius: 6px; padding: 12px 16px; margin-top: 20px;
+  }
+  .finn-voice-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; }
+
+  @media print {
+    body { background: white; color: black; padding: 12px; }
+    .rule-card, .breaks-table, .kill-switch, .opening, .finn-voice { border-color: #ccc !important; }
+    .rule-spec { background: #f6f8fa; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <h1>6 Non-Negotiable Risk Rules</h1>
+      <div class="subtitle">These rules are not suggestions — breaking any one of them can end a trading career</div>
+    </div>
+    <div class="badge">Tier 2 · FINN-Specific</div>
+  </div>
+</div>
+
+<div class="opening">
+  <p>Risk management is not what you do after a trade goes wrong. It is what determines your position size, your stop placement, and your daily exposure limit <em>before</em> you enter a single trade.</p>
+  <div class="sub">All 6 rules below apply on every trade, every day, without exception. There is no "this setup is so good I'll skip rule 3." That thinking is how accounts are blown.</div>
+</div>
+
+<div class="section-label">The 6 Rules</div>
+<div class="rules-grid">
+
+  <!-- Rule 1 -->
+  <div class="rule-card">
+    <div class="rule-top">
+      <div class="rule-num-badge">1</div>
+      <div class="rule-title-wrap">
+        <div class="rule-title">2% Max Risk Per Trade</div>
+        <div class="rule-short">Never risk more than 2% of total account on any single position</div>
+      </div>
+    </div>
+    <div class="rule-body">
+      <div class="rule-spec">
+        <div class="rule-spec-label">Hard Limit</div>
+        <div class="rule-spec-value">Risk ≤ 2% of account/trade</div>
+      </div>
+      <div class="rule-desc">Position size = (Account × 0.02) ÷ (Entry − Stop). This calculation is non-negotiable. A conviction narrative is not a risk override.</div>
+      <div class="rule-why"><span class="why-label">Why:</span> At 2% risk, you can lose 50 consecutive trades and still have 36% of your capital. At 10%, 10 consecutive losses = 65% loss. Recovery from 65% down requires +186% return.</div>
+    </div>
+  </div>
+
+  <!-- Rule 2 -->
+  <div class="rule-card">
+    <div class="rule-top">
+      <div class="rule-num-badge">2</div>
+      <div class="rule-title-wrap">
+        <div class="rule-title">6% Daily Drawdown Limit</div>
+        <div class="rule-short">Stop trading for the day if total losses reach 6% of account</div>
+      </div>
+    </div>
+    <div class="rule-body">
+      <div class="rule-spec">
+        <div class="rule-spec-label">Daily Kill Switch</div>
+        <div class="rule-spec-value">Stop if daily P&amp;L ≤ −6%</div>
+      </div>
+      <div class="rule-desc">When you hit −6% on the day, close all positions and stop trading. No revenge trades. The market will be open tomorrow; your capital may not be.</div>
+      <div class="rule-why"><span class="why-label">Why:</span> Bad days cluster. Continuing to trade after 3 consecutive losses compounds emotional decision-making. A forced break protects capital from revenge trading.</div>
+    </div>
+  </div>
+
+  <!-- Rule 3 -->
+  <div class="rule-card">
+    <div class="rule-top">
+      <div class="rule-num-badge">3</div>
+      <div class="rule-title-wrap">
+        <div class="rule-title">ATR-Based Stop Placement</div>
+        <div class="rule-short">Stops are set using ATR — not round numbers, not support lines alone</div>
+      </div>
+    </div>
+    <div class="rule-body">
+      <div class="rule-spec">
+        <div class="rule-spec-label">Stop Formula</div>
+        <div class="rule-spec-value">Stop = Entry − (1.5 × ATR14)</div>
+      </div>
+      <div class="rule-desc">Place stops 1.5–2× ATR beyond the entry. This accounts for normal price noise without giving up too much per trade. Never use round numbers as stop levels.</div>
+      <div class="rule-why"><span class="why-label">Why:</span> Round-number stops get hunted. ATR-based stops are calibrated to actual price volatility, reducing the probability of stop-hunt wipeouts before the trade has time to work.</div>
+    </div>
+  </div>
+
+  <!-- Rule 4 -->
+  <div class="rule-card">
+    <div class="rule-top">
+      <div class="rule-num-badge">4</div>
+      <div class="rule-title-wrap">
+        <div class="rule-title">Minimum 2:1 R:R Required</div>
+        <div class="rule-short">Do not enter any trade with a risk-to-reward ratio below 2:1</div>
+      </div>
+    </div>
+    <div class="rule-body">
+      <div class="rule-spec">
+        <div class="rule-spec-label">Entry Gate</div>
+        <div class="rule-spec-value">Target ≥ Entry + (2 × Risk)</div>
+      </div>
+      <div class="rule-desc">Calculate target and stop before entering. If Target / Risk &lt; 2.0, skip the trade. A setup with a great narrative and a 1:1 R:R is still a bad trade.</div>
+      <div class="rule-why"><span class="why-label">Why:</span> With a 50% win rate and 2:1 R:R, you have positive expectancy. At 1:1, you need &gt;50% win rate just to break even after commissions. Do the math before every trade.</div>
+    </div>
+  </div>
+
+  <!-- Rule 5 -->
+  <div class="rule-card">
+    <div class="rule-top">
+      <div class="rule-num-badge">5</div>
+      <div class="rule-title-wrap">
+        <div class="rule-title">Max 20% Sector Concentration</div>
+        <div class="rule-short">No more than 20% of capital in any single sector at any time</div>
+      </div>
+    </div>
+    <div class="rule-body">
+      <div class="rule-spec">
+        <div class="rule-spec-label">Concentration Limit</div>
+        <div class="rule-spec-value">Sector exposure ≤ 20%</div>
+      </div>
+      <div class="rule-desc">Track sector allocation across all open positions. Technology, healthcare, energy — no single sector should represent more than 20% of total deployed capital.</div>
+      <div class="rule-why"><span class="why-label">Why:</span> Sector shocks (earnings, regulation, macro) hit correlated stocks simultaneously. If 60% of your capital is in tech and NVDA gaps down 15%, the correlation damage is catastrophic.</div>
+    </div>
+  </div>
+
+  <!-- Rule 6 -->
+  <div class="rule-card">
+    <div class="rule-top">
+      <div class="rule-num-badge">6</div>
+      <div class="rule-title-wrap">
+        <div class="rule-title">Document Every Trade</div>
+        <div class="rule-short">No trade exists if it is not logged in all_trades.csv before and after execution</div>
+      </div>
+    </div>
+    <div class="rule-body">
+      <div class="rule-spec">
+        <div class="rule-spec-label">Documentation Standard</div>
+        <div class="rule-spec-value">Log entry + exit + rationale</div>
+      </div>
+      <div class="rule-desc">Before entry: record thesis, entry, stop, target, position size. After exit: record outcome, what was right, what was wrong, what to do differently.</div>
+      <div class="rule-why"><span class="why-label">Why:</span> Undocumented trades produce no learning. The log is not paperwork — it is the feedback loop that separates a trader who improves from one who repeats the same mistake with different tickers.</div>
+    </div>
+  </div>
+
+</div><!-- end rules-grid -->
+
+<!-- What breaks the rules -->
+<div class="section-label">Common Rule Violations — What They Look Like</div>
+<table class="breaks-table">
+  <thead>
+    <tr><th>Rule</th><th>Violation Pattern</th><th>How It Ends</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="rule-ref">Rule 1</td>
+      <td class="break-what">"This setup is different" → sizing up to 5–10% of account on a strong conviction trade</td>
+      <td class="break-consequence">One gap-down wipes out 20+ winning trades. Account permanently impaired.</td>
+    </tr>
+    <tr>
+      <td class="rule-ref">Rule 2</td>
+      <td class="break-what">After 3 losing trades: "I need to make it back today" → taking 4th, 5th, 6th trade</td>
+      <td class="break-consequence">Emotional state compounds losses. −6% becomes −15% in one session.</td>
+    </tr>
+    <tr>
+      <td class="rule-ref">Rule 3</td>
+      <td class="break-what">Placing stop at the obvious swing low or round number ($50.00, $100.00)</td>
+      <td class="break-consequence">Stop hunted. Price dips to $49.95, fills the stop, then reverses to the original target.</td>
+    </tr>
+    <tr>
+      <td class="rule-ref">Rule 4</td>
+      <td class="break-what">Entering a 1:1 trade because "it's a sure thing" or "the setup looks perfect"</td>
+      <td class="break-consequence">Even a 60% win rate at 1:1 R:R barely covers commissions. Slow account bleed.</td>
+    </tr>
+    <tr>
+      <td class="rule-ref">Rule 5</td>
+      <td class="break-what">Running 4 tech trades simultaneously during an earnings season</td>
+      <td class="break-consequence">One sector rotation or macro event hits all 4 at once. Correlation = full loss on entire position block.</td>
+    </tr>
+    <tr>
+      <td class="rule-ref">Rule 6</td>
+      <td class="break-what">"I'll log it later" → never logging it → repeating the same mistake next week</td>
+      <td class="break-consequence">No feedback loop. Same biases, same mistakes, indefinitely. Improvement is impossible without data.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Kill switch -->
+<div class="kill-switch">
+  <div class="kill-icon">⏹</div>
+  <div class="kill-text">
+    <div class="kill-title">Account-Level Kill Switch — Stop Trading Immediately If:</div>
+    <ul class="kill-conditions">
+      <li><span class="kill-dot"></span>Daily loss exceeds 6% of account (Rule 2 trigger)</li>
+      <li><span class="kill-dot"></span>Monthly drawdown exceeds 15% of account start value</li>
+      <li><span class="kill-dot"></span>Live IC drops below 0.03 for 2 consecutive months (signal decay — return to backtesting)</li>
+      <li><span class="kill-dot"></span>You take a trade without calculating position size first</li>
+      <li><span class="kill-dot"></span>You deviate from the system during an emotional state (angry, scared, euphoric)</li>
+    </ul>
+  </div>
+</div>
+
+<div class="finn-voice">
+  <div class="finn-voice-label">FINN</div>
+  <p>"Risk management is not about preventing losses — you will have losses. It is about making sure that a string of losses cannot end your ability to trade. Every rule above exists because someone, at some point, broke it and paid with their account. The rules are not constraints on your edge. They are what keeps you in the game long enough for your edge to compound."</p>
+</div>
+
+</body>
+</html>

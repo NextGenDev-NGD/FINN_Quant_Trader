@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Types of Trading Days</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+    --subtext: #c9d1d9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; padding: 24px 16px; }
+  .page-wrap { max-width: 1200px; margin: 0 auto; }
+
+  .page-header { text-align: center; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid var(--blue); }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--blue); }
+  .page-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .finn-tag { display: inline-block; background: #1f2937; border: 1px solid var(--blue); color: var(--blue); font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-top: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 28px 0 14px; padding-left: 10px; border-left: 3px solid var(--blue); }
+
+  /* Day type cards */
+  .day-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+  .day-card.trend { border-left: 4px solid var(--green); }
+  .day-card.rotational { border-left: 4px solid var(--amber); }
+  .day-card.news { border-left: 4px solid var(--red); }
+  .day-card.lowvol { border-left: 4px solid var(--muted); }
+
+  .dc-header { padding: 14px 18px 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+  .dc-name { font-size: 18px; font-weight: 700; }
+  .dc-name.trend { color: var(--green); }
+  .dc-name.rotational { color: var(--amber); }
+  .dc-name.news { color: var(--red); }
+  .dc-name.lowvol { color: var(--muted); }
+  .dc-tagline { font-size: 11px; color: var(--muted); margin-top: 3px; font-style: italic; }
+  .dc-freq { font-size: 11px; color: var(--muted); text-align: right; }
+
+  .dc-body { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
+  .dc-col { padding: 14px 16px; border-right: 1px solid var(--border); }
+  .dc-col:last-child { border-right: none; }
+  .dc-col-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; }
+  .dc-list { list-style: none; }
+  .dc-list li { font-size: 12px; color: var(--subtext); margin-bottom: 6px; padding-left: 14px; position: relative; }
+  .dc-list li::before { content: '▸'; position: absolute; left: 0; color: var(--blue); font-size: 10px; top: 2px; }
+  .dc-list li strong { color: var(--text); }
+  .dc-list li .green { color: var(--green); }
+  .dc-list li .red { color: var(--red); }
+  .dc-list li .amber { color: var(--amber); }
+
+  /* ASCII day charts */
+  .dc-ascii { font-family: 'Courier New', monospace; font-size: 11px; white-space: pre; color: var(--muted); line-height: 1.3; margin-bottom: 10px; padding: 8px; background: #0d1117; border-radius: 4px; }
+  .dc-ascii .gn { color: var(--green); }
+  .dc-ascii .rd { color: var(--red); }
+  .dc-ascii .am { color: var(--amber); }
+  .dc-ascii .mu { color: var(--muted); }
+
+  /* Identification guide */
+  .id-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .id-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .id-time { font-family: 'Courier New', monospace; font-size: 11px; color: var(--blue); margin-bottom: 4px; }
+  .id-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .id-checks { font-size: 11px; }
+  .id-checks span { display: block; color: var(--muted); margin-bottom: 4px; padding-left: 12px; position: relative; }
+  .id-checks span::before { content: '?'; position: absolute; left: 0; color: var(--amber); font-weight: 700; }
+
+  /* Strategy fit table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: top; color: var(--subtext); }
+  td:first-child { color: var(--text); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .tag-g { color: var(--green); }
+  .tag-r { color: var(--red); }
+  .tag-a { color: var(--amber); }
+  .tag-m { color: var(--muted); }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .finn-note { background: rgba(63,185,80,0.06); border-left: 3px solid var(--green); padding: 12px 16px; margin: 20px 0; border-radius: 0 6px 6px 0; }
+  .finn-note p { font-size: 13px; color: var(--text); font-style: italic; }
+
+  .page-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .day-card { border: 1px solid #ccc; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>Types of Trading Days</h1>
+    <div class="subtitle">Trending · Rotational · News-Driven · Low-Volume — Identification + Strategy Fit + Adaptation Rules</div>
+    <div class="finn-tag">FINN Knowledge Base · HB P4 §4.4 · First appears W09</div>
+  </div>
+
+  <div class="rule-box">
+    <p><strong>FINN framing:</strong> Every trading day has a type, and the type determines what strategies work. Using a trend-following strategy on a rotational day produces losses. Using a range-trading strategy on a trend day produces missed opportunity. Identifying the day type early — by 10:15–10:30 AM — is a skill as important as any setup recognition.</p>
+  </div>
+
+  <!-- Trending Day -->
+  <div class="section-title">Trending Day — One Dominant Direction</div>
+  <div class="day-card trend">
+    <div class="dc-header">
+      <div>
+        <div class="dc-name trend">Trending Day</div>
+        <div class="dc-tagline">"The market has decided. Follow it."</div>
+      </div>
+      <div class="dc-freq">Frequency: ~30–35% of trading days</div>
+    </div>
+    <div class="dc-body">
+      <div class="dc-col">
+        <div class="dc-col-title">What It Looks Like</div>
+        <div class="dc-ascii"><span class="gn">Price opens and
+drives higher (or lower)
+with minimal retracement.
+
+Example (bull trend day):
+9:30  ─
+        ╲
+10:00   ╰─
+           ╲
+10:30    (brief
+          pause)
+11:00      ─────▶
+                  (continues)</span></div>
+        <ul class="dc-list">
+          <li><strong>Gap in trend direction</strong> that holds and runs</li>
+          <li>Price stays above (bull) or below (bear) VWAP all day</li>
+          <li>Pullbacks are shallow — 38.2% or less of prior leg</li>
+          <li>Above-average volume sustained throughout</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Early Identification Signals</div>
+        <ul class="dc-list">
+          <li>By <strong>10:15 AM</strong>: price has held VWAP on first retest</li>
+          <li>Strong futures pre-market (&gt;0.5% directional)</li>
+          <li>Broad sector confirmation — not just one stock</li>
+          <li>SPY/QQQ and individual names aligned direction</li>
+          <li>Opening range breaks immediately in one direction</li>
+          <li>News catalyst is material and clear (not ambiguous)</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Strategy &amp; Rules</div>
+        <ul class="dc-list">
+          <li><span class="green">Buy pullbacks to VWAP or 9 EMA — do not short</span></li>
+          <li>Do not fade the trend — this is the deadliest mistake on trend days</li>
+          <li>Pyramid into the trend on continuation signals</li>
+          <li>Let winners run — use trailing stop, not fixed target</li>
+          <li><span class="red">Exit rule:</span> close below VWAP + 1 ATR on 15-min chart = trend day over, adjust</li>
+          <li>Journal: "This was a trend day. Did I stay with the trend or fight it?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rotational Day -->
+  <div class="section-title">Rotational / Range Day — No Clear Winner</div>
+  <div class="day-card rotational">
+    <div class="dc-header">
+      <div>
+        <div class="dc-name rotational">Rotational Day</div>
+        <div class="dc-tagline">"Neither side wins. Trade the range."</div>
+      </div>
+      <div class="dc-freq">Frequency: ~40–45% of trading days</div>
+    </div>
+    <div class="dc-body">
+      <div class="dc-col">
+        <div class="dc-col-title">What It Looks Like</div>
+        <div class="dc-ascii"><span class="am">Price oscillates between
+a defined high and low,
+crossing VWAP repeatedly.
+
+Example:
+9:30  ─────▶ high
+10:00 ◀───── drops
+10:30 ─────▶ high again
+11:30 ◀───── drops
+2:00  ─────▶ closes near mid
+(no directional resolution)</span></div>
+        <ul class="dc-list">
+          <li>Price crosses VWAP multiple times during session</li>
+          <li>Similar or lower volume compared to prior days</li>
+          <li>No sustained breakout from opening range</li>
+          <li>Sectors rotating — tech weak, energy strong, etc.</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Early Identification Signals</div>
+        <ul class="dc-list">
+          <li>By <strong>10:30 AM</strong>: opening range has not been broken with conviction</li>
+          <li>SPY and QQQ diverging in direction</li>
+          <li>Two or three failed breakout attempts from range</li>
+          <li>Futures pre-market flat or minor directional</li>
+          <li>No strong catalyst for the session</li>
+          <li>VIX stable, no major economic data</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Strategy &amp; Rules</div>
+        <ul class="dc-list">
+          <li><span class="amber">Trade mean reversion: buy near range lows, sell near range highs</span></li>
+          <li>Set tight targets — the range boundary is the target, not a breakout</li>
+          <li>Do not hold positions through VWAP crosses — exits at VWAP</li>
+          <li>Reduce position size — expect more frequent, smaller wins</li>
+          <li><span class="red">Breakout traps are common</span> — require confirmation before entering any "breakout"</li>
+          <li>Journal: "Was this a rotational day? Did I adapt strategy or try to force trend trades?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- News-Driven Day -->
+  <div class="section-title">News-Driven Day — Catalyst Dominates All Technical Structure</div>
+  <div class="day-card news">
+    <div class="dc-header">
+      <div>
+        <div class="dc-name news">News-Driven Day</div>
+        <div class="dc-tagline">"The catalyst is the market. Technicals are secondary."</div>
+      </div>
+      <div class="dc-freq">Frequency: ~15–20% of trading days</div>
+    </div>
+    <div class="dc-body">
+      <div class="dc-col">
+        <div class="dc-col-title">What It Looks Like</div>
+        <div class="dc-ascii"><span class="rd">Price gaps significantly
+on major catalyst and
+moves in exaggerated fashion.
+Normal S&R levels ignored.
+Standard patterns fail.
+
+Example:
+Pre-market: ─────▶ +3%
+9:30:  immediately
+       continues +5%
+10:30: vol spike
+11:00: consolidation
+       or violent reversal</span></div>
+        <ul class="dc-list">
+          <li>Large gap (&gt;1%) on material news</li>
+          <li>Normal S&amp;R levels don't hold</li>
+          <li>Extremely high volume — often 2–4× normal</li>
+          <li>High intraday volatility and fast price moves</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Common Catalysts</div>
+        <ul class="dc-list">
+          <li><strong>Fed decisions</strong> — rate hike/cut, FOMC statement surprises</li>
+          <li><strong>CPI / jobs data</strong> — significant deviation from expectations</li>
+          <li><strong>Earnings surprises</strong> — major companies beat/miss significantly</li>
+          <li><strong>Geopolitical events</strong> — sudden escalation or resolution</li>
+          <li><strong>Regulatory news</strong> — FDA decisions, DOJ actions, tariff announcements</li>
+          <li><strong>Sector-specific events</strong> — oil supply shock, bank failure, etc.</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Strategy &amp; Rules</div>
+        <ul class="dc-list">
+          <li><span class="red">FINN default: reduce exposure significantly on news days</span></li>
+          <li>Do not predict the market's reaction to news before it opens</li>
+          <li>Wait for the initial violent move to exhaust before acting</li>
+          <li>If trading: <strong>smaller size, wider stops, accept wider spreads</strong></li>
+          <li>Watch for the "second move" — often more predictable than the initial spike</li>
+          <li><span class="amber">Best approach:</span> observe the first hour, then enter only highest-conviction setups</li>
+          <li>Journal: document the catalyst, your read, what happened vs. expectations</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low-Volume Day -->
+  <div class="section-title">Low-Volume Day — Thin Markets, Amplified Noise</div>
+  <div class="day-card lowvol">
+    <div class="dc-header">
+      <div>
+        <div class="dc-name lowvol">Low-Volume Day</div>
+        <div class="dc-tagline">"The move means less when volume is absent."</div>
+      </div>
+      <div class="dc-freq">Frequency: ~10–15% (pre/post holiday, summer Fridays, expiration weeks)</div>
+    </div>
+    <div class="dc-body">
+      <div class="dc-col">
+        <div class="dc-col-title">Characteristics</div>
+        <ul class="dc-list">
+          <li>Volume 30–50% below 20-day average</li>
+          <li>Wide bid-ask spreads across most names</li>
+          <li>Moves look significant but lack institutional participation</li>
+          <li>Common before: major holidays, Fed meetings, option expiration</li>
+          <li>Common after: quarterly earnings season ends</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Why It's Dangerous</div>
+        <ul class="dc-list">
+          <li><span class="red">Any move can be amplified by small order flow</span> — one large order can move price significantly in thin markets</li>
+          <li>Breakouts on low volume have high failure rate</li>
+          <li>VWAP and S&amp;R levels less reliable — fewer participants respecting them</li>
+          <li>Slippage on entry and exit is elevated</li>
+        </ul>
+      </div>
+      <div class="dc-col">
+        <div class="dc-col-title">Strategy &amp; Rules</div>
+        <ul class="dc-list">
+          <li><span class="amber">Default: reduce position size by 50% or skip trading</span></li>
+          <li>Do not enter breakouts — wait for volume to confirm</li>
+          <li>Use limit orders only — market orders have elevated slippage risk</li>
+          <li>If holding existing positions: widen stops slightly to avoid getting wicked out</li>
+          <li>Journal: note that low volume context was present. Remove these days from strategy performance calculations when assessing edge.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Identification guide -->
+  <div class="section-title">Identification Guide — What to Check at Each Time Checkpoint</div>
+  <div class="id-grid">
+    <div class="id-card">
+      <div class="id-time">By 9:45 AM</div>
+      <div class="id-title">Initial Read</div>
+      <div class="id-checks">
+        <span>Gap size and direction?</span>
+        <span>Gap holding or fading?</span>
+        <span>Volume vs. average?</span>
+        <span>Catalyst present?</span>
+      </div>
+    </div>
+    <div class="id-card">
+      <div class="id-time">By 10:00 AM</div>
+      <div class="id-title">Opening Range Set</div>
+      <div class="id-checks">
+        <span>Is price above or below VWAP?</span>
+        <span>Has VWAP been crossed already?</span>
+        <span>Volume trend: rising or fading?</span>
+        <span>Any opening range breakout?</span>
+      </div>
+    </div>
+    <div class="id-card">
+      <div class="id-time">By 10:30 AM</div>
+      <div class="id-title">Day Type Confirmation</div>
+      <div class="id-checks">
+        <span>Trend: VWAP held on retest?</span>
+        <span>Rotational: VWAP crossed again?</span>
+        <span>News: moves accelerating/volatile?</span>
+        <span>Low-vol: volume still thin?</span>
+      </div>
+    </div>
+    <div class="id-card">
+      <div class="id-time">By 11:00 AM</div>
+      <div class="id-title">Strategy Lock-In</div>
+      <div class="id-checks">
+        <span>Day type identified — write it down</span>
+        <span>Strategy adapted to day type?</span>
+        <span>Position size adjusted?</span>
+        <span>Stop levels appropriate for volatility?</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strategy fit table -->
+  <div class="section-title">Strategy Fit by Day Type</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Strategy Type</th>
+        <th>Trending Day</th>
+        <th>Rotational Day</th>
+        <th>News-Driven Day</th>
+        <th>Low-Volume Day</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Trend Following (VWAP pullback)</td>
+        <td class="tag-g">✓ Best fit</td>
+        <td class="tag-r">✗ Avoid — VWAP crosses frequently</td>
+        <td class="tag-a">Risky — trend can reverse on news</td>
+        <td class="tag-r">✗ Avoid — false signals elevated</td>
+      </tr>
+      <tr>
+        <td>Breakout Trading</td>
+        <td class="tag-g">✓ Works — confirm with volume</td>
+        <td class="tag-r">✗ Avoid — high false break rate</td>
+        <td class="tag-a">Selective — only post-stabilization</td>
+        <td class="tag-r">✗ Avoid — volume not confirming</td>
+      </tr>
+      <tr>
+        <td>Mean Reversion (range trading)</td>
+        <td class="tag-r">✗ Avoid — fighting the trend</td>
+        <td class="tag-g">✓ Best fit</td>
+        <td class="tag-r">✗ Avoid — ranges violated by news</td>
+        <td class="tag-a">OK — but tight targets only</td>
+      </tr>
+      <tr>
+        <td>FINN Composite Signal Strategy</td>
+        <td class="tag-g">✓ Excellent — signals align with trend</td>
+        <td class="tag-a">Reduce size — signals conflict more</td>
+        <td class="tag-r">Skip or minimal — signals unreliable</td>
+        <td class="tag-a">Reduce size — signals less reliable</td>
+      </tr>
+      <tr>
+        <td>Momentum (gap-and-go)</td>
+        <td class="tag-g">✓ Works well on trend opens</td>
+        <td class="tag-r">✗ Avoid — momentum stalls quickly</td>
+        <td class="tag-a">Works initially — watch for reversal</td>
+        <td class="tag-r">✗ Avoid — slippage too high</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="finn-note">
+    <p>"Every day, write down the day type by 10:30 AM. One word: trending, rotational, news, or low-volume. Then check whether your strategy was matched to that type. Wrong match is a process error, not a market error. The market gave you the information. Did you use it?"</p>
+  </div>
+
+  <div class="page-footer">
+    <span>FINN Knowledge Base · ig_trading_day_types.html · HB P4 §4.4</span>
+    <span>Session C5.b · Built May 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

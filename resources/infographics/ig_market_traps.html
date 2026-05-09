@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Market Traps</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --muted: #8b949e;
+    --purple: #bc8cff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .finn-tag {
+    font-size: 11px;
+    color: var(--blue);
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .badge {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  /* Framing box */
+  .framing-box {
+    background: var(--card);
+    border: 1px solid var(--blue);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+  .framing-box p {
+    color: var(--text);
+    font-size: 12px;
+  }
+  .framing-box strong {
+    color: var(--blue);
+  }
+
+  /* Trap cards — main layout */
+  .traps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .trap-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .trap-card.bull-trap { border-top: 3px solid var(--red); }
+  .trap-card.bear-trap { border-top: 3px solid var(--green); }
+  .trap-card.stop-hunt { border-top: 3px solid var(--purple); }
+  .trap-card.false-breakout { border-top: 3px solid var(--amber); }
+
+  .trap-header {
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .trap-type {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .bull-trap .trap-type { color: var(--red); }
+  .bear-trap .trap-type { color: var(--green); }
+  .stop-hunt .trap-type { color: var(--purple); }
+  .false-breakout .trap-type { color: var(--amber); }
+
+  .trap-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .trap-definition {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .trap-body {
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .trap-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .trap-diagram {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+  }
+
+  pre.diagram {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 10px;
+    line-height: 1.4;
+    color: var(--text);
+    white-space: pre;
+  }
+
+  .signal-list, .protect-list {
+    list-style: none;
+    padding: 0;
+  }
+  .signal-list li, .protect-list li {
+    font-size: 11px;
+    color: var(--text);
+    padding: 3px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .signal-list li:last-child, .protect-list li:last-child {
+    border-bottom: none;
+  }
+  .signal-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .bull-trap .signal-dot { background: var(--red); }
+  .bear-trap .signal-dot { background: var(--green); }
+  .stop-hunt .signal-dot { background: var(--purple); }
+  .false-breakout .signal-dot { background: var(--amber); }
+
+  .protect-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+    background: var(--blue);
+  }
+
+  /* Trap comparison table */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .comparison-table th {
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .comparison-table td {
+    padding: 8px 12px;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .comparison-table tr:last-child td {
+    border-bottom: none;
+  }
+  .comparison-table tr:hover td {
+    background: rgba(88, 166, 255, 0.04);
+  }
+  .trap-label-cell {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .bull-trap-label { color: var(--red); }
+  .bear-trap-label { color: var(--green); }
+  .stop-hunt-label { color: var(--purple); }
+  .false-breakout-label { color: var(--amber); }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .tag-high { background: rgba(248, 81, 73, 0.15); color: var(--red); }
+  .tag-medium { background: rgba(210, 153, 34, 0.15); color: var(--amber); }
+  .tag-low { background: rgba(63, 185, 80, 0.15); color: var(--green); }
+
+  /* Universal protection rules */
+  .protection-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .protection-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+  }
+  .protection-number {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .protection-rule {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .protection-detail {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* FINN voice */
+  .finn-voice {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 20px;
+  }
+  .finn-voice-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .finn-voice p {
+    font-size: 12px;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  @media print {
+    body { background: white; color: black; padding: 12px; }
+    .trap-card, .comparison-table, .protection-card, .framing-box, .finn-voice {
+      border-color: #ccc !important;
+    }
+    pre.diagram { color: black; background: #f6f8fa; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <h1>Market Traps</h1>
+      <div class="subtitle">Bull traps, bear traps, stop hunts, and false breakouts — identify them before they cost you</div>
+    </div>
+    <div class="badge">Tier 2 · Price Action</div>
+  </div>
+</div>
+
+<!-- Framing -->
+<div class="framing-box">
+  <p><strong>FINN framing rule:</strong> A trap is not bad luck. It is a predictable pattern that exploits where retail traders cluster their entries and stops. The edge is in knowing <em>where</em> those clusters form and what price action looks like <em>before</em> the reversal confirms. Volume and candlestick behavior at the level are the data. Read them, don't guess them.</p>
+</div>
+
+<!-- Four trap cards -->
+<div class="section-label">The Four Traps</div>
+<div class="traps-grid">
+
+  <!-- Bull Trap -->
+  <div class="trap-card bull-trap">
+    <div class="trap-header">
+      <div class="trap-type">Bull Trap</div>
+      <div class="trap-name">False Breakout Above Resistance</div>
+      <div class="trap-definition">Price closes above a key resistance level, draws in buyers, then reverses sharply back below — trapping longs at the high.</div>
+    </div>
+    <div class="trap-body">
+      <div class="trap-diagram">
+        <div class="trap-section-title">Diagram</div>
+        <pre class="diagram">  ┌─ Resistance ──────
+  │   ↑ BREAK (trap)
+──┘   ↓ reversal
+      ↓
+      ↓ trapped longs
+      ↓ stopped out</pre>
+      </div>
+      <div>
+        <div class="trap-section-title">Identify</div>
+        <ul class="signal-list">
+          <li><span class="signal-dot"></span>Breakout candle has low or declining volume</li>
+          <li><span class="signal-dot"></span>Close is only slightly above resistance</li>
+          <li><span class="signal-dot"></span>Long upper wick on breakout candle</li>
+          <li><span class="signal-dot"></span>No expansion in volatility (ATR flat)</li>
+          <li><span class="signal-dot"></span>Reversal candle closes back inside range</li>
+        </ul>
+      </div>
+      <div>
+        <div class="trap-section-title">Protect</div>
+        <ul class="protect-list">
+          <li><span class="protect-dot"></span>Require volume confirmation ≥ 1.5× avg on breakout</li>
+          <li><span class="protect-dot"></span>Wait for candle <em>close</em> above resistance, not just wick</li>
+          <li><span class="protect-dot"></span>Look for retest of resistance-turned-support before entry</li>
+          <li><span class="protect-dot"></span>Stop below the reclaimed level, not the breakout candle low</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bear Trap -->
+  <div class="trap-card bear-trap">
+    <div class="trap-header">
+      <div class="trap-type">Bear Trap</div>
+      <div class="trap-name">False Breakdown Below Support</div>
+      <div class="trap-definition">Price closes below a key support level, draws in short sellers, then reverses sharply back above — trapping shorts at the low.</div>
+    </div>
+    <div class="trap-body">
+      <div class="trap-diagram">
+        <div class="trap-section-title">Diagram</div>
+        <pre class="diagram">  trapped shorts
+  ↑ stopped out
+  ↑ reversal
+  ↓ BREAK (trap)
+──┐
+  └─ Support ─────────</pre>
+      </div>
+      <div>
+        <div class="trap-section-title">Identify</div>
+        <ul class="signal-list">
+          <li><span class="signal-dot"></span>Breakdown on below-average volume</li>
+          <li><span class="signal-dot"></span>Long lower wick on breakdown candle</li>
+          <li><span class="signal-dot"></span>Close only marginally below support</li>
+          <li><span class="signal-dot"></span>No follow-through selling the next candle</li>
+          <li><span class="signal-dot"></span>Reclaims support within 1–2 candles</li>
+        </ul>
+      </div>
+      <div>
+        <div class="trap-section-title">Protect</div>
+        <ul class="protect-list">
+          <li><span class="protect-dot"></span>Require expansion in sell volume before shorting breakdown</li>
+          <li><span class="protect-dot"></span>Wait for a candle close below support on meaningful spread</li>
+          <li><span class="protect-dot"></span>Retest of support-turned-resistance as short entry</li>
+          <li><span class="protect-dot"></span>Stop above reclaimed level; size for the R, not the fear</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stop Hunt -->
+  <div class="trap-card stop-hunt">
+    <div class="trap-header">
+      <div class="trap-type">Stop Hunt</div>
+      <div class="trap-name">Deliberate Spike to Trigger Clustered Stops</div>
+      <div class="trap-definition">Large players engineer a brief price spike beyond an obvious level where retail stops are clustered, trigger those stops, accumulate/distribute, then reverse into the real move.</div>
+    </div>
+    <div class="trap-body">
+      <div class="trap-diagram">
+        <div class="trap-section-title">Diagram</div>
+        <pre class="diagram">  ── obvious high ──
+  ↑ spike (wick)
+  ↑ stops triggered
+  ↓ fast reversal
+  ↓ real move begins
+  ───────────────────</pre>
+      </div>
+      <div>
+        <div class="trap-section-title">Identify</div>
+        <ul class="signal-list">
+          <li><span class="signal-dot"></span>Extremely long wick with small body (pin bar)</li>
+          <li><span class="signal-dot"></span>Spike to/through obvious swing high or low</li>
+          <li><span class="signal-dot"></span>High volume on the spike candle</li>
+          <li><span class="signal-dot"></span>Fast rejection — reversal within same or next candle</li>
+          <li><span class="signal-dot"></span>Occurs most at round numbers, prior day highs/lows</li>
+        </ul>
+      </div>
+      <div>
+        <div class="trap-section-title">Protect</div>
+        <ul class="protect-list">
+          <li><span class="protect-dot"></span>Do not place stops at obvious swing points — offset beyond the cluster</li>
+          <li><span class="protect-dot"></span>Use ATR-based stop placement, not round numbers</li>
+          <li><span class="protect-dot"></span>Wait for rejection candle to close before entering the real move</li>
+          <li><span class="protect-dot"></span>The spike itself can be a signal: trade the reversal, not the spike</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- False Breakout -->
+  <div class="trap-card false-breakout">
+    <div class="trap-header">
+      <div class="trap-type">False Breakout</div>
+      <div class="trap-name">Breakout That Fails to Sustain</div>
+      <div class="trap-definition">A breakout above or below a level that initially appears valid but fails to attract follow-through momentum, reverses back through the level, and continues in the opposite direction.</div>
+    </div>
+    <div class="trap-body">
+      <div class="trap-diagram">
+        <div class="trap-section-title">Diagram</div>
+        <pre class="diagram">  ── Level ──────────
+  ↑ break
+  ↑ stall (no follow)
+  ↓ returns to level
+  ↓ continues lower
+  ───────────────────</pre>
+      </div>
+      <div>
+        <div class="trap-section-title">Identify</div>
+        <ul class="signal-list">
+          <li><span class="signal-dot"></span>Breakout volume fades within 2–3 candles</li>
+          <li><span class="signal-dot"></span>Price stalls without reaching next resistance/support</li>
+          <li><span class="signal-dot"></span>Multiple attempts to hold level all fail</li>
+          <li><span class="signal-dot"></span>RSI divergence at breakout candle</li>
+          <li><span class="signal-dot"></span>VWAP rejection on intraday frames</li>
+        </ul>
+      </div>
+      <div>
+        <div class="trap-section-title">Protect</div>
+        <ul class="protect-list">
+          <li><span class="protect-dot"></span>Confirm breakout with expanding volume AND increasing spread</li>
+          <li><span class="protect-dot"></span>Check higher-timeframe alignment before entering breakout</li>
+          <li><span class="protect-dot"></span>Use a timer: if no follow-through in N candles, reassess</li>
+          <li><span class="protect-dot"></span>When a false breakout confirms, the opposite trade is the edge</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end traps-grid -->
+
+<!-- Comparison Table -->
+<div class="section-label">Quick Reference — Trap Comparison</div>
+<table class="comparison-table">
+  <thead>
+    <tr>
+      <th>Trap</th>
+      <th>Direction Fooled</th>
+      <th>Key Tell</th>
+      <th>Volume Profile</th>
+      <th>Frequency</th>
+      <th>Danger Level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="trap-label-cell bull-trap-label">Bull Trap</td>
+      <td>Longs fooled into buying</td>
+      <td>Low-volume break + long wick rejection</td>
+      <td>Volume drops on breakout, spikes on reversal</td>
+      <td>Common at major resistance</td>
+      <td><span class="tag tag-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="trap-label-cell bear-trap-label">Bear Trap</td>
+      <td>Shorts fooled into selling</td>
+      <td>Low-volume breakdown + fast reclaim</td>
+      <td>Volume drops on breakdown, spikes on recovery</td>
+      <td>Common at major support</td>
+      <td><span class="tag tag-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="trap-label-cell stop-hunt-label">Stop Hunt</td>
+      <td>Stops triggered at clustered levels</td>
+      <td>Pin bar at obvious high/low, fast reversal</td>
+      <td>High volume on spike, normal after reversal</td>
+      <td>At round #s, swing points</td>
+      <td><span class="tag tag-high">High</span></td>
+    </tr>
+    <tr>
+      <td class="trap-label-cell false-breakout-label">False Breakout</td>
+      <td>Breakout traders caught both ways</td>
+      <td>Stall + fade without follow-through</td>
+      <td>Declining volume within 2–3 candles</td>
+      <td>Very common, all levels</td>
+      <td><span class="tag tag-medium">Medium</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Universal Protection Rules -->
+<div class="section-label">Universal Protection Rules</div>
+<div class="protection-grid">
+  <div class="protection-card">
+    <div class="protection-number">01</div>
+    <div class="protection-rule">Volume is the lie detector</div>
+    <div class="protection-detail">Legitimate breakouts expand volume. Traps either use thin volume or spike briefly then collapse. No volume confirmation = no entry.</div>
+  </div>
+  <div class="protection-card">
+    <div class="protection-number">02</div>
+    <div class="protection-rule">Wait for the close</div>
+    <div class="protection-detail">Wicks are noise. The candle <em>close</em> above or below a level is the data point. Entering on a wick that hasn't closed is guessing, not trading.</div>
+  </div>
+  <div class="protection-card">
+    <div class="protection-number">03</div>
+    <div class="protection-rule">Offset your stops</div>
+    <div class="protection-detail">Stops at obvious swing points are inventory for stop hunts. Use ATR × 1.5 beyond the level. Make your stop structurally logical, not round-number obvious.</div>
+  </div>
+  <div class="protection-card">
+    <div class="protection-number">04</div>
+    <div class="protection-rule">The failed trap is a trade</div>
+    <div class="protection-detail">When a bull trap confirms (price reclaims resistance-turned-support), that's a long setup. When a bear trap confirms, that's a short. Traps signal trapped traders who must cover.</div>
+  </div>
+</div>
+
+<!-- FINN Voice -->
+<div class="finn-voice">
+  <div class="finn-voice-label">FINN</div>
+  <p>"Markets don't move to where price <em>should</em> go next — they move to where the most stops are. Learn the obvious levels before you trade them, because someone else already has. The protection rules aren't defensive — they're how you flip the trap into your edge."</p>
+</div>
+
+</body>
+</html>

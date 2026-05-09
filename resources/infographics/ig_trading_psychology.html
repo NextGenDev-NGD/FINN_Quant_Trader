@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Trading Psychology</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+    --subtext: #c9d1d9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; padding: 24px 16px; }
+  .page-wrap { max-width: 1200px; margin: 0 auto; }
+
+  .page-header { text-align: center; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid var(--blue); }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--blue); }
+  .page-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .finn-tag { display: inline-block; background: #1f2937; border: 1px solid var(--blue); color: var(--blue); font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-top: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 28px 0 14px; padding-left: 10px; border-left: 3px solid var(--blue); }
+
+  /* Emotion cards — 3 column */
+  .emotion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
+  .emotion-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .emotion-card.fear { border-top: 3px solid var(--red); }
+  .emotion-card.greed { border-top: 3px solid var(--amber); }
+  .emotion-card.revenge { border-top: 3px solid #bc8cff; }
+
+  .ec-header { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); }
+  .ec-emotion { font-size: 18px; font-weight: 700; }
+  .ec-emotion.fear { color: var(--red); }
+  .ec-emotion.greed { color: var(--amber); }
+  .ec-emotion.revenge { color: #bc8cff; }
+  .ec-tagline { font-size: 11px; color: var(--muted); margin-top: 2px; font-style: italic; }
+
+  .ec-body { padding: 14px 16px; }
+  .ec-row { margin-bottom: 10px; }
+  .ec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 3px; }
+  .ec-val { font-size: 12px; color: var(--subtext); }
+  .ec-val strong { color: var(--text); }
+  .ec-val.red { color: var(--red); }
+  .ec-val.amber { color: var(--amber); }
+  .ec-val.green { color: var(--green); }
+  .ec-val.purple { color: #bc8cff; }
+
+  /* Bias table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: top; color: var(--subtext); }
+  td:first-child { color: var(--text); font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .tag-r { color: var(--red); }
+  .tag-a { color: var(--amber); }
+  .tag-g { color: var(--green); }
+  .tag-b { color: var(--blue); }
+
+  /* Pre/Post check grid */
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+  .check-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .check-header { padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 13px; }
+  .check-header.pre { color: var(--blue); }
+  .check-header.post { color: var(--green); }
+  .check-list { list-style: none; padding: 14px 16px; }
+  .check-list li { font-size: 12px; color: var(--subtext); margin-bottom: 8px; padding-left: 20px; position: relative; }
+  .check-list li::before { content: '□'; position: absolute; left: 0; color: var(--border); font-size: 13px; }
+  .check-list li strong { color: var(--text); display: block; margin-bottom: 1px; }
+  .check-list li span { color: var(--muted); font-size: 11px; }
+
+  /* FINN rules strip */
+  .rules-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  .rule-item { background: rgba(88,166,255,0.06); border: 1px solid rgba(88,166,255,0.2); border-radius: 8px; padding: 12px 14px; }
+  .rule-num { color: var(--blue); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .rule-text { font-size: 12px; color: var(--text); }
+
+  .finn-note { background: rgba(63,185,80,0.06); border-left: 3px solid var(--green); padding: 12px 16px; margin: 20px 0; border-radius: 0 6px 6px 0; }
+  .finn-note p { font-size: 13px; color: var(--text); font-style: italic; }
+
+  .page-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .emotion-card, .check-card { border: 1px solid #ccc; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>Trading Psychology</h1>
+    <div class="subtitle">The 3 Dangerous Emotions · Cognitive Biases · Pre/Post Trade Check · FINN Standards</div>
+    <div class="finn-tag">FINN Knowledge Base · HB P5 §5.1–5.3</div>
+  </div>
+
+  <!-- The 3 emotions -->
+  <div class="section-title">The 3 Dangerous Emotions — How They Destroy Edge</div>
+  <div class="emotion-grid">
+
+    <div class="emotion-card fear">
+      <div class="ec-header">
+        <div class="ec-emotion fear">Fear</div>
+        <div class="ec-tagline">"This could go against me."</div>
+      </div>
+      <div class="ec-body">
+        <div class="ec-row">
+          <div class="ec-label">Core Mechanism</div>
+          <div class="ec-val">The brain registers unrealized loss as a threat. The stress response activates before any actual loss occurs.</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">How It Manifests</div>
+          <div class="ec-val red">Exiting winning trades early — locking in a small gain before it can "disappear." Failing to enter valid setups. Cutting positions at the worst moment (during normal pullbacks in a good trade).</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">The Real Cost</div>
+          <div class="ec-val">Systematically truncating right tail — the big wins never develop because they're exited early. The win rate may look fine; the R-multiple distribution is broken.</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">FINN Counter</div>
+          <div class="ec-val green">Set target and stop <strong>before entering</strong>. Write them in the journal. Once in trade, the only job is to manage to the plan — not to feel good about the unrealized P&L.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="emotion-card greed">
+      <div class="ec-header">
+        <div class="ec-emotion greed">Greed</div>
+        <div class="ec-tagline">"It's going to keep going."</div>
+      </div>
+      <div class="ec-body">
+        <div class="ec-row">
+          <div class="ec-label">Core Mechanism</div>
+          <div class="ec-val">Winning activates dopamine. The brain seeks more of the same stimulus. Risk tolerance inflates after wins, deflates after losses — opposite of what's rational.</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">How It Manifests</div>
+          <div class="ec-val amber">Holding winners past targets. Ignoring take-profit rules. Increasing position size after a good week. Adding to losing positions ("it'll come back"). Chasing stocks already extended from setup.</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">The Real Cost</div>
+          <div class="ec-val">Winners become losers. Small losing positions become catastrophic losses. Account equity curves develop left skew — occasional large losses wipe out multiple wins.</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">FINN Counter</div>
+          <div class="ec-val green">Targets are pre-set rules, not feelings. <strong>The target was set when you were thinking clearly</strong> — before the trade, before the P&L affected your judgment. Honor the plan you made when sober.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="emotion-card revenge">
+      <div class="ec-header">
+        <div class="ec-emotion revenge">Revenge Trading</div>
+        <div class="ec-tagline">"I need to make it back."</div>
+      </div>
+      <div class="ec-body">
+        <div class="ec-row">
+          <div class="ec-label">Core Mechanism</div>
+          <div class="ec-val">After a loss, the brain frames recovery as restoring justice rather than managing risk. Trading becomes emotional rather than analytical.</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">How It Manifests</div>
+          <div class="ec-val" style="color:#bc8cff">Entering trades immediately after a loss without a valid setup. Increasing size to "make it back faster." Trading the same name that just took you down. Abandoning all rules because rules "don't work."</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">The Real Cost</div>
+          <div class="ec-val">The worst trading days in history are usually three or four bad trades in a row, not one. The first loss is small; revenge trading converts it into a drawdown that takes weeks to recover.</div>
+        </div>
+        <div class="ec-row">
+          <div class="ec-label">FINN Counter</div>
+          <div class="ec-val green"><strong>The daily loss limit rule exists for this moment.</strong> When you hit your daily max loss, you stop — no exceptions. The rule does not negotiate. Close the platform. Log the loss. Come back tomorrow.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Cognitive biases -->
+  <div class="section-title">Cognitive Biases — The Invisible Errors in Every Trader's Brain</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Bias</th>
+        <th>Definition</th>
+        <th>How It Appears in Trading</th>
+        <th>Counter-Strategy</th>
+        <th>Risk Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Confirmation Bias</td>
+        <td>Seeking information that confirms existing belief; dismissing contradictory data</td>
+        <td>Bullish on a stock → ignoring bearish signals, reading bullish news, avoiding charts that show weakness</td>
+        <td>Before each trade, actively list the top 2 reasons the thesis is wrong. What would the bears say? Run the IC.</td>
+        <td class="tag-r">HIGH</td>
+      </tr>
+      <tr>
+        <td>Recency Bias</td>
+        <td>Overweighting recent events relative to the long-run base rate</td>
+        <td>After a winning week → overconfidence, position sizing up without statistical basis. After a losing week → abandoning valid strategies.</td>
+        <td>Evaluate strategies over the full backtest period, not last week's results. Require at least 30 trade sample before assessing edge.</td>
+        <td class="tag-r">HIGH</td>
+      </tr>
+      <tr>
+        <td>Loss Aversion</td>
+        <td>Losses feel ~2× as painful as equivalent gains feel good (Kahneman-Tversky)</td>
+        <td>Holding losers too long to avoid "realizing" the loss. Taking profits early to lock in the good feeling. Asymmetric decision-making that systematically harms R/R.</td>
+        <td>Pre-set stops and targets. Once in a trade, P&L display is noise — only the price relative to your levels matters.</td>
+        <td class="tag-r">HIGH</td>
+      </tr>
+      <tr>
+        <td>Sunk Cost Fallacy</td>
+        <td>Continuing an action because of past investment rather than future merit</td>
+        <td>"I already lost $800 on this — I can't sell now." The position is held because of what was already lost, not because of what the data says about the future.</td>
+        <td>The market doesn't know what you paid. Your entry price is irrelevant to the forward probability. Ask: would I enter this position fresh at the current price? If no, exit.</td>
+        <td class="tag-a">MEDIUM</td>
+      </tr>
+      <tr>
+        <td>Anchoring</td>
+        <td>Over-relying on the first piece of information encountered (the "anchor")</td>
+        <td>Stock bought at $50 → still mentally anchored to $50 as "value" even after fundamental deterioration. Or anchoring to an entry price that no longer has structural meaning.</td>
+        <td>Evaluate the stock where it is now, not where you bought it. Reassess from current levels using the same criteria you would use for a new position.</td>
+        <td class="tag-a">MEDIUM</td>
+      </tr>
+      <tr>
+        <td>Overconfidence</td>
+        <td>Overestimating predictive ability and underestimating uncertainty</td>
+        <td>Sizing up after wins. Skipping confirmation steps. "I know this one is going to work." The IC was 0.04 — the confidence is 0.85.</td>
+        <td>The data provides the confidence level, not your feeling. Run the IC test. Look at the OOS result. Confidence must be earned by the numbers, not felt.</td>
+        <td class="tag-a">MEDIUM</td>
+      </tr>
+      <tr>
+        <td>Hindsight Bias</td>
+        <td>Believing past events were predictable after knowing the outcome</td>
+        <td>"I knew that was going to happen." Distorts the journal — entries are written to explain a known outcome rather than document real-time reasoning. Prevents accurate learning.</td>
+        <td>Write journal entries <strong>before</strong> you know the outcome. Pre-trade: hypothesis, setup, entry criteria, stop, target. Post-trade: outcome vs. hypothesis — what the data said.</td>
+        <td class="tag-a">MEDIUM</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pre/Post trade check -->
+  <div class="section-title">Pre-Trade &amp; Post-Trade Psychological Check</div>
+  <div class="check-grid">
+    <div class="check-card">
+      <div class="check-header pre">Pre-Trade Check — Before Every Entry</div>
+      <ul class="check-list">
+        <li>
+          <strong>Emotional state</strong>
+          <span>Rate 1–5: Am I calm (1) or emotionally activated (5)? If above 3 after a loss, do not enter.</span>
+        </li>
+        <li>
+          <strong>Setup validity</strong>
+          <span>Does this meet all entry criteria in my written rules — or am I forcing it because I want to trade?</span>
+        </li>
+        <li>
+          <strong>Risk defined</strong>
+          <span>Stop level identified. Position size calculated. Risk in dollars known before click.</span>
+        </li>
+        <li>
+          <strong>Target defined</strong>
+          <span>Where is the first profit target? What is the R/R ratio? Is it at least 2:1?</span>
+        </li>
+        <li>
+          <strong>Confirmation check</strong>
+          <span>What is the best argument against this trade? Have I actively considered it?</span>
+        </li>
+        <li>
+          <strong>Daily loss status</strong>
+          <span>Am I within my daily loss limit? If at 80%, reduce size by half. If at 100%, stop.</span>
+        </li>
+      </ul>
+    </div>
+    <div class="check-card">
+      <div class="check-header post">Post-Trade Check — After Every Close</div>
+      <ul class="check-list">
+        <li>
+          <strong>Outcome vs. hypothesis</strong>
+          <span>Was the hypothesis correct? Was the outcome correct? These are separate questions — a good process can produce a bad outcome and vice versa.</span>
+        </li>
+        <li>
+          <strong>Rule adherence</strong>
+          <span>Did I follow entry, stop, and target rules exactly? If not — what deviated, why, and what was the P&L impact?</span>
+        </li>
+        <li>
+          <strong>Emotional log</strong>
+          <span>What was the emotional state at entry? At exit? Did emotion influence any decision?</span>
+        </li>
+        <li>
+          <strong>Signal assessment</strong>
+          <span>Was the IC of this signal positive in the 30 days prior to this trade? Was this a good signal or a lucky outcome?</span>
+        </li>
+        <li>
+          <strong>One learning</strong>
+          <span>What is one specific, actionable thing I learned from this trade — win or loss?</span>
+        </li>
+        <li>
+          <strong>Tomorrow's readiness</strong>
+          <span>After this session, am I in a state to trade tomorrow calmly? If no — what would need to change?</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FINN rules -->
+  <div class="section-title">FINN Psychological Standards</div>
+  <div class="rules-strip">
+    <div class="rule-item">
+      <div class="rule-num">Rule 1</div>
+      <div class="rule-text">The daily loss limit is not a guideline. It is a circuit breaker. When it trips, trading stops — not slows, stops. No exceptions. The rule exists for the moment when you feel most certain it doesn't apply.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">Rule 2</div>
+      <div class="rule-text">Wrong predictions are required. A trader who only logs their correct predictions is training on corrupted data. Document every hypothesis — especially the ones that fail. That is where the actual learning lives.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">Rule 3</div>
+      <div class="rule-text">The journal is more valuable than the P&L. P&L is the outcome of luck + skill. The journal is the record of your decision process. Improving the journal improves the decisions. Improving the decisions is how edge is built.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">Rule 4</div>
+      <div class="rule-text">Deviations from rules are data, not failures — but they must be logged and analyzed. "The setup looked different" is the beginning of an entry, not the end. Document the specific reason, the specific outcome, and the implication for your rules.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">Rule 5</div>
+      <div class="rule-text">Emotional confidence and analytical confidence are not the same thing. Feeling certain is not evidence. The IC score is evidence. The backtest result is evidence. The feeling is a data point about your emotional state — nothing more.</div>
+    </div>
+    <div class="rule-item">
+      <div class="rule-num">Rule 6</div>
+      <div class="rule-text">The plan was written when you were thinking clearly. Honor it. The moment of entry or exit is the moment of maximum emotional distortion. The plan written before the trade was written by a calmer, more analytical version of you. Trust that version.</div>
+    </div>
+  </div>
+
+  <div class="finn-note">
+    <p>"The market does not care about your feelings. It will not wait for you to calm down. It will not give back what you lost because you deserve it. The only variable the market cannot take from you is the quality of your decision process. Protect that. The P&L will take care of itself."</p>
+  </div>
+
+  <div class="page-footer">
+    <span>FINN Knowledge Base · ig_trading_psychology.html · HB P5 §5.1–5.3</span>
+    <span>Session C5.a · Built May 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

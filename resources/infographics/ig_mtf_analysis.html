@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Multi-Timeframe Analysis</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --muted: #8b949e;
+    --purple: #bc8cff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .finn-tag {
+    font-size: 11px;
+    color: var(--blue);
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .badge {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  /* Framing box */
+  .framing-box {
+    background: var(--card);
+    border: 1px solid var(--blue);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+  .framing-box p {
+    color: var(--text);
+    font-size: 12px;
+  }
+  .framing-box strong {
+    color: var(--blue);
+  }
+
+  /* Cascade flow */
+  .cascade-wrapper {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    align-items: stretch;
+  }
+
+  .cascade-card {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cascade-card:first-child {
+    border-radius: 8px 0 0 8px;
+  }
+  .cascade-card:last-child {
+    border-radius: 0 8px 8px 0;
+  }
+
+  .cascade-card.tf-daily   { border-top: 3px solid var(--blue); }
+  .cascade-card.tf-4h      { border-top: 3px solid var(--green); }
+  .cascade-card.tf-1h      { border-top: 3px solid var(--amber); }
+  .cascade-card.tf-15m     { border-top: 3px solid var(--purple); }
+
+  /* Arrow between cards */
+  .cascade-arrow {
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--muted);
+    font-size: 16px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cascade-header {
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tf-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .tf-daily .tf-label   { color: var(--blue); }
+  .tf-4h .tf-label      { color: var(--green); }
+  .tf-1h .tf-label      { color: var(--amber); }
+  .tf-15m .tf-label     { color: var(--purple); }
+
+  .tf-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .tf-role {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .cascade-body {
+    padding: 10px 12px;
+  }
+
+  .tf-purpose-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .tf-purpose {
+    font-size: 11px;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .tf-checklist {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+  .tf-checklist li {
+    font-size: 11px;
+    color: var(--text);
+    padding: 2px 0;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .check-sq {
+    width: 10px;
+    height: 10px;
+    border: 1px solid;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .tf-daily .check-sq   { border-color: var(--blue); }
+  .tf-4h .check-sq      { border-color: var(--green); }
+  .tf-1h .check-sq      { border-color: var(--amber); }
+  .tf-15m .check-sq     { border-color: var(--purple); }
+
+  .tf-question {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 10px;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 4px;
+  }
+  .tf-question strong {
+    color: var(--text);
+    font-style: normal;
+  }
+
+  /* Alignment rules section */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .rules-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+
+  .rules-card-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rule-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rule-row:last-child {
+    border-bottom: none;
+  }
+  .rule-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 16px;
+    flex-shrink: 0;
+  }
+  .rule-text {
+    font-size: 11px;
+    color: var(--text);
+  }
+
+  .conflict-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+  .conflict-row:first-child {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-bottom: 6px;
+  }
+  .conflict-row:last-child {
+    border-bottom: none;
+  }
+  .conflict-scenario {
+    font-size: 11px;
+    color: var(--text);
+  }
+  .conflict-action {
+    font-size: 11px;
+    color: var(--green);
+  }
+  .conflict-avoid {
+    font-size: 11px;
+    color: var(--red);
+  }
+
+  /* FINN MTF workflow */
+  .workflow-strip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+  .workflow-steps {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    margin-top: 10px;
+  }
+  .workflow-step {
+    flex: 1;
+    padding: 10px;
+    position: relative;
+  }
+  .workflow-step:not(:last-child) {
+    border-right: 1px solid var(--border);
+  }
+  .step-num {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .step-tf {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .step-action {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .step-detail {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .step-gate {
+    margin-top: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 4px 6px;
+    font-size: 10px;
+    color: var(--amber);
+  }
+
+  /* FINN rule box */
+  .finn-rule-box {
+    background: var(--card);
+    border: 1px solid var(--green);
+    border-left: 4px solid var(--green);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .finn-rule-icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .finn-rule-text {
+    font-size: 12px;
+    color: var(--text);
+  }
+  .finn-rule-text strong {
+    color: var(--green);
+    font-size: 13px;
+  }
+
+  /* FINN voice */
+  .finn-voice {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 20px;
+  }
+  .finn-voice-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .finn-voice p {
+    font-size: 12px;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  @media print {
+    body { background: white; color: black; padding: 12px; }
+    .cascade-card, .rules-card, .workflow-strip, .finn-rule-box, .finn-voice {
+      border-color: #ccc !important;
+    }
+    .cascade-arrow { color: #999; background: #f6f8fa; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <h1>Multi-Timeframe Analysis</h1>
+      <div class="subtitle">Top-down framework: Daily → 4H → 1H → 15min — context before entry, every time</div>
+    </div>
+    <div class="badge">Tier 2 · Technical Analysis</div>
+  </div>
+</div>
+
+<!-- Framing -->
+<div class="framing-box">
+  <p><strong>FINN framing rule:</strong> Every timeframe answers a different question. The daily tells you <em>what the market is doing</em>. The 4H tells you <em>where structure sits</em>. The 1H tells you <em>when a pattern is forming</em>. The 15min tells you <em>exactly where to enter</em>. Never use a lower timeframe to justify a trade that the higher timeframe doesn't support.</p>
+</div>
+
+<!-- Cascade framework -->
+<div class="section-label">The Top-Down Cascade</div>
+<div class="cascade-wrapper">
+
+  <!-- Daily -->
+  <div class="cascade-card tf-daily">
+    <div class="cascade-header">
+      <div class="tf-label">Timeframe 1</div>
+      <div class="tf-name">Daily Chart</div>
+      <div class="tf-role">Trend + Context</div>
+    </div>
+    <div class="cascade-body">
+      <div class="tf-purpose-label">Purpose</div>
+      <div class="tf-purpose">Define trend direction and major levels</div>
+      <ul class="tf-checklist">
+        <li><span class="check-sq"></span>Trend: above or below 20/50 EMA?</li>
+        <li><span class="check-sq"></span>Higher highs + higher lows (uptrend) or lower highs + lower lows (downtrend)?</li>
+        <li><span class="check-sq"></span>Key support and resistance zones</li>
+        <li><span class="check-sq"></span>Any major gaps on the daily?</li>
+        <li><span class="check-sq"></span>RSI: overbought, oversold, or neutral?</li>
+      </ul>
+      <div class="tf-question"><strong>Gating question:</strong> What is the primary trend direction? All trades must be in this direction.</div>
+    </div>
+  </div>
+
+  <div class="cascade-arrow">→</div>
+
+  <!-- 4H -->
+  <div class="cascade-card tf-4h">
+    <div class="cascade-header">
+      <div class="tf-label">Timeframe 2</div>
+      <div class="tf-name">4-Hour Chart</div>
+      <div class="tf-role">Structure + Swings</div>
+    </div>
+    <div class="cascade-body">
+      <div class="tf-purpose-label">Purpose</div>
+      <div class="tf-purpose">Locate intermediate structure and swing pivots</div>
+      <ul class="tf-checklist">
+        <li><span class="check-sq"></span>Is 4H trend aligned with daily trend?</li>
+        <li><span class="check-sq"></span>Swing highs and lows on 4H</li>
+        <li><span class="check-sq"></span>Key supply/demand zones between daily levels</li>
+        <li><span class="check-sq"></span>Is price near a 4H S/R zone right now?</li>
+        <li><span class="check-sq"></span>Volume confirmation of recent 4H moves</li>
+      </ul>
+      <div class="tf-question"><strong>Gating question:</strong> Is there intermediate structure supporting the daily trend? Where is the next meaningful level?</div>
+    </div>
+  </div>
+
+  <div class="cascade-arrow">→</div>
+
+  <!-- 1H -->
+  <div class="cascade-card tf-1h">
+    <div class="cascade-header">
+      <div class="tf-label">Timeframe 3</div>
+      <div class="tf-name">1-Hour Chart</div>
+      <div class="tf-role">Pattern + Timing</div>
+    </div>
+    <div class="cascade-body">
+      <div class="tf-purpose-label">Purpose</div>
+      <div class="tf-purpose">Identify the setup pattern and timing window</div>
+      <ul class="tf-checklist">
+        <li><span class="check-sq"></span>Is there a recognizable chart pattern forming?</li>
+        <li><span class="check-sq"></span>Where is VWAP relative to price?</li>
+        <li><span class="check-sq"></span>EMA 9/21 crossover or curl in trend direction?</li>
+        <li><span class="check-sq"></span>Consolidation near a 4H level = setup signal</li>
+        <li><span class="check-sq"></span>RSI returning from extreme = momentum reset</li>
+      </ul>
+      <div class="tf-question"><strong>Gating question:</strong> Is a valid setup pattern present and completing? Am I early or at the right time?</div>
+    </div>
+  </div>
+
+  <div class="cascade-arrow">→</div>
+
+  <!-- 15min -->
+  <div class="cascade-card tf-15m">
+    <div class="cascade-header">
+      <div class="tf-label">Timeframe 4</div>
+      <div class="tf-name">15-Minute Chart</div>
+      <div class="tf-role">Entry + Stop</div>
+    </div>
+    <div class="cascade-body">
+      <div class="tf-purpose-label">Purpose</div>
+      <div class="tf-purpose">Execute with precision — entry and stop placement</div>
+      <ul class="tf-checklist">
+        <li><span class="check-sq"></span>Trigger candle confirms direction (close, not wick)</li>
+        <li><span class="check-sq"></span>Entry price: break + retest of level, or trigger close</li>
+        <li><span class="check-sq"></span>Stop: below last 15min swing low (long) or above swing high (short)</li>
+        <li><span class="check-sq"></span>Target: nearest 1H or 4H resistance/support</li>
+        <li><span class="check-sq"></span>R:R ≥ 2:1 before entering</li>
+      </ul>
+      <div class="tf-question"><strong>Gating question:</strong> Where exactly is my entry, stop, and target? Is the R:R worth executing?</div>
+    </div>
+  </div>
+
+</div><!-- end cascade -->
+
+<!-- FINN Rule -->
+<div class="finn-rule-box">
+  <div class="finn-rule-icon">◆</div>
+  <div class="finn-rule-text">
+    <strong>FINN MTF Rule:</strong> Trade the daily trend direction. Time the entry on the 15-minute chart. Every other timeframe is context — it narrows the playing field so the 15-minute trigger has the highest probability setup possible. If the daily says uptrend, you are looking for long setups on the 15min. Period.
+  </div>
+</div>
+
+<!-- Alignment and Conflict Rules -->
+<div class="section-label">Alignment Rules + Conflict Handling</div>
+<div class="rules-grid">
+
+  <div class="rules-card">
+    <div class="rules-card-title">When Timeframes Align (High-Probability)</div>
+    <div class="rule-row">
+      <div class="rule-num">1</div>
+      <div class="rule-text">Daily uptrend + 4H uptrend + 1H setup forming + 15min trigger = highest probability long setup. All four pointing the same direction is the rarest and best condition.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-num">2</div>
+      <div class="rule-text">Three-timeframe alignment (daily + 4H + 1H) with 15min pending trigger = valid setup. Wait for the 15min trigger — do not force entry.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-num">3</div>
+      <div class="rule-text">Daily and 4H aligned but 1H in pullback = wait. The pullback on 1H <em>toward</em> a 4H level is the setup building — not a signal to enter yet.</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-num">4</div>
+      <div class="rule-text">Daily at key level + 4H at same level + volume confirmation = structural trade with strong confluence. Size up appropriately.</div>
+    </div>
+  </div>
+
+  <div class="rules-card">
+    <div class="rules-card-title">When Timeframes Conflict — What to Do</div>
+    <div class="conflict-row">
+      <div style="color:var(--muted)">Scenario</div>
+      <div style="color:var(--green)">Action</div>
+      <div style="color:var(--red)">Avoid</div>
+    </div>
+    <div class="conflict-row">
+      <div class="conflict-scenario">Daily bearish, 4H bullish bounce</div>
+      <div class="conflict-action">Wait for 4H to resolve direction</div>
+      <div class="conflict-avoid">Buying into daily downtrend</div>
+    </div>
+    <div class="conflict-row">
+      <div class="conflict-scenario">Daily bullish, 1H bearish divergence</div>
+      <div class="conflict-action">Reduce size; wait for 1H to reset</div>
+      <div class="conflict-avoid">Full position into divergence</div>
+    </div>
+    <div class="conflict-row">
+      <div class="conflict-scenario">4H and 1H aligned, daily neutral</div>
+      <div class="conflict-action">Take trade with tighter stops</div>
+      <div class="conflict-avoid">Holding for a multi-day trend</div>
+    </div>
+    <div class="conflict-row">
+      <div class="conflict-scenario">15min trigger against daily trend</div>
+      <div class="conflict-action">Skip the trade entirely</div>
+      <div class="conflict-avoid">Counter-trend entries on 15min alone</div>
+    </div>
+    <div class="conflict-row">
+      <div class="conflict-scenario">All timeframes conflicting</div>
+      <div class="conflict-action">Stay flat — no edge present</div>
+      <div class="conflict-avoid">Any entry when structure is unclear</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FINN Workflow Strip -->
+<div class="workflow-strip">
+  <div class="section-label" style="margin-top:0">FINN MTF Workflow — Every Trade, In Order</div>
+  <div class="workflow-steps">
+    <div class="workflow-step">
+      <div class="step-num">01</div>
+      <div class="step-tf" style="color:var(--blue)">Daily</div>
+      <div class="step-action">Read the trend</div>
+      <div class="step-detail">Uptrend or downtrend? Where are the major levels? What is RSI doing?</div>
+      <div class="step-gate">Gate: No clear trend = no trade today</div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">02</div>
+      <div class="step-tf" style="color:var(--green)">4H</div>
+      <div class="step-action">Find the structure</div>
+      <div class="step-detail">Swing pivots, S/R zones, volume profile. Is price near a meaningful 4H level?</div>
+      <div class="step-gate">Gate: No 4H level nearby = no trigger zone</div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">03</div>
+      <div class="step-tf" style="color:var(--amber)">1H</div>
+      <div class="step-action">Wait for the setup</div>
+      <div class="step-detail">Pattern forming? VWAP position? EMA behavior? Is price consolidating at 4H level?</div>
+      <div class="step-gate">Gate: No pattern = wait, not enter</div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">04</div>
+      <div class="step-tf" style="color:var(--purple)">15min</div>
+      <div class="step-action">Execute the trigger</div>
+      <div class="step-detail">Confirm trigger candle close. Set entry, stop, target. Verify R:R ≥ 2:1. Enter.</div>
+      <div class="step-gate">Gate: R:R &lt; 2:1 = skip this setup</div>
+    </div>
+    <div class="workflow-step">
+      <div class="step-num">05</div>
+      <div class="step-tf" style="color:var(--muted)">Manage</div>
+      <div class="step-action">Monitor on 1H</div>
+      <div class="step-detail">Manage the trade on 1H. Trail stop to 4H swings. Exit at 4H target, not 15min noise.</div>
+      <div class="step-gate">Gate: Don't manage on 15min — 1H only</div>
+    </div>
+  </div>
+</div>
+
+<!-- FINN Voice -->
+<div class="finn-voice">
+  <div class="finn-voice-label">FINN</div>
+  <p>"Most traders pick a timeframe and live there. The edge is in the cascade — you use higher timeframes to eliminate low-probability trades so that by the time you reach the 15-minute trigger, you're not gambling on a candle, you're confirming the last piece of a structure that three timeframes already agreed on. That's not analysis. That's a process."</p>
+</div>
+
+</body>
+</html>

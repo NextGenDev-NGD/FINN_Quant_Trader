@@ -89,25 +89,25 @@
 ### Infographics — Tier 2 (depth enhancements)
 | File | Status | Topic |
 |------|:------:|-------|
-| `infographics/ig_chart_patterns_continuation.html` | ⬜ C4 | Triangle, flag, pennant, wedge, rectangle |
-| `infographics/ig_chart_patterns_reversal.html` | ⬜ C4 | Double top/bottom, H&S, cup/handle |
-| `infographics/ig_fibonacci.html` | ⬜ C4 | Fibonacci retracement — levels, drawing, trader use |
-| `infographics/ig_heikin_ashi.html` | ⬜ C4 | Heikin Ashi vs. standard candles |
-| `infographics/ig_volume_analysis.html` | ⬜ C4 | Volume patterns — breakout, reversal, OBV, climactic |
-| `infographics/ig_trading_psychology.html` | ⬜ C5 | Emotions + biases — manifestation in trades, counter-strategies |
-| `infographics/ig_sentiment_indicators.html` | ⬜ C5 | Fear & Greed, AAII, P/C ratio, VIX — how to read |
-| `infographics/ig_market_open.html` | ⬜ C5 | Opening types, Asia-Europe range, first-30-min patterns |
-| `infographics/ig_trading_day_types.html` | ⬜ C5 | Trending, rotational, news-driven — ID + strategy fit |
-| `infographics/ig_market_traps.html` | ⬜ C5 | Bull trap, bear trap, stop hunt, false breakout |
-| `infographics/ig_mtf_analysis.html` | ⬜ C5 | Top-down framework — daily → 4hr → 1hr → 15min |
+| `infographics/ig_chart_patterns_continuation.html` | ✅ C4 | Triangle, flag, pennant, wedge, rectangle |
+| `infographics/ig_chart_patterns_reversal.html` | ✅ C4 | Double top/bottom, H&S, cup/handle, rounding bottom |
+| `infographics/ig_fibonacci.html` | ✅ C4 | Fibonacci retracement — levels, drawing, trader use |
+| `infographics/ig_heikin_ashi.html` | ✅ C4 | Heikin Ashi vs. standard candles |
+| `infographics/ig_volume_analysis.html` | ✅ C4 | Volume patterns — breakout, reversal, OBV, climactic |
+| `infographics/ig_trading_psychology.html` | ✅ C5 | Emotions + biases — manifestation in trades, counter-strategies |
+| `infographics/ig_sentiment_indicators.html` | ✅ C5 | Fear & Greed, AAII, P/C ratio, VIX — how to read |
+| `infographics/ig_market_open.html` | ✅ C5 | Opening types, Asia-Europe range, first-30-min patterns |
+| `infographics/ig_trading_day_types.html` | ✅ C5 | Trending, rotational, news-driven — ID + strategy fit |
+| `infographics/ig_market_traps.html` | ✅ C5 | Bull trap, bear trap, stop hunt, false breakout |
+| `infographics/ig_mtf_analysis.html` | ✅ C5 | Top-down framework — daily → 4hr → 1hr → 15min |
 
 ### Infographics — FINN-Specific
 | File | Status | Topic |
 |------|:------:|-------|
-| `infographics/ig_quant_workflow.html` | ⬜ C6 | FINN's 9-step quant workflow — flowchart |
-| `infographics/ig_performance_metrics.html` | ⬜ C6 | Sharpe, drawdown, win rate, expectancy — reference card |
-| `infographics/ig_risk_rules.html` | ⬜ C6 | 6 non-negotiable risk rules — one-pager |
-| `infographics/ig_multi_signal.html` | ⬜ C6 | Multi-signal scoring — weighted composite, veto logic |
+| `infographics/ig_quant_workflow.html` | ✅ C6 | FINN's 9-step quant workflow — flowchart |
+| `infographics/ig_performance_metrics.html` | ✅ C6 | Sharpe, drawdown, win rate, expectancy — reference card |
+| `infographics/ig_risk_rules.html` | ✅ C6 | 6 non-negotiable risk rules — one-pager |
+| `infographics/ig_multi_signal.html` | ✅ C6 | Multi-signal scoring — weighted composite, veto logic |
 
 ---
 
@@ -123,9 +123,9 @@
 | C | C1 | ✅ Done | Infographics: Candlesticks, S&R, Trendlines, Gaps |
 | C | C2 | ✅ Done | Infographics: Trade Types, Order Types, Broker Comparison |
 | C | C3 | ✅ Done | Infographics: Platform Guides + Info Sources |
-| C | C4 | ⬜ | Infographics: Chart Patterns, Fibonacci, Heikin Ashi, Volume |
-| C | C5 | ⬜ | Infographics: Psychology, Sentiment, Market Context |
-| C | C6 | ⬜ | Infographics: FINN-Specific + Index finalized |
+| C | C4 | ✅ Done | Infographics: Chart Patterns, Fibonacci, Heikin Ashi, Volume |
+| C | C5 | ✅ Done | Infographics: Psychology, Sentiment, Market Context |
+| C | C6 | ✅ Done | Infographics: FINN-Specific + Index finalized |
 | D | D1 | ⬜ | Monthly: Month 1 + 2 resource callouts |
 | D | D2 | ⬜ | Monthly: Month 3–6 resource callouts |
 | E | E1 | ⬜ | Weekly: W01–W04 additions |

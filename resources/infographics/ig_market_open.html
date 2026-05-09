@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Reading the Market Open</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+    --subtext: #c9d1d9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; padding: 24px 16px; }
+  .page-wrap { max-width: 1200px; margin: 0 auto; }
+
+  .page-header { text-align: center; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid var(--blue); }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--blue); }
+  .page-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .finn-tag { display: inline-block; background: #1f2937; border: 1px solid var(--blue); color: var(--blue); font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-top: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 28px 0 14px; padding-left: 10px; border-left: 3px solid var(--blue); }
+
+  /* Timeline strip */
+  .timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .tl-slot { padding: 16px 14px; border-right: 1px solid var(--border); }
+  .tl-slot:last-child { border-right: none; }
+  .tl-time { font-family: 'Courier New', monospace; font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 4px; }
+  .tl-phase { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .tl-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .tl-slot.active { background: rgba(88,166,255,0.06); }
+  .tl-slot.caution { background: rgba(248,81,73,0.05); }
+
+  /* Gap scenarios */
+  .gap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+  .gap-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .gap-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .gap-name { font-weight: 700; font-size: 14px; }
+  .gap-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; }
+  .gap-body { padding: 14px 16px; }
+  .gap-row { margin-bottom: 8px; }
+  .gap-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 2px; }
+  .gap-val { font-size: 12px; color: var(--subtext); }
+  .gap-val strong { color: var(--text); }
+  .gap-val .green { color: var(--green); }
+  .gap-val .red { color: var(--red); }
+  .gap-val .amber { color: var(--amber); }
+
+  /* Opening pattern cards */
+  .pattern-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+  .pattern-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .pattern-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+  .pattern-title.bull { color: var(--green); }
+  .pattern-title.bear { color: var(--red); }
+  .pattern-title.neutral { color: var(--amber); }
+  .pattern-desc { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .pattern-how { font-size: 11px; }
+  .pattern-how span { display: block; margin-bottom: 3px; padding-left: 12px; position: relative; color: var(--subtext); }
+  .pattern-how span::before { content: '▸'; position: absolute; left: 0; color: var(--blue); }
+
+  /* Pre-market checklist */
+  .premarket-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+  .pm-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+  .pm-title { font-size: 12px; font-weight: 700; color: var(--blue); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .pm-list { list-style: none; }
+  .pm-list li { font-size: 12px; color: var(--subtext); margin-bottom: 7px; padding-left: 18px; position: relative; }
+  .pm-list li::before { content: '□'; position: absolute; left: 0; color: var(--border); }
+  .pm-list li strong { color: var(--text); display: block; }
+  .pm-list li span { color: var(--muted); font-size: 11px; }
+
+  /* Asia/EU range box */
+  .range-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+  .range-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .range-title { font-size: 12px; font-weight: 700; color: var(--amber); margin-bottom: 8px; }
+  .range-hours { font-family: 'Courier New', monospace; font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .range-desc { font-size: 12px; color: var(--subtext); }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .warn-box { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); border-radius: 6px; padding: 12px 16px; margin: 16px 0; }
+  .warn-box p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .warn-box p:last-child { margin-bottom: 0; }
+  .warn-box strong { color: var(--red); }
+
+  .finn-note { background: rgba(63,185,80,0.06); border-left: 3px solid var(--green); padding: 12px 16px; margin: 20px 0; border-radius: 0 6px 6px 0; }
+  .finn-note p { font-size: 13px; color: var(--text); font-style: italic; }
+
+  .page-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .gap-card, .pattern-card, .pm-card, .range-card { border: 1px solid #ccc; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="page-header">
+    <h1>Reading the Market Open</h1>
+    <div class="subtitle">Pre-Market Context · Overnight Sessions · Gap Scenarios · First 30-Minute Patterns · Opening Types</div>
+    <div class="finn-tag">FINN Knowledge Base · HB P4 §4.3 · First appears W01</div>
+  </div>
+
+  <div class="rule-box">
+    <p><strong>FINN framing:</strong> The first 30 minutes of trading is the most volatile, most manipulated, and most information-dense window of the day. Professional traders use this window to read the market's intentions — not to execute their best trades. The open tells you <strong>what kind of day it is likely to be</strong>. Act on that information deliberately, not impulsively.</p>
+  </div>
+
+  <!-- Daily Timeline -->
+  <div class="section-title">The Trading Day — Key Time Windows (ET)</div>
+  <div class="timeline">
+    <div class="tl-slot">
+      <div class="tl-time">4:00–9:30 AM</div>
+      <div class="tl-phase">Pre-Market</div>
+      <div class="tl-desc">Low liquidity. Gap direction set by overnight news, earnings, futures. Read the context — do not trade for most setups.</div>
+    </div>
+    <div class="tl-slot caution">
+      <div class="tl-time">9:30–10:00</div>
+      <div class="tl-phase">Opening Auction</div>
+      <div class="tl-desc">Highest intraday volatility. Market makers set spreads wide. Most false moves happen here. Observe and classify — do not enter until 10:00 for most strategies.</div>
+    </div>
+    <div class="tl-slot active">
+      <div class="tl-time">10:00–11:30</div>
+      <div class="tl-phase">Best Entry Window</div>
+      <div class="tl-desc">Opening volatility has settled. Trend direction establishing. Best risk/reward window for most intraday and swing entries. Prime time for FINN setups.</div>
+    </div>
+    <div class="tl-slot">
+      <div class="tl-time">11:30–1:30 PM</div>
+      <div class="tl-phase">Midday Lull</div>
+      <div class="tl-desc">Volume drops. Spreads widen. Choppy, low-conviction movement. Most FINN strategies avoid new entries. Manage existing positions, review journal.</div>
+    </div>
+    <div class="tl-slot active">
+      <div class="tl-time">1:30–4:00 PM</div>
+      <div class="tl-phase">Afternoon Session</div>
+      <div class="tl-desc">Volume resumes. Institutional end-of-day positioning. Last 30 minutes (3:30–4:00) sees elevated volume and can confirm or reverse intraday trends.</div>
+    </div>
+  </div>
+
+  <!-- Overnight sessions -->
+  <div class="section-title">Overnight Sessions — Global Context Before the Open</div>
+  <div class="range-grid">
+    <div class="range-card">
+      <div class="range-title">Asia Session</div>
+      <div class="range-hours">Tokyo: 7:00 PM – 4:00 AM ET<br>Shanghai: 9:30 PM – 3:00 AM ET</div>
+      <div class="range-desc">Sets the initial overnight tone. China/Japan market moves can drive gap direction in US futures. Check Nikkei, Hang Seng, Shanghai Composite direction and % move. Moves &gt;1% are meaningful context for the US open.</div>
+    </div>
+    <div class="range-card">
+      <div class="range-title">Europe Session</div>
+      <div class="range-hours">London: 3:00 AM – 12:00 PM ET<br>Frankfurt: 3:00 AM – 11:30 AM ET</div>
+      <div class="range-desc">European open creates the largest pre-US volatility spike. DAX and FTSE direction reinforces or contradicts Asia. When Europe rallies strongly, US futures often follow. Europe high and low become key S&amp;R levels at the US open.</div>
+    </div>
+    <div class="range-card">
+      <div class="range-title">US Futures (/ES, /NQ)</div>
+      <div class="range-hours">Nearly 24 hours (Sun 6PM – Fri 5PM ET)<br>Key window: 6:00 AM – 9:30 AM ET</div>
+      <div class="range-desc">The most direct pre-market indicator for US equities. /ES = S&amp;P 500. /NQ = Nasdaq. Pre-market futures direction, level vs prior close, and volume tell you the gap and opening bias before the 9:30 bell. Check during the DMB.</div>
+    </div>
+  </div>
+
+  <!-- Gap scenarios -->
+  <div class="section-title">Opening Gap Scenarios — 4 Situations at 9:30 AM</div>
+  <div class="gap-grid">
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="gap-name" style="color:var(--green)">Gap Up — Holds and Runs</div>
+        <span class="gap-badge" style="background:rgba(63,185,80,0.15); color:var(--green); border: 1px solid rgba(63,185,80,0.3);">Bullish Continuation</span>
+      </div>
+      <div class="gap-body">
+        <div class="gap-row">
+          <div class="gap-label">What it looks like</div>
+          <div class="gap-val">Opens significantly above prior close. After an initial volatile first 5–10 minutes, price consolidates near the open and then breaks higher.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Volume signature</div>
+          <div class="gap-val"><span class="green">High opening volume, remains elevated.</span> Buyers absorbing any dip attempts.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Strategy</div>
+          <div class="gap-val">Wait for 10:00 AM pullback to VWAP or opening range support. Enter on bounce with stop below opening range low. Target: measured move up from the gap.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Context clues</div>
+          <div class="gap-val">Positive catalyst (earnings beat, upgrade). Strong sector. Futures up strongly. Asia + Europe green.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="gap-name" style="color:var(--amber)">Gap Up — Fades and Fills</div>
+        <span class="gap-badge" style="background:rgba(210,153,34,0.15); color:var(--amber); border: 1px solid rgba(210,153,34,0.3);">Bearish (False Gap)</span>
+      </div>
+      <div class="gap-body">
+        <div class="gap-row">
+          <div class="gap-label">What it looks like</div>
+          <div class="gap-val">Opens above prior close. Initial pop quickly rejected. Price trends back down toward the prior day's close (gap fill) or below.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Volume signature</div>
+          <div class="gap-val"><span class="amber">High opening volume but shifts to downside.</span> Sellers emerge on any early high. Buying quickly exhausted.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Strategy</div>
+          <div class="gap-val">Let the gap attempt fail. Watch for a rejection candle at the open high. Enter short (or exit longs) when price breaks below the opening range low on volume.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Context clues</div>
+          <div class="gap-val">Weak catalyst or no catalyst for the gap. Prior day's close was already resistance. Sector trend bearish. Market generally weak.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="gap-name" style="color:var(--red)">Gap Down — Holds and Runs Lower</div>
+        <span class="gap-badge" style="background:rgba(248,81,73,0.15); color:var(--red); border: 1px solid rgba(248,81,73,0.3);">Bearish Continuation</span>
+      </div>
+      <div class="gap-body">
+        <div class="gap-row">
+          <div class="gap-label">What it looks like</div>
+          <div class="gap-val">Opens below prior close. Any early bounce is shallow and quickly rejected. Price trends lower throughout the morning.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Volume signature</div>
+          <div class="gap-val"><span class="red">Heavy selling throughout. Bounces fail on low volume.</span> No serious buying pressure absorbed.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Strategy</div>
+          <div class="gap-val">Wait for 10:00 AM dead-cat bounce attempt to VWAP or opening range resistance. Enter short on rejection. Target: measured move down, prior support levels.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Context clues</div>
+          <div class="gap-val">Negative catalyst. Sector collapse. Futures down strongly. Europe and Asia both down. High VIX environment.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gap-card">
+      <div class="gap-header">
+        <div class="gap-name" style="color:var(--green)">Gap Down — Reverses and Fills</div>
+        <span class="gap-badge" style="background:rgba(63,185,80,0.15); color:var(--green); border: 1px solid rgba(63,185,80,0.3);">Bullish (False Gap)</span>
+      </div>
+      <div class="gap-body">
+        <div class="gap-row">
+          <div class="gap-label">What it looks like</div>
+          <div class="gap-val">Opens below prior close. Initial downside extends briefly, then buyers take control. Price rallies back toward the prior close (gap fill) and sometimes above.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Volume signature</div>
+          <div class="gap-val"><span class="green">Selling exhausted quickly at the low. Buying volume increases.</span> Often a capitulation wick on the open followed by a strong reversal candle.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Strategy</div>
+          <div class="gap-val">Wait for the reversal confirmation — a strong green candle closing above VWAP. Enter long with stop below the opening low. Target: prior close (gap fill), then prior high.</div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Context clues</div>
+          <div class="gap-val">Oversold market. Sentiment extreme. Weak catalyst for the gap (overreaction). Prior day's close was support. Buyers defending a key level.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Opening patterns -->
+  <div class="section-title">First 30-Minute Opening Patterns — Recognizing Day Type Early</div>
+  <div class="pattern-grid">
+    <div class="pattern-card">
+      <div class="pattern-title bull">Opening Drive</div>
+      <div class="pattern-desc">Price opens and immediately trends in one direction with strong, sustained volume. Very little pullback in first 15 minutes.</div>
+      <div class="pattern-how">
+        <span>Implies: trend day likely in progress</span>
+        <span>Strategy: trade with the trend, buy dips to 9 EMA</span>
+        <span>Risk: if it reverses hard, exit quickly — don't fight it</span>
+        <span>Volume: must remain elevated to trust the drive</span>
+      </div>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-title neutral">Opening Range Buildup</div>
+      <div class="pattern-desc">Price establishes a tight range in the first 15–30 minutes. Low volatility. Market digesting direction.</div>
+      <div class="pattern-how">
+        <span>Implies: range or breakout day developing</span>
+        <span>Strategy: wait for breakout of opening range, then enter in breakout direction</span>
+        <span>Target: 1–1.5× the opening range width projected from breakout</span>
+        <span>Stop: opposite end of the opening range</span>
+      </div>
+    </div>
+    <div class="pattern-card">
+      <div class="pattern-title bear">Opening Reversal</div>
+      <div class="pattern-desc">Price initially moves sharply in one direction (often the gap direction), then reverses hard in the opposite direction within the first 30 minutes.</div>
+      <div class="pattern-how">
+        <span>Implies: the gap direction was wrong — reversal day likely</span>
+        <span>Strategy: trade the reversal direction after confirmation of the turn</span>
+        <span>Key candle: a large rejection candle closing through VWAP</span>
+        <span>Risk: reversal days can be choppy — use tight stops</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pre-market checklist -->
+  <div class="section-title">Pre-Market Checklist — DMB Opening Context (6:30–9:30 AM)</div>
+  <div class="premarket-grid">
+    <div class="pm-card">
+      <div class="pm-title">Futures &amp; Overnight Context</div>
+      <ul class="pm-list">
+        <li><strong>/ES and /NQ direction</strong><span>Up or down from prior close? By how much? More than 0.5% is meaningful context.</span></li>
+        <li><strong>Asia close</strong><span>Nikkei, Hang Seng, Shanghai — direction and % move. Sustained selloff in Asia = risk-off US open likely.</span></li>
+        <li><strong>Europe direction</strong><span>DAX, FTSE open — are they confirming or contradicting Asia? Divergence adds uncertainty.</span></li>
+        <li><strong>Overnight news</strong><span>Any economic data (CPI, jobs), Fed comments, geopolitical events. These explain the gap — they don't predict the fill.</span></li>
+        <li><strong>Pre-market earnings</strong><span>Any major names reporting? Check SPY/QQQ sector allocation. Large-cap misses can drag the whole market.</span></li>
+      </ul>
+    </div>
+    <div class="pm-card">
+      <div class="pm-title">Technical Setup Context</div>
+      <ul class="pm-list">
+        <li><strong>SPY/QQQ prior day close</strong><span>Where did the market close relative to VWAP, daily S&amp;R, and key moving averages?</span></li>
+        <li><strong>Gap identification</strong><span>Is today opening with a gap? Up or down? Size: small (&lt;0.3%) or meaningful (&gt;0.5%)?</span></li>
+        <li><strong>VIX level</strong><span>What is today's VIX vs. prior close? Rising VIX = uncertainty growing. Falling VIX = market calming.</span></li>
+        <li><strong>Watchlist setups</strong><span>Which stocks on watchlist have overnight catalysts? Which are forming opening patterns worth watching?</span></li>
+        <li><strong>Today's hypothesis</strong><span>Write it: "My read on today's opening is ___ because ___. I expect ___ to happen and will watch ___ for confirmation."</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <p><strong>The First 15 Minutes Rule:</strong> The 9:30–9:45 AM window is dominated by market makers adjusting spreads, algorithms executing overnight orders, and retail traders reacting emotionally to the gap. The majority of false moves — gap-and-crap, false breakouts, stop hunts — happen in this window. The safest default is to observe and classify, not to trade, until 10:00 AM when the opening range has been established.</p>
+    <p>If you do trade before 10:00, size down by 50%. The probability distribution in the first 15 minutes is materially different from later in the session.</p>
+  </div>
+
+  <div class="finn-note">
+    <p>"The open tells you a story. Your job is to listen before you act. What is the gap direction? Is it holding or fading? What is the volume doing? Where is VWAP relative to price? These are the first four questions. Answer them before you click anything. The market will still be open at 10:15."</p>
+  </div>
+
+  <div class="page-footer">
+    <span>FINN Knowledge Base · ig_market_open.html · HB P4 §4.3</span>
+    <span>Session C5.a · Built May 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

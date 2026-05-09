@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Quantitative Workflow</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --muted: #8b949e;
+    --purple: #bc8cff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header {
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .finn-tag {
+    font-size: 11px;
+    color: var(--blue);
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .badge {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+
+  .framing-box {
+    background: var(--card);
+    border: 1px solid var(--blue);
+    border-left: 4px solid var(--blue);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+  .framing-box p { color: var(--text); font-size: 12px; }
+  .framing-box strong { color: var(--blue); }
+
+  /* Workflow flowchart — vertical spine */
+  .flow-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+
+  .flow-phase {
+    display: flex;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  /* Phase label on left */
+  .phase-label {
+    width: 80px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding-right: 10px;
+  }
+  .phase-name {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-align: right;
+    line-height: 1.3;
+  }
+  .phase-research .phase-name { color: var(--blue); }
+  .phase-build .phase-name    { color: var(--green); }
+  .phase-test .phase-name     { color: var(--amber); }
+  .phase-trade .phase-name    { color: var(--purple); }
+
+  /* Connector spine */
+  .spine-col {
+    width: 32px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .spine-node {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: var(--bg);
+    z-index: 1;
+  }
+  .phase-research .spine-node { border-color: var(--blue); color: var(--blue); }
+  .phase-build .spine-node    { border-color: var(--green); color: var(--green); }
+  .phase-test .spine-node     { border-color: var(--amber); color: var(--amber); }
+  .phase-trade .spine-node    { border-color: var(--purple); color: var(--purple); }
+
+  .spine-line {
+    width: 2px;
+    flex: 1;
+    min-height: 12px;
+    background: var(--border);
+  }
+  .spine-line-top  { margin-bottom: 0; }
+  .spine-line-bot  { margin-top: 0; }
+
+  /* Step card on right */
+  .step-card {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .step-card:last-child { margin-bottom: 0; }
+
+  .step-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+  .step-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .step-tool {
+    font-size: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 7px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .step-desc {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .step-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .action-chip {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  .step-output {
+    margin-top: 7px;
+    font-size: 10px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .output-label {
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  /* Gate between phases */
+  .phase-gate {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin: 2px 0;
+  }
+  .gate-spacer { width: 80px; flex-shrink: 0; }
+  .gate-spine {
+    width: 32px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .gate-spine-inner {
+    width: 2px;
+    height: 24px;
+    background: var(--border);
+  }
+  .gate-box {
+    flex: 1;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 10px;
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .gate-icon { font-size: 12px; }
+
+  /* IC table */
+  .ic-table-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .ic-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .ic-table th {
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 7px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .ic-table td {
+    padding: 7px 10px;
+    font-size: 11px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .ic-table tr:last-child td { border-bottom: none; }
+  .ic-table tr:hover td { background: rgba(88, 166, 255, 0.04); }
+
+  .tag-pass  { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; background:rgba(63,185,80,.15); color:var(--green); }
+  .tag-fail  { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; background:rgba(248,81,73,.15); color:var(--red); }
+  .tag-check { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; background:rgba(88,166,255,.12); color:var(--blue); }
+
+  /* FINN voice */
+  .finn-voice {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 20px;
+  }
+  .finn-voice-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+  }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; }
+
+  @media print {
+    body { background: white; color: black; padding: 12px; }
+    .step-card, .ic-table-wrapper, .gate-box, .framing-box, .finn-voice { border-color: #ccc !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <h1>FINN Quantitative Workflow</h1>
+      <div class="subtitle">9-step process from hypothesis to live trade — repeatable, testable, documented</div>
+    </div>
+    <div class="badge">Tier 2 · FINN-Specific</div>
+  </div>
+</div>
+
+<div class="framing-box">
+  <p><strong>FINN framing rule:</strong> Every trade starts as a hypothesis. A hypothesis is only as good as the test behind it. FINN's workflow exists so that the process from "I think X works" to "I am trading X" is never skipped, compressed, or guessed. <strong>No IC, no trade. No out-of-sample test, no capital allocation.</strong></p>
+</div>
+
+<div class="section-label">The 9-Step Workflow</div>
+
+<div class="flow-container">
+
+  <!-- PHASE: RESEARCH -->
+  <!-- Step 1 -->
+  <div class="flow-phase phase-research">
+    <div class="phase-label"><div class="phase-name">Research</div></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-node">1</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Define the Hypothesis</div>
+        <div class="step-tool">Python · Markdown</div>
+      </div>
+      <div class="step-desc">State the edge in one testable sentence: "When X condition is true, Y outcome occurs Z% of the time." If you can't write the null hypothesis, you don't have a hypothesis.</div>
+      <div class="step-actions">
+        <span class="action-chip">Name the signal</span>
+        <span class="action-chip">Define universe</span>
+        <span class="action-chip">Set lookback window</span>
+        <span class="action-chip">Write null hypothesis</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> Hypothesis statement + null in plain English</div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="flow-phase phase-research">
+    <div class="phase-label"></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top"></div>
+      <div class="spine-node">2</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Pull and Clean the Data</div>
+        <div class="step-tool">yfinance · pandas</div>
+      </div>
+      <div class="step-desc">Download OHLCV data for the full lookback period. Flatten columns, handle splits/dividends, fill or drop NaNs. Log your data source and date range.</div>
+      <div class="step-actions">
+        <span class="action-chip">yf.download()</span>
+        <span class="action-chip">Flatten columns</span>
+        <span class="action-chip">Check for gaps</span>
+        <span class="action-chip">Document date range</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> Clean OHLCV DataFrame with verified index</div>
+    </div>
+  </div>
+
+  <!-- Gate 1 -->
+  <div class="phase-gate">
+    <div class="gate-spacer"></div>
+    <div class="gate-spine"><div class="gate-spine-inner"></div></div>
+    <div class="gate-box"><span class="gate-icon">◆</span> Gate: Data complete and gap-free? If not, fix before continuing.</div>
+  </div>
+
+  <!-- PHASE: BUILD -->
+  <!-- Step 3 -->
+  <div class="flow-phase phase-build">
+    <div class="phase-label"><div class="phase-name">Build</div></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-node">3</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Engineer the Features</div>
+        <div class="step-tool">pandas_ta · pandas</div>
+      </div>
+      <div class="step-desc">Compute the technical indicators and derived features that define your signal. Each feature must have a clear role — no kitchen-sink feature dumps.</div>
+      <div class="step-actions">
+        <span class="action-chip">pandas_ta indicators</span>
+        <span class="action-chip">Rolling windows</span>
+        <span class="action-chip">Lag variables</span>
+        <span class="action-chip">Target variable</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> Feature DataFrame — each column named and documented</div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="flow-phase phase-build">
+    <div class="phase-label"></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top"></div>
+      <div class="spine-node">4</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Run the In-Sample Backtest</div>
+        <div class="step-tool">xgboost · scikit-learn</div>
+      </div>
+      <div class="step-desc">Train on the in-sample period (first 70–80% of data). Generate signals. Compute IC, win rate, Sharpe ratio, and max drawdown. This is your baseline, not your truth.</div>
+      <div class="step-actions">
+        <span class="action-chip">Train/test split (time-based)</span>
+        <span class="action-chip">IC calculation</span>
+        <span class="action-chip">Signal generation</span>
+        <span class="action-chip">Equity curve</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> IS performance metrics — IC, Sharpe, drawdown, win rate</div>
+    </div>
+  </div>
+
+  <!-- Gate 2 -->
+  <div class="phase-gate">
+    <div class="gate-spacer"></div>
+    <div class="gate-spine"><div class="gate-spine-inner"></div></div>
+    <div class="gate-box"><span class="gate-icon">◆</span> Gate: IC &gt; 0.05 in-sample? If not, revise hypothesis — do not proceed to OOS.</div>
+  </div>
+
+  <!-- PHASE: TEST -->
+  <!-- Step 5 -->
+  <div class="flow-phase phase-test">
+    <div class="phase-label"><div class="phase-name">Test</div></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-node">5</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Out-of-Sample Validation</div>
+        <div class="step-tool">scikit-learn · pandas</div>
+      </div>
+      <div class="step-desc">Evaluate the model on the held-out period (last 20–30% of data). No retraining allowed. If IC collapses OOS, the in-sample edge was overfitting, not a real edge.</div>
+      <div class="step-actions">
+        <span class="action-chip">Apply IS model to OOS</span>
+        <span class="action-chip">Compute OOS IC</span>
+        <span class="action-chip">Compare IS vs. OOS Sharpe</span>
+        <span class="action-chip">Log decay rate</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> OOS performance metrics — IC, Sharpe, drawdown vs. IS</div>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="flow-phase phase-test">
+    <div class="phase-label"></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top"></div>
+      <div class="spine-node">6</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Stress Test the Edge</div>
+        <div class="step-tool">pandas · numpy</div>
+      </div>
+      <div class="step-desc">Test the strategy across different market regimes (trending, choppy, crisis), vary key parameters ±20%, and confirm the edge isn't parameter-sensitive fragility.</div>
+      <div class="step-actions">
+        <span class="action-chip">Regime slicing</span>
+        <span class="action-chip">Parameter sensitivity</span>
+        <span class="action-chip">Drawdown stress test</span>
+        <span class="action-chip">Transaction cost impact</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> Stress test report — performance across regimes, parameter stability</div>
+    </div>
+  </div>
+
+  <!-- Gate 3 -->
+  <div class="phase-gate">
+    <div class="gate-spacer"></div>
+    <div class="gate-spine"><div class="gate-spine-inner"></div></div>
+    <div class="gate-box"><span class="gate-icon">◆</span> Gate: OOS IC &gt; 0.03 AND stable across ±20% parameter variation? If not, back to Step 3.</div>
+  </div>
+
+  <!-- Step 7 -->
+  <div class="flow-phase phase-test">
+    <div class="phase-label"></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top"></div>
+      <div class="spine-node">7</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Paper Trade the Signal</div>
+        <div class="step-tool">Webull · Signal log</div>
+      </div>
+      <div class="step-desc">Run the live signal in Webull paper trading for a minimum of 20 trades or 4 weeks, whichever is longer. Record every entry, exit, and reason in the signal log.</div>
+      <div class="step-actions">
+        <span class="action-chip">Live signal generation</span>
+        <span class="action-chip">Paper orders</span>
+        <span class="action-chip">Daily log entry</span>
+        <span class="action-chip">Compare to backtest</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> signal_report_YYYYMMDD.csv — live vs. backtest IC comparison</div>
+    </div>
+  </div>
+
+  <!-- Gate 4 -->
+  <div class="phase-gate">
+    <div class="gate-spacer"></div>
+    <div class="gate-spine"><div class="gate-spine-inner"></div></div>
+    <div class="gate-box"><span class="gate-icon">◆</span> Gate: Paper trade IC within 25% of backtest IC? Live drawdown acceptable? Proceed to capital allocation.</div>
+  </div>
+
+  <!-- PHASE: TRADE -->
+  <!-- Step 8 -->
+  <div class="flow-phase phase-trade">
+    <div class="phase-label"><div class="phase-name">Trade</div></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-node">8</div>
+      <div class="spine-line spine-line-bot"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Size and Risk Allocation</div>
+        <div class="step-tool">Risk rules · Position sizing</div>
+      </div>
+      <div class="step-desc">Apply FINN's 6 risk rules to determine position size, max exposure, and stop placement before the first live trade. Capital allocation is a function of IC, not conviction.</div>
+      <div class="step-actions">
+        <span class="action-chip">Max 2% portfolio risk/trade</span>
+        <span class="action-chip">ATR-based stops</span>
+        <span class="action-chip">Sector concentration limit</span>
+        <span class="action-chip">Kelly sizing (if IC validated)</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> Position size per trade, max drawdown threshold for shutdown</div>
+    </div>
+  </div>
+
+  <!-- Step 9 -->
+  <div class="flow-phase phase-trade">
+    <div class="phase-label"></div>
+    <div class="spine-col">
+      <div class="spine-line spine-line-top"></div>
+      <div class="spine-node">9</div>
+      <div class="spine-line spine-line-bot" style="min-height:6px;"></div>
+    </div>
+    <div class="step-card">
+      <div class="step-top">
+        <div class="step-name">Monitor, Log, and Iterate</div>
+        <div class="step-tool">all_trades.csv · monthly review</div>
+      </div>
+      <div class="step-desc">Log every live trade in all_trades_[initials].csv. Review IC monthly. If live IC decays below threshold for 2 consecutive months, stop trading and return to Step 5 (re-validate).</div>
+      <div class="step-actions">
+        <span class="action-chip">Daily P&amp;L log</span>
+        <span class="action-chip">Monthly IC review</span>
+        <span class="action-chip">Sharpe trending?</span>
+        <span class="action-chip">Iteration trigger</span>
+      </div>
+      <div class="step-output"><span class="output-label">Output:</span> Monthly performance report — live IC, Sharpe, drawdown vs. target</div>
+    </div>
+  </div>
+
+</div><!-- end flow-container -->
+
+<!-- IC threshold table -->
+<div class="section-label">Gate Thresholds — IC Reference</div>
+<div class="ic-table-wrapper">
+  <table class="ic-table">
+    <thead>
+      <tr>
+        <th>Gate</th>
+        <th>After Step</th>
+        <th>Pass Condition</th>
+        <th>Fail Action</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Data Quality</td>
+        <td>Step 2</td>
+        <td>No gaps, no duplicates, correct date range</td>
+        <td>Fix data before any modeling</td>
+        <td><span class="tag-check">Pre-model</span></td>
+      </tr>
+      <tr>
+        <td>In-Sample IC</td>
+        <td>Step 4</td>
+        <td>IC &gt; 0.05 on in-sample period</td>
+        <td>Revise hypothesis or features</td>
+        <td><span class="tag-pass">Required</span></td>
+      </tr>
+      <tr>
+        <td>OOS IC</td>
+        <td>Step 5</td>
+        <td>IC &gt; 0.03 on held-out period</td>
+        <td>Return to Step 3 — refeature</td>
+        <td><span class="tag-pass">Required</span></td>
+      </tr>
+      <tr>
+        <td>Parameter Stability</td>
+        <td>Step 6</td>
+        <td>Performance stable across ±20% param variation</td>
+        <td>Simplify model or widen parameters</td>
+        <td><span class="tag-pass">Required</span></td>
+      </tr>
+      <tr>
+        <td>Paper Trade IC</td>
+        <td>Step 7</td>
+        <td>Live IC within 25% of backtest IC</td>
+        <td>Investigate slippage, timing, data lag</td>
+        <td><span class="tag-pass">Required</span></td>
+      </tr>
+      <tr>
+        <td>Live IC Decay</td>
+        <td>Step 9 (ongoing)</td>
+        <td>Monthly IC &gt; 0.03 for 2+ consecutive months</td>
+        <td>Stop trading; return to Step 5</td>
+        <td><span class="tag-fail">Kill switch</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="finn-voice">
+  <div class="finn-voice-label">FINN</div>
+  <p>"The workflow is not bureaucracy — it's the difference between a trader who has a process and one who has luck. Luck runs out. A process that produces a testable IC, survives OOS, holds up in paper trading, and degrades gracefully when market conditions change is the only kind of edge worth allocating capital to. Show me the IC."</p>
+</div>
+
+</body>
+</html>

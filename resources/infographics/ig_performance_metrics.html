@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Performance Metrics Reference</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --muted: #8b949e;
+    --purple: #bc8cff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .header {
+    border-bottom: 2px solid var(--blue);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+  }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  .finn-tag { font-size: 11px; color: var(--blue); letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+  h1 { font-size: 22px; font-weight: 700; color: var(--text); }
+  .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .badge { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: var(--muted); }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px; margin-top: 20px;
+  }
+
+  .framing-box {
+    background: var(--card); border: 1px solid var(--blue); border-left: 4px solid var(--blue);
+    border-radius: 6px; padding: 12px 16px; margin-bottom: 20px;
+  }
+  .framing-box p { color: var(--text); font-size: 12px; }
+  .framing-box strong { color: var(--blue); }
+
+  /* Primary metric cards */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .metric-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .metric-header {
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .metric-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .metric-abbrev {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 4px;
+    padding: 2px 8px;
+  }
+
+  .metric-body { padding: 12px 14px; }
+
+  .metric-formula {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--purple);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .metric-what { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+
+  .thresholds-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .threshold-rows { display: flex; flex-direction: column; gap: 3px; }
+  .threshold-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 6px; border-radius: 3px;
+  }
+  .th-range { font-size: 11px; font-weight: 700; font-family: monospace; min-width: 90px; }
+  .th-label { font-size: 11px; flex: 1; }
+  .th-action { font-size: 10px; }
+
+  .row-great  { background: rgba(63,185,80,.08); }
+  .row-good   { background: rgba(88,166,255,.08); }
+  .row-ok     { background: rgba(210,153,34,.08); }
+  .row-bad    { background: rgba(248,81,73,.08); }
+
+  .color-great { color: var(--green); }
+  .color-good  { color: var(--blue); }
+  .color-ok    { color: var(--amber); }
+  .color-bad   { color: var(--red); }
+
+  /* Python snippet */
+  .code-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .code-title { font-size: 11px; font-weight: 700; color: var(--text); }
+  .code-lang { font-size: 10px; color: var(--muted); }
+  pre.code-block {
+    padding: 12px 14px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--text);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .c-comment { color: var(--muted); }
+  .c-keyword  { color: var(--purple); }
+  .c-func     { color: var(--blue); }
+  .c-string   { color: var(--green); }
+  .c-num      { color: var(--amber); }
+
+  /* Interpretation matrix */
+  .interp-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .interp-table th {
+    background: var(--bg); color: var(--muted); font-size: 10px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; padding: 8px 12px;
+    text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .interp-table td {
+    padding: 8px 12px; font-size: 11px; border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .interp-table tr:last-child td { border-bottom: none; }
+  .interp-table tr:hover td { background: rgba(88,166,255,.04); }
+
+  .tag { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; font-weight:600; }
+  .tag-g { background:rgba(63,185,80,.15); color:var(--green); }
+  .tag-b { background:rgba(88,166,255,.12); color:var(--blue); }
+  .tag-a { background:rgba(210,153,34,.15); color:var(--amber); }
+  .tag-r { background:rgba(248,81,73,.15); color:var(--red); }
+
+  .finn-voice {
+    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--amber);
+    border-radius: 6px; padding: 12px 16px; margin-top: 20px;
+  }
+  .finn-voice-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; }
+
+  @media print {
+    body { background: white; color: black; padding: 12px; }
+    .metric-card, .code-section, .interp-table, .framing-box, .finn-voice { border-color: #ccc !important; }
+    pre.code-block, .metric-formula { background: #f6f8fa; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <h1>Performance Metrics Reference</h1>
+      <div class="subtitle">Sharpe ratio, max drawdown, win rate, expectancy, IC — definitions, formulas, thresholds</div>
+    </div>
+    <div class="badge">Tier 2 · FINN-Specific</div>
+  </div>
+</div>
+
+<div class="framing-box">
+  <p><strong>FINN framing rule:</strong> A strategy has a win rate. A strategy has a Sharpe ratio. These are not the same thing, and neither alone tells you whether the strategy is worth trading. A complete performance picture requires at least: Sharpe (risk-adjusted return), max drawdown (survivability), expectancy (per-trade profit expectation), and IC (signal quality). Know what each measures before you cite it.</p>
+</div>
+
+<div class="section-label">Core Metrics — Definitions, Formulas, Thresholds</div>
+
+<div class="metrics-grid">
+
+  <!-- Sharpe Ratio -->
+  <div class="metric-card">
+    <div class="metric-header">
+      <div class="metric-name">Sharpe Ratio</div>
+      <div class="metric-abbrev">SR</div>
+    </div>
+    <div class="metric-body">
+      <div class="metric-formula">SR = (R_p − R_f) / σ_p
+
+R_p  = portfolio return (annualized)
+R_f  = risk-free rate (~5% currently)
+σ_p  = annualized std dev of returns</div>
+      <div class="metric-what">Measures return per unit of risk. A Sharpe of 1.0 means you earned 1× your volatility above the risk-free rate. Does not distinguish between upside and downside volatility.</div>
+      <div class="thresholds-label">Thresholds</div>
+      <div class="threshold-rows">
+        <div class="threshold-row row-great"><span class="th-range color-great">&gt; 2.0</span><span class="th-label">Exceptional — institutional quality</span><span class="th-action tag tag-g">Strong signal</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">1.0 – 2.0</span><span class="th-label">Good — tradeable edge</span><span class="th-action tag tag-b">Trade it</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">0.5 – 1.0</span><span class="th-label">Marginal — refine before allocating</span><span class="th-action tag tag-a">Refine</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">&lt; 0.5</span><span class="th-label">Not worth the risk — rebuild</span><span class="th-action tag tag-r">Reject</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Max Drawdown -->
+  <div class="metric-card">
+    <div class="metric-header">
+      <div class="metric-name">Maximum Drawdown</div>
+      <div class="metric-abbrev">MDD</div>
+    </div>
+    <div class="metric-body">
+      <div class="metric-formula">MDD = (Trough − Peak) / Peak
+
+Peak   = highest portfolio value before trough
+Trough = lowest portfolio value after peak
+Expressed as a negative percentage</div>
+      <div class="metric-what">Measures the worst peak-to-trough loss. Tells you the most pain you would have endured staying in the strategy. More important than average return for position sizing decisions.</div>
+      <div class="thresholds-label">Thresholds</div>
+      <div class="threshold-rows">
+        <div class="threshold-row row-great"><span class="th-range color-great">&lt; 10%</span><span class="th-label">Excellent capital preservation</span><span class="th-action tag tag-g">Continue</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">10% – 20%</span><span class="th-label">Acceptable — monitor closely</span><span class="th-action tag tag-b">Watch</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">20% – 35%</span><span class="th-label">High — reduce position size</span><span class="th-action tag tag-a">Reduce</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">&gt; 35%</span><span class="th-label">Catastrophic — halt trading</span><span class="th-action tag tag-r">Halt</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Win Rate + Expectancy -->
+  <div class="metric-card">
+    <div class="metric-header">
+      <div class="metric-name">Win Rate + Expectancy</div>
+      <div class="metric-abbrev">WR / E</div>
+    </div>
+    <div class="metric-body">
+      <div class="metric-formula">WR = Winning trades / Total trades
+
+E  = (WR × Avg_Win) − (LR × Avg_Loss)
+LR = 1 − WR (loss rate)
+E &gt; 0 required for profitable strategy</div>
+      <div class="metric-what">Win rate alone is meaningless. A strategy with 40% WR and 3:1 R:R outperforms a 70% WR strategy with 0.5:1 R:R. Expectancy combines both into a single per-trade profit expectation.</div>
+      <div class="thresholds-label">Expectancy Thresholds</div>
+      <div class="threshold-rows">
+        <div class="threshold-row row-great"><span class="th-range color-great">&gt; $1.50/R</span><span class="th-label">Strong edge per unit of risk</span><span class="th-action tag tag-g">Scale up</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">$0.50–$1.50/R</span><span class="th-label">Tradeable — consistent execution needed</span><span class="th-action tag tag-b">Trade it</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">$0.01–$0.50/R</span><span class="th-label">Slim edge — transaction costs matter</span><span class="th-action tag tag-a">Refine</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">≤ $0</span><span class="th-label">Negative expectancy — losing strategy</span><span class="th-action tag tag-r">Reject</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Information Coefficient -->
+  <div class="metric-card">
+    <div class="metric-header">
+      <div class="metric-name">Information Coefficient</div>
+      <div class="metric-abbrev">IC</div>
+    </div>
+    <div class="metric-body">
+      <div class="metric-formula">IC = Spearman_correlation(
+         signal_today,
+         forward_return_N_days
+     )
+
+Ranges: −1.0 to +1.0
+IC = 0 → signal has no predictive power</div>
+      <div class="metric-what">FINN's primary signal quality measure. Measures rank correlation between signal values and subsequent returns. An IC of 0.10 is considered strong in professional quant work — most real edges are IC 0.03–0.08.</div>
+      <div class="thresholds-label">IC Thresholds (FINN Standards)</div>
+      <div class="threshold-rows">
+        <div class="threshold-row row-great"><span class="th-range color-great">&gt; 0.10</span><span class="th-label">Exceptional — publish or scale</span><span class="th-action tag tag-g">Strong</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">0.05 – 0.10</span><span class="th-label">Good — tradeable signal quality</span><span class="th-action tag tag-b">Trade</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">0.03 – 0.05</span><span class="th-label">Weak — needs combination with other signals</span><span class="th-action tag tag-a">Combine</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">&lt; 0.03</span><span class="th-label">No edge — rebuild</span><span class="th-action tag tag-r">Reject</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end metrics-grid -->
+
+<!-- Python code reference -->
+<div class="section-label">Python Reference — Compute All 4 Metrics</div>
+<div class="code-section">
+  <div class="code-header">
+    <div class="code-title">performance_metrics.py — FINN standard calculation block</div>
+    <div class="code-lang">Python 3.11</div>
+  </div>
+  <pre class="code-block"><span class="c-keyword">import</span> numpy <span class="c-keyword">as</span> np
+<span class="c-keyword">import</span> pandas <span class="c-keyword">as</span> pd
+<span class="c-keyword">from</span> scipy <span class="c-keyword">import</span> stats
+
+<span class="c-comment"># --- Sharpe Ratio ---</span>
+<span class="c-keyword">def</span> <span class="c-func">sharpe_ratio</span>(returns, risk_free_annual=<span class="c-num">0.05</span>):
+    rf_daily = risk_free_annual / <span class="c-num">252</span>
+    excess   = returns - rf_daily
+    <span class="c-keyword">return</span> (excess.mean() / excess.std()) * np.sqrt(<span class="c-num">252</span>)
+
+<span class="c-comment"># --- Max Drawdown ---</span>
+<span class="c-keyword">def</span> <span class="c-func">max_drawdown</span>(equity_curve):
+    roll_max = equity_curve.cummax()
+    drawdown = (equity_curve - roll_max) / roll_max
+    <span class="c-keyword">return</span> drawdown.min()
+
+<span class="c-comment"># --- Expectancy ---</span>
+<span class="c-keyword">def</span> <span class="c-func">expectancy</span>(trade_pnl):
+    wins   = trade_pnl[trade_pnl &gt; <span class="c-num">0</span>]
+    losses = trade_pnl[trade_pnl &lt; <span class="c-num">0</span>]
+    wr     = <span class="c-func">len</span>(wins) / <span class="c-func">len</span>(trade_pnl)
+    avg_w  = wins.mean()  <span class="c-keyword">if</span> <span class="c-func">len</span>(wins) &gt; <span class="c-num">0</span> <span class="c-keyword">else</span> <span class="c-num">0</span>
+    avg_l  = losses.mean() <span class="c-keyword">if</span> <span class="c-func">len</span>(losses) &gt; <span class="c-num">0</span> <span class="c-keyword">else</span> <span class="c-num">0</span>
+    <span class="c-keyword">return</span> wr * avg_w + (<span class="c-num">1</span> - wr) * avg_l
+
+<span class="c-comment"># --- Information Coefficient ---</span>
+<span class="c-keyword">def</span> <span class="c-func">information_coefficient</span>(signal, forward_return):
+    ic, _ = stats.spearmanr(signal.dropna(), forward_return.dropna())
+    <span class="c-keyword">return</span> ic
+
+<span class="c-comment"># --- Summary ---</span>
+<span class="c-keyword">def</span> <span class="c-func">performance_summary</span>(returns, equity, trade_pnl, signal, fwd_ret):
+    <span class="c-keyword">return</span> {
+        <span class="c-string">'sharpe'</span>:    <span class="c-func">round</span>(<span class="c-func">sharpe_ratio</span>(returns), <span class="c-num">3</span>),
+        <span class="c-string">'max_dd'</span>:    <span class="c-func">round</span>(<span class="c-func">max_drawdown</span>(equity) * <span class="c-num">100</span>, <span class="c-num">2</span>),
+        <span class="c-string">'expectancy'</span>: <span class="c-func">round</span>(<span class="c-func">expectancy</span>(trade_pnl), <span class="c-num">4</span>),
+        <span class="c-string">'ic'</span>:        <span class="c-func">round</span>(<span class="c-func">information_coefficient</span>(signal, fwd_ret), <span class="c-num">4</span>),
+    }</pre>
+</div>
+
+<!-- Interpretation matrix -->
+<div class="section-label">Strategy Interpretation Matrix</div>
+<table class="interp-table">
+  <thead>
+    <tr>
+      <th>Sharpe</th>
+      <th>Max DD</th>
+      <th>Expectancy</th>
+      <th>IC</th>
+      <th>Verdict</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>&gt; 1.5</td><td>&lt; 15%</td><td>&gt; $1.00</td><td>&gt; 0.07</td>
+      <td><span class="tag tag-g">Strong edge</span></td>
+      <td>Allocate capital; scale methodically</td>
+    </tr>
+    <tr>
+      <td>1.0–1.5</td><td>15–25%</td><td>$0.50–$1.00</td><td>0.04–0.07</td>
+      <td><span class="tag tag-b">Tradeable</span></td>
+      <td>Paper trade first; enter at reduced size</td>
+    </tr>
+    <tr>
+      <td>0.5–1.0</td><td>20–35%</td><td>&gt; $0</td><td>0.03–0.05</td>
+      <td><span class="tag tag-a">Marginal</span></td>
+      <td>Combine with other signals; do not trade alone</td>
+    </tr>
+    <tr>
+      <td>High Sharpe</td><td>&gt; 35%</td><td>Any</td><td>Any</td>
+      <td><span class="tag tag-r">Suspicious</span></td>
+      <td>Check for look-ahead bias or overfitting</td>
+    </tr>
+    <tr>
+      <td>Any</td><td>Any</td><td>≤ $0</td><td>&lt; 0.03</td>
+      <td><span class="tag tag-r">No edge</span></td>
+      <td>Return to hypothesis — rebuild from Step 1</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="finn-voice">
+  <div class="finn-voice-label">FINN</div>
+  <p>"Win rate is a vanity metric. I've seen 70% win-rate strategies blow up and 35% win-rate strategies compound for years. What matters is the combination of Sharpe, drawdown, and expectancy — and none of those matter if the IC says the signal has no predictive power to begin with. Start with IC. Everything else follows."</p>
+</div>
+
+</body>
+</html>
