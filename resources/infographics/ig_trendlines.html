@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Trendlines Reference</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .card-title.blue { color: var(--blue); }
+  .card-title.green { color: var(--green); }
+  .card-title.red { color: var(--red); }
+  .card-title.amber { color: var(--amber); }
+  .card p { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--text); }
+
+  .diagram { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 12px; }
+  .diagram-title { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 10px; font-family: system-ui; }
+  .diag-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .d-up { color: var(--green); }
+  .d-dn { color: var(--red); }
+  .d-label { color: var(--amber); font-size: 11px; }
+  .d-muted { color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .warn-box { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .warn-box p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .warn-box strong { color: var(--red); }
+
+  .sig-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .sig-bull { background: rgba(63,185,80,0.15); color: var(--green); }
+  .sig-bear { background: rgba(248,81,73,0.15); color: var(--red); }
+  .sig-neu { background: rgba(210,153,34,0.15); color: var(--amber); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .card, .diagram, .rule-box, .warn-box { border-color: #ccc; background: #f8f8f8; }
+    .header { border-color: #333; }
+    .logo, .section-label, .card-title.blue { color: #1a56db; }
+    .card-title.green, .d-up { color: #16a34a; }
+    .card-title.red, .d-dn { color: #dc2626; }
+    .card-title.amber, .d-label { color: #b45309; }
+    th { color: #1a56db; background: #f0f4ff; }
+    td { border-color: #ddd; }
+    tr:hover td { background: transparent; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Trendlines Reference</div>
+      <div class="subtitle">Drawing method · uptrend &amp; downtrend · channels · breaks · false breaks · Handbook §2.3</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C1</div>
+  </div>
+
+  <!-- Core definition -->
+  <div class="section-label">What a Trendline Is</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title blue">Definition</div>
+      <p>A trendline is a straight line drawn along a series of price highs (downtrend) or lows (uptrend) to visualize the directional momentum of price. It is a dynamic S&amp;R level — one that moves forward in time.</p>
+      <p><strong>Uptrend line:</strong> drawn under rising lows. Acts as dynamic support.<br><strong>Downtrend line:</strong> drawn above falling highs. Acts as dynamic resistance.</p>
+    </div>
+    <div class="card">
+      <div class="card-title blue">Minimum Requirement</div>
+      <p>A valid trendline requires <strong>at least 2 touch points</strong> to draw, and <strong>at least 3 touch points</strong> to confirm. Two points define the line. The third point validates that the line is not arbitrary.</p>
+      <p>The more touches, the more traders are aware of and reacting to the trendline — which makes it self-reinforcing.</p>
+    </div>
+    <div class="card">
+      <div class="card-title blue">Why They Work</div>
+      <p>Trendlines work because they represent the <strong>rate of change that the market has accepted</strong>. In an uptrend, buyers are willing to pay increasingly higher prices at a consistent rate. When price deviates below that rate, buyers step in.</p>
+      <p>They fail when the market regime changes — when buyers are no longer willing to maintain that rate of ascent.</p>
+    </div>
+  </div>
+
+  <!-- Diagrams -->
+  <div class="section-label">Visual Reference — Uptrend, Downtrend, and Channels</div>
+  <div class="diagram">
+    <div class="diag-row">
+      <div>
+        <div class="diagram-title">Uptrend Line (Support)</div>
+<pre><span class="d-muted">Price</span>
+  <span class="d-up">                    * ← Higher high</span>
+  <span class="d-up">               *</span>
+  <span class="d-up">          *    </span>
+  <span class="d-up">    *     </span><span class="d-muted">↑ Touch 3 (confirms)</span>
+  <span class="d-up">  </span><span class="d-muted">↑ Touch 2</span>
+<span class="d-up">* ← Touch 1</span>
+<span class="d-up">╱─────────────────────── Uptrend line</span>
+                            <span class="d-label">Time →</span></pre>
+        <p style="color:var(--muted);font-size:11px;margin-top:8px">Line connects rising lows. Each touch = buyers defended the trend. Break below = trend may be ending.</p>
+      </div>
+      <div>
+        <div class="diagram-title">Downtrend Line (Resistance)</div>
+<pre><span class="d-muted">Price</span>
+<span class="d-red">* ← Touch 1</span>
+<span class="d-red">╲─────────────────────── Downtrend line</span>
+  <span class="d-red">*  ↑ Touch 2</span>
+  <span class="d-muted">     </span><span class="d-red">*  ↑ Touch 3 (confirms)</span>
+  <span class="d-muted">          </span><span class="d-red">*</span>
+  <span class="d-muted">               </span><span class="d-red">* ← Lower low</span>
+                            <span class="d-label">Time →</span></pre>
+        <p style="color:var(--muted);font-size:11px;margin-top:8px">Line connects falling highs. Each touch = sellers defended the trend. Break above = trend may be ending.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <div class="diagram-title">Channels — Parallel Trendlines</div>
+<pre><span class="d-up">╱──────────────────────────────── Upper channel line (resistance)</span>
+  <span class="d-muted">  *        *        *</span>
+  <span class="d-muted">*    *  *     *  *     *</span>
+<span class="d-up">╱──────────────────────────────── Lower channel line (support / main trendline)</span>
+              <span class="d-label">Ascending Channel — bullish</span>
+
+<span class="d-red">╲──────────────────────────────── Upper channel line (resistance / main trendline)</span>
+  <span class="d-muted">  *        *        *</span>
+  <span class="d-muted">*    *  *     *  *     *</span>
+<span class="d-red">╲──────────────────────────────── Lower channel line (support)</span>
+              <span class="d-label">Descending Channel — bearish</span></pre>
+    <p style="color:var(--muted);font-size:12px;margin-top:10px">A channel adds a parallel line at an equal distance from the main trendline on the opposite side. Price oscillates between the two lines. Trading range = lower line to upper line.</p>
+  </div>
+
+  <!-- How to draw -->
+  <div class="section-label">How to Draw Trendlines Correctly</div>
+  <table>
+    <thead><tr><th>Step</th><th>Uptrend Line</th><th>Downtrend Line</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Identify the swing points</strong></td><td>Find two or more rising swing lows — each low is higher than the prior low</td><td>Find two or more falling swing highs — each high is lower than the prior high</td></tr>
+      <tr><td><strong>2. Draw from the correct points</strong></td><td>Draw along the <strong>lows</strong> (bottoms of the bodies or wicks, consistently). Use bodies for cleaner lines; wicks for precise lows.</td><td>Draw along the <strong>highs</strong> (tops of the bodies or wicks, consistently). Be consistent — all bodies or all wicks.</td></tr>
+      <tr><td><strong>3. Extend forward</strong></td><td>Extend the line beyond the most recent price — this is the dynamic support level to watch</td><td>Extend the line beyond the most recent price — this is the dynamic resistance level to watch</td></tr>
+      <tr><td><strong>4. Confirm with a third touch</strong></td><td>Wait for a third touch that respects the line before acting on it</td><td>Wait for a third touch that respects the line before acting on it</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Breaks and false breaks -->
+  <div class="section-label">Trendline Breaks and False Breaks</div>
+  <div class="card-grid-2">
+    <div class="card">
+      <div class="card-title amber">Confirmed Break</div>
+      <p>A trendline break is confirmed when:</p>
+      <p>1. <strong>Candle closes</strong> beyond the trendline (not just a wick through it)<br>
+         2. <strong>Volume is above average</strong> on the break candle<br>
+         3. <strong>Follow-through</strong>: the next 1–2 candles continue in the break direction</p>
+      <p>All three criteria should be met before acting on a break. One condition is not enough.</p>
+    </div>
+    <div class="card">
+      <div class="card-title red">False Break</div>
+      <p>A false break occurs when price pierces the trendline briefly — often with a wick — then reverses back inside the trend. This is one of the most common retail traps.</p>
+      <p>Caused by: stop hunts below the obvious trendline level, low-volume probes in thin sessions, news-driven spikes that quickly reverse.</p>
+      <p><strong>Protection:</strong> Require a closing candle beyond the line. A wick through does not count.</p>
+    </div>
+  </div>
+
+  <div class="card-grid-2">
+    <div class="card">
+      <div class="card-title green">Break of Downtrend Line — Bullish</div>
+      <p>When price closes <strong>above</strong> a confirmed downtrend line with volume, the series of lower highs may be ending. Watch for:</p>
+      <p>• First higher high to form after the break<br>
+         • Retest of the broken downtrend line as support (role reversal)<br>
+         • Entry on the retest with a bullish reversal candle confirmation</p>
+    </div>
+    <div class="card">
+      <div class="card-title red">Break of Uptrend Line — Bearish</div>
+      <p>When price closes <strong>below</strong> a confirmed uptrend line with volume, the series of higher lows may be ending. Watch for:</p>
+      <p>• First lower low to form after the break<br>
+         • Retest of the broken uptrend line as resistance (role reversal)<br>
+         • Entry on the retest with a bearish reversal candle confirmation</p>
+    </div>
+  </div>
+
+  <!-- Angle and validity -->
+  <div class="section-label">Trendline Angle and Validity</div>
+  <table>
+    <thead><tr><th>Angle</th><th>Interpretation</th><th>Durability</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Very steep (&gt;70°)</strong></td><td>Parabolic move — unsustainable momentum. Often precedes sharp reversal.</td><td>Short-lived. Do not project far forward.</td></tr>
+      <tr><td><strong>Steep (45°–70°)</strong></td><td>Strong trend. Buyers/sellers are very active.</td><td>Moderate. Often breaks but leads to a shallower trend resumption.</td></tr>
+      <tr><td><strong>Moderate (25°–45°)</strong></td><td><span class="sig-bull sig-badge">Ideal</span> — sustainable trend with consistent participation.</td><td>Most durable. This is the zone where trendlines remain valid longest.</td></tr>
+      <tr><td><strong>Shallow (&lt;25°)</strong></td><td>Weak trend. May be consolidation with slight slope.</td><td>Questionable. Price may be transitioning to sideways.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <p><strong>The angle adjustment problem:</strong> If you draw a trendline and then redraw it to "fit" more touches by adjusting the angle, you are curve-fitting — not finding a real level. Draw the line with the first two valid swing points and do not adjust it. If price doesn't respect it, the line is not meaningful.</p>
+  </div>
+
+  <div class="rule-box">
+    <p><strong>Trendlines are context, not signals.</strong> A trendline touch tells you where to look for an entry signal. The candlestick pattern and volume at that touch tell you whether to enter.</p>
+    <p><strong>Confluence multiplies reliability.</strong> A trendline touch that coincides with a Fibonacci level, prior S&amp;R zone, or key moving average is a high-conviction setup. A trendline touch in isolation is one data point.</p>
+    <p><strong>Three confirmed touches before acting.</strong> Two points draw a line. Three points validate it. Trade the third touch and beyond — not the first two.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_trendlines.html · Built May 2026</span>
+    <span>Handbook §2.3 · See also: ig_support_resistance.html · ig_chart_patterns_continuation.html</span>
+  </div>
+
+</div>
+</body>
+</html>

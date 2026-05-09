@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Support &amp; Resistance Reference</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  /* Card grid */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-weight: 700; color: var(--text); font-size: 14px; margin-bottom: 8px; }
+  .card-title.blue { color: var(--blue); }
+  .card-title.green { color: var(--green); }
+  .card-title.red { color: var(--red); }
+  .card-title.amber { color: var(--amber); }
+  .card p { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--text); }
+
+  /* Price diagram */
+  .diagram { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 12px; color: var(--muted); }
+  .diagram .resistance-line { color: var(--red); font-weight: 700; }
+  .diagram .support-line { color: var(--green); font-weight: 700; }
+  .diagram .price-action { color: var(--text); }
+  .diagram .label { color: var(--amber); }
+  .diagram-title { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 10px; font-family: system-ui; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .bull { color: var(--green); } .bear { color: var(--red); }
+  .sig-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .sig-bull { background: rgba(63,185,80,0.15); color: var(--green); }
+  .sig-bear { background: rgba(248,81,73,0.15); color: var(--red); }
+  .sig-neu { background: rgba(210,153,34,0.15); color: var(--amber); }
+
+  /* Rule box */
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .warn-box { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .warn-box p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .warn-box p:last-child { margin-bottom: 0; }
+  .warn-box strong { color: var(--red); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .card, .diagram, .rule-box, .warn-box { border-color: #ccc; background: #f8f8f8; }
+    .header { border-color: #333; }
+    .logo, .blue, .card-title.blue { color: #1a56db; }
+    .bull, .card-title.green { color: #16a34a; }
+    .bear, .card-title.red { color: #dc2626; }
+    .card-title.amber { color: #b45309; }
+    th { color: #1a56db; background: #f0f4ff; }
+    td { border-color: #ddd; }
+    tr:hover td { background: transparent; }
+    .diagram .resistance-line { color: #dc2626; }
+    .diagram .support-line { color: #16a34a; }
+    .diagram .label { color: #b45309; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Support &amp; Resistance Reference</div>
+      <div class="subtitle">Zone identification, testing, retesting, invalidation, and role reversal · Handbook §2.2</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C1</div>
+  </div>
+
+  <!-- Core concepts -->
+  <div class="section-label">Core Definitions</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title green">Support</div>
+      <p>A price level where buying interest is strong enough to halt or reverse a decline. <strong>Why it works:</strong> traders remember prior lows and place buy orders there. The level holds because enough participants act on it simultaneously.</p>
+      <p>Think of it as a floor the market has tested and respected. The more times it has been tested and held, the stronger the floor.</p>
+    </div>
+    <div class="card">
+      <div class="card-title red">Resistance</div>
+      <p>A price level where selling pressure is strong enough to halt or reverse an advance. <strong>Why it works:</strong> traders who bought below and are sitting on gains sell at prior highs. Traders who bought at the prior high and held through a loss sell to break even.</p>
+      <p>Think of it as a ceiling. Each test that fails reinforces it.</p>
+    </div>
+    <div class="card">
+      <div class="card-title amber">Zone, Not Line</div>
+      <p>Support and resistance are <strong>zones, not precise lines</strong>. Price rarely turns at exactly $47.50 — it turns somewhere between $47.00 and $48.00.</p>
+      <p>Draw your levels as rectangles 0.5–1% wide. A wick through the zone that recovers is not an invalidation. A candle <em>close</em> through the zone is.</p>
+    </div>
+  </div>
+
+  <!-- Price diagram -->
+  <div class="section-label">S&amp;R Lifecycle — Visual Reference</div>
+  <div class="diagram">
+    <div class="diagram-title">Price Action Through Support and Resistance Zones</div>
+<pre><span class="resistance-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ RESISTANCE ZONE ($52–$53)</span>
+    <span class="price-action">   /\        /\</span>
+    <span class="price-action">  /  \      /  \        ← Price tests resistance twice, fails both times</span>
+    <span class="price-action"> /    \    /    \</span>
+    <span class="price-action">/      \  /      \___/\_______________________________________________</span>
+<span class="support-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ SUPPORT ZONE ($47–$48)</span>
+    <span class="price-action">           \  /      ← Price tests support, bounces</span>
+    <span class="price-action">            \/</span>
+
+    <span class="label">  [1] First test    [2] Second test   [3] Support test   [4] Consolidation</span>
+    <span class="label">      of resistance     of resistance      and bounce</span>
+
+<span class="resistance-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ BREAKOUT through resistance</span>
+    <span class="price-action">                                         /</span>
+    <span class="price-action">                                        / ← Breakout: resistance becomes support</span>
+    <span class="price-action">     ___________________________________/</span>
+<span class="support-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FORMER RESISTANCE = NEW SUPPORT</span>
+    <span class="label">  [5] Breakout on volume    [6] Retest of former resistance as support (role reversal)</span></pre>
+  </div>
+
+  <!-- How to draw -->
+  <div class="section-label">How to Identify and Draw S&amp;R Zones</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title blue">Step 1 — Start on the Daily Chart</div>
+      <p>Always identify major S&amp;R on the <strong>daily timeframe first</strong>. Daily levels are where institutional players make decisions. Intraday levels exist within the context of daily levels.</p>
+      <p>Look for: price highs and lows that were tested multiple times, areas where price consolidated for multiple sessions, prior breakout levels.</p>
+    </div>
+    <div class="card">
+      <div class="card-title blue">Step 2 — Find the Touches</div>
+      <p>A level requires <strong>at least 2 touches</strong> to be meaningful. A single high or low is a data point. Two or more touches at approximately the same price is a zone.</p>
+      <p>More touches = stronger zone. But: after 4–5 tests, a zone often breaks. Each test depletes the orders waiting at that level.</p>
+    </div>
+    <div class="card">
+      <div class="card-title blue">Step 3 — Draw Zones, Not Lines</div>
+      <p>Place the zone to capture the <strong>bodies</strong> of the candles, not the wicks. Wicks represent temporary excursions. Bodies represent where price settled — where buyers and sellers agreed.</p>
+      <p>Zone width: typically the range of the bodies across all touches at that level. Usually 0.5–1.5% wide on liquid equities.</p>
+    </div>
+  </div>
+
+  <!-- Zone strength table -->
+  <div class="section-label">Zone Strength Factors</div>
+  <table>
+    <thead><tr><th>Factor</th><th>Strengthens the Zone</th><th>Weakens the Zone</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Number of touches</strong></td><td>3+ touches with clean bounces</td><td>1 touch; untested level</td></tr>
+      <tr><td><strong>Volume at the touches</strong></td><td>Above-average volume at each bounce — institutional activity</td><td>Low-volume tests — thin order book</td></tr>
+      <tr><td><strong>Time spent at the level</strong></td><td>Extended consolidation near the zone — multiple sessions</td><td>Brief, fast touches — price moved through quickly</td></tr>
+      <tr><td><strong>Recency</strong></td><td>Tested within the last 20–40 trading days</td><td>Level from 6+ months ago — order book has changed</td></tr>
+      <tr><td><strong>Timeframe of origin</strong></td><td>Weekly or daily chart level</td><td>Only visible on a 5-minute chart</td></tr>
+      <tr><td><strong>Round numbers</strong></td><td>$50, $100, $200 levels attract more orders by default</td><td>Arbitrary prices ($47.23) — no psychological anchor</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Test / Retest / Invalidation -->
+  <div class="section-label">Test · Retest · Invalidation · Role Reversal</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title green">Test</div>
+      <p>Price approaches a known level. A <strong>successful test</strong>: price touches the zone and reverses — the zone holds. Buying/selling pressure at the level was sufficient.</p>
+      <p>Watch for: a reversal candle (hammer, engulfing) forming at the zone with above-average volume.</p>
+    </div>
+    <div class="card">
+      <div class="card-title amber">Retest</div>
+      <p>After a breakout above resistance, price pulls back to the <strong>former resistance zone</strong> and holds — the broken resistance now acts as support (role reversal). This retest is often the best entry point for breakout traders.</p>
+      <p>Why it works: traders who missed the breakout buy the retest. Former sellers at resistance are now buyers at support.</p>
+    </div>
+    <div class="card">
+      <div class="card-title red">Invalidation</div>
+      <p>A support zone is <strong>invalidated</strong> when price closes — not just wicks — decisively below it on above-average volume. A candle close through the zone on high volume means the orders at that level have been exhausted.</p>
+      <p>One wick through a zone is not invalidation. A closing candle body through the zone on volume is.</p>
+    </div>
+  </div>
+
+  <!-- Role reversal -->
+  <div class="section-label">Role Reversal (Polarity Flip)</div>
+  <div class="card-grid-2">
+    <div class="card">
+      <div class="card-title green">Resistance → Support</div>
+      <p>When price breaks <strong>above</strong> a resistance zone and then pulls back, the former resistance zone becomes a support zone. The logic: traders who sold at resistance and were wrong are now buyers at the same level, hoping to cut losses. Traders who missed the breakout buy the dip to the former resistance.</p>
+      <p><strong>Entry signal:</strong> Wait for price to pull back to the former resistance zone and form a bullish reversal candle with volume confirmation.</p>
+    </div>
+    <div class="card">
+      <div class="card-title red">Support → Resistance</div>
+      <p>When price breaks <strong>below</strong> a support zone, the former support becomes resistance. Traders who bought at support and held through the breakdown will sell to break even when price returns to their entry level.</p>
+      <p><strong>Entry signal:</strong> Wait for price to bounce up to the former support zone and form a bearish reversal candle with volume confirmation.</p>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <p><strong>The most common S&amp;R mistake:</strong> Treating a level as still valid after it has been cleanly broken. Once a support zone closes below on high volume — it is no longer support. Relabeling it as support because "it was strong before" is anchoring bias. The market has spoken; update your levels.</p>
+  </div>
+
+  <!-- FINN rules -->
+  <div class="section-label">FINN Application Rules</div>
+  <div class="rule-box">
+    <p><strong>S&amp;R is context, not signal.</strong> A support zone tells you where a reaction may occur. Your candlestick pattern and volume tell you whether to act.</p>
+    <p><strong>Confluence is the multiplier.</strong> A Fibonacci 61.8% level + a prior daily high + a 50-day moving average in the same area = a high-confluence zone. One S&amp;R line in isolation = one data point.</p>
+    <p><strong>Only close confirmation counts for invalidation.</strong> Wicks through levels are not breaks. Candle closes through levels on volume are breaks.</p>
+    <p><strong>More tests = weaker zone ahead.</strong> Each test depletes limit orders sitting at the level. A zone tested 5+ times is close to breaking.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_support_resistance.html · Built May 2026</span>
+    <span>Handbook §2.2 · See also: ig_trendlines.html · ig_candlestick_patterns.html</span>
+  </div>
+
+</div>
+</body>
+</html>

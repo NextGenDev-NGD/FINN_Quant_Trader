@@ -10,17 +10,18 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 ## Active Projects
 
 ### Knowledge Base Build — Gap Integration (Tier 1 + Tier 2)
-**Status:** 🟡 In progress — Session B2 next
+**Status:** 🟡 In progress — Session C2 next
 **Planning doc:** `research/planning/finn_kb_execution_plan.md`
 **Gap analysis:** `research/planning/finn_gap_analysis.md`
-**Progress:** 3 / 19 sessions complete
+**Progress:** 6 / 19 sessions complete
 
-**Last completed:** Session B1 (May 8, 2026) — Created `resources/handbook/FINN_HB_P2_ChartReading.md` (7 sections: candlesticks §2.1, S&R §2.2, trendlines §2.3, continuation patterns §2.4, reversal patterns §2.5, gap types §2.6, Heikin Ashi §2.7). Updated ResourceIndex to mark HB P2 ✅.
+**Last completed:** Session C1 (May 8, 2026) — Created 4 infographics: `ig_candlestick_patterns.html` (anatomy, 10 single-candle, 6 two-candle, 4 three-candle patterns), `ig_support_resistance.html` (definitions, lifecycle diagram, zone strength factors, test/retest/invalidation, role reversal), `ig_trendlines.html` (uptrend/downtrend/channels, drawing steps, breaks, false breaks, angle validity), `ig_gap_types.html` (4 gap types with stats, identification matrix, FINN code reference). Updated ResourceIndex to mark all 4 ✅. Session delivered as C1.a + C1.b.
 
-**Next session (B2):**
-- Write `resources/handbook/FINN_HB_P3_OrderExecution.md` — 3 sections: complete order taxonomy (§3.1), short selling basics (§3.2), order routing and best execution (§3.3)
-- Write `resources/handbook/FINN_HB_P4_MarketContext.md` — 5 sections: trader's daily routine (§4.1), information sources map (§4.2), reading the market open (§4.3), types of trading days (§4.4), market traps (§4.5)
-- Update `resources/FINN_ResourceIndex.md` — mark HB P3 and HB P4 as ✅ Built (B2)
+**Next session (C2):**
+Deliver as C2.a + C2.b (2 HTML files per sub-session):
+- C2.a: Write `resources/infographics/ig_trade_types.html` + `resources/infographics/ig_order_types.html`
+- C2.b: Write `resources/infographics/ig_broker_comparison.html`
+- Update `resources/FINN_ResourceIndex.md` — mark all 3 C2 infographics as ✅ Built (C2)
 
 *Full session sequence and KB scope: see `research/planning/finn_kb_execution_plan.md`*
 

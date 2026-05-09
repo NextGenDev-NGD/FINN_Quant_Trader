@@ -66,18 +66,18 @@
 |------|:------:|--------|
 | `handbook/FINN_HB_P1_GettingStarted.md` | ✅ A2 | Trade types · TradingView · Webull · Finviz · Broker comparison |
 | `handbook/FINN_HB_P2_ChartReading.md` | ✅ B1 | Candlesticks · S&R · Trendlines · Patterns · Gaps · Heikin Ashi |
-| `handbook/FINN_HB_P3_OrderExecution.md` | ⬜ B2 | Order types · Short selling · Order routing |
-| `handbook/FINN_HB_P4_MarketContext.md` | ⬜ B2 | Daily routine · Info sources · Market open · Day types · Traps |
-| `handbook/FINN_HB_P5_Psychology.md` | ⬜ B3 | Psychology · Emotions · Biases · Pre/post check · Journal fields |
-| `handbook/FINN_HB_P6_MarketReference.md` | ⬜ B3 | Fibonacci · Volume · MTF · Sentiment · Heikin Ashi extended |
+| `handbook/FINN_HB_P3_OrderExecution.md` | ✅ B2 | Order types · Short selling · Order routing |
+| `handbook/FINN_HB_P4_MarketContext.md` | ✅ B2 | Daily routine · Info sources · Market open · Day types · Traps |
+| `handbook/FINN_HB_P5_Psychology.md` | ✅ B3 | Psychology · Emotions · Biases · Pre/post check · Journal fields |
+| `handbook/FINN_HB_P6_MarketReference.md` | ✅ B3 | Fibonacci · Volume · MTF · Sentiment · Heikin Ashi extended |
 
 ### Infographics — Tier 1 (gap-critical)
 | File | Status | Topic |
 |------|:------:|-------|
-| `infographics/ig_candlestick_patterns.html` | ⬜ C1 | 15+ patterns — visual, signal, confirmation required |
-| `infographics/ig_support_resistance.html` | ⬜ C1 | S&R zones — drawing, testing, retesting, invalidation |
-| `infographics/ig_trendlines.html` | ⬜ C1 | Trendline drawing, channels, false breaks |
-| `infographics/ig_gap_types.html` | ⬜ C1 | 4 gap types — visual, signal, FINN code reference |
+| `infographics/ig_candlestick_patterns.html` | ✅ C1 | 15+ patterns — visual, signal, confirmation required |
+| `infographics/ig_support_resistance.html` | ✅ C1 | S&R zones — drawing, testing, retesting, invalidation |
+| `infographics/ig_trendlines.html` | ✅ C1 | Trendline drawing, channels, false breaks |
+| `infographics/ig_gap_types.html` | ✅ C1 | 4 gap types — visual, signal, FINN code reference |
 | `infographics/ig_trade_types.html` | ⬜ C2 | 8 trade styles — time horizon, capital, skill level |
 | `infographics/ig_order_types.html` | ⬜ C2 | Complete order taxonomy — 12+ types with use cases |
 | `infographics/ig_broker_comparison.html` | ⬜ C2 | 6 brokers × 8 criteria comparison table |
@@ -118,9 +118,9 @@
 | A | A1 | ✅ Done | This index + Glossary |
 | A | A2 | ✅ Done | Handbook Part 1 (Getting Started) |
 | B | B1 | ✅ Done | Handbook Part 2 (Chart Reading) |
-| B | B2 | ⬜ | Handbook Parts 3 + 4 (Orders + Market Context) |
-| B | B3 | ⬜ | Handbook Parts 5 + 6 (Psychology + Market Reference) |
-| C | C1 | ⬜ | Infographics: Candlesticks, S&R, Trendlines, Gaps |
+| B | B2 | ✅ Done | Handbook Parts 3 + 4 (Orders + Market Context) |
+| B | B3 | ✅ Done | Handbook Parts 5 + 6 (Psychology + Market Reference) |
+| C | C1 | ✅ Done | Infographics: Candlesticks, S&R, Trendlines, Gaps |
 | C | C2 | ⬜ | Infographics: Trade Types, Order Types, Broker Comparison |
 | C | C3 | ⬜ | Infographics: Platform Guides + Info Sources |
 | C | C4 | ⬜ | Infographics: Chart Patterns, Fibonacci, Heikin Ashi, Volume |

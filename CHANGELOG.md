@@ -31,6 +31,64 @@ Picked up next session:
 
 ---
 
+### [2026-05-08] — Knowledge Base Sessions B2, B3, C1 — Handbook Parts 3–6 + 4 Infographics
+
+**Context:** Sessions delivered in atomized sub-sessions (B2.a/b, B3.a/b, C1.a/b) to avoid context overflow. Each sub-session writes one file; parent session completes on ResourceIndex + ProjectStatus update.
+
+---
+
+**Session B2 — Handbook Parts 3 + 4**
+
+**Files created:**
+- `resources/handbook/FINN_HB_P3_OrderExecution.md` — 3-section order execution reference: §3.1 complete order type taxonomy (9 core types + 7 conditional/advanced types, price guarantee matrix, gap risk on stop orders), §3.2 short selling basics (mechanics, long vs. short P&L math, margin requirements, borrow fees, uptick rule, 4 FINN short setups), §3.3 order routing and best execution (PFOF, ECNs, dark pools, bid-ask spread table by stock type, slippage sources + reduction strategies, best execution decision matrix)
+- `resources/handbook/FINN_HB_P4_MarketContext.md` — 5-section market context reference: §4.1 trader's daily routine (pre-market 6–9:30 AM table, active session by time block, post-market checklist), §4.2 information sources map (5 categories × 20+ sources with cost + FINN use notes, information hierarchy), §4.3 reading the market open (pre-open gap analysis, 4 opening types framework, first-30-min rule, Asia-Europe range), §4.4 types of trading days (trending, rotational, news-driven — each with identification signals, best strategies, what to avoid + decision tree), §4.5 market traps (bull trap, bear trap, stop hunt, false breakout from consolidation — each with mechanics, identification, protection + 5-question trap checklist)
+
+**Files modified:**
+- `resources/FINN_ResourceIndex.md` — HB P3 and HB P4 marked ✅ Built (B2); B2 build status row updated
+- `FINN_ProjectStatus.md` — B2 complete; progress 4/19; B3 scoped
+
+**Gaps addressed:** #29 (order types), #36 (market open), #35 (day types), #23 (market traps), #43 (daily routine), #44 (info sources)
+
+---
+
+**Session B3 — Handbook Parts 5 + 6**
+
+**Files created:**
+- `resources/handbook/FINN_HB_P5_Psychology.md` — 5-section trading psychology reference: §5.1 psychology primer (System 1 vs. System 2, performance curve, journal as mirror), §5.2 the 3 dangerous emotions (fear, greed, revenge — each with manifestations, dollar cost, and countermeasures table), §5.3 cognitive biases (9 biases with trading manifestation, dollar cost, and countermeasure; monthly bias audit protocol), §5.4 pre/post trade emotional check (5-question pre-trade checklist with action thresholds, 4-question post-trade protocol), §5.5 FINN emotional journal fields (required entry/exit fields with format and examples, 4 monthly aggregate metrics)
+- `resources/handbook/FINN_HB_P6_MarketReference.md` — 5-section market reference: §6.1 Fibonacci retracements (6 key levels, drawing steps for uptrend/downtrend, FINN rules, extensions table), §6.2 volume reading guide (breakout/reversal/OBV/climactic patterns, FINN backtest code), §6.3 MTF analysis (4-timeframe top-down framework with step-by-step decision process, MTF rules), §6.4 sentiment indicators non-AI (VIX levels table + FINN code, Fear & Greed index, AAII survey thresholds, Put/Call ratio — all with contrarian signal guidelines), §6.5 Heikin Ashi extended (advanced trend/transition/reversal signals, HA as strategy filter with code, practical limitations)
+
+**Files modified:**
+- `resources/FINN_ResourceIndex.md` — HB P5 and HB P6 marked ✅ Built (B3); B3 build status row updated
+- `FINN_ProjectStatus.md` — B3 complete; progress 5/19; C1 scoped. Phase B — Handbook — fully complete.
+
+**Gaps addressed:** #31 (trading psychology), #32 (emotional journal), #13 (Fibonacci), #14 (volume), #34 (MTF analysis), #45 (sentiment indicators), #18 (Heikin Ashi extended)
+
+---
+
+**Session C1 — Infographics: Candlestick Patterns, S&R, Trendlines, Gap Types**
+
+**Files created:**
+- `resources/infographics/ig_candlestick_patterns.html` — dark-theme HTML reference: anatomy section with CSS candle visuals, 10 single-candle patterns, 6 two-candle patterns, 4 three-candle patterns — all with signal badges, conditions, and context rules; FINN application rules block
+- `resources/infographics/ig_support_resistance.html` — dark-theme HTML reference: core definitions (support/resistance/zone distinction), ASCII price lifecycle diagram, zone strength factors table, test/retest/invalidation/role reversal cards, FINN rules and common-mistake warning
+- `resources/infographics/ig_trendlines.html` — dark-theme HTML reference: uptrend/downtrend/channel ASCII diagrams, 4-step drawing guide table, confirmed vs. false break comparison cards, angle validity table, FINN rules
+- `resources/infographics/ig_gap_types.html` — dark-theme HTML reference: gap anatomy diagram, 4 gap type cards (Common/Breakaway/Runaway/Exhaustion each with size, volume, fill probability, signal value), identification matrix table, FINN gap detection code block
+
+All 4 infographics: self-contained CSS + HTML (no external dependencies), FINN dark theme (#0d1117 background), print-friendly `@media print` styles included, max-width 1200px centered layout.
+
+**Files modified:**
+- `resources/FINN_ResourceIndex.md` — all 4 C1 infographics marked ✅ Built (C1); C1 build status row updated
+- `FINN_ProjectStatus.md` — C1 complete; progress 6/19; C2 scoped (ig_trade_types, ig_order_types, ig_broker_comparison)
+
+**Gaps addressed:** #1 (candlestick visual guide), #4 (S&R), #3 (trendlines), #15 (gap types)
+
+---
+
+**Session delivery note:** All sessions in this commit used atomized sub-session delivery (one file per sub-session) after diagnosing that multi-file sessions were causing context overflow crashes. Sub-session naming convention (B2.a, B2.b, etc.) adopted going forward.
+
+**Status:** Sessions B2 + B3 + C1 complete. 6 / 19 sessions done. Phase B (Handbook, 6 parts) fully complete. Phase C (Infographics) in progress — C1 of 6 done.
+
+---
+
 ### [2026-05-08] — Knowledge Base Session B1 — Handbook Part 2
 
 **Files created:**

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Gap Types Reference</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  /* Gap type cards — prominent */
+  .gap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
+  .gap-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
+  .gap-card.common { border-left: 3px solid var(--muted); }
+  .gap-card.breakaway { border-left: 3px solid var(--blue); }
+  .gap-card.runaway { border-left: 3px solid var(--green); }
+  .gap-card.exhaustion { border-left: 3px solid var(--red); }
+  .gap-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .gap-name { font-size: 16px; font-weight: 700; }
+  .gap-name.common { color: var(--muted); }
+  .gap-name.breakaway { color: var(--blue); }
+  .gap-name.runaway { color: var(--green); }
+  .gap-name.exhaustion { color: var(--red); }
+  .gap-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
+  .badge-neutral { background: rgba(139,148,158,0.2); color: var(--muted); }
+  .badge-bull { background: rgba(63,185,80,0.15); color: var(--green); }
+  .badge-bear { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .gap-desc { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  .gap-desc strong { color: var(--text); }
+  .gap-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .gap-stat { background: #0d1117; border-radius: 5px; padding: 8px 10px; font-size: 12px; }
+  .stat-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { color: var(--text); font-weight: 600; margin-top: 2px; }
+
+  /* Diagram */
+  .diagram { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 12px; }
+  .diagram-title { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 12px; font-family: system-ui; }
+  .diag-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .d-green { color: var(--green); }
+  .d-red { color: var(--red); }
+  .d-blue { color: var(--blue); }
+  .d-amber { color: var(--amber); }
+  .d-muted { color: var(--muted); }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .code-block { background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 12px; color: var(--green); overflow-x: auto; }
+  .code-comment { color: var(--muted); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .gap-card, .diagram, .rule-box, .code-block { border-color: #ccc; background: #f8f8f8; }
+    .header { border-color: #333; }
+    .logo, .section-label { color: #1a56db; }
+    .gap-name.breakaway, .badge-blue { color: #1a56db; }
+    .gap-name.runaway, .badge-bull, .d-green { color: #16a34a; }
+    .gap-name.exhaustion, .badge-bear, .d-red { color: #dc2626; }
+    .gap-name.common, .badge-neutral { color: #555; }
+    .d-amber { color: #b45309; }
+    th { color: #1a56db; background: #f0f4ff; }
+    td { border-color: #ddd; }
+    tr:hover td { background: transparent; }
+    .code-block { color: #1a1a1a; background: #f5f5f5; }
+    .code-comment { color: #666; }
+    .gap-stat { background: #eee; }
+    .gap-card.common { border-left-color: #888; }
+    .gap-card.breakaway { border-left-color: #1a56db; }
+    .gap-card.runaway { border-left-color: #16a34a; }
+    .gap-card.exhaustion { border-left-color: #dc2626; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Gap Types Reference</div>
+      <div class="subtitle">Common · Breakaway · Runaway · Exhaustion — identification, signal, and FINN code reference · Handbook §2.6</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C1</div>
+  </div>
+
+  <!-- What is a gap -->
+  <div class="section-label">What Is a Gap</div>
+  <div class="diagram">
+    <div class="diagram-title">Gap-Up and Gap-Down — Price Discontinuity</div>
+    <div class="diag-row">
+      <div>
+        <div class="d-green">Gap-Up Example</div>
+<pre><span class="d-muted">Day 2 open: $52.00  ┌──┐</span>
+                    <span class="d-green">│  │ ← Day 2 candle opens above</span>
+<span class="d-green">════════════════════════ GAP (empty price range: $49–$52)</span>
+<span class="d-muted">Day 1 close: $49.00</span> <span class="d-muted">┌──┐</span>
+                    <span class="d-muted">│  │ ← Day 1 candle closed here</span>
+<span class="d-amber">Gap size = ($52 - $49) / $49 = 6.1%</span></pre>
+      </div>
+      <div>
+        <div class="d-red">Gap-Down Example</div>
+<pre><span class="d-muted">Day 1 close: $49.00</span> <span class="d-muted">┌──┐</span>
+                    <span class="d-muted">│  │ ← Day 1 candle closed here</span>
+<span class="d-red">════════════════════════ GAP (empty price range: $44–$49)</span>
+<span class="d-muted">Day 2 open: $44.00  ┌──┐</span>
+                    <span class="d-red">│  │ ← Day 2 candle opens below</span>
+<span class="d-amber">Gap size = ($49 - $44) / $49 = 10.2%</span></pre>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:12px;margin-top:10px">A gap is a zone of price where no trading occurred. The prior close and next open do not connect. Gaps can fill later (price returns to the gap zone) or remain open indefinitely.</p>
+  </div>
+
+  <!-- The 4 types -->
+  <div class="section-label">The Four Gap Types</div>
+  <div class="gap-grid">
+
+    <div class="gap-card common">
+      <div class="gap-header">
+        <div class="gap-name common">Common Gap</div>
+        <span class="gap-badge badge-neutral">Fills Quickly</span>
+      </div>
+      <div class="gap-desc"><strong>What it is:</strong> A small gap that occurs in the middle of normal price action with no significant catalyst. Most often seen in consolidation ranges or low-volatility periods.</div>
+      <div class="gap-desc"><strong>Why it happens:</strong> Overnight futures drift, thin pre-market order books, minor overnight news.</div>
+      <div class="gap-stats">
+        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">&lt; 0.5%</div></div>
+        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Normal or below</div></div>
+        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">High — often same day</div></div>
+        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">Low — ignore</div></div>
+      </div>
+    </div>
+
+    <div class="gap-card breakaway">
+      <div class="gap-header">
+        <div class="gap-name breakaway">Breakaway Gap</div>
+        <span class="gap-badge badge-blue">Trend Signal</span>
+      </div>
+      <div class="gap-desc"><strong>What it is:</strong> A gap that launches price out of a consolidation or base pattern, marking the beginning of a new trend. This is a high-conviction signal that new institutional money is entering.</div>
+      <div class="gap-desc"><strong>Why it happens:</strong> Earnings surprise, major news catalyst, breakout from a long-consolidation base on high volume.</div>
+      <div class="gap-stats">
+        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">2–8%+</div></div>
+        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Significantly above avg</div></div>
+        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">Low — gap often holds</div></div>
+        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">High — trend starting</div></div>
+      </div>
+    </div>
+
+    <div class="gap-card runaway">
+      <div class="gap-header">
+        <div class="gap-name runaway">Runaway Gap</div>
+        <span class="gap-badge badge-bull">Continuation</span>
+      </div>
+      <div class="gap-desc"><strong>What it is:</strong> A gap that occurs in the middle of an established trend — price has already been moving in one direction, and this gap marks an acceleration. Also called a "measuring gap" because it often occurs near the midpoint of the total move.</div>
+      <div class="gap-desc"><strong>Why it happens:</strong> Momentum is strong; late-entering institutional players adding to positions.</div>
+      <div class="gap-stats">
+        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">1–4%</div></div>
+        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Above average</div></div>
+        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">Moderate — fills eventually</div></div>
+        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">Confirms trend strength</div></div>
+      </div>
+    </div>
+
+    <div class="gap-card exhaustion">
+      <div class="gap-header">
+        <div class="gap-name exhaustion">Exhaustion Gap</div>
+        <span class="gap-badge badge-bear">Reversal Warning</span>
+      </div>
+      <div class="gap-desc"><strong>What it is:</strong> A gap that occurs near the end of a trend, representing the final burst of momentum before the trend reverses. Looks similar to a runaway gap but is followed by a failed continuation and high-volume reversal.</div>
+      <div class="gap-desc"><strong>Why it happens:</strong> The last retail buyers pile in after a long trend. Smart money is distributing into this buying pressure.</div>
+      <div class="gap-stats">
+        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">2–5%+</div></div>
+        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Very high — climactic</div></div>
+        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">High — fills as trend ends</div></div>
+        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">Reversal warning signal</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Identification table -->
+  <div class="section-label">Gap Identification Matrix</div>
+  <table>
+    <thead><tr><th>Question</th><th style="color:var(--muted)">Common</th><th style="color:var(--blue)">Breakaway</th><th style="color:var(--green)">Runaway</th><th style="color:var(--red)">Exhaustion</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Prior price structure?</strong></td><td>Consolidation / random</td><td>Long base / consolidation</td><td>Middle of active trend</td><td>Late in extended trend</td></tr>
+      <tr><td><strong>Volume on gap day?</strong></td><td>Normal or below</td><td>3–5× average</td><td>2–3× average</td><td>4–6× average (climactic)</td></tr>
+      <tr><td><strong>News catalyst?</strong></td><td>None or minor</td><td>Major earnings / news</td><td>Momentum continuation</td><td>Late-stage hype</td></tr>
+      <tr><td><strong>Does price hold the gap?</strong></td><td>Rarely — fills quickly</td><td>Yes — gap acts as support</td><td>Usually — confirms trend</td><td>No — price reverses back through</td></tr>
+      <tr><td><strong>What happens next?</strong></td><td>Returns to prior range</td><td>Trend begins / accelerates</td><td>Trend continues</td><td>Reversal and gap fill</td></tr>
+    </tbody>
+  </table>
+
+  <!-- FINN code -->
+  <div class="section-label">FINN Code Reference — Gap Detection</div>
+  <div class="code-block"><span class="code-comment"># Gap detection in FINN backtests</span>
+df['gap_pct'] = (df['Open'] - df['Close'].shift(1)) / df['Close'].shift(1) * 100
+
+<span class="code-comment"># Gap-up and gap-down flags</span>
+df['gap_up']   = (df['gap_pct'] &gt;  0.5).astype(int)
+df['gap_down'] = (df['gap_pct'] &lt; -0.5).astype(int)
+
+<span class="code-comment"># Large gap flag (breakaway / exhaustion candidates)</span>
+df['large_gap_up']   = (df['gap_pct'] &gt;  2.0).astype(int)
+df['large_gap_down'] = (df['gap_pct'] &lt; -2.0).astype(int)
+
+<span class="code-comment"># Gap fill detection (did price return to the gap zone during the day?)</span>
+df['gap_filled'] = (
+    (df['gap_up'] == 1) &amp; (df['Low'] &lt;= df['Close'].shift(1))
+).astype(int)</div>
+
+  <div class="rule-box">
+    <p><strong>You cannot identify gap type until after the gap.</strong> A breakaway and exhaustion gap look identical on the day they occur. The difference is confirmed by what happens over the next 2–5 sessions. Treat all large gaps as unclassified on day 1 — classify after observing the follow-through.</p>
+    <p><strong>Volume is the primary classifier.</strong> A large gap on 3× average volume is a real signal. A large gap on below-average volume in a low-liquidity pre-market session is noise.</p>
+    <p><strong>Gaps fill — eventually.</strong> A commonly cited market observation is that most gaps eventually fill. In practice: common gaps fill quickly, breakaway gaps may take months or years to fill, and exhaustion gaps fill as part of the reversal. Do not trade "gap fill" as a stand-alone strategy without IC validation.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_gap_types.html · Built May 2026</span>
+    <span>Handbook §2.6 · See also: ig_candlestick_patterns.html · ig_support_resistance.html</span>
+  </div>
+
+</div>
+</body>
+</html>
