@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Webull Paper Trading Guide</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-weight: 700; font-size: 14px; color: var(--blue); margin-bottom: 8px; }
+  .card-title.green { color: var(--green); }
+  .card-title.red { color: var(--red); }
+  .card-title.amber { color: var(--amber); }
+  .card p { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--text); }
+  .card ul { margin-left: 16px; }
+  .card li { color: var(--muted); font-size: 12px; margin-bottom: 3px; }
+  .card li strong { color: var(--text); }
+
+  /* Step list */
+  .steps { counter-reset: s; }
+  .step { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .step-n { counter-increment: s; width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: #0d1117; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-n::before { content: counter(s); }
+  .step-body { flex: 1; }
+  .step-title { font-weight: 700; color: var(--text); font-size: 13px; }
+  .step-detail { color: var(--muted); font-size: 12px; margin-top: 3px; }
+  .step-detail strong { color: var(--text); }
+
+  /* Order ticket mockup */
+  .order-ticket { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 20px; max-width: 460px; }
+  .ticket-header { color: var(--blue); font-weight: 700; font-size: 13px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+  .ticket-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .ticket-row:last-of-type { border-bottom: none; }
+  .ticket-label { color: var(--muted); }
+  .ticket-value { color: var(--text); font-weight: 600; }
+  .ticket-value.buy { color: var(--green); }
+  .ticket-value.sell { color: var(--red); }
+  .ticket-btn { margin-top: 12px; width: 100%; padding: 8px; border-radius: 4px; background: var(--green); color: #0d1117; font-weight: 700; font-size: 13px; text-align: center; border: none; }
+
+  /* P&L table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .pos { color: var(--green); font-weight: 600; }
+  .neg { color: var(--red); font-weight: 600; }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .warn-box { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .warn-box p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .warn-box p:last-child { margin-bottom: 0; }
+  .warn-box strong { color: var(--red); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .card, .order-ticket, .rule-box, .warn-box { border-color: #ccc; background: #f8f8f8; }
+    .header { border-color: #333; }
+    .logo, .section-label, .card-title, .ticket-header { color: #1a56db; }
+    .card-title.green, .pos, .ticket-value.buy { color: #16a34a; }
+    .card-title.red, .neg, .ticket-value.sell { color: #dc2626; }
+    .card-title.amber { color: #b45309; }
+    .step-n { background: #1a56db; }
+    .ticket-btn { background: #16a34a; }
+    th { color: #1a56db; background: #f0f4ff; }
+    td { border-color: #ddd; }
+    tr:hover td { background: transparent; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Webull Paper Trading Guide</div>
+      <div class="subtitle">Account setup · order entry · bracket orders · P&amp;L review · portfolio tracking · Handbook §1.3</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C3</div>
+  </div>
+
+  <!-- What is paper trading -->
+  <div class="section-label">What Paper Trading Is (and Isn't)</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title green">What it IS</div>
+      <ul>
+        <li>Simulated trading with virtual money using <strong>real market prices</strong></li>
+        <li>Real order types, real fills based on live bid/ask</li>
+        <li>Real P&amp;L tracking — gains and losses are calculated accurately</li>
+        <li>Real psychological pressure — treat every decision as if the money is real</li>
+        <li>The primary training environment for the entire FINN course</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title red">What it ISN'T</div>
+      <ul>
+        <li>Not risk-free training — bad habits formed here carry into live trading</li>
+        <li>Not identical to live — slippage and market impact are not fully simulated</li>
+        <li>Not an excuse for sloppy execution — the rules apply exactly as in live trading</li>
+        <li>Not a game — if you don't take it seriously, the live transition will be costly</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">FINN Paper Trading Rules</div>
+      <ul>
+        <li><strong>Starting capital:</strong> $100,000 paper (Webull default)</li>
+        <li><strong>Max risk per trade:</strong> 2% of total portfolio = $2,000</li>
+        <li><strong>Max positions at once:</strong> 3–5 concurrent</li>
+        <li><strong>Stop-loss:</strong> Required on every trade — no exceptions</li>
+        <li><strong>Journal entry:</strong> Required before and after every trade</li>
+        <li><strong>Deviations:</strong> Must be logged, never silently accepted</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Account setup -->
+  <div class="section-label">Account Setup — Step by Step</div>
+  <div class="card" style="margin-bottom:20px">
+    <div class="steps">
+      <div class="step">
+        <div class="step-n"></div>
+        <div class="step-body">
+          <div class="step-title">Download Webull and Create Account</div>
+          <div class="step-detail">Download the Webull app (iOS or Android) or visit webull.com. Create a free account — <strong>no real money required for paper trading</strong>. Email + password only at this stage.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n"></div>
+        <div class="step-body">
+          <div class="step-title">Access Paper Trading</div>
+          <div class="step-detail">In the app: tap the <strong>bottom center icon (Markets/Trade)</strong> → scroll to find <strong>"Paper Trading"</strong> or tap your profile icon → Paper Trading. On desktop: top navigation → Paper Trading.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n"></div>
+        <div class="step-body">
+          <div class="step-title">Confirm Starting Capital</div>
+          <div class="step-detail">Default paper account starts with <strong>$1,000,000</strong>. FINN uses <strong>$100,000</strong> to simulate a realistic account size. In paper trading settings, you can reset the account balance — set it to $100,000 before your first trade.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n"></div>
+        <div class="step-body">
+          <div class="step-title">Enable Margin (for Short Selling)</div>
+          <div class="step-detail">Paper trading accounts include simulated margin by default. Short selling is available without additional setup. Confirm margin is enabled in: <strong>Paper Account → Settings → Account Type</strong>.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n"></div>
+        <div class="step-body">
+          <div class="step-title">Configure Watchlist</div>
+          <div class="step-detail">Add your FINN watchlist tickers to Webull: tap <strong>Watchlist → + → Search symbol → Add</strong>. Mirror the watchlist structure from your TradingView setup for consistency.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order entry -->
+  <div class="section-label">Placing an Order — FINN Bracket Entry</div>
+  <div class="card-grid-2">
+    <div>
+      <div class="order-ticket">
+        <div class="ticket-header">
+          <span>Order Ticket — AAPL</span>
+          <span style="color:var(--green)">BUY</span>
+        </div>
+        <div class="ticket-row"><span class="ticket-label">Action</span><span class="ticket-value buy">BUY</span></div>
+        <div class="ticket-row"><span class="ticket-label">Order Type</span><span class="ticket-value">Limit</span></div>
+        <div class="ticket-row"><span class="ticket-label">Quantity</span><span class="ticket-value">25 shares</span></div>
+        <div class="ticket-row"><span class="ticket-label">Limit Price</span><span class="ticket-value">$187.50</span></div>
+        <div class="ticket-row"><span class="ticket-label">Duration</span><span class="ticket-value">Day</span></div>
+        <div class="ticket-row"><span class="ticket-label">Stop-Loss</span><span class="ticket-value sell">$184.00 (stop)</span></div>
+        <div class="ticket-row"><span class="ticket-label">Take Profit</span><span class="ticket-value buy">$196.00 (limit)</span></div>
+        <div class="ticket-row"><span class="ticket-label">Max Risk</span><span class="ticket-value">$87.50 (0.09%)</span></div>
+        <div class="ticket-btn">SUBMIT PAPER ORDER</div>
+      </div>
+      <p style="color:var(--muted);font-size:11px;margin-top:8px">Example bracket order: entry at limit → stop-loss + take-profit set simultaneously. Max risk = (entry − stop) × shares.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Bracket Order Setup in Webull</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-n"></div>
+          <div class="step-body">
+            <div class="step-title">Find the stock</div>
+            <div class="step-detail">Search ticker → tap <strong>Trade</strong> (bottom of stock page)</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n"></div>
+          <div class="step-body">
+            <div class="step-title">Set order type</div>
+            <div class="step-detail">Select <strong>Limit</strong> for the entry. Enter your calculated entry price.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n"></div>
+          <div class="step-body">
+            <div class="step-title">Calculate and enter quantity</div>
+            <div class="step-detail">Quantity = (Account × 2% risk) ÷ (Entry − Stop). Round down to whole shares.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n"></div>
+          <div class="step-body">
+            <div class="step-title">Enable TP/SL (Take Profit / Stop Loss)</div>
+            <div class="step-detail">Toggle <strong>TP/SL</strong> in the order form → enter your <strong>stop price</strong> and <strong>target price</strong>. This creates the OCO bracket automatically.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-n"></div>
+          <div class="step-body">
+            <div class="step-title">Review and submit</div>
+            <div class="step-detail">Confirm all three prices: entry, stop, target. Confirm quantity and max risk. Tap <strong>Submit</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reading P&L -->
+  <div class="section-label">Reading Your Paper Portfolio P&amp;L</div>
+  <table>
+    <thead><tr><th>Webull Section</th><th>Where to Find It</th><th>What to Look At</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Portfolio Summary</strong></td>
+        <td>Paper Trading → Portfolio tab (top)</td>
+        <td>Total equity, day's P&amp;L ($ and %), total return since start. This is your headline number.</td>
+      </tr>
+      <tr>
+        <td><strong>Positions</strong></td>
+        <td>Portfolio → Positions tab</td>
+        <td>Each open position: entry price, current price, unrealized P&amp;L, market value, % of portfolio. Review daily.</td>
+      </tr>
+      <tr>
+        <td><strong>Order History</strong></td>
+        <td>Portfolio → Orders tab → History</td>
+        <td>All filled, cancelled, and pending orders. Verify fills match your intended entry and stop prices. Flag any slippage.</td>
+      </tr>
+      <tr>
+        <td><strong>Trade History</strong></td>
+        <td>Portfolio → Trade History</td>
+        <td>Closed trades with entry date, exit date, realized P&amp;L per trade. Export this for your FINN journal analysis.</td>
+      </tr>
+      <tr>
+        <td><strong>Performance Chart</strong></td>
+        <td>Portfolio → Performance tab</td>
+        <td>Equity curve over time. Compare to SPY over the same period. This is your benchmark comparison.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FINN P&L tracking -->
+  <div class="section-label">FINN P&amp;L Analysis — What to Record</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Per-Trade Record</div>
+      <ul>
+        <li><strong>Entry date/time</strong> and price</li>
+        <li><strong>Exit date/time</strong> and price</li>
+        <li><strong>Planned stop</strong> vs. actual exit price</li>
+        <li><strong>Planned target</strong> vs. actual exit price</li>
+        <li><strong>Realized P&amp;L</strong> ($ and % of account)</li>
+        <li><strong>Rule adherence</strong> (followed / deviated)</li>
+        <li><strong>Signal that triggered entry</strong></li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Weekly Aggregate</div>
+      <ul>
+        <li><strong>Total trades</strong> this week</li>
+        <li><strong>Win rate</strong> (wins ÷ total trades)</li>
+        <li><strong>Average win</strong> vs. average loss (R-ratio)</li>
+        <li><strong>Total P&amp;L</strong> vs. SPY total return same week</li>
+        <li><strong>Rule adherence rate</strong> (% of trades fully rule-compliant)</li>
+        <li><strong>Cost of deviations</strong> ($ impact of all rule breaks)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title amber">Common Webull Paper Gotchas</div>
+      <ul>
+        <li><strong>Extended hours fills</strong> — paper trading may fill orders in pre/after hours at prices that wouldn't execute in real conditions. Flag these.</li>
+        <li><strong>Stop-loss slippage</strong> — paper fills at the stop price exactly. Live trading fills at market price after the stop triggers — expect worse.</li>
+        <li><strong>Reset temptation</strong> — never reset the account to hide losses. The drawdown is data. Own it.</li>
+        <li><strong>Oversizing</strong> — paper money feels free. Enforce the 2% risk rule on every trade, regardless.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warn-box">
+    <p><strong>The single most important Webull paper trading rule:</strong> Treat every paper trade as if the money is real. The habit you build now is the habit you will execute with when real capital is at risk. A student who takes paper trading casually will fail in live trading for exactly the same reasons they were casual in paper trading. The money is virtual. The decisions are not.</p>
+  </div>
+
+  <div class="rule-box">
+    <p><strong>Webull is your execution platform. TradingView is your analysis platform.</strong> Do your chart analysis, indicator work, and level-drawing in TradingView. Execute in Webull. Keep the tools separate — switching between them forces a deliberate pause between analysis and action, which reduces impulsive entries.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_platform_webull.html · Built May 2026</span>
+    <span>Handbook §1.3 · See also: ig_platform_tradingview.html · ig_order_types.html</span>
+  </div>
+
+</div>
+</body>
+</html>

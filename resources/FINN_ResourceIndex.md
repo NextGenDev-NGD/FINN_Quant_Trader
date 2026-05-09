@@ -78,13 +78,13 @@
 | `infographics/ig_support_resistance.html` | ✅ C1 | S&R zones — drawing, testing, retesting, invalidation |
 | `infographics/ig_trendlines.html` | ✅ C1 | Trendline drawing, channels, false breaks |
 | `infographics/ig_gap_types.html` | ✅ C1 | 4 gap types — visual, signal, FINN code reference |
-| `infographics/ig_trade_types.html` | ⬜ C2 | 8 trade styles — time horizon, capital, skill level |
-| `infographics/ig_order_types.html` | ⬜ C2 | Complete order taxonomy — 12+ types with use cases |
-| `infographics/ig_broker_comparison.html` | ⬜ C2 | 6 brokers × 8 criteria comparison table |
-| `infographics/ig_platform_tradingview.html` | ⬜ C3 | TradingView interface guide |
-| `infographics/ig_platform_webull.html` | ⬜ C3 | Webull paper trading setup |
-| `infographics/ig_platform_finviz.html` | ⬜ C3 | Finviz — heatmap, screener, news, futures |
-| `infographics/ig_info_sources.html` | ⬜ C3 | Information sources — 6 categories, 30+ sources |
+| `infographics/ig_trade_types.html` | ✅ C2 | 8 trade styles — time horizon, capital, skill level |
+| `infographics/ig_order_types.html` | ✅ C2 | Complete order taxonomy — 12+ types with use cases |
+| `infographics/ig_broker_comparison.html` | ✅ C2 | 6 brokers × 8 criteria comparison table |
+| `infographics/ig_platform_tradingview.html` | ✅ C3 | TradingView interface guide |
+| `infographics/ig_platform_webull.html` | ✅ C3 | Webull paper trading setup |
+| `infographics/ig_platform_finviz.html` | ✅ C3 | Finviz — heatmap, screener, news, futures |
+| `infographics/ig_info_sources.html` | ✅ C3 | Information sources — 6 categories, 30+ sources |
 
 ### Infographics — Tier 2 (depth enhancements)
 | File | Status | Topic |
@@ -121,8 +121,8 @@
 | B | B2 | ✅ Done | Handbook Parts 3 + 4 (Orders + Market Context) |
 | B | B3 | ✅ Done | Handbook Parts 5 + 6 (Psychology + Market Reference) |
 | C | C1 | ✅ Done | Infographics: Candlesticks, S&R, Trendlines, Gaps |
-| C | C2 | ⬜ | Infographics: Trade Types, Order Types, Broker Comparison |
-| C | C3 | ⬜ | Infographics: Platform Guides + Info Sources |
+| C | C2 | ✅ Done | Infographics: Trade Types, Order Types, Broker Comparison |
+| C | C3 | ✅ Done | Infographics: Platform Guides + Info Sources |
 | C | C4 | ⬜ | Infographics: Chart Patterns, Fibonacci, Heikin Ashi, Volume |
 | C | C5 | ⬜ | Infographics: Psychology, Sentiment, Market Context |
 | C | C6 | ⬜ | Infographics: FINN-Specific + Index finalized |

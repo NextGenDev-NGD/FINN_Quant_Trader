@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Broker Comparison</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  /* Main comparison table */
+  .compare-wrap { overflow-x: auto; margin-bottom: 20px; }
+  .compare-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  .compare-table thead tr { background: #1c2128; }
+  .compare-table th { padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 700; border-bottom: 2px solid var(--border); white-space: nowrap; }
+  .compare-table th.criteria { color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .compare-table th.broker { color: var(--text); font-size: 13px; text-transform: none; letter-spacing: 0; }
+  .compare-table th.broker.finn-pick { color: var(--blue); border-bottom: 2px solid var(--blue); }
+  .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: #1c2128; }
+  .compare-table td.criteria-label { color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .compare-table td.finn-col { background: rgba(88,166,255,0.04); }
+
+  .good { color: var(--green); font-weight: 600; }
+  .mid { color: var(--amber); }
+  .bad { color: var(--red); }
+  .na { color: var(--muted); font-style: italic; }
+
+  /* Rating dots */
+  .dots { display: flex; gap: 3px; align-items: center; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot-fill { background: var(--green); }
+  .dot-half { background: var(--amber); }
+  .dot-empty { background: var(--border); }
+
+  /* Broker profile cards */
+  .broker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .broker-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .broker-card.finn-pick { border-color: rgba(88,166,255,0.5); }
+  .broker-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+  .broker-name .pick-tag { font-size: 10px; color: var(--blue); font-weight: 700; margin-left: 6px; }
+  .broker-type { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .broker-pros { margin-bottom: 6px; }
+  .broker-pros li, .broker-cons li { font-size: 12px; color: var(--muted); margin-left: 14px; margin-bottom: 2px; }
+  .broker-pros li::marker { color: var(--green); }
+  .broker-cons li::marker { color: var(--red); }
+  .broker-verdict { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); }
+  .broker-verdict strong { color: var(--text); }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .broker-card, .rule-box { border-color: #ccc; background: #f8f8f8; }
+    .broker-card.finn-pick { border-color: #1a56db; }
+    .compare-table td.finn-col { background: #f0f4ff; }
+    .header { border-color: #333; }
+    .logo, .section-label { color: #1a56db; }
+    .compare-table th.broker.finn-pick { color: #1a56db; border-color: #1a56db; }
+    .compare-table thead tr { background: #f0f4ff; }
+    .compare-table tr:hover td { background: transparent; }
+    .good { color: #16a34a; } .mid { color: #b45309; } .bad { color: #dc2626; }
+    .dot-fill { background: #16a34a; } .dot-half { background: #b45309; } .dot-empty { background: #ccc; }
+    td { border-color: #ddd; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Broker Comparison</div>
+      <div class="subtitle">6 brokers × 8 criteria — commissions, paper trading, platform, API, options, fractional shares, research, PFOF · Handbook §1.5</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C2</div>
+  </div>
+
+  <!-- Main table -->
+  <div class="section-label">Side-by-Side Comparison</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th class="criteria">Criteria</th>
+          <th class="broker finn-pick">Webull ★ FINN</th>
+          <th class="broker">Fidelity</th>
+          <th class="broker">Charles Schwab</th>
+          <th class="broker">TD / thinkorswim</th>
+          <th class="broker">Interactive Brokers</th>
+          <th class="broker">Robinhood</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="criteria-label">Stock Commissions</td>
+          <td class="finn-col"><span class="good">$0</span></td>
+          <td><span class="good">$0</span></td>
+          <td><span class="good">$0</span></td>
+          <td><span class="good">$0</span></td>
+          <td><span class="mid">$0 or $0.005/share</span></td>
+          <td><span class="good">$0</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">Options Commissions</td>
+          <td class="finn-col"><span class="good">$0 + $0/contract</span></td>
+          <td><span class="mid">$0 + $0.65/contract</span></td>
+          <td><span class="mid">$0 + $0.65/contract</span></td>
+          <td><span class="mid">$0 + $0.65/contract</span></td>
+          <td><span class="mid">$0 + $0.65/contract</span></td>
+          <td><span class="good">$0 + $0/contract</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">Paper Trading</td>
+          <td class="finn-col"><span class="good">✓ Built-in, full-featured</span></td>
+          <td><span class="bad">✗ Not available</span></td>
+          <td><span class="bad">✗ Not available</span></td>
+          <td><span class="good">✓ paperMoney (excellent)</span></td>
+          <td><span class="mid">✓ TWS simulated (complex)</span></td>
+          <td><span class="bad">✗ Not available</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">Desktop Platform</td>
+          <td class="finn-col"><span class="mid">Good — mobile-first design</span></td>
+          <td><span class="good">Excellent — Active Trader Pro</span></td>
+          <td><span class="good">Excellent — StreetSmart Edge</span></td>
+          <td><span class="good">Best-in-class — thinkorswim</span></td>
+          <td><span class="mid">TWS — powerful but complex</span></td>
+          <td><span class="bad">Basic — no desktop app</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">Mobile App</td>
+          <td class="finn-col"><span class="good">Excellent — best retail mobile</span></td>
+          <td><span class="good">Very good</span></td>
+          <td><span class="good">Very good</span></td>
+          <td><span class="mid">Good</span></td>
+          <td><span class="mid">Good — IBKR Mobile</span></td>
+          <td><span class="good">Excellent — mobile-native</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">API / Data Access</td>
+          <td class="finn-col"><span class="mid">Unofficial API only</span></td>
+          <td><span class="mid">Fidelity API (limited public)</span></td>
+          <td><span class="mid">Schwab API (public beta)</span></td>
+          <td><span class="good">TD Ameritrade API (excellent)</span></td>
+          <td><span class="good">IBKR API (best-in-class)</span></td>
+          <td><span class="bad">No API available</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">Fractional Shares</td>
+          <td class="finn-col"><span class="good">✓ Yes</span></td>
+          <td><span class="good">✓ Yes — Stocks by the Slice</span></td>
+          <td><span class="good">✓ Yes — Schwab Stock Slices</span></td>
+          <td><span class="bad">✗ No</span></td>
+          <td><span class="good">✓ Yes (IBKR Lite)</span></td>
+          <td><span class="good">✓ Yes</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">Research &amp; Screener</td>
+          <td class="finn-col"><span class="mid">Basic screener, news feed</span></td>
+          <td><span class="good">Strong — third-party research included</span></td>
+          <td><span class="good">Strong — Morningstar, Schwab research</span></td>
+          <td><span class="good">Excellent — thinkorswim scanner</span></td>
+          <td><span class="good">Excellent — IBKR research suite</span></td>
+          <td><span class="bad">Minimal</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">PFOF Policy</td>
+          <td class="finn-col"><span class="mid">Uses PFOF</span></td>
+          <td><span class="good">No PFOF on stocks</span></td>
+          <td><span class="mid">Uses PFOF</span></td>
+          <td><span class="mid">Uses PFOF</span></td>
+          <td><span class="good">No PFOF (IEX routing option)</span></td>
+          <td><span class="bad">Heavy PFOF — primary revenue</span></td>
+        </tr>
+        <tr>
+          <td class="criteria-label">Min. Account Balance</td>
+          <td class="finn-col"><span class="good">$0</span></td>
+          <td><span class="good">$0</span></td>
+          <td><span class="good">$0</span></td>
+          <td><span class="good">$0</span></td>
+          <td><span class="good">$0 (IBKR Lite) / $10K (Pro)</span></td>
+          <td><span class="good">$0</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Broker profiles -->
+  <div class="section-label">Broker Profiles</div>
+  <div class="broker-grid">
+
+    <div class="broker-card finn-pick">
+      <div class="broker-name">Webull <span class="pick-tag">★ FINN COURSE BROKER</span></div>
+      <div class="broker-type">Mobile-first retail broker · Commission-free</div>
+      <ul class="broker-pros">
+        <li>Best paper trading of any free broker — full order types, real fills simulation</li>
+        <li>Excellent mobile charting with technical indicators built in</li>
+        <li>Level 2 order book available (on mobile)</li>
+        <li>Options paper trading supported</li>
+        <li>Free real-time quotes (Level 1)</li>
+      </ul>
+      <ul class="broker-cons">
+        <li>No official API — automated strategies require workarounds</li>
+        <li>Desktop platform not as powerful as thinkorswim or IBKR</li>
+        <li>Uses PFOF — fills may be slightly inferior on illiquid names</li>
+      </ul>
+      <div class="broker-verdict"><strong>FINN verdict:</strong> Best free option for paper trading with real market mechanics. Use for all FINN paper trading from Week 9 onward.</div>
+    </div>
+
+    <div class="broker-card">
+      <div class="broker-name">TD Ameritrade / thinkorswim</div>
+      <div class="broker-type">Now Schwab-owned · Institutional-grade platform</div>
+      <ul class="broker-pros">
+        <li>thinkorswim is the best desktop platform for retail traders</li>
+        <li>paperMoney paper trading is excellent — nearly identical to live</li>
+        <li>Strong API (TD Ameritrade developer portal)</li>
+        <li>Advanced charting, scripting (thinkScript)</li>
+      </ul>
+      <ul class="broker-cons">
+        <li>Platform complexity is high — steep learning curve</li>
+        <li>Being migrated to Schwab — some features in transition</li>
+        <li>No fractional shares</li>
+      </ul>
+      <div class="broker-verdict"><strong>FINN verdict:</strong> Best upgrade path when ready for live trading. thinkorswim is worth learning once FINN course skills are established.</div>
+    </div>
+
+    <div class="broker-card">
+      <div class="broker-name">Interactive Brokers</div>
+      <div class="broker-type">Institutional &amp; advanced retail · Best-in-class API</div>
+      <ul class="broker-pros">
+        <li>Best API in retail — IBKR API supports full automation</li>
+        <li>No PFOF — best execution quality for active traders</li>
+        <li>Access to international markets, futures, forex, bonds</li>
+        <li>Very low margin rates</li>
+      </ul>
+      <ul class="broker-cons">
+        <li>TWS platform is complex — not beginner-friendly</li>
+        <li>IBKR Pro requires $10K min and charges inactivity fees</li>
+        <li>Paper trading (IBKR Simulated) is available but setup is involved</li>
+      </ul>
+      <div class="broker-verdict"><strong>FINN verdict:</strong> Best choice for live systematic/algorithmic trading after the course. API access is unmatched in retail. Not the starting point.</div>
+    </div>
+
+    <div class="broker-card">
+      <div class="broker-name">Fidelity</div>
+      <div class="broker-type">Full-service retail broker · Strong research</div>
+      <ul class="broker-pros">
+        <li>No PFOF on stocks — better fill quality</li>
+        <li>Excellent research tools and third-party reports</li>
+        <li>Fractional shares (Stocks by the Slice)</li>
+        <li>Active Trader Pro is a solid desktop platform</li>
+      </ul>
+      <ul class="broker-cons">
+        <li>No paper trading — a significant gap for learning</li>
+        <li>API access is limited and not well-documented for retail</li>
+        <li>Less focused on active trading features vs. long-term investing</li>
+      </ul>
+      <div class="broker-verdict"><strong>FINN verdict:</strong> Good for live investing accounts. Not suitable as the primary FINN platform due to no paper trading.</div>
+    </div>
+
+    <div class="broker-card">
+      <div class="broker-name">Charles Schwab</div>
+      <div class="broker-type">Full-service retail broker · Absorbed TD Ameritrade</div>
+      <ul class="broker-pros">
+        <li>StreetSmart Edge is a capable active-trading platform</li>
+        <li>Strong research and screener tools</li>
+        <li>Fractional shares (Stock Slices — S&amp;P 500 names only)</li>
+        <li>thinkorswim being integrated into Schwab ecosystem</li>
+      </ul>
+      <ul class="broker-cons">
+        <li>No paper trading on Schwab platform (paperMoney is thinkorswim-only)</li>
+        <li>API (Schwab Developer Portal) is newer, less mature than TD Ameritrade API was</li>
+        <li>Uses PFOF</li>
+      </ul>
+      <div class="broker-verdict"><strong>FINN verdict:</strong> Strong long-term choice. Access to thinkorswim (via acquisition) makes it compelling once ready for live trading.</div>
+    </div>
+
+    <div class="broker-card">
+      <div class="broker-name">Robinhood</div>
+      <div class="broker-type">Consumer-focused · Gamified UX</div>
+      <ul class="broker-pros">
+        <li>Cleanest, simplest UI of any broker</li>
+        <li>$0 options commissions per contract</li>
+        <li>Fractional shares available</li>
+        <li>Crypto trading on same platform</li>
+      </ul>
+      <ul class="broker-cons">
+        <li>No paper trading — cannot practice before risking real capital</li>
+        <li>No API for retail users</li>
+        <li>Heavy reliance on PFOF — execution quality concerns</li>
+        <li>Limited research and screener tools</li>
+        <li>Gamified UX actively discourages systematic, deliberate trading</li>
+      </ul>
+      <div class="broker-verdict"><strong>FINN verdict:</strong> Not recommended for FINN work. No paper trading, no API, and UX designed to encourage impulsive trading — the opposite of FINN's systematic approach.</div>
+    </div>
+
+  </div>
+
+  <div class="rule-box">
+    <p><strong>FINN broker recommendation:</strong> Use <strong>Webull</strong> for all course paper trading (Week 9 onward). It is the only free broker with full paper trading support, real order type mechanics, and Level 2 data. When ready to move to live trading after the course, evaluate thinkorswim (for platform quality) or Interactive Brokers (for API and automation).</p>
+    <p><strong>The broker does not create the edge.</strong> A systematic trader with a 0.06 IC signal will perform approximately the same on Webull, Fidelity, or IBKR for swing trades on liquid equities. The fill quality differences matter at scale and on illiquid names — not at the learning stage. Choose based on features you actually need, not prestige.</p>
+    <p><strong>Disclaimer:</strong> Commissions, features, and policies change. Verify current terms directly with each broker before opening an account. Data reflects May 2026.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_broker_comparison.html · Built May 2026</span>
+    <span>Handbook §1.5 · See also: ig_platform_webull.html · ig_trade_types.html</span>
+  </div>
+
+</div>
+</body>
+</html>

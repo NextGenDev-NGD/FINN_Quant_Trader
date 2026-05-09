@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Information Sources Map</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  /* Category cards */
+  .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .cat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .cat-header { padding: 10px 14px; font-weight: 700; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+  .cat-header.price { background: rgba(63,185,80,0.12); color: var(--green); border-bottom: 1px solid rgba(63,185,80,0.2); }
+  .cat-header.macro { background: rgba(88,166,255,0.12); color: var(--blue); border-bottom: 1px solid rgba(88,166,255,0.2); }
+  .cat-header.news { background: rgba(210,153,34,0.12); color: var(--amber); border-bottom: 1px solid rgba(210,153,34,0.2); }
+  .cat-header.sentiment { background: rgba(248,81,73,0.12); color: var(--red); border-bottom: 1px solid rgba(248,81,73,0.2); }
+  .cat-header.institutional { background: rgba(139,148,158,0.12); color: var(--muted); border-bottom: 1px solid rgba(139,148,158,0.2); }
+  .cat-header.community { background: rgba(88,166,255,0.08); color: var(--muted); border-bottom: 1px solid var(--border); }
+  .cat-num { font-size: 10px; font-weight: 600; opacity: 0.7; }
+  .source-list { padding: 10px 0; }
+  .source-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 14px; border-bottom: 1px solid var(--border); }
+  .source-item:last-child { border-bottom: none; }
+  .source-name { font-weight: 600; font-size: 12px; color: var(--text); }
+  .source-desc { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .source-badges { display: flex; gap: 4px; flex-direction: column; align-items: flex-end; flex-shrink: 0; margin-left: 8px; }
+  .badge { font-size: 10px; padding: 1px 6px; border-radius: 6px; font-weight: 600; white-space: nowrap; }
+  .b-free { background: rgba(63,185,80,0.15); color: var(--green); }
+  .b-paid { background: rgba(248,81,73,0.12); color: var(--red); }
+  .b-api { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .b-finn { background: rgba(88,166,255,0.2); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); font-size: 9px; }
+
+  /* Hierarchy */
+  .hierarchy { display: flex; flex-direction: column; gap: 0; background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+  .hier-row { display: grid; grid-template-columns: 40px 160px 1fr 160px; align-items: center; padding: 10px 16px; border-bottom: 1px solid var(--border); gap: 16px; }
+  .hier-row:last-child { border-bottom: none; }
+  .hier-rank { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #0d1117; flex-shrink: 0; }
+  .r1 { background: var(--green); }
+  .r2 { background: var(--blue); }
+  .r3 { background: var(--amber); }
+  .r4 { background: var(--muted); }
+  .r5 { background: #444; }
+  .hier-name { font-weight: 700; font-size: 13px; color: var(--text); }
+  .hier-desc { font-size: 12px; color: var(--muted); }
+  .hier-lag { font-size: 11px; text-align: right; }
+  .lag-low { color: var(--green); }
+  .lag-mid { color: var(--amber); }
+  .lag-high { color: var(--red); }
+
+  /* DMB workflow */
+  .workflow { display: flex; align-items: stretch; gap: 0; margin-bottom: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .wf-step { flex: 1; padding: 14px; border-right: 1px solid var(--border); }
+  .wf-step:last-child { border-right: none; }
+  .wf-num { color: var(--blue); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .wf-tool { font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .wf-task { font-size: 11px; color: var(--muted); }
+  .wf-time { font-size: 10px; color: var(--amber); margin-top: 6px; font-weight: 600; }
+  .arrow { display: flex; align-items: center; color: var(--border); font-size: 20px; padding: 0 4px; }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .cat-card, .hierarchy, .workflow, .rule-box { border-color: #ccc; background: #f8f8f8; }
+    .cat-header.price { background: #e6f9ed; color: #16a34a; }
+    .cat-header.macro { background: #e8f0fe; color: #1a56db; }
+    .cat-header.news { background: #fef9e7; color: #b45309; }
+    .cat-header.sentiment { background: #fef2f2; color: #dc2626; }
+    .cat-header.institutional, .cat-header.community { background: #f5f5f5; color: #555; }
+    .header { border-color: #333; }
+    .logo, .section-label { color: #1a56db; }
+    .b-free { color: #16a34a; } .b-paid { color: #dc2626; } .b-api, .b-finn { color: #1a56db; }
+    .r1 { background: #16a34a; } .r2 { background: #1a56db; } .r3 { background: #b45309; }
+    .r4, .r5 { background: #888; }
+    .lag-low { color: #16a34a; } .lag-mid { color: #b45309; } .lag-high { color: #dc2626; }
+    .wf-step { border-color: #ddd; }
+    .wf-num { color: #1a56db; }
+    .wf-time { color: #b45309; }
+    .source-item { border-color: #eee; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Information Sources Map</div>
+      <div class="subtitle">6 categories · 30+ sources · reliability hierarchy · FINN DMB workflow · Handbook §4.2</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C3</div>
+  </div>
+
+  <!-- Sources by category -->
+  <div class="section-label">Sources by Category</div>
+  <div class="cat-grid">
+
+    <div class="cat-card">
+      <div class="cat-header price">① Price &amp; Volume Data <span class="cat-num">PRIMARY</span></div>
+      <div class="source-list">
+        <div class="source-item">
+          <div><div class="source-name">yfinance</div><div class="source-desc">Daily OHLCV for any ticker; adjusted for splits/dividends; decades of history</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-api">API</span><span class="badge b-finn">FINN Core</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">TradingView</div><div class="source-desc">Real-time charts, indicators, alerts, multi-timeframe views</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Core</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Finviz</div><div class="source-desc">Heatmap, screener, news aggregation, futures overview</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Core</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Webull</div><div class="source-desc">Paper trading, Level 2 order book, pre/after-hours data</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Core</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">CBOE (cboe.com)</div><div class="source-desc">Options data, VIX history, put/call ratios</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header macro">② Macro &amp; Economic Data <span class="cat-num">CONTEXT</span></div>
+      <div class="source-list">
+        <div class="source-item">
+          <div><div class="source-name">FRED (fred.stlouisfed.org)</div><div class="source-desc">GDP, CPI, unemployment, yield curve, M2, all Fed data</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-api">API</span><span class="badge b-finn">FINN Use</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Investing.com</div><div class="source-desc">Economic calendar — all scheduled macro releases with consensus estimates</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Use</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">CME FedWatch</div><div class="source-desc">Fed funds rate probability by upcoming meeting — implied from futures</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Briefing.com</div><div class="source-desc">Earnings calendar, pre-market movers, economic release summaries</div></div>
+          <div class="source-badges"><span class="badge b-free">Free (ltd)</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">BLS.gov</div><div class="source-desc">Official CPI, PPI, NFP releases — authoritative source</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header news">③ News &amp; Headlines <span class="cat-num">DIRECTIONAL</span></div>
+      <div class="source-list">
+        <div class="source-item">
+          <div><div class="source-name">NewsAPI</div><div class="source-desc">30-day articles by ticker or keyword via Python API — FinBERT input</div></div>
+          <div class="source-badges"><span class="badge b-free">Free tier</span><span class="badge b-api">API</span><span class="badge b-finn">FINN Core</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Finviz News tab</div><div class="source-desc">Aggregated headlines by ticker — fast pre-market scan</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Use</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Reuters / AP</div><div class="source-desc">Unbiased macro and geopolitical news — preferred for headline quality</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">SEC EDGAR</div><div class="source-desc">10-K, 10-Q, 8-K filings — authoritative fundamental source</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Seeking Alpha</div><div class="source-desc">Earnings transcripts, analyst commentary (limited free tier)</div></div>
+          <div class="source-badges"><span class="badge b-free">Free (ltd)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header sentiment">④ Sentiment Indicators <span class="cat-num">REGIME</span></div>
+      <div class="source-list">
+        <div class="source-item">
+          <div><div class="source-name">VIX (TradingView)</div><div class="source-desc">CBOE Volatility Index — implied vol, fear gauge, regime classifier</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Use</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">CNN Fear &amp; Greed Index</div><div class="source-desc">Composite 0–100 sentiment index; contrarian signal at extremes</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Use</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">AAII Sentiment Survey</div><div class="source-desc">Weekly poll: % bullish/bearish. Contrarian signal at extremes.</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Use</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">CBOE Put/Call Ratio</div><div class="source-desc">Options market sentiment — elevated ratio = fear, low = complacency</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-finn">FINN Use</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">FinBERT (via HuggingFace)</div><div class="source-desc">NLP sentiment model for financial news — FINN AI signal pipeline</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span><span class="badge b-api">API</span><span class="badge b-finn">FINN Core</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header institutional">⑤ Institutional Flow <span class="cat-num">LAGGED</span></div>
+      <div class="source-list">
+        <div class="source-item">
+          <div><div class="source-name">SEC 13F Filings</div><div class="source-desc">Quarterly institutional holdings — 45-day lag, shows what large funds hold</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">CFTC COT Report</div><div class="source-desc">Commitment of Traders — futures positioning by commercial vs. speculative</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">SEC Form 4</div><div class="source-desc">Insider buying and selling — must be filed within 2 business days</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">13D / 13G Filings</div><div class="source-desc">Activist investor disclosures — filing required when crossing 5% ownership</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header community">⑥ Community &amp; Social <span class="cat-num">NOISE FILTER</span></div>
+      <div class="source-list">
+        <div class="source-item">
+          <div><div class="source-name">StockTwits</div><div class="source-desc">Real-time trader sentiment by ticker — useful as crowd sentiment gauge, not as signal</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Reddit (r/stocks, r/investing)</div><div class="source-desc">Retail sentiment — informational only; never a primary trading signal</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Twitter / X (Financial accounts)</div><div class="source-desc">Breaking news and trader commentary — fast but unverified; high noise ratio</div></div>
+          <div class="source-badges"><span class="badge b-free">Free</span></div>
+        </div>
+        <div class="source-item">
+          <div><div class="source-name">Earnings Whispers</div><div class="source-desc">Earnings estimates and whisper numbers — useful pre-earnings context</div></div>
+          <div class="source-badges"><span class="badge b-free">Free (ltd)</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Reliability hierarchy -->
+  <div class="section-label">Information Reliability Hierarchy</div>
+  <div class="hierarchy">
+    <div class="hier-row">
+      <div class="hier-rank r1">1</div>
+      <div class="hier-name">Price &amp; Volume</div>
+      <div class="hier-desc">The market's actual revealed preferences — what participants actually did with real money. Always primary. No interpretation required.</div>
+      <div class="hier-lag lag-low">Lag: Real-time</div>
+    </div>
+    <div class="hier-row">
+      <div class="hier-rank r2">2</div>
+      <div class="hier-name">Scheduled Macro Data</div>
+      <div class="hier-desc">CPI, FOMC, NFP, GDP — high impact, predictable timing. Prepare for it. These move markets regardless of any technical signal.</div>
+      <div class="hier-lag lag-low">Lag: None (scheduled)</div>
+    </div>
+    <div class="hier-row">
+      <div class="hier-rank r3">3</div>
+      <div class="hier-name">Sentiment Indicators</div>
+      <div class="hier-desc">VIX, P/C ratio, AAII, Fear &amp; Greed. Useful at extremes; filter noise near the middle. Best as regime context, not entry timing.</div>
+      <div class="hier-lag lag-mid">Lag: Hours–Days</div>
+    </div>
+    <div class="hier-row">
+      <div class="hier-rank r4">4</div>
+      <div class="hier-name">News Headlines</div>
+      <div class="hier-desc">Directional input only. The market's reaction to news matters more than the news itself. A stock dropping on good news is a bearish signal.</div>
+      <div class="hier-lag lag-mid">Lag: Minutes–Hours</div>
+    </div>
+    <div class="hier-row">
+      <div class="hier-rank r5">5</div>
+      <div class="hier-name">Analyst Opinions &amp; Social Media</div>
+      <div class="hier-desc">Noise until quantified. FINN uses FinBERT to extract signal from text; raw opinion is not a trading input. Treat as awareness only.</div>
+      <div class="hier-lag lag-high">Lag: Varies / Unreliable</div>
+    </div>
+  </div>
+
+  <!-- DMB workflow -->
+  <div class="section-label">FINN DMB Morning Information Workflow</div>
+  <div class="workflow">
+    <div class="wf-step">
+      <div class="wf-num">Step 1</div>
+      <div class="wf-tool">Finviz Futures</div>
+      <div class="wf-task">Check ES, NQ, YM overnight direction. Note magnitude. Set directional bias.</div>
+      <div class="wf-time">⏱ 2 min</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">Step 2</div>
+      <div class="wf-tool">Investing.com Calendar</div>
+      <div class="wf-task">Any high-impact macro events today? Earnings? Fed speakers? Flag and plan around them.</div>
+      <div class="wf-time">⏱ 2 min</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">Step 3</div>
+      <div class="wf-tool">Finviz News</div>
+      <div class="wf-task">Scan overnight headlines. Any watchlist ticker touched? Any sector-wide event?</div>
+      <div class="wf-time">⏱ 3 min</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">Step 4</div>
+      <div class="wf-tool">Finviz Heatmap</div>
+      <div class="wf-task">Broad move or sector rotation? Identify which sectors are leading and lagging.</div>
+      <div class="wf-time">⏱ 1 min</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">Step 5</div>
+      <div class="wf-tool">TradingView</div>
+      <div class="wf-task">Check VIX level. Review watchlist charts. Identify gaps. Mark key levels on active setups.</div>
+      <div class="wf-time">⏱ 10 min</div>
+    </div>
+    <div class="wf-step">
+      <div class="wf-num">Step 6</div>
+      <div class="wf-tool">DMB Entry</div>
+      <div class="wf-task">Write hypothesis: "Today I expect ___ because ___. I will watch for ___ to confirm/deny."</div>
+      <div class="wf-time">⏱ 3 min</div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <p><strong>More information is not more edge.</strong> A trader who checks 15 sources every morning is not better informed — they are more confused. The hierarchy above exists for a reason: price and volume are authoritative. Everything else is context. Spend 80% of your information time on primary sources and 20% on context.</p>
+    <p><strong>The market's reaction is the signal, not the news.</strong> When CPI prints hotter than expected and the market rallies — the rally is the signal. The news is the input. Trade what the market does with information, not the information itself.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_info_sources.html · Built May 2026</span>
+    <span>Handbook §4.2 · See also: ig_platform_finviz.html · ig_platform_tradingview.html</span>
+  </div>
+
+</div>
+</body>
+</html>

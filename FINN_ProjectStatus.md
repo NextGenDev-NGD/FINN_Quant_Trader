@@ -10,18 +10,18 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 ## Active Projects
 
 ### Knowledge Base Build — Gap Integration (Tier 1 + Tier 2)
-**Status:** 🟡 In progress — Session C2 next
+**Status:** 🟡 In progress — Session C4 next
 **Planning doc:** `research/planning/finn_kb_execution_plan.md`
 **Gap analysis:** `research/planning/finn_gap_analysis.md`
-**Progress:** 6 / 19 sessions complete
+**Progress:** 8 / 19 sessions complete
 
-**Last completed:** Session C1 (May 8, 2026) — Created 4 infographics: `ig_candlestick_patterns.html` (anatomy, 10 single-candle, 6 two-candle, 4 three-candle patterns), `ig_support_resistance.html` (definitions, lifecycle diagram, zone strength factors, test/retest/invalidation, role reversal), `ig_trendlines.html` (uptrend/downtrend/channels, drawing steps, breaks, false breaks, angle validity), `ig_gap_types.html` (4 gap types with stats, identification matrix, FINN code reference). Updated ResourceIndex to mark all 4 ✅. Session delivered as C1.a + C1.b.
+**Last completed:** Session C3 (May 8, 2026) — Created 4 infographics: `ig_platform_tradingview.html` (interface layout, chart types/timeframes, FINN indicator setup, alerts setup, watchlists, keyboard shortcuts), `ig_platform_webull.html` (paper vs. live distinction, account setup steps, bracket order walkthrough with mockup, P&L section guide, common gotchas), `ig_platform_finviz.html` (nav map, heatmap reading, 4 FINN screener presets, futures tab interpretation, news tab workflow), `ig_info_sources.html` (6 source categories with 30+ sources, reliability hierarchy, FINN DMB 6-step morning workflow). Updated ResourceIndex to mark all 4 ✅. Session delivered as C3.a + C3.b.
 
-**Next session (C2):**
-Deliver as C2.a + C2.b (2 HTML files per sub-session):
-- C2.a: Write `resources/infographics/ig_trade_types.html` + `resources/infographics/ig_order_types.html`
-- C2.b: Write `resources/infographics/ig_broker_comparison.html`
-- Update `resources/FINN_ResourceIndex.md` — mark all 3 C2 infographics as ✅ Built (C2)
+**Next session (C4):**
+Deliver as C4.a + C4.b (2 HTML files per sub-session):
+- C4.a: Write `resources/infographics/ig_chart_patterns_continuation.html` + `resources/infographics/ig_chart_patterns_reversal.html`
+- C4.b: Write `resources/infographics/ig_fibonacci.html` + `resources/infographics/ig_heikin_ashi.html` + `resources/infographics/ig_volume_analysis.html`
+- Update `resources/FINN_ResourceIndex.md` — mark all 5 C4 infographics as ✅ Built (C4)
 
 *Full session sequence and KB scope: see `research/planning/finn_kb_execution_plan.md`*
 

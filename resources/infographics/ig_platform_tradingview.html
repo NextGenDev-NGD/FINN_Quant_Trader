@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — TradingView Platform Guide</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-weight: 700; font-size: 14px; color: var(--blue); margin-bottom: 8px; }
+  .card-title.green { color: var(--green); }
+  .card-title.amber { color: var(--amber); }
+  .card p { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--text); }
+  .card ul { margin-left: 16px; }
+  .card li { color: var(--muted); font-size: 12px; margin-bottom: 3px; }
+  .card li strong { color: var(--text); }
+
+  /* Interface diagram */
+  .interface-diagram { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 12px; }
+  .diag-title { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 12px; font-family: system-ui; }
+  .interface-box { border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .iface-topbar { background: #1c2128; padding: 6px 12px; color: var(--muted); font-size: 11px; display: flex; gap: 16px; border-bottom: 1px solid var(--border); }
+  .iface-topbar span { color: var(--text); }
+  .iface-topbar .active { color: var(--blue); font-weight: 700; }
+  .iface-body { display: grid; grid-template-columns: 48px 1fr 220px; min-height: 160px; }
+  .iface-toolbar { background: #0d1117; border-right: 1px solid var(--border); padding: 8px 4px; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .iface-toolbar span { color: var(--muted); font-size: 16px; cursor: default; }
+  .iface-chart { background: #0d1117; padding: 10px; position: relative; }
+  .chart-label { color: var(--muted); font-size: 10px; }
+  .chart-ticker { color: var(--text); font-size: 14px; font-weight: 700; }
+  .chart-ohlc { color: var(--muted); font-size: 10px; margin-top: 2px; }
+  .chart-ohlc .up { color: var(--green); }
+  .chart-area { margin-top: 8px; color: var(--muted); font-size: 10px; font-style: italic; }
+  .iface-right { background: #1c2128; border-left: 1px solid var(--border); padding: 8px; }
+  .iface-right-title { color: var(--blue); font-size: 10px; font-weight: 700; margin-bottom: 6px; }
+  .iface-right p { color: var(--muted); font-size: 10px; margin-bottom: 3px; }
+
+  /* Shortcut table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .kbd { display: inline-block; background: #1c2128; border: 1px solid var(--border); border-radius: 4px; padding: 1px 7px; font-family: 'Courier New', monospace; font-size: 11px; color: var(--text); }
+
+  /* Step list */
+  .step-list { counter-reset: steps; margin-bottom: 20px; }
+  .step { display: flex; gap: 14px; margin-bottom: 12px; }
+  .step-num { counter-increment: steps; content: counter(steps); background: var(--blue); color: #0d1117; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+  .step-num::before { content: counter(steps); }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 700; color: var(--text); font-size: 13px; margin-bottom: 2px; }
+  .step-desc { color: var(--muted); font-size: 12px; }
+  .step-desc strong { color: var(--text); }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .card, .interface-diagram, .rule-box, .interface-box { border-color: #ccc; background: #f8f8f8; }
+    .iface-topbar, .iface-toolbar, .iface-right, .iface-chart { background: #f0f4ff; }
+    .header { border-color: #333; }
+    .logo, .section-label, .card-title, .iface-right-title { color: #1a56db; }
+    .card-title.green { color: #16a34a; }
+    .card-title.amber { color: #b45309; }
+    th { color: #1a56db; background: #f0f4ff; }
+    td { border-color: #ddd; }
+    tr:hover td { background: transparent; }
+    .kbd { background: #eee; border-color: #ccc; }
+    .step-num { background: #1a56db; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">TradingView Platform Guide</div>
+      <div class="subtitle">Chart types · indicators · watchlists · alerts · layouts · Pine Script intro · Handbook §1.2</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C3</div>
+  </div>
+
+  <!-- Interface overview -->
+  <div class="section-label">Interface Overview</div>
+  <div class="interface-diagram">
+    <div class="diag-title">TradingView Chart Layout — Key Zones</div>
+    <div class="interface-box">
+      <div class="iface-topbar">
+        <span class="active">Chart</span>
+        <span>Screener</span>
+        <span>News</span>
+        <span>Economic Calendar</span>
+        <span style="margin-left:auto">SPY · 1D · Candlestick ▾</span>
+      </div>
+      <div class="iface-body">
+        <div class="iface-toolbar">
+          <span title="Cursor">✛</span>
+          <span title="Trend line">╱</span>
+          <span title="Horizontal line">─</span>
+          <span title="Rectangle">▭</span>
+          <span title="Fibonacci">F</span>
+          <span title="Text">T</span>
+          <span title="Measure">📐</span>
+        </div>
+        <div class="iface-chart">
+          <div class="chart-ticker">SPY &nbsp;<span class="chart-ohlc">O<span class="up">523.40</span> H<span class="up">527.10</span> L 521.80 C<span class="up">526.45</span> +2.85 (+0.54%)</span></div>
+          <div class="chart-area">
+            ← Price chart renders here (candlestick / bar / line / Heikin Ashi)<br>
+            Drawing tools apply directly on the chart<br>
+            Indicators appear as overlays (MA, VWAP) or sub-panels (RSI, MACD, Volume)<br>
+            Right-click any candle → Add Alert, Measure, or object menu
+          </div>
+        </div>
+        <div class="iface-right">
+          <div class="iface-right-title">WATCHLIST PANEL</div>
+          <p>SPY &nbsp; <span style="color:var(--green)">▲ +0.54%</span></p>
+          <p>QQQ &nbsp; <span style="color:var(--green)">▲ +0.71%</span></p>
+          <p>AAPL &nbsp; <span style="color:var(--red)">▼ −0.22%</span></p>
+          <p>NVDA &nbsp; <span style="color:var(--green)">▲ +1.43%</span></p>
+          <p style="margin-top:8px;color:var(--blue);font-size:10px">+ Add symbol</p>
+          <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px">
+            <div class="iface-right-title">ALERTS PANEL</div>
+            <p>SPY &gt; 530 &nbsp; 🔔</p>
+            <p>QQQ &lt; 440 &nbsp; 🔔</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart types and timeframes -->
+  <div class="section-label">Chart Types &amp; Timeframes</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Chart Types</div>
+      <ul>
+        <li><strong>Candlestick</strong> — FINN standard. Shows OHLC and candle patterns.</li>
+        <li><strong>Bar (OHLC)</strong> — Same data, different visual. Preferred by some discretionary traders.</li>
+        <li><strong>Line</strong> — Close prices only. Useful for identifying trends without noise.</li>
+        <li><strong>Heikin Ashi</strong> — Smoothed candles for trend identification. See Handbook §2.7.</li>
+        <li><strong>Renko / Kagi</strong> — Non-time-based. Informational only in FINN.</li>
+      </ul>
+      <p style="margin-top:8px"><strong>FINN default:</strong> Candlestick for analysis; Heikin Ashi as a secondary view for trend confirmation.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Key Timeframes</div>
+      <ul>
+        <li><strong>Weekly (1W)</strong> — Major S&amp;R; long-term trend context</li>
+        <li><strong>Daily (1D)</strong> — Primary FINN analysis timeframe</li>
+        <li><strong>4-Hour (4H)</strong> — Intermediate structure; MTF context</li>
+        <li><strong>1-Hour (1H)</strong> — Entry setup identification</li>
+        <li><strong>15-Minute (15M)</strong> — Entry timing and stop placement</li>
+        <li><strong>5-Minute (5M)</strong> — Execution detail (advanced)</li>
+      </ul>
+      <p style="margin-top:8px"><strong>FINN MTF sequence:</strong> Start daily → 4H → 1H → 15M. Never start at the lowest timeframe. See Handbook §6.3.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Useful Symbols</div>
+      <ul>
+        <li><strong>SPY</strong> — S&amp;P 500 ETF (daily benchmark)</li>
+        <li><strong>QQQ</strong> — Nasdaq 100 ETF</li>
+        <li><strong>VIX</strong> — CBOE Volatility Index</li>
+        <li><strong>ES1!</strong> — S&amp;P 500 futures (continuous)</li>
+        <li><strong>NQ1!</strong> — Nasdaq 100 futures</li>
+        <li><strong>DXY</strong> — US Dollar Index</li>
+        <li><strong>TLT</strong> — 20+ Year Treasury ETF (yield proxy)</li>
+        <li><strong>GLD</strong> — Gold ETF</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FINN indicator setup -->
+  <div class="section-label">FINN Standard Indicator Setup</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Price Overlays</div>
+      <ul>
+        <li><strong>SMA 20</strong> — Short-term trend; pullback level in uptrends</li>
+        <li><strong>SMA 50</strong> — Intermediate trend; major S&amp;R in most setups</li>
+        <li><strong>SMA 200</strong> — Long-term regime filter (above = bull, below = bear)</li>
+        <li><strong>VWAP</strong> — Intraday fair value; institutional reference price</li>
+        <li><strong>Bollinger Bands (20, 2)</strong> — Volatility envelope; mean-reversion signal</li>
+      </ul>
+      <p style="margin-top:8px">Add via: <em>Indicators → Search by name → click to add</em></p>
+    </div>
+    <div class="card">
+      <div class="card-title">Sub-Panel Indicators</div>
+      <ul>
+        <li><strong>RSI (14)</strong> — Momentum oscillator; overbought/oversold reference</li>
+        <li><strong>MACD (12,26,9)</strong> — Trend momentum and crossover signals</li>
+        <li><strong>Volume</strong> — Always on. Color-coded: green = up volume, red = down volume</li>
+        <li><strong>ATR (14)</strong> — Volatility measurement; used for stop sizing</li>
+        <li><strong>Stochastic RSI</strong> — Faster oscillator for short-term momentum</li>
+      </ul>
+      <p style="margin-top:8px">Sub-panels appear below the chart. Drag the divider to resize.</p>
+    </div>
+    <div class="card">
+      <div class="card-title green">Save as Template</div>
+      <p>Once your indicator set is configured, save it as a template so every new chart loads with the same setup:</p>
+      <p><strong>Chart Settings → Templates → Save as Template → "FINN Standard"</strong></p>
+      <p>Apply to any new symbol: click the template name in the template dropdown.</p>
+      <p style="margin-top:6px"><strong>Layout vs. Template:</strong> A template saves indicators only. A layout saves the full workspace (chart + watchlist + panels). Save both.</p>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="section-label">Setting Alerts — The Right Way</div>
+  <div class="card-grid-2">
+    <div class="card">
+      <div class="card-title">Price Level Alerts</div>
+      <p>Set an alert when price crosses a key level so you don't have to watch the chart continuously:</p>
+      <p><strong>Method 1 (fastest):</strong> Right-click on the chart at the price level → <em>Add Alert at [price]</em></p>
+      <p><strong>Method 2:</strong> Click the clock icon (Alerts panel) → <em>Create Alert</em> → set symbol, condition, price</p>
+      <p style="margin-top:6px"><strong>Conditions available:</strong> Crossing, crossing up, crossing down, greater than, less than.</p>
+      <p style="margin-top:6px"><strong>Notification:</strong> Browser popup, email, or TradingView app push notification. Configure in Alert settings → Notifications.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Indicator Alerts</div>
+      <p>Alert when an indicator crosses a threshold — not just price:</p>
+      <ul style="margin-top:6px">
+        <li><strong>RSI crosses 70</strong> — overbought entry into overbought zone</li>
+        <li><strong>RSI crosses 30</strong> — oversold; potential reversal watch</li>
+        <li><strong>MACD crosses signal line</strong> — momentum shift</li>
+        <li><strong>Price crosses SMA 50</strong> — trend change alert</li>
+      </ul>
+      <p style="margin-top:8px">Set via: <em>Alerts → Create Alert → Condition → [Indicator name] → [Crossing direction] → [Value]</em></p>
+      <p style="margin-top:6px"><strong>FINN use:</strong> Set alerts on your watchlist tickers at key S&amp;R levels and SMA crossovers each morning. Do not watch charts continuously — let alerts bring you back.</p>
+    </div>
+  </div>
+
+  <!-- Watchlists -->
+  <div class="section-label">Watchlists &amp; Multi-Chart Layouts</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">FINN Watchlist Structure</div>
+      <ul>
+        <li><strong>Market Dashboard</strong> — SPY, QQQ, VIX, DXY, TLT, GLD, ES1!, NQ1!</li>
+        <li><strong>Active Setups</strong> — 5–8 tickers with patterns forming; updated daily</li>
+        <li><strong>Sector ETFs</strong> — XLK, XLF, XLE, XLV, XLI, XLY, XLP, XLU, XLB, XLRE, XLC</li>
+        <li><strong>On Watch</strong> — Tickers approaching key levels; not yet a setup</li>
+      </ul>
+      <p style="margin-top:8px">Manage via: <em>Watchlist panel → + → New watchlist → Name it</em></p>
+    </div>
+    <div class="card">
+      <div class="card-title">Multi-Chart Layout</div>
+      <p>View multiple tickers simultaneously using TradingView's layout feature:</p>
+      <p><strong>Free plan:</strong> 1 chart per layout (single view)</p>
+      <p><strong>Pro plan:</strong> Up to 4 charts per layout (2×2 grid)</p>
+      <p style="margin-top:6px">To set up: <em>Layout button (top right) → Select grid → assign each panel a symbol and timeframe</em></p>
+      <p style="margin-top:6px"><strong>FINN morning review setup:</strong> 4-chart layout with SPY (daily), QQQ (daily), VIX (daily), and your top active setup (4H).</p>
+    </div>
+    <div class="card">
+      <div class="card-title amber">Pine Script (Awareness)</div>
+      <p>TradingView's proprietary scripting language for building custom indicators and strategy backtests directly in the platform.</p>
+      <ul style="margin-top:6px">
+        <li>Can code custom signals (e.g., "highlight candles where RSI &lt; 30 and volume &gt; 1.5× average")</li>
+        <li>Can run simple backtests with entry/exit logic</li>
+        <li>Results are visual — not as rigorous as Python backtests</li>
+      </ul>
+      <p style="margin-top:6px"><strong>FINN position:</strong> Pine Script is useful for quick visual exploration. All formal backtesting in FINN uses Python + pandas for statistical rigor.</p>
+    </div>
+  </div>
+
+  <!-- Keyboard shortcuts -->
+  <div class="section-label">Essential Keyboard Shortcuts</div>
+  <table>
+    <thead><tr><th>Action</th><th>Shortcut</th><th>Action</th><th>Shortcut</th></tr></thead>
+    <tbody>
+      <tr><td>Search for symbol</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span> or just type</td><td>Toggle crosshair / cursor</td><td><span class="kbd">Ctrl</span>+<span class="kbd">G</span></td></tr>
+      <tr><td>Fit chart to screen</td><td><span class="kbd">Alt</span>+<span class="kbd">R</span></td><td>Compare symbol (overlay)</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">C</span></td></tr>
+      <tr><td>Draw trend line</td><td><span class="kbd">Alt</span>+<span class="kbd">T</span></td><td>Draw horizontal line</td><td><span class="kbd">Alt</span>+<span class="kbd">H</span></td></tr>
+      <tr><td>Draw rectangle</td><td><span class="kbd">Alt</span>+<span class="kbd">R</span></td><td>Add Fibonacci retracement</td><td><span class="kbd">Alt</span>+<span class="kbd">F</span></td></tr>
+      <tr><td>Screenshot / snapshot</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Alt</span>+<span class="kbd">S</span></td><td>Undo last drawing</td><td><span class="kbd">Ctrl</span>+<span class="kbd">Z</span></td></tr>
+      <tr><td>Change timeframe to 1D</td><td><span class="kbd">D</span></td><td>Change timeframe to 1W</td><td><span class="kbd">W</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule-box">
+    <p><strong>TradingView is your analysis environment — not your execution platform.</strong> You draw levels, set alerts, and identify setups here. You execute orders in Webull (paper) or your live broker. Never confuse the two tools.</p>
+    <p><strong>Free vs. Pro:</strong> The free tier is sufficient for FINN. You get 1 chart layout, 3 indicators per chart, and limited alerts. If you find yourself hitting these limits consistently, Pro ($14.95/month) unlocks 4-chart layouts, unlimited indicators, and more alerts. Not required for the course.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_platform_tradingview.html · Built May 2026</span>
+    <span>Handbook §1.2 · See also: ig_platform_webull.html · ig_platform_finviz.html</span>
+  </div>
+
+</div>
+</body>
+</html>

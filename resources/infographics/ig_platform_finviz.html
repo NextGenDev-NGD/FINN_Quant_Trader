@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Finviz Platform Guide</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+  .card-title { font-weight: 700; font-size: 14px; color: var(--blue); margin-bottom: 8px; }
+  .card-title.green { color: var(--green); }
+  .card-title.amber { color: var(--amber); }
+  .card p { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card p strong { color: var(--text); }
+  .card ul { margin-left: 16px; }
+  .card li { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+  .card li strong { color: var(--text); }
+
+  /* Nav tabs mockup */
+  .nav-mock { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+  .nav-tabs { display: flex; background: #1c2128; border-bottom: 1px solid var(--border); }
+  .nav-tab { padding: 8px 16px; font-size: 12px; font-weight: 600; color: var(--muted); cursor: default; }
+  .nav-tab.active { color: var(--blue); border-bottom: 2px solid var(--blue); background: var(--card); }
+  .nav-content { padding: 14px 16px; font-size: 12px; color: var(--muted); }
+  .nav-content strong { color: var(--text); }
+
+  /* Screener filter table */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  thead tr { background: #1c2128; }
+  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #1c2128; }
+  .code { font-family: 'Courier New', monospace; font-size: 11px; background: #0d1117; padding: 1px 6px; border-radius: 3px; color: var(--green); }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .card, .nav-mock, .rule-box { border-color: #ccc; background: #f8f8f8; }
+    .nav-tabs { background: #f0f4ff; }
+    .nav-tab.active { color: #1a56db; }
+    .header { border-color: #333; }
+    .logo, .section-label, .card-title { color: #1a56db; }
+    .card-title.green { color: #16a34a; }
+    .card-title.amber { color: #b45309; }
+    th { color: #1a56db; background: #f0f4ff; }
+    td { border-color: #ddd; }
+    tr:hover td { background: transparent; }
+    .code { background: #eee; color: #333; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Finviz Platform Guide</div>
+      <div class="subtitle">Home page · heatmap · screener · news tab · futures tab · FINN DMB workflow · Handbook §1.4</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C3</div>
+  </div>
+
+  <!-- What Finviz is -->
+  <div class="section-label">What Finviz Is</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Overview</div>
+      <p>Finviz (Financial Visualizations) is a free web-based platform for market overview, stock screening, and news aggregation. It is not a charting platform — use TradingView for charts. Finviz answers: <strong>"What is moving, and in which direction?"</strong></p>
+      <p>URL: <strong>finviz.com</strong> — no account required for basic features. Finviz Elite ($39.50/month) adds real-time data and more screener filters. The free tier is sufficient for FINN.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">FINN Daily Role</div>
+      <p>Finviz is used in the <strong>pre-market routine</strong> (6–9:30 AM) for three specific tasks:</p>
+      <ul style="margin-top:6px">
+        <li><strong>Heatmap scan</strong> — instant visual of which sectors and sectors are moving</li>
+        <li><strong>News scan</strong> — headlines for watchlist tickers and market-wide events</li>
+        <li><strong>Futures tab</strong> — overnight futures direction before the bell</li>
+      </ul>
+      <p style="margin-top:8px">Time budget: 5–7 minutes. Finviz gives you the context; TradingView gives you the analysis.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Free vs. Elite</div>
+      <ul>
+        <li><strong>Free:</strong> Delayed quotes (15 min), standard screener, full heatmap, news, futures</li>
+        <li><strong>Elite:</strong> Real-time quotes, backtesting, correlations, email alerts, more screener filters</li>
+      </ul>
+      <p style="margin-top:8px"><strong>FINN verdict:</strong> Free tier is sufficient for all DMB and screening tasks. The 15-minute delay on quotes is acceptable for pre-market context gathering — you are not executing off Finviz data.</p>
+    </div>
+  </div>
+
+  <!-- Navigation tabs -->
+  <div class="section-label">Key Sections — Navigation Map</div>
+  <div class="nav-mock">
+    <div class="nav-tabs">
+      <div class="nav-tab active">Home</div>
+      <div class="nav-tab">News</div>
+      <div class="nav-tab">Screener</div>
+      <div class="nav-tab">Maps</div>
+      <div class="nav-tab">Groups</div>
+      <div class="nav-tab">Portfolio</div>
+      <div class="nav-tab">Futures</div>
+      <div class="nav-tab">Forex</div>
+    </div>
+    <div class="nav-content">
+      <strong>Home</strong> — Market summary: top gainers/losers, volume leaders, earnings today, economic calendar. The starting point every morning.<br>
+      <strong>News</strong> — Aggregated news by ticker or market-wide. Filter by date, source, and topic. Essential for overnight news scan.<br>
+      <strong>Screener</strong> — Filter all US stocks by 60+ fundamental and technical criteria. Output as table or chart view.<br>
+      <strong>Maps</strong> — Interactive heat map of S&P 500. Color = performance (green/red). Size = market cap. Sector-grouped.<br>
+      <strong>Futures</strong> — Overnight futures across US indices, commodities, currencies, and bonds. Essential pre-market tab.<br>
+      <strong>Groups</strong> — Sector and industry performance table. See which groups are leading or lagging.
+    </div>
+  </div>
+
+  <!-- Heatmap -->
+  <div class="section-label">The Heatmap — Reading in 60 Seconds</div>
+  <div class="card-grid-2">
+    <div class="card">
+      <div class="card-title">What You See</div>
+      <p>The S&amp;P 500 heatmap (Maps → S&amp;P 500) shows all 500 stocks as rectangles. Rectangle size = market cap. Color = daily return (green = up, red = down). Intensity = magnitude.</p>
+      <p style="margin-top:8px"><strong>Color scale:</strong> Bright green = +3%+. Dark green = +1–3%. Light green = 0–1%. Same logic reversed for red.</p>
+      <p style="margin-top:8px">Stocks are grouped by sector. All tech stocks are adjacent, all financials together, etc. You can instantly see if a move is broad-market or sector-specific.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">How to Read It Fast</div>
+      <ul>
+        <li><strong>Overall color tone:</strong> Mostly green = broad advance. Mostly red = broad decline. Mixed = sector rotation.</li>
+        <li><strong>Bright outliers:</strong> A single large bright-green box = a big-cap mover. Find out why before the session.</li>
+        <li><strong>Sector clusters:</strong> All tech red while financials green = rotation out of growth into value. Note for your DMB.</li>
+        <li><strong>Size matters:</strong> A tiny bright-green box is a micro-cap — likely news-driven and not tradeable for most strategies.</li>
+      </ul>
+      <p style="margin-top:8px"><strong>FINN time budget:</strong> 60 seconds on the heatmap. Write one sentence in your DMB: "Heatmap shows [broad advance / mixed / sector rotation from X into Y]."</p>
+    </div>
+  </div>
+
+  <!-- Screener -->
+  <div class="section-label">The Screener — FINN Filter Presets</div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">How the Screener Works</div>
+    <p>Finviz Screener (finviz.com/screener.ashx) filters all US stocks by fundamental and technical criteria simultaneously. Each filter narrows the universe. Results appear as a table or chart view.</p>
+    <p style="margin-top:6px"><strong>Save filters as a URL:</strong> Once you've set your filters, copy the URL — it encodes all your filter settings. Bookmark it to re-run the same screen each session.</p>
+  </div>
+  <table>
+    <thead><tr><th>FINN Screen Name</th><th>Key Filters</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Swing Setup Scan</strong></td>
+        <td>Market cap &gt; $2B · Avg volume &gt; 500K · Price $10–$200 · Country = USA · RSI(14) between 40–60 · SMA20 above SMA50</td>
+        <td>Find liquid, mid-to-large cap stocks in an uptrend that are pulling back to a neutral RSI — potential swing entry candidates</td>
+      </tr>
+      <tr>
+        <td><strong>Momentum Breakout Scan</strong></td>
+        <td>Market cap &gt; $1B · Volume &gt; 1.5× average · Price &gt; SMA20 · Performance (week) &gt; 5% · Country = USA</td>
+        <td>Find stocks breaking out on above-average volume this week — gap-and-go and breakaway gap candidates</td>
+      </tr>
+      <tr>
+        <td><strong>Oversold Bounce Scan</strong></td>
+        <td>Market cap &gt; $2B · RSI(14) &lt; 30 · Avg volume &gt; 500K · Price above SMA200</td>
+        <td>Find liquid large-caps with oversold RSI but in a long-term uptrend — mean-reversion candidates (use with FINN IC validation)</td>
+      </tr>
+      <tr>
+        <td><strong>Earnings Watch</strong></td>
+        <td>Earnings date = this week · Market cap &gt; $5B · Avg volume &gt; 1M</td>
+        <td>Find large-cap names reporting this week — potential volatility and event-driven setups. Review before market close.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Futures tab -->
+  <div class="section-label">The Futures Tab — Pre-Market Context</div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">US Index Futures</div>
+      <ul>
+        <li><strong>S&amp;P 500 Futures (ES)</strong> — Primary US market indicator</li>
+        <li><strong>Nasdaq 100 Futures (NQ)</strong> — Tech-heavy; leads growth stocks</li>
+        <li><strong>Dow Jones Futures (YM)</strong> — Large-cap industrials and value</li>
+        <li><strong>Russell 2000 Futures (RTY)</strong> — Small-cap risk appetite gauge</li>
+      </ul>
+      <p style="margin-top:8px"><strong>Read together:</strong> All four moving in the same direction = broad conviction. Divergence (e.g., NQ down while YM up) = rotation signal.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Commodities &amp; Macro</div>
+      <ul>
+        <li><strong>Crude Oil (CL)</strong> — Energy sector driver; inflation signal</li>
+        <li><strong>Gold (GC)</strong> — Safe-haven demand; risk-off signal when rising sharply</li>
+        <li><strong>Natural Gas (NG)</strong> — Energy sector; seasonal patterns</li>
+        <li><strong>10-Year Treasury Yield</strong> — Rate environment; rising yield pressures growth stocks</li>
+        <li><strong>US Dollar Index (DX)</strong> — Inverse to many commodities and international stocks</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title amber">DMB Morning Read — Futures Interpretation</div>
+      <ul>
+        <li><strong>ES futures +0.3–0.8%:</strong> Mild positive open likely. Normal conditions.</li>
+        <li><strong>ES futures &gt;+1%:</strong> Gap-up open likely. Watch for gap-and-go vs. fade.</li>
+        <li><strong>ES futures &lt;−1%:</strong> Gap-down open likely. Expect volatility first 30 min.</li>
+        <li><strong>ES flat but VIX rising:</strong> Uncertainty building. Exercise caution on new entries.</li>
+        <li><strong>ES up + oil up + gold down:</strong> Risk-on environment. Growth and cyclicals favored.</li>
+        <li><strong>ES down + gold up + dollar up:</strong> Risk-off environment. Defensive posture.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- News tab -->
+  <div class="section-label">The News Tab — Efficient Scan</div>
+  <div class="card-grid-2">
+    <div class="card">
+      <div class="card-title">How to Use the News Tab</div>
+      <p>Finviz News (finviz.com/news.ashx) aggregates headlines from Reuters, Benzinga, MarketWatch, Seeking Alpha, and others. Headlines are color-coded by ticker.</p>
+      <p style="margin-top:6px"><strong>Efficient scan process:</strong></p>
+      <ul style="margin-top:4px">
+        <li>Scan the last 12 hours of headlines (pre-market = overnight news)</li>
+        <li>Look for any headline touching your watchlist tickers</li>
+        <li>Look for sector-wide news (e.g., "Fed signals pause" affects all financials)</li>
+        <li>Identify any macro events that could change your day-type hypothesis</li>
+      </ul>
+      <p style="margin-top:8px"><strong>Time budget:</strong> 3 minutes maximum. You are scanning for headlines, not reading articles.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Ticker-Specific News</div>
+      <p>For any specific stock: search the ticker in Finviz → scroll to the news section at the bottom of the stock page. Shows recent headlines for that ticker only.</p>
+      <p style="margin-top:8px"><strong>What to look for:</strong></p>
+      <ul>
+        <li>Earnings announcements (beats/misses)</li>
+        <li>Analyst rating changes (upgrades/downgrades)</li>
+        <li>SEC filings (8-K = material event)</li>
+        <li>Management changes</li>
+        <li>Product announcements or FDA decisions (biotech)</li>
+      </ul>
+      <p style="margin-top:8px"><strong>FINN rule:</strong> The market's reaction to news matters more than the news itself. A stock that drops on "good" news is a bearish signal regardless of the headline.</p>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <p><strong>Finviz is a 10-minute tool, not a research platform.</strong> It answers one question: "what is moving and why?" For deeper analysis, use your primary sources — yfinance for data, TradingView for charts, EDGAR for filings. Do not spend more than 10 minutes total on Finviz in any pre-market session.</p>
+    <p><strong>FINN DMB workflow: Finviz → TradingView → Hypothesis.</strong> Finviz tells you what's moving. TradingView tells you what the chart says about it. Your DMB entry frames the testable hypothesis. This sequence takes 15–20 minutes and covers the full pre-market context.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_platform_finviz.html · Built May 2026</span>
+    <span>Handbook §1.4 · See also: ig_platform_tradingview.html · ig_info_sources.html</span>
+  </div>
+
+</div>
+</body>
+</html>

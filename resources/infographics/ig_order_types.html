@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Order Types Reference</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
+  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+
+  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+
+  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  /* Order cards */
+  .order-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  .order-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .order-card.finn-use { border-color: rgba(88,166,255,0.4); }
+  .order-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 6px; }
+  .order-badges { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+  .badge { display: inline-block; padding: 2px 7px; border-radius: 8px; font-size: 10px; font-weight: 700; }
+  .b-exec { background: rgba(63,185,80,0.15); color: var(--green); }
+  .b-price { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .b-neither { background: rgba(210,153,34,0.15); color: var(--amber); }
+  .b-finn { background: rgba(88,166,255,0.2); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+  .order-desc { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .order-desc strong { color: var(--text); }
+  .order-when { font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 6px; margin-top: 4px; }
+  .order-when span { color: var(--amber); font-weight: 600; }
+
+  /* Guarantee matrix */
+  .matrix { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+  .matrix-header { background: #1c2128; padding: 10px 16px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; }
+  .matrix-row { padding: 10px 16px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; border-top: 1px solid var(--border); font-size: 13px; align-items: center; }
+  .matrix-row:hover { background: #1c2128; }
+  .matrix-row .name { font-weight: 600; }
+  .check { color: var(--green); font-size: 16px; }
+  .cross { color: var(--red); font-size: 16px; }
+  .cond { color: var(--amber); font-size: 13px; font-weight: 600; }
+
+  /* Decision guide */
+  .decision-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+  .decision-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .decision-title { font-weight: 700; color: var(--blue); font-size: 13px; margin-bottom: 8px; }
+  .decision-item { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+  .decision-item:last-child { border-bottom: none; }
+  .situation { color: var(--muted); }
+  .answer { color: var(--text); font-weight: 600; }
+
+  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  .rule-box p:last-child { margin-bottom: 0; }
+  .rule-box strong { color: var(--blue); }
+
+  .warn-box { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
+  .warn-box p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  .warn-box p:last-child { margin-bottom: 0; }
+  .warn-box strong { color: var(--red); }
+
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .order-card, .matrix, .decision-card, .rule-box, .warn-box { border-color: #ccc; background: #f8f8f8; }
+    .matrix-header { background: #f0f4ff; }
+    .header { border-color: #333; }
+    .logo, .section-label, .decision-title { color: #1a56db; }
+    .b-exec { color: #16a34a; } .b-price, .b-finn { color: #1a56db; } .b-neither { color: #b45309; }
+    .check { color: #16a34a; } .cross { color: #dc2626; } .cond { color: #b45309; }
+    .matrix-row:hover { background: transparent; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
+      <div class="title">Order Types Reference</div>
+      <div class="subtitle">Complete taxonomy — 13 order types with guarantees, use cases, and best-execution guide · Handbook §3.1</div>
+    </div>
+    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C2</div>
+  </div>
+
+  <!-- Core order types -->
+  <div class="section-label">Core Order Types</div>
+  <div class="order-grid">
+
+    <div class="order-card finn-use">
+      <div class="order-name">Market Order</div>
+      <div class="order-badges"><span class="badge b-exec">✓ Execution</span><span class="badge b-neither">✗ Price</span><span class="badge b-finn">FINN Use</span></div>
+      <div class="order-desc">Buys or sells <strong>immediately at the best available price</strong>. You accept whatever the market offers at the moment of submission.</div>
+      <div class="order-when"><span>Use when:</span> Highly liquid stock (SPY, AAPL, QQQ); speed of entry matters more than getting a specific price; closing a position quickly.</div>
+    </div>
+
+    <div class="order-card finn-use">
+      <div class="order-name">Limit Order</div>
+      <div class="order-badges"><span class="badge b-neither">✗ Execution</span><span class="badge b-price">✓ Price</span><span class="badge b-finn">FINN Use</span></div>
+      <div class="order-desc"><strong>Buy limit:</strong> fills at your price or lower. <strong>Sell limit:</strong> fills at your price or higher. Will not fill if price never reaches your level.</div>
+      <div class="order-when"><span>Use when:</span> You have a specific entry price; stock is less liquid; you're willing to miss the trade to get your price.</div>
+    </div>
+
+    <div class="order-card finn-use">
+      <div class="order-name">Stop-Loss Order</div>
+      <div class="order-badges"><span class="badge b-exec">✓ Execution (triggered)</span><span class="badge b-neither">✗ Price</span><span class="badge b-finn">FINN Use</span></div>
+      <div class="order-desc">Becomes a <strong>market order when price hits your stop level</strong>. Protects against catastrophic loss. Does not guarantee the stop price as the fill price.</div>
+      <div class="order-when"><span>Use when:</span> Protecting an open position. Every FINN trade must have a stop defined at entry.</div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-name">Stop-Limit Order</div>
+      <div class="order-badges"><span class="badge b-neither">✗ Execution</span><span class="badge b-neither">✗ Price</span></div>
+      <div class="order-desc">Becomes a <strong>limit order when price hits the stop level</strong>. Neither execution nor fill price is guaranteed — if price blows through the limit, the order may not fill at all.</div>
+      <div class="order-when"><span>Use when:</span> You want to avoid a bad fill after the stop triggers, but understand you may hold through a crash if price gaps past both levels.</div>
+    </div>
+
+    <div class="order-card finn-use">
+      <div class="order-name">Trailing Stop</div>
+      <div class="order-badges"><span class="badge b-exec">✓ Execution (triggered)</span><span class="badge b-neither">✗ Price</span><span class="badge b-finn">FINN Use</span></div>
+      <div class="order-desc">Stop level <strong>moves with the market</strong> as price rises (for longs). Locks in gains as price advances; triggers if price reverses by the trailing distance.</div>
+      <div class="order-when"><span>Use when:</span> Riding a trend and want to protect accumulated gains without a fixed target. Set in $ or % from high.</div>
+    </div>
+
+    <div class="order-card finn-use">
+      <div class="order-name">OCO (One-Cancels-Other)</div>
+      <div class="order-badges"><span class="badge b-finn">FINN Use</span></div>
+      <div class="order-desc">Two orders placed simultaneously. When one fills, the <strong>other is automatically cancelled</strong>. Typically: profit target (limit) + stop-loss (stop) placed at entry.</div>
+      <div class="order-when"><span>Use when:</span> Setting both a profit target and a stop at entry — the standard FINN paper trading exit structure.</div>
+    </div>
+
+  </div>
+
+  <!-- Advanced order types -->
+  <div class="section-label">Advanced &amp; Time-Based Order Types</div>
+  <div class="order-grid">
+
+    <div class="order-card finn-use">
+      <div class="order-name">Bracket Order</div>
+      <div class="order-badges"><span class="badge b-finn">FINN Standard</span></div>
+      <div class="order-desc">An <strong>entry order paired with an automatic OCO</strong> (profit target + stop). All three legs are live from the moment the entry fills. Complete risk definition at entry.</div>
+      <div class="order-when"><span>Use when:</span> Entering any planned FINN paper trade. The bracket structure enforces rule adherence automatically.</div>
+    </div>
+
+    <div class="order-card finn-use">
+      <div class="order-name">GTC (Good-til-Cancelled)</div>
+      <div class="order-badges"><span class="badge b-finn">FINN Use</span></div>
+      <div class="order-desc">Order <strong>stays active until filled or manually cancelled</strong> (broker max: 60–90 days). Does not expire at day's end.</div>
+      <div class="order-when"><span>Use when:</span> Waiting for a specific price level that may take multiple sessions to reach. Review GTC orders regularly — market conditions change.</div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-name">Day Order</div>
+      <div class="order-badges"></div>
+      <div class="order-desc"><strong>Expires at market close</strong> if not filled during that session. The default duration for most retail broker orders.</div>
+      <div class="order-when"><span>Use when:</span> Your setup is time-sensitive and only valid for today's session. Default choice for most intraday entries.</div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-name">Market-on-Open (MOO)</div>
+      <div class="order-badges"><span class="badge b-exec">✓ Execution</span></div>
+      <div class="order-desc">Executes at the <strong>opening auction price</strong>. Submitted before the open; joins the opening auction pool.</div>
+      <div class="order-when"><span>Use when:</span> You want the opening print; useful for gap setups you've pre-planned overnight.</div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-name">Market-on-Close (MOC)</div>
+      <div class="order-badges"><span class="badge b-exec">✓ Execution</span></div>
+      <div class="order-desc">Executes at the <strong>closing auction price</strong>. Must be submitted before the MOC cutoff (typically 3:45–3:55 PM ET).</div>
+      <div class="order-when"><span>Use when:</span> End-of-day signals; rebalancing; you want exposure to the closing print and institutional settlement flow.</div>
+    </div>
+
+    <div class="order-card">
+      <div class="order-name">Extended Hours Order</div>
+      <div class="order-badges"><span class="badge b-neither">Wide Spreads</span></div>
+      <div class="order-desc">Executes in <strong>pre-market or after-hours sessions</strong>. Available on Webull. Liquidity is thin; spreads are wide; fills may not represent real market-hours prices.</div>
+      <div class="order-when"><span>Use when:</span> Paper trading practice only. In live trading — be cautious; results are not representative of regular-session execution.</div>
+    </div>
+
+  </div>
+
+  <!-- Guarantee matrix -->
+  <div class="section-label">The Price vs. Execution Guarantee Matrix</div>
+  <div class="matrix">
+    <div class="matrix-header">
+      <div>Order Type</div>
+      <div>Execution Guaranteed?</div>
+      <div>Price Guaranteed?</div>
+      <div>Gap Risk?</div>
+    </div>
+    <div class="matrix-row"><div class="name">Market Order</div><div><span class="check">✓ Yes</span></div><div><span class="cross">✗ No</span></div><div>Yes — pays spread</div></div>
+    <div class="matrix-row"><div class="name">Limit Order</div><div><span class="cross">✗ No</span></div><div><span class="check">✓ Yes (if filled)</span></div><div>May not fill if gap past level</div></div>
+    <div class="matrix-row"><div class="name">Stop Order</div><div><span class="check">✓ Yes (triggered)</span></div><div><span class="cross">✗ No</span></div><div>High — becomes market at gap open</div></div>
+    <div class="matrix-row"><div class="name">Stop-Limit</div><div><span class="cross">✗ No</span></div><div><span class="cross">✗ No</span></div><div>Highest — may not fill at all</div></div>
+    <div class="matrix-row"><div class="name">Trailing Stop</div><div><span class="check">✓ Yes (triggered)</span></div><div><span class="cross">✗ No</span></div><div>Yes — same as stop order</div></div>
+    <div class="matrix-row"><div class="name">OCO</div><div><span class="cond">Depends on legs</span></div><div><span class="cond">Depends on legs</span></div><div>Depends on legs</div></div>
+    <div class="matrix-row"><div class="name">GTC / Day Order</div><div><span class="cond">Duration only</span></div><div><span class="cond">Based on order type</span></div><div>Based on order type</div></div>
+  </div>
+
+  <div class="warn-box">
+    <p><strong>The gap problem:</strong> A stock closes at $50. Bad earnings overnight. It opens at $42. Your $47 stop-loss becomes a market order that fills at $42 — not $47. You lost $8/share instead of $3. Stop-Limit orders avoid this by refusing to fill below $47 — but if the stock opens at $42, your limit at $47 never triggers. You hold through the gap with no protection. There is no order type that guarantees both execution and price through a gap.</p>
+  </div>
+
+  <!-- Best execution guide -->
+  <div class="section-label">Best Execution Decision Guide</div>
+  <div class="decision-grid">
+    <div class="decision-card">
+      <div class="decision-title">What's the situation?</div>
+      <div class="decision-item"><span class="situation">Liquid stock, need to enter now</span><span class="answer">Market order</span></div>
+      <div class="decision-item"><span class="situation">Have a specific entry price target</span><span class="answer">Limit order</span></div>
+      <div class="decision-item"><span class="situation">Protecting an open position</span><span class="answer">Stop-loss</span></div>
+      <div class="decision-item"><span class="situation">Want defined entry + both exits</span><span class="answer">Bracket order</span></div>
+      <div class="decision-item"><span class="situation">Riding a trend, locking in gains</span><span class="answer">Trailing stop</span></div>
+      <div class="decision-item"><span class="situation">Level may take days to reach</span><span class="answer">Limit + GTC</span></div>
+      <div class="decision-item"><span class="situation">Less liquid or small-cap stock</span><span class="answer">Limit order — always</span></div>
+    </div>
+    <div class="decision-card">
+      <div class="decision-title">What to avoid and why</div>
+      <div class="decision-item"><span class="situation">Market order on illiquid stock</span><span class="answer bad">Wide spread = instant loss</span></div>
+      <div class="decision-item"><span class="situation">Stop exactly at round number</span><span class="answer bad">Stop hunt target</span></div>
+      <div class="decision-item"><span class="situation">No stop at all</span><span class="answer bad">Rule violation — always set stop</span></div>
+      <div class="decision-item"><span class="situation">Stop-limit through earnings</span><span class="answer bad">May not fill — gap risk</span></div>
+      <div class="decision-item"><span class="situation">GTC without review</span><span class="answer bad">Stale order, changed thesis</span></div>
+      <div class="decision-item"><span class="situation">Moving stop after entry</span><span class="answer bad">Rule deviation — log it</span></div>
+      <div class="decision-item"><span class="situation">Market order in extended hours</span><span class="answer bad">Wide spreads, bad fills</span></div>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <p><strong>FINN standard entry structure:</strong> Bracket order = entry (market or limit) + profit target (limit) + stop-loss (stop). All three legs defined before submission. No manual exits required — the bracket handles both scenarios automatically.</p>
+    <p><strong>Stop placement rule:</strong> Set stops at ATR-based levels, not round numbers or "just below" the obvious support. A stop at $49.85 (1.5× ATR below the zone) is harder to hunt than a stop at $50.00.</p>
+  </div>
+
+  <div class="footer">
+    <span>FINN Reference Library · ig_order_types.html · Built May 2026</span>
+    <span>Handbook §3.1 · See also: ig_trade_types.html · ig_broker_comparison.html</span>
+  </div>
+
+</div>
+</body>
+</html>

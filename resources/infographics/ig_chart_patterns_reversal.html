@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Reversal Chart Patterns</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --purple: #bc8cff;
+    --muted: #8b949e;
+    --text: #e6edf3;
+    --subtext: #c9d1d9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 24px 16px;
+  }
+  .page-wrap { max-width: 1200px; margin: 0 auto; }
+
+  /* Header */
+  .page-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.5px;
+  }
+  .page-header .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .finn-tag {
+    display: inline-block;
+    background: #1f2937;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 28px 0 14px;
+    padding-left: 10px;
+    border-left: 3px solid var(--blue);
+  }
+
+  /* Pattern cards grid */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+  .pattern-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .pattern-card.bearish { border-top: 3px solid var(--red); }
+  .pattern-card.bullish { border-top: 3px solid var(--green); }
+  .pattern-card.neutral { border-top: 3px solid var(--amber); }
+
+  .card-header {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .signal-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .signal-badge.bear { background: rgba(248,81,73,0.15); color: var(--red); border: 1px solid var(--red); }
+  .signal-badge.bull { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid var(--green); }
+
+  /* ASCII diagram */
+  .diagram-box {
+    background: #0d1117;
+    padding: 12px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    line-height: 1.4;
+    color: #adb5bd;
+    border-bottom: 1px solid var(--border);
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .diagram-box .hi { color: var(--text); }
+  .diagram-box .lo { color: var(--muted); }
+  .diagram-box .grn { color: var(--green); }
+  .diagram-box .red { color: var(--red); }
+  .diagram-box .amb { color: var(--amber); }
+  .diagram-box .blu { color: var(--blue); }
+
+  /* Card body rows */
+  .card-body { padding: 12px 16px; }
+  .row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 7px;
+    align-items: flex-start;
+  }
+  .row-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--muted);
+    min-width: 74px;
+    padding-top: 1px;
+  }
+  .row-value {
+    font-size: 12.5px;
+    color: var(--subtext);
+    flex: 1;
+  }
+  .row-value.hi { color: var(--text); }
+  .row-value.grn { color: var(--green); }
+  .row-value.red { color: var(--red); }
+  .row-value.amb { color: var(--amber); }
+  .row-value.blu { color: var(--blue); }
+
+  /* Volume bar */
+  .vol-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .vol-bar {
+    height: 6px;
+    border-radius: 3px;
+    flex: 1;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .vol-fill { height: 100%; border-radius: 3px; }
+  .vol-label { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+  /* Confirmation pill */
+  .confirm-pill {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 12px;
+    margin: 2px 2px 0 0;
+    border: 1px solid;
+  }
+  .confirm-pill.req { background: rgba(248,81,73,0.1); color: var(--red); border-color: var(--red); }
+  .confirm-pill.opt { background: rgba(88,166,255,0.1); color: var(--blue); border-color: var(--blue); }
+
+  /* Full-width card (for cup & handle) */
+  .pattern-grid.single { grid-template-columns: 1fr; }
+  .pattern-grid.double-col { grid-template-columns: repeat(2, 1fr); }
+
+  /* Target formula */
+  .target-formula {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--amber);
+    margin-top: 6px;
+  }
+
+  /* Quick reference table */
+  .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  thead th {
+    background: #1c2128;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 9px 12px;
+    border-bottom: 2px solid var(--border);
+    text-align: left;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:hover { background: rgba(88,166,255,0.04); }
+  tbody td { padding: 8px 12px; color: var(--subtext); vertical-align: middle; }
+  tbody td:first-child { color: var(--text); font-weight: 600; }
+  .tag-bear { color: var(--red); font-weight: 700; }
+  .tag-bull { color: var(--green); font-weight: 700; }
+  .dot-req { color: var(--red); }
+  .dot-opt { color: var(--green); }
+
+  /* Pattern anatomy callout */
+  .anatomy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .anatomy-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .anatomy-item .a-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .anatomy-item .a-val {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .anatomy-item .a-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Neckline callout */
+  .neckline-callout {
+    background: rgba(210,153,34,0.08);
+    border: 1px solid var(--amber);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+  }
+  .neckline-callout h4 {
+    color: var(--amber);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .neckline-callout p {
+    font-size: 12.5px;
+    color: var(--subtext);
+    line-height: 1.5;
+  }
+
+  /* Footer */
+  .page-footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  /* Print */
+  @media print {
+    body { background: #fff; color: #000; padding: 12px; }
+    .page-wrap { max-width: 100%; }
+    .pattern-card { border: 1px solid #ccc; break-inside: avoid; }
+    .diagram-box { background: #f5f5f5; color: #333; }
+    .card-header, .card-body { background: #fff; }
+  }
+
+  @media (max-width: 700px) {
+    .pattern-grid { grid-template-columns: 1fr; }
+    .pattern-grid.double-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>Reversal Chart Patterns</h1>
+    <div class="subtitle">Visual reference — formation anatomy, volume confirmation, target measurement, invalidation</div>
+    <div class="finn-tag">FINN Knowledge Base · HB P2 §2.5</div>
+  </div>
+
+  <!-- BEARISH REVERSALS -->
+  <div class="section-title">Bearish Reversals — Topping Patterns</div>
+
+  <div class="pattern-grid">
+
+    <!-- Double Top -->
+    <div class="pattern-card bearish">
+      <div class="card-header">
+        <h3>Double Top</h3>
+        <span class="signal-badge bear">Bearish</span>
+      </div>
+      <div class="diagram-box"><span class="hi">  ^       ^
+ / \     / \
+/   \   /   \   ← Two equal peaks (resistance)
+     \ /     \
+      V       \  ← Neckline (support)</span>
+               <span class="red">\
+                v  ← Breakdown move</span></div>
+      <div class="card-body">
+        <div class="row">
+          <span class="row-label">Structure</span>
+          <span class="row-value">Two peaks at approximately equal price. Trough between peaks forms the neckline. Second peak should not exceed the first by more than ~2%.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Volume</span>
+          <span class="row-value">
+            <div class="vol-bar-wrap"><span class="vol-label">Peak 1</span><div class="vol-bar"><div class="vol-fill" style="width:80%; background:var(--green);"></div></div><span class="vol-label">High</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Peak 2</span><div class="vol-bar"><div class="vol-fill" style="width:45%; background:var(--amber);"></div></div><span class="vol-label">Lower — key signal</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Breakdn</span><div class="vol-bar"><div class="vol-fill" style="width:90%; background:var(--red);"></div></div><span class="vol-label">Surge on close below neckline</span></div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Trigger</span>
+          <span class="row-value red">Daily close below neckline on above-average volume</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Target</span>
+          <span class="row-value">
+            <div class="target-formula">Target = Neckline − (Peak − Neckline)</div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Confirm</span>
+          <span class="row-value">
+            <span class="confirm-pill req">Neckline break required</span>
+            <span class="confirm-pill opt">Retest of neckline as resistance</span>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Invalidate</span>
+          <span class="row-value red">Close above second peak — pattern aborted</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Timeframe</span>
+          <span class="row-value">Works on all timeframes; strongest on daily+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Head and Shoulders -->
+    <div class="pattern-card bearish">
+      <div class="card-header">
+        <h3>Head & Shoulders</h3>
+        <span class="signal-badge bear">Bearish</span>
+      </div>
+      <div class="diagram-box">
+<span class="hi">       ^          ← Head (highest peak)
+      / \
+  ^  /   \  ^   ← Two shoulders (equal height)
+ / \/     \/ \
+/   LS   RS   \</span>
+<span class="amb">─────────────────  ← Neckline (connects troughs)</span>
+<span class="red">                 \
+                  v  ← Target move</span></div>
+      <div class="card-body">
+        <div class="row">
+          <span class="row-label">Structure</span>
+          <span class="row-value">Left shoulder → Head (higher high) → Right shoulder (approx equal to left). Neckline connects the two troughs. Slightly sloping necklines are fine; steep slope weakens the pattern.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Volume</span>
+          <span class="row-value">
+            <div class="vol-bar-wrap"><span class="vol-label">L Shoulder</span><div class="vol-bar"><div class="vol-fill" style="width:75%; background:var(--green);"></div></div></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Head</span><div class="vol-bar"><div class="vol-fill" style="width:60%; background:var(--amber);"></div></div></div>
+            <div class="vol-bar-wrap"><span class="vol-label">R Shoulder</span><div class="vol-bar"><div class="vol-fill" style="width:35%; background:var(--red);"></div></div><span class="vol-label">← Key: lower than head</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Breakdn</span><div class="vol-bar"><div class="vol-fill" style="width:95%; background:var(--red);"></div></div></div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Trigger</span>
+          <span class="row-value red">Close below neckline with volume expansion</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Target</span>
+          <span class="row-value">
+            <div class="target-formula">Target = Neckline − (Head − Neckline)</div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Confirm</span>
+          <span class="row-value">
+            <span class="confirm-pill req">Neckline break required</span>
+            <span class="confirm-pill opt">Failed retest of neckline</span>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Invalidate</span>
+          <span class="row-value red">Close above right shoulder (pattern aborted); neckline break on very low volume (weak signal)</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end bearish grid row 1 -->
+
+  <!-- BULLISH REVERSALS -->
+  <div class="section-title">Bullish Reversals — Bottoming Patterns</div>
+
+  <div class="pattern-grid">
+
+    <!-- Double Bottom -->
+    <div class="pattern-card bullish">
+      <div class="card-header">
+        <h3>Double Bottom</h3>
+        <span class="signal-badge bull">Bullish</span>
+      </div>
+      <div class="diagram-box"><span class="grn">  ← Neckline (resistance)
+─────────────────
+      /\
+     /  \     /  ← Recovery rally
+    /    \   /
+   /      \ /
+  v        v    ← Two equal troughs (support)</span></div>
+      <div class="card-body">
+        <div class="row">
+          <span class="row-label">Structure</span>
+          <span class="row-value">Two troughs at approximately equal price. Peak between troughs forms the neckline. Second trough should not undercut the first by more than ~2%.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Volume</span>
+          <span class="row-value">
+            <div class="vol-bar-wrap"><span class="vol-label">Trough 1</span><div class="vol-bar"><div class="vol-fill" style="width:75%; background:var(--red);"></div></div><span class="vol-label">High (panic)</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Trough 2</span><div class="vol-bar"><div class="vol-fill" style="width:40%; background:var(--amber);"></div></div><span class="vol-label">Lower — exhaustion</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Breakout</span><div class="vol-bar"><div class="vol-fill" style="width:90%; background:var(--green);"></div></div><span class="vol-label">Surge on neckline break</span></div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Trigger</span>
+          <span class="row-value grn">Daily close above neckline on above-average volume</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Target</span>
+          <span class="row-value">
+            <div class="target-formula">Target = Neckline + (Neckline − Trough)</div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Confirm</span>
+          <span class="row-value">
+            <span class="confirm-pill req">Neckline break required</span>
+            <span class="confirm-pill opt">Retest of neckline as support</span>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Invalidate</span>
+          <span class="row-value red">Close below second trough — pattern fails</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inverse Head and Shoulders -->
+    <div class="pattern-card bullish">
+      <div class="card-header">
+        <h3>Inverse Head & Shoulders</h3>
+        <span class="signal-badge bull">Bullish</span>
+      </div>
+      <div class="diagram-box">
+<span class="grn">─────────────────  ← Neckline (resistance)
+ \   LS   RS   /
+  \  /\  /\  /   ← Two shoulders (equal depth)
+   \/  \/  \/
+       v        ← Head (lowest trough)</span>
+<span class="grn">
+                ^ ← Target move</span></div>
+      <div class="card-body">
+        <div class="row">
+          <span class="row-label">Structure</span>
+          <span class="row-value">Mirror of H&S — left shoulder, head (lowest point), right shoulder. Neckline connects the two peaks between the troughs. Right shoulder slightly shallower than left is common.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Volume</span>
+          <span class="row-value">
+            <div class="vol-bar-wrap"><span class="vol-label">Head</span><div class="vol-bar"><div class="vol-fill" style="width:80%; background:var(--red);"></div></div><span class="vol-label">High (capitulation)</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">R Shoulder</span><div class="vol-bar"><div class="vol-fill" style="width:45%; background:var(--amber);"></div></div><span class="vol-label">Fading sellers</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Breakout</span><div class="vol-bar"><div class="vol-fill" style="width:95%; background:var(--green);"></div></div><span class="vol-label">Surge on neckline break</span></div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Trigger</span>
+          <span class="row-value grn">Close above neckline on strong volume</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Target</span>
+          <span class="row-value">
+            <div class="target-formula">Target = Neckline + (Neckline − Head)</div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Confirm</span>
+          <span class="row-value">
+            <span class="confirm-pill req">Neckline break required</span>
+            <span class="confirm-pill opt">Neckline retest holds as support</span>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Invalidate</span>
+          <span class="row-value red">Close below right shoulder; head undercut without recovery volume</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end bullish grid -->
+
+  <!-- CUP AND HANDLE + ROUNDING BOTTOM — full width -->
+  <div class="section-title">Bullish Reversals — Extended Formation Patterns</div>
+
+  <div class="pattern-grid">
+
+    <!-- Cup and Handle -->
+    <div class="pattern-card bullish">
+      <div class="card-header">
+        <h3>Cup and Handle</h3>
+        <span class="signal-badge bull">Bullish</span>
+      </div>
+      <div class="diagram-box">
+<span class="amb">  ────────────────  ← Rim / Neckline (prior highs)</span>
+<span class="subtext"> \              /
+  \            /   ← Cup (U-shape, ~3–6 months)
+   \          /
+    \________/    ← Cup base</span>
+<span class="grn">            \ /
+             v    ← Handle (tight consolidation,
+             |       −5% to −12% pullback)
+             |
+             ^    ← Breakout above rim</span></div>
+      <div class="card-body">
+        <div class="row">
+          <span class="row-label">Structure</span>
+          <span class="row-value">Prior uptrend → rounded U-shaped decline (cup) → tight high-level consolidation (handle). Handle should be in upper 50% of the cup and slope downward mildly. Cup depth: ideally 15–30%; handle: 5–12%.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Duration</span>
+          <span class="row-value">Cup: 3–6 months (ideal). Handle: 1–4 weeks. Works on shorter timeframes with proportionally shorter durations.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Volume</span>
+          <span class="row-value">
+            <div class="vol-bar-wrap"><span class="vol-label">Left wall</span><div class="vol-bar"><div class="vol-fill" style="width:70%; background:var(--red);"></div></div><span class="vol-label">Decline vol</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Cup base</span><div class="vol-bar"><div class="vol-fill" style="width:30%; background:var(--muted);"></div></div><span class="vol-label">Dries up</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Handle</span><div class="vol-bar"><div class="vol-fill" style="width:25%; background:var(--muted);"></div></div><span class="vol-label">Very light</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Breakout</span><div class="vol-bar"><div class="vol-fill" style="width:95%; background:var(--green);"></div></div><span class="vol-label">50%+ above avg</span></div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Entry</span>
+          <span class="row-value grn">Buy on breakout above handle high (rim level) with volume. Pivot point = handle high + $0.10.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Target</span>
+          <span class="row-value">
+            <div class="target-formula">Target = Rim + Cup Depth (measured from base to rim)</div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Stop</span>
+          <span class="row-value">Below handle low. Wider cup = wider stop needed — size position accordingly.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Confirm</span>
+          <span class="row-value">
+            <span class="confirm-pill req">Volume surge on breakout</span>
+            <span class="confirm-pill req">Clean U-shape (not V-shape)</span>
+            <span class="confirm-pill opt">Prior uptrend exists</span>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Invalidate</span>
+          <span class="row-value red">V-shaped cup (too steep, not consolidation); handle exceeds 12% depth or 4 weeks; breakout on low volume</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Note</span>
+          <span class="row-value amb">Popularized by William O'Neil (CANSLIM). Best on weekly chart in strong sectors with high RS stocks.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rounding Bottom -->
+    <div class="pattern-card bullish">
+      <div class="card-header">
+        <h3>Rounding Bottom</h3>
+        <span class="signal-badge bull">Bullish</span>
+      </div>
+      <div class="diagram-box">
+<span class="subtext"> \                /
+  \              /
+   \            /    ← Slow, gradual turn
+    \          /       (months to years)
+     \        /
+      \      /
+       ──────       ← Extended base (saucer)</span>
+<span class="grn">              /
+             /
+            ^        ← Acceleration as price breaks prior highs</span></div>
+      <div class="card-body">
+        <div class="row">
+          <span class="row-label">Structure</span>
+          <span class="row-value">Very gradual, arc-shaped base. No sharp V-turns. The longer the base, the more powerful the eventual breakout. Common on weekly/monthly charts.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Duration</span>
+          <span class="row-value">Weeks to months. Shorter versions on daily charts are shallower saucers.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Volume</span>
+          <span class="row-value">
+            <div class="vol-bar-wrap"><span class="vol-label">Left arc</span><div class="vol-bar"><div class="vol-fill" style="width:65%; background:var(--red);"></div></div><span class="vol-label">Declining</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Base</span><div class="vol-bar"><div class="vol-fill" style="width:20%; background:var(--muted);"></div></div><span class="vol-label">Minimal — accumulation</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Right arc</span><div class="vol-bar"><div class="vol-fill" style="width:50%; background:var(--green);"></div></div><span class="vol-label">Gradually increasing</span></div>
+            <div class="vol-bar-wrap"><span class="vol-label">Breakout</span><div class="vol-bar"><div class="vol-fill" style="width:90%; background:var(--green);"></div></div><span class="vol-label">Surge above prior highs</span></div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Entry</span>
+          <span class="row-value grn">Break above the left-side high (pattern lip). Can also enter on right-arc upturn if confirmed by increasing volume.</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Target</span>
+          <span class="row-value">
+            <div class="target-formula">Target = Breakout + Pattern Height (lip − base)</div>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Confirm</span>
+          <span class="row-value">
+            <span class="confirm-pill req">Gradual arc (not V-shape)</span>
+            <span class="confirm-pill req">Volume dries during base</span>
+            <span class="confirm-pill opt">Volume uptick on right arc</span>
+          </span>
+        </div>
+        <div class="row">
+          <span class="row-label">Invalidate</span>
+          <span class="row-value red">Sharp V-recovery (not a rounding); new lower low during base phase</span>
+        </div>
+        <div class="row">
+          <span class="row-label">Context</span>
+          <span class="row-value muted">Best when sector rotation or fundamental catalyst exists. Common in post-bear-market recovery.</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end extended patterns -->
+
+  <!-- Neckline callout -->
+  <div class="neckline-callout">
+    <h4>The Neckline — Why It Matters for Every Topping/Bottoming Pattern</h4>
+    <p>The neckline is the support/resistance line formed by connecting the intermediate troughs (in Double Top, H&S) or peaks (in Double Bottom, IH&S). It is not just a visual marker — it is the <strong>trade trigger line</strong>. Enter only on a confirmed close beyond the neckline, not on an intraday touch. Neckline retests (price comes back to test the broken neckline from the other side) are the highest-probability entry points and should always be watched for after a breakout. If the retest fails (price breaks back through the neckline), exit the position — the pattern has failed.</p>
+  </div>
+
+  <!-- Anatomy cards -->
+  <div class="section-title">Pattern Anatomy — Key Components</div>
+  <div class="anatomy-grid">
+    <div class="anatomy-item">
+      <div class="a-label">Peak / Trough</div>
+      <div class="a-val">Pivot Point</div>
+      <div class="a-sub">The key high or low that defines the pattern. Must be a clear, discrete swing — not a gradual drift.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Neckline</div>
+      <div class="a-val">Trade Trigger</div>
+      <div class="a-sub">The line connecting intermediate swings. Break of neckline = entry signal. Retest = confirmation entry.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Pattern Height</div>
+      <div class="a-val">Target Input</div>
+      <div class="a-sub">Distance from neckline to the most extreme peak/trough. Projects the minimum expected move after breakout.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Right Side</div>
+      <div class="a-val">Quality Check</div>
+      <div class="a-sub">Right shoulder (H&S) or second peak/trough should show declining volume vs. the left side — this signals exhaustion.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Breakout Bar</div>
+      <div class="a-val">Volume Signal</div>
+      <div class="a-sub">The candle that breaks the neckline should have volume ≥ 50% above the 20-day average. Low-volume breaks fail often.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Handle</div>
+      <div class="a-val">C&H Specific</div>
+      <div class="a-sub">Tight consolidation after the cup's right lip. Must stay in the upper half of the cup — low handles weaken the setup.</div>
+    </div>
+  </div>
+
+  <!-- Quick reference table -->
+  <div class="section-title">Quick Reference — All Reversal Patterns</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Pattern</th>
+          <th>Signal</th>
+          <th>Prior Trend</th>
+          <th>Trigger</th>
+          <th>Volume Profile</th>
+          <th>Target Formula</th>
+          <th>Vol Confirm?</th>
+          <th>Retest Entry?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Double Top</td>
+          <td><span class="tag-bear">Bearish</span></td>
+          <td>Uptrend</td>
+          <td>Close below neckline</td>
+          <td>Peak 2 lower vol than Peak 1</td>
+          <td>Neckline − Height</td>
+          <td><span class="dot-req">● Required</span></td>
+          <td><span class="dot-req">● Watch</span></td>
+        </tr>
+        <tr>
+          <td>Head & Shoulders</td>
+          <td><span class="tag-bear">Bearish</span></td>
+          <td>Uptrend</td>
+          <td>Close below neckline</td>
+          <td>Right shoulder lower than left</td>
+          <td>Neckline − Height</td>
+          <td><span class="dot-req">● Required</span></td>
+          <td><span class="dot-req">● Watch</span></td>
+        </tr>
+        <tr>
+          <td>Double Bottom</td>
+          <td><span class="tag-bull">Bullish</span></td>
+          <td>Downtrend</td>
+          <td>Close above neckline</td>
+          <td>Trough 2 lower vol than Trough 1</td>
+          <td>Neckline + Height</td>
+          <td><span class="dot-req">● Required</span></td>
+          <td><span class="dot-req">● Watch</span></td>
+        </tr>
+        <tr>
+          <td>Inverse H&S</td>
+          <td><span class="tag-bull">Bullish</span></td>
+          <td>Downtrend</td>
+          <td>Close above neckline</td>
+          <td>Head highest vol; RS lower</td>
+          <td>Neckline + Height</td>
+          <td><span class="dot-req">● Required</span></td>
+          <td><span class="dot-req">● Watch</span></td>
+        </tr>
+        <tr>
+          <td>Cup &amp; Handle</td>
+          <td><span class="tag-bull">Bullish</span></td>
+          <td>Prior uptrend</td>
+          <td>Break above handle high</td>
+          <td>Dries during base; surges at breakout</td>
+          <td>Rim + Cup Depth</td>
+          <td><span class="dot-req">● Required</span></td>
+          <td><span class="dot-opt">○ Optional</span></td>
+        </tr>
+        <tr>
+          <td>Rounding Bottom</td>
+          <td><span class="tag-bull">Bullish</span></td>
+          <td>Downtrend</td>
+          <td>Break above pattern lip</td>
+          <td>Dries during base; rises on right arc</td>
+          <td>Breakout + Height</td>
+          <td><span class="dot-opt">○ Helpful</span></td>
+          <td><span class="dot-opt">○ Optional</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FINN Rules -->
+  <div class="section-title">FINN Rules — Reversal Patterns</div>
+  <div class="anatomy-grid">
+    <div class="anatomy-item">
+      <div class="a-label">Rule 1</div>
+      <div class="a-val">Wait for the close</div>
+      <div class="a-sub">Intraday neckline touches are noise. Only a daily (or relevant timeframe) close beyond the neckline counts as a trigger.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Rule 2</div>
+      <div class="a-val">Volume must confirm</div>
+      <div class="a-sub">A neckline break on below-average volume has a high failure rate. If volume doesn't spike, don't trade it.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Rule 3</div>
+      <div class="a-val">Target ≠ guarantee</div>
+      <div class="a-sub">The measured target is a probability zone, not a certainty. Take partial profits at 50–75% of target and trail the rest.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Rule 4</div>
+      <div class="a-val">Symmetry matters</div>
+      <div class="a-sub">A visually clean, symmetric pattern (equal peaks, clean arc) has higher reliability than a forced or lopsided one.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Rule 5</div>
+      <div class="a-val">Context over pattern</div>
+      <div class="a-sub">A bearish reversal in a strong bull market has lower odds than in a weakening sector. Pattern + context = signal. Pattern alone = noise.</div>
+    </div>
+    <div class="anatomy-item">
+      <div class="a-label">Rule 6</div>
+      <div class="a-val">Log invalidations</div>
+      <div class="a-sub">When a pattern fails (price reverses back through neckline), log it. Wrong predictions are data — they refine your read.</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <span>FINN Knowledge Base · Reversal Chart Patterns · HB P2 §2.5</span>
+    <span>Session C4.a · Built May 2026</span>
+  </div>
+
+</div>
+</body>
+</html>

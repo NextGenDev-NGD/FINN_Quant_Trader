@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Heikin Ashi</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --purple: #bc8cff;
+    --muted: #8b949e;
+    --text: #e6edf3;
+    --subtext: #c9d1d9;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 24px 16px;
+  }
+  .page-wrap { max-width: 1200px; margin: 0 auto; }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--blue); }
+  .page-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .finn-tag {
+    display: inline-block;
+    background: #1f2937;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 28px 0 14px;
+    padding-left: 10px;
+    border-left: 3px solid var(--blue);
+  }
+
+  /* Formula cards */
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .formula-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .formula-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .formula-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .formula-eq {
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    color: var(--amber);
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .formula-note { font-size: 12px; color: var(--subtext); }
+
+  /* Comparison panel */
+  .compare-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .compare-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .compare-panel .cp-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .compare-panel.standard .cp-header { color: var(--amber); border-top: 3px solid var(--amber); }
+  .compare-panel.ha .cp-header { color: var(--blue); border-top: 3px solid var(--blue); }
+  .compare-panel .cp-diagram {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 12px 16px;
+    background: #0d1117;
+    border-bottom: 1px solid var(--border);
+    white-space: pre;
+    color: #adb5bd;
+    overflow-x: auto;
+  }
+  .compare-panel .cp-body { padding: 12px 16px; }
+  .compare-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row .cr-label { color: var(--muted); }
+  .compare-row .cr-val { color: var(--text); font-weight: 600; text-align: right; }
+
+  /* Signal cards */
+  .signal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .signal-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .signal-card .sc-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .signal-card.bull .sc-header { border-left: 4px solid var(--green); }
+  .signal-card.bear .sc-header { border-left: 4px solid var(--red); }
+  .signal-card.neutral .sc-header { border-left: 4px solid var(--amber); }
+  .sc-icon { font-size: 18px; }
+  .sc-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .sc-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: auto;
+    border: 1px solid;
+    font-weight: 700;
+  }
+  .sc-badge.bull { color: var(--green); border-color: var(--green); background: rgba(63,185,80,0.1); }
+  .sc-badge.bear { color: var(--red); border-color: var(--red); background: rgba(248,81,73,0.1); }
+  .sc-badge.warn { color: var(--amber); border-color: var(--amber); background: rgba(210,153,34,0.1); }
+
+  .sc-diagram {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 10px 16px;
+    background: #0d1117;
+    border-bottom: 1px solid var(--border);
+    white-space: pre;
+    color: #adb5bd;
+  }
+  .sc-body { padding: 10px 16px; }
+  .sc-row {
+    font-size: 12px;
+    color: var(--subtext);
+    margin-bottom: 5px;
+    padding-left: 10px;
+    border-left: 2px solid var(--border);
+    line-height: 1.4;
+  }
+  .sc-row strong { color: var(--text); }
+
+  /* Rules grid */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .rule-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid;
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+  }
+  .rule-card.blue { border-left-color: var(--blue); }
+  .rule-card.warn { border-left-color: var(--amber); }
+  .rule-card.danger { border-left-color: var(--red); }
+  .rule-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .rule-body { font-size: 12px; color: var(--subtext); line-height: 1.5; }
+
+  /* Limitations */
+  .limit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .limit-card {
+    background: rgba(248,81,73,0.05);
+    border: 1px solid rgba(248,81,73,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .limit-title { font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 4px; }
+  .limit-body { font-size: 12px; color: var(--subtext); line-height: 1.5; }
+  .limit-workaround { font-size: 11px; color: var(--green); margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(248,81,73,0.2); }
+
+  /* Code block */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--subtext);
+    overflow-x: auto;
+    margin-bottom: 20px;
+  }
+  .code-block .kw { color: #ff7b72; }
+  .code-block .fn { color: #d2a8ff; }
+  .code-block .str { color: #a5d6ff; }
+  .code-block .cm { color: #8b949e; font-style: italic; }
+  .code-block .num { color: #79c0ff; }
+  .code-block .var { color: var(--text); }
+
+  .page-footer {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  @media print {
+    body { background: #fff; color: #000; }
+    .formula-card, .signal-card, .rule-card, .limit-card { border: 1px solid #ccc; break-inside: avoid; }
+    .sc-diagram, .code-block { background: #f5f5f5; color: #333; }
+  }
+  @media (max-width: 700px) {
+    .compare-wrap { grid-template-columns: 1fr; }
+    .formula-grid, .signal-grid, .rules-grid, .limit-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="page-header">
+    <h1>Heikin Ashi</h1>
+    <div class="subtitle">Formulas · Comparison with standard candles · Signal interpretation · FINN filter application</div>
+    <div class="finn-tag">FINN Knowledge Base · HB P2 §2.7 / P6 §6.5</div>
+  </div>
+
+  <!-- Formulas -->
+  <div class="section-title">The Four Heikin Ashi Formulas</div>
+  <div class="formula-grid">
+    <div class="formula-card">
+      <div class="formula-label">HA Close</div>
+      <div class="formula-name">Close</div>
+      <div class="formula-eq">HA_Close = (O + H + L + C) / 4</div>
+      <div class="formula-note">Average of the real candle's four prices. Smoother than the true close — reduces noise from end-of-bar spikes.</div>
+    </div>
+    <div class="formula-card">
+      <div class="formula-label">HA Open</div>
+      <div class="formula-name">Open</div>
+      <div class="formula-eq">HA_Open = (prev HA_Open + prev HA_Close) / 2</div>
+      <div class="formula-note">Average of the previous HA candle's open and close. This is why HA candles chain together — each depends on the prior.</div>
+    </div>
+    <div class="formula-card">
+      <div class="formula-label">HA High</div>
+      <div class="formula-name">High</div>
+      <div class="formula-eq">HA_High = max(H, HA_Open, HA_Close)</div>
+      <div class="formula-note">The highest of: real high, HA open, HA close. Often identical to the real high, but may differ when HA body is above actual wick.</div>
+    </div>
+    <div class="formula-card">
+      <div class="formula-label">HA Low</div>
+      <div class="formula-name">Low</div>
+      <div class="formula-eq">HA_Low = min(L, HA_Open, HA_Close)</div>
+      <div class="formula-note">The lowest of: real low, HA open, HA close. Smoothed low that reduces false signal from transient wick extremes.</div>
+    </div>
+  </div>
+
+  <!-- Comparison -->
+  <div class="section-title">Standard Candles vs. Heikin Ashi — Side by Side</div>
+  <div class="compare-wrap">
+    <div class="compare-panel standard">
+      <div class="cp-header">Standard Candlesticks</div>
+      <div class="cp-diagram"><span style="color:var(--green);">  ──  ← Wick high</span>
+  <span style="color:var(--green);">  ██  ← Body (O→C)</span>
+  <span style="color:var(--green);">  ──  ← Wick low</span>
+
+<span style="color:var(--red);">  ──  ← Wick high</span>
+  <span style="color:var(--red);">  ██  ← Body (O→C)</span>
+  <span style="color:var(--red);">  ──  ← Wick low</span>
+
+<span style="color:var(--muted);">Alternating candles — noisy
+Wicks and bodies reflect true
+open, high, low, close prices</span></div>
+      <div class="cp-body">
+        <div class="compare-row"><span class="cr-label">Open/Close</span><span class="cr-val">True OHLC</span></div>
+        <div class="compare-row"><span class="cr-label">Useful for</span><span class="cr-val">Exact entry/exit prices, pattern scanning</span></div>
+        <div class="compare-row"><span class="cr-label">Noise level</span><span class="cr-val">Higher — shows every wick</span></div>
+        <div class="compare-row"><span class="cr-label">Pattern signals</span><span class="cr-val">Hammer, engulfing, doji directly visible</span></div>
+        <div class="compare-row"><span class="cr-label">Gap display</span><span class="cr-val">Shows true gaps between sessions</span></div>
+        <div class="compare-row"><span class="cr-label">Best for</span><span class="cr-val">Day traders, exact timing, order placement</span></div>
+      </div>
+    </div>
+    <div class="compare-panel ha">
+      <div class="cp-header">Heikin Ashi Candles</div>
+      <div class="cp-diagram"><span style="color:var(--green);">  ████  ← Long green body (no upper wick)
+  ████  ← Trend continuation signal
+  ████  ← Strong uptrend sequence</span>
+
+<span style="color:var(--red);">  ████  ← Long red body (no lower wick)
+  ████  ← Trend continuation signal</span>
+
+<span style="color:var(--muted);">Consecutive same-color candles
+signal trend health — much easier
+to read trend direction visually</span></div>
+      <div class="cp-body">
+        <div class="compare-row"><span class="cr-label">Open/Close</span><span class="cr-val">Averaged / modified (not true OHLC)</span></div>
+        <div class="compare-row"><span class="cr-label">Useful for</span><span class="cr-val">Trend identification, noise filtering</span></div>
+        <div class="compare-row"><span class="cr-label">Noise level</span><span class="cr-val">Lower — smoothed by formula</span></div>
+        <div class="compare-row"><span class="cr-label">Pattern signals</span><span class="cr-val">Doji-like signals pivot; body/wick directionality</span></div>
+        <div class="compare-row"><span class="cr-label">Gap display</span><span class="cr-val">Gaps are hidden by averaging</span></div>
+        <div class="compare-row"><span class="cr-label">Best for</span><span class="cr-val">Trend-following, swing traders, filter layer</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signals -->
+  <div class="section-title">Reading HA Candles — Signal Guide</div>
+  <div class="signal-grid">
+
+    <div class="signal-card bull">
+      <div class="sc-header">
+        <span class="sc-icon">▲</span>
+        <span class="sc-title">Strong Uptrend</span>
+        <span class="sc-badge bull">Bullish</span>
+      </div>
+      <div class="sc-diagram"><span style="color:var(--green);">   |    ← Short or no upper wick
+  ████
+  ████
+  ████
+        ← No lower wicks (key signal)</span></div>
+      <div class="sc-body">
+        <div class="sc-row"><strong>What it shows:</strong> Multiple consecutive green HA candles with no lower wicks. Bodies are large.</div>
+        <div class="sc-row"><strong>Signal:</strong> Momentum is strongly bullish. Buyers control every intrabar dip.</div>
+        <div class="sc-row"><strong>Action:</strong> Hold or add to long positions. Do not sell on minor dips.</div>
+      </div>
+    </div>
+
+    <div class="signal-card bear">
+      <div class="sc-header">
+        <span class="sc-icon">▼</span>
+        <span class="sc-title">Strong Downtrend</span>
+        <span class="sc-badge bear">Bearish</span>
+      </div>
+      <div class="sc-diagram"><span style="color:var(--red);">        ← No upper wicks (key signal)
+  ████
+  ████
+  ████
+   |    ← Short or no lower wick</span></div>
+      <div class="sc-body">
+        <div class="sc-row"><strong>What it shows:</strong> Multiple consecutive red HA candles with no upper wicks.</div>
+        <div class="sc-row"><strong>Signal:</strong> Momentum is strongly bearish. Sellers dominate every intrabar rally.</div>
+        <div class="sc-row"><strong>Action:</strong> Hold or add to short positions. Avoid catching falling knives.</div>
+      </div>
+    </div>
+
+    <div class="signal-card neutral">
+      <div class="sc-header">
+        <span class="sc-icon">◇</span>
+        <span class="sc-title">Indecision / Pivot</span>
+        <span class="sc-badge warn">Caution</span>
+      </div>
+      <div class="sc-diagram"><span style="color:var(--amber);">   |    ← Upper wick appears
+  ─── ← Small body (doji-like)
+   |    ← Lower wick appears</span>
+<span style="color:var(--muted);">Small body with wicks on both sides</span></div>
+      <div class="sc-body">
+        <div class="sc-row"><strong>What it shows:</strong> Small HA body with wicks on both sides. Neither buyers nor sellers in control.</div>
+        <div class="sc-row"><strong>Signal:</strong> Potential trend reversal or consolidation ahead.</div>
+        <div class="sc-row"><strong>Action:</strong> Tighten stops, reduce size, wait for directional confirmation.</div>
+      </div>
+    </div>
+
+    <div class="signal-card bull">
+      <div class="sc-header">
+        <span class="sc-icon">↑</span>
+        <span class="sc-title">Trend Resumption</span>
+        <span class="sc-badge bull">Continuation</span>
+      </div>
+      <div class="sc-diagram"><span style="color:var(--amber);">  ─── ← Doji-like pause in uptrend</span>
+<span style="color:var(--green);">  ████ ← Large green resumes
+  ████ ← Strong body, no lower wick</span>
+<span style="color:var(--muted);">Doji → large green = trend resumes</span></div>
+      <div class="sc-body">
+        <div class="sc-row"><strong>What it shows:</strong> Small HA candle (pause) followed by large body in original trend direction.</div>
+        <div class="sc-row"><strong>Signal:</strong> The trend has resumed after a minor pause — not a reversal.</div>
+        <div class="sc-row"><strong>Action:</strong> Re-enter or add to the trend position on the confirmation candle.</div>
+      </div>
+    </div>
+
+    <div class="signal-card bear">
+      <div class="sc-header">
+        <span class="sc-icon">↕</span>
+        <span class="sc-title">Wick Appearance Warning</span>
+        <span class="sc-badge warn">Watch</span>
+      </div>
+      <div class="sc-diagram"><span style="color:var(--green);">  ████ ← Green candle
+   |   ← Lower wick appears for first time</span>
+<span style="color:var(--muted);">First lower wick in green sequence
+= buyers losing control intrabar</span></div>
+      <div class="sc-body">
+        <div class="sc-row"><strong>What it shows:</strong> In an uptrend, a lower wick appears on a green HA candle for the first time.</div>
+        <div class="sc-row"><strong>Signal:</strong> Sellers are beginning to push back during the session. Trend may be losing momentum.</div>
+        <div class="sc-row"><strong>Action:</strong> Tighten stop-loss. Don't exit yet — wait for a full candle color change.</div>
+      </div>
+    </div>
+
+    <div class="signal-card bear">
+      <div class="sc-header">
+        <span class="sc-icon">⇄</span>
+        <span class="sc-title">Color Change = Reversal Signal</span>
+        <span class="sc-badge bear">Exit / Flip</span>
+      </div>
+      <div class="sc-diagram"><span style="color:var(--green);">  ████ ← Last green candle</span>
+<span style="color:var(--amber);">  ─── ← Doji transition (optional)</span>
+<span style="color:var(--red);">  ████ ← First red candle = confirmation</span>
+<span style="color:var(--muted);">Color flip from green → red</span></div>
+      <div class="sc-body">
+        <div class="sc-row"><strong>What it shows:</strong> HA candles switch from green to red (or vice versa).</div>
+        <div class="sc-row"><strong>Signal:</strong> Trend has likely reversed. Exit the position in the prior trend direction.</div>
+        <div class="sc-row"><strong>Action:</strong> Exit on color change confirmation. Consider entering opposite trend.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FINN Rules -->
+  <div class="section-title">FINN Rules — Heikin Ashi</div>
+  <div class="rules-grid">
+    <div class="rule-card blue">
+      <div class="rule-title">Use HA as a filter, not a trigger</div>
+      <div class="rule-body">HA candles identify trend direction and momentum. Use them to filter trade direction (only take longs when HA is green with no lower wicks), then trigger entries using standard candles for precise timing.</div>
+    </div>
+    <div class="rule-card blue">
+      <div class="rule-title">No lower wick = strongest bull signal</div>
+      <div class="rule-body">A sequence of green HA candles with no lower wicks means buyers controlled every single intrabar dip. This is the visual signature of a strong trend. When lower wicks appear, momentum is fading.</div>
+    </div>
+    <div class="rule-card warn">
+      <div class="rule-title">Never use HA prices for order entry</div>
+      <div class="rule-body">HA open/close prices are modified — they are NOT real market prices. Never place stop-loss orders or limit orders at HA levels. Always convert back to standard candle prices for any order placement.</div>
+    </div>
+    <div class="rule-card warn">
+      <div class="rule-title">HA lags — price leads</div>
+      <div class="rule-body">Because HA averages prior prices, it introduces a lag. A trend reversal on standard candles may take 1–3 HA candles to become visible. Use standard candles to spot early warning signals before the HA color change.</div>
+    </div>
+    <div class="rule-card danger">
+      <div class="rule-title">Gaps are invisible on HA charts</div>
+      <div class="rule-body">The HA averaging formula eliminates gaps between sessions. If gap analysis is part of your strategy (e.g., gap-and-go setups), switch to standard candlesticks — HA will mask the information entirely.</div>
+    </div>
+    <div class="rule-card blue">
+      <div class="rule-title">Best on daily and weekly timeframes</div>
+      <div class="rule-body">Heikin Ashi works best on daily and weekly timeframes where the smoothing adds the most value. On intraday charts (5min, 15min), the lag becomes problematic and standard candles are preferable.</div>
+    </div>
+  </div>
+
+  <!-- Limitations -->
+  <div class="section-title">Known Limitations — And How to Work Around Them</div>
+  <div class="limit-grid">
+    <div class="limit-card">
+      <div class="limit-title">Lag in signals</div>
+      <div class="limit-body">HA candles average prior data, so trend changes appear 1–3 candles late. You can miss optimal entries at reversals.</div>
+      <div class="limit-workaround">Workaround: Use standard candles on a lower timeframe to spot the reversal early, then confirm with HA on the higher timeframe.</div>
+    </div>
+    <div class="limit-card">
+      <div class="limit-title">Prices are not real</div>
+      <div class="limit-body">HA O/H/L/C are modified values. The "HA price" at 2:30pm is NOT what the market actually traded. Cannot be used for backtesting with real execution.</div>
+      <div class="limit-workaround">Workaround: Use standard OHLC for all backtests and order placement. HA is a visualization tool only.</div>
+    </div>
+    <div class="limit-card">
+      <div class="limit-title">Gaps hidden</div>
+      <div class="limit-body">Overnight and weekend gaps are smoothed out by the formula. Gap strategies, gap fills, and gap-and-go setups are invisible on HA charts.</div>
+      <div class="limit-workaround">Workaround: Run HA alongside standard candles (dual chart view) when gaps are relevant to your setup.</div>
+    </div>
+    <div class="limit-card">
+      <div class="limit-title">Poor in ranging markets</div>
+      <div class="limit-body">HA excels in trending markets. In choppy, sideways markets, HA candles flip color frequently, generating false trend signals.</div>
+      <div class="limit-workaround">Workaround: Check ADX > 25 (trending) before relying on HA signals. Below ADX 25, use standard candles or Bollinger Bands instead.</div>
+    </div>
+  </div>
+
+  <!-- Python code -->
+  <div class="section-title">Python — Heikin Ashi Calculator + Filter</div>
+  <div class="code-block"><span class="kw">import</span> <span class="var">yfinance</span> <span class="kw">as</span> <span class="var">yf</span>
+<span class="kw">import</span> <span class="var">pandas</span> <span class="kw">as</span> <span class="var">pd</span>
+
+<span class="kw">def</span> <span class="fn">heikin_ashi</span>(<span class="var">ticker</span>, <span class="var">period</span>=<span class="str">"6mo"</span>):
+    <span class="var">df</span> = <span class="var">yf</span>.<span class="fn">download</span>(<span class="var">ticker</span>, <span class="var">period</span>=<span class="var">period</span>, <span class="var">progress</span>=<span class="num">False</span>)
+    <span class="var">df</span>.<span class="var">columns</span> = [<span class="var">c</span>[<span class="num">0</span>] <span class="kw">if</span> <span class="fn">isinstance</span>(<span class="var">c</span>, <span class="fn">tuple</span>) <span class="kw">else</span> <span class="var">c</span> <span class="kw">for</span> <span class="var">c</span> <span class="kw">in</span> <span class="var">df</span>.<span class="var">columns</span>]
+
+    <span class="var">ha</span> = <span class="var">df</span>.<span class="fn">copy</span>()
+
+    <span class="cm"># HA Close = average of real OHLC</span>
+    <span class="var">ha</span>[<span class="str">'HA_Close'</span>] = (<span class="var">df</span>[<span class="str">'Open'</span>] + <span class="var">df</span>[<span class="str">'High'</span>] + <span class="var">df</span>[<span class="str">'Low'</span>] + <span class="var">df</span>[<span class="str">'Close'</span>]) / <span class="num">4</span>
+
+    <span class="cm"># HA Open = average of prior HA Open and HA Close (iterative)</span>
+    <span class="var">ha</span>[<span class="str">'HA_Open'</span>] = <span class="num">0.0</span>
+    <span class="var">ha</span>.<span class="fn">iloc</span>[<span class="num">0</span>, <span class="var">ha</span>.<span class="var">columns</span>.<span class="fn">get_loc</span>(<span class="str">'HA_Open'</span>)] = (<span class="var">df</span>[<span class="str">'Open'</span>].<span class="fn">iloc</span>[<span class="num">0</span>] + <span class="var">df</span>[<span class="str">'Close'</span>].<span class="fn">iloc</span>[<span class="num">0</span>]) / <span class="num">2</span>
+    <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="fn">len</span>(<span class="var">ha</span>)):
+        <span class="var">ha</span>.<span class="fn">iloc</span>[<span class="var">i</span>, <span class="var">ha</span>.<span class="var">columns</span>.<span class="fn">get_loc</span>(<span class="str">'HA_Open'</span>)] = (
+            <span class="var">ha</span>[<span class="str">'HA_Open'</span>].<span class="fn">iloc</span>[<span class="var">i</span>-<span class="num">1</span>] + <span class="var">ha</span>[<span class="str">'HA_Close'</span>].<span class="fn">iloc</span>[<span class="var">i</span>-<span class="num">1</span>]
+        ) / <span class="num">2</span>
+
+    <span class="cm"># HA High and Low</span>
+    <span class="var">ha</span>[<span class="str">'HA_High'</span>] = <span class="var">ha</span>[[<span class="str">'High'</span>, <span class="str">'HA_Open'</span>, <span class="str">'HA_Close'</span>]].<span class="fn">max</span>(<span class="var">axis</span>=<span class="num">1</span>)
+    <span class="var">ha</span>[<span class="str">'HA_Low'</span>]  = <span class="var">ha</span>[[<span class="str">'Low'</span>,  <span class="str">'HA_Open'</span>, <span class="str">'HA_Close'</span>]].<span class="fn">min</span>(<span class="var">axis</span>=<span class="num">1</span>)
+
+    <span class="cm"># Signal: is candle bullish with no lower wick?</span>
+    <span class="var">ha</span>[<span class="str">'HA_Bull'</span>]      = <span class="var">ha</span>[<span class="str">'HA_Close'</span>] > <span class="var">ha</span>[<span class="str">'HA_Open'</span>]
+    <span class="var">ha</span>[<span class="str">'No_Lower_Wick'</span>] = <span class="var">ha</span>[<span class="str">'HA_Low'</span>] == <span class="var">ha</span>[<span class="str">'HA_Open'</span>].<span class="fn">where</span>(<span class="var">ha</span>[<span class="str">'HA_Bull'</span>], <span class="var">ha</span>[<span class="str">'HA_Close'</span>])
+    <span class="var">ha</span>[<span class="str">'Strong_Bull'</span>]   = <span class="var">ha</span>[<span class="str">'HA_Bull'</span>] & <span class="var">ha</span>[<span class="str">'No_Lower_Wick'</span>]
+
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"\nLast 5 HA candles for {ticker}:"</span>)
+    <span class="fn">print</span>(<span class="var">ha</span>[[<span class="str">'HA_Open'</span>, <span class="str">'HA_High'</span>, <span class="str">'HA_Low'</span>, <span class="str">'HA_Close'</span>, <span class="str">'Strong_Bull'</span>]].<span class="fn">tail</span>(<span class="num">5</span>).<span class="fn">round</span>(<span class="num">2</span>))
+    <span class="kw">return</span> <span class="var">ha</span>
+
+<span class="cm"># Example usage</span>
+<span class="var">ha_df</span> = <span class="fn">heikin_ashi</span>(<span class="str">'SPY'</span>)</div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <span>FINN Knowledge Base · Heikin Ashi · HB P2 §2.7 / P6 §6.5</span>
+    <span>Session C4.b · Built May 2026</span>
+  </div>
+
+</div>
+</body>
+</html>
