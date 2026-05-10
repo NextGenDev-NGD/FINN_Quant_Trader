@@ -34,7 +34,8 @@
       "Skill(update-config)",
       "Bash(not exist *)",
       "Bash(Get-ChildItem -Recurse .claude)",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(git push *)"
     ]
   }
 }
