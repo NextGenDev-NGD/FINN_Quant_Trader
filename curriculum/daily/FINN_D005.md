@@ -48,6 +48,8 @@ Add Wednesday hypotheses. Reference Monday's entries. "One hypothesis today shou
 
 "Today, look at the 5-minute chart of SPY during the first 30 minutes of market open — 9:30 to 10:00 AM EST. Note the opening volume relative to midday volume. Write down your observation. We'll connect this to order flow tonight."
 
+> **Resource:** [Handbook 2.3 — Trendlines](../../resources/handbook/FINN_HB_P2_ChartReading.md) — While you have the SPY weekly chart open: draw a trendline using the method in Section 2.3. Confirm direction and slope match the method before tonight's class.
+
 ---
 
 ---
@@ -108,6 +110,8 @@ print(df['HL_Range_Pct'].nlargest(5))
 ```
 *"A large high-low range on high volume means the market was very active, two-sided. Large range on low volume means a thin market — less reliable signal. Which do you trust more?"*
 
+> **Resource:** [ig_gap_types.html](../../resources/infographics/ig_gap_types.html) — The 4 gap types and what each signals about price action and institutional behavior.
+
 **Step 2 — Volume analysis (10 min)**
 ```python
 # 20-day rolling average volume
@@ -124,6 +128,8 @@ print(f"\nUnusual volume days (>2x average): {len(unusual_days)}")
 print(unusual_days[['Close', 'Volume', 'Vol_Ratio', 'HL_Range_Pct']].head(10))
 ```
 *Deliberate mistake: Run rolling before checking leading NaNs — get NaN-heavy output. "See these NaNs? The rolling window needs 20 rows before it can compute. Always check your rolling calculations for leading NaNs before using this data downstream."*
+
+> **Resource:** [ig_volume_analysis.html](../../resources/infographics/ig_volume_analysis.html) — Volume patterns and what they reveal: breakout volume, reversal volume, OBV divergence, and climactic volume.
 
 **Step 3 — Reusable flagging function (12 min)**
 ```python

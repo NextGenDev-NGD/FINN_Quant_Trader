@@ -55,6 +55,8 @@ Add Friday hypotheses. Reference the week: "Your Monday and Wednesday hypotheses
 
 "Before tonight's class: pull up SPY on TradingView, switch to a weekly candle view. Note where the week opened and where it is closing. Was it a bullish week, bearish week, or inside week? Write it down — we open tonight with it."
 
+> **Resource:** [Handbook 2.2 — Support & Resistance](../../resources/handbook/FINN_HB_P2_ChartReading.md) + [ig_support_resistance.html](../../resources/infographics/ig_support_resistance.html) — While you have SPY open: identify 2 S&R zones using the zone-drawing framework in Section 2.2. Bring both levels to class tonight.
+
 ---
 
 ---

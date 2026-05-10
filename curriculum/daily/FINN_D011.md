@@ -71,6 +71,8 @@ Then write a 300-word markdown analysis at the bottom answering: 'Based purely o
 
 This notebook is your Milestone 1 artifact. It shows you can do the work."
 
+> **Resource:** [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — Reference card for Section 3 metrics: Sharpe, drawdown, win rate, and expectancy.
+
 Recommended notebook structure:
 ```
 Section 1: Data Acquisition
@@ -120,6 +122,8 @@ Questions to ask while circulating:
 
 **Muddiest Point (5 min):** Anything still unclear before Friday's assessment.
 > *"The muddiest point — anything still unclear before Friday — was ___."*
+
+> **Resource:** [Student Handbook Parts 1–5](../../resources/handbook/) — Complete Month 1 reference. Review tonight to identify any remaining gaps before Friday's assessment.
 
 ---
 

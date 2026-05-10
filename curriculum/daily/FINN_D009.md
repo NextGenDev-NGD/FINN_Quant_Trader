@@ -66,6 +66,8 @@ Add Friday hypotheses. Reference the week's open entries. "You have the tools fr
 
 1. "Recite the 9-step quant workflow from memory. Every step."
 
+> **Resource:** [ig_quant_workflow.html](../../resources/infographics/ig_quant_workflow.html) — Visual reference for workflow recall. Check your answers against this before class.
+
 2. "What is the Sharpe ratio telling you that a simple return figure cannot? Give me the formula and explain each term."
 
 3. "In Wednesday's notebook — why do we multiply standard deviation by √252? Explain the math, not just the rule."
@@ -87,6 +89,8 @@ Close all this week's hypotheses. Standard protocol: outcome, post-mortem, "what
 "This week we think about the market's behavior in metric terms.
 
 SPY's weekly return was ___%. Its high-low range was ___%. The weekly drawdown from Monday's open to the lowest intraday point was ___%. These are the same metrics we implemented Wednesday — now we're reading them on real data."
+
+> **Resource:** [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — Use this reference while reading today's live metric values.
 
 "The student who calculated the weekly Sharpe in the DMB observation — read the number to the class."
 

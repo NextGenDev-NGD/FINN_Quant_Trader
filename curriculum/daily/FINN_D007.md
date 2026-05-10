@@ -90,6 +90,8 @@ Walk through Wiki Section 3.1. For each step, make it concrete — not abstract.
 [ASK] "Which step do most beginning traders skip entirely?"
 > *Expected: Statistical testing. They go straight from hypothesis to trading without ever asking if the signal has predictive power.*
 
+> **Resource:** [ig_quant_workflow.html](../../resources/infographics/ig_quant_workflow.html) — Visual flowchart of all 9 steps. Use as a reference card alongside tonight's wiki reading.
+
 ---
 
 **8:35 | PERFORMANCE METRICS** `20 min`
@@ -105,6 +107,8 @@ Walk through Wiki Section 3.3. Concrete examples, specific numbers.
 **Win Rate + R:R:** "A 40% win rate is not a bad strategy. If your average winner is 3× your average loser — you make money at 40%. A 70% win rate with 0.5 R:R is a losing strategy. Never judge a strategy by win rate alone."
 
 **Expectancy:** "Expected value per trade = (Win Rate × Avg Win) − (Loss Rate × Avg Loss). If positive, the strategy makes money over time, in expectation. This is the only number that matters in the long run."
+
+> **Resource:** [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — Visual reference card: Sharpe, drawdown, win rate, and expectancy with formulas and interpretation benchmarks.
 
 ---
 

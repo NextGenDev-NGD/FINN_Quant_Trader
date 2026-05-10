@@ -30,6 +30,8 @@ Standard checklist. Flag anything notable from the week — earnings, macro data
 
 "Note anything that connects to the order types and volume concepts from this week."
 
+> **Resource:** [ig_gap_types.html](../../resources/infographics/ig_gap_types.html) — Reference for classifying any gap days flagged in your notebook this week.
+
 ---
 
 **9:15 | STUDENT-LED BRIEF** `20 min`
@@ -93,6 +95,8 @@ Pull up SPY on the 5-minute timeframe for a portion of a volatile intraday sessi
 "This is what order flow looks like from the outside. The opening burst is retail and program trading. The midday quiet is market makers and institutions settling positions. The afternoon move is often institutions leaning toward the close.
 
 Find a stock from this week that had a high-impact day — pull it up on a 5-minute chart. What does the opening volume look like versus midday? Where would a stop order just below the prior close have gotten triggered?"
+
+> **Resource:** [ig_volume_analysis.html](../../resources/infographics/ig_volume_analysis.html) — Use this to classify the volume pattern on the high-impact day you found: breakout, climactic, or distribution.
 
 **Sector Rotation (10 min)**
 

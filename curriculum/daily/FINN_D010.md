@@ -46,6 +46,8 @@ Student rotation. Coaching feedback after the brief.
 
 "Today, observe the market and try to connect every movement you see to something we've studied in the last three weeks. Bring 2–3 specific connections to class tonight. The concept, the observation, and the link between them."
 
+> **Resource:** [ig_gap_types.html](../../resources/infographics/ig_gap_types.html) — If there are any gaps in today's market open, classify them using this reference and bring the connection to class.
+
 ---
 
 ---
@@ -82,6 +84,8 @@ Categories (in order):
 - **Indices (all 5)** — what it tracks, ticker, why it matters
 - **Quant workflow (all 9 steps)** — name and one-sentence description
 - **Performance metrics (all 9)** — definition and "good" value
+
+> **Resource:** [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — Visual reference card for all 9 metrics — use while drilling Lightning Round definitions.
 
 After the round: "If you missed something, that's what to focus on before Friday. Not the things you knew — the things you missed."
 
@@ -125,6 +129,8 @@ No new reading assigned. Existing material only.
 - Can you walk through the FINN Quant Workflow from memory?
 - Can you explain *why* each metric matters — not just what it is?
 - Can you describe a specific trade scenario end-to-end: asset class → order type → execution cost → performance measurement?
+
+> **Resource:** [Student Handbook Parts 1–5](../../resources/handbook/) — Complete reference for every topic in the Milestone 1 scope: trade types, chart reading, order execution, market context, and metrics.
 
 ---
 

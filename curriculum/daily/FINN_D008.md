@@ -46,6 +46,8 @@ Add Wednesday hypotheses. Reference Monday's entries.
 
 "Find a mutual fund or ETF that publishes its 3-year Sharpe ratio and maximum drawdown in its factsheet. Write both numbers down. Tonight you'll recalculate these figures from the data and see if they match."
 
+> **Resource:** [Handbook 2.1 — Candlestick Reference](../../resources/handbook/FINN_HB_P2_ChartReading.md) — Also before class: open SPY on TradingView and identify today's daily candle type using Section 2.1. Bring the candle type to the morning session.
+
 ---
 
 ---
@@ -69,6 +71,8 @@ Add Wednesday hypotheses. Reference Monday's entries.
 Why? If you use a library you don't understand, you don't know when it's wrong. And it will be wrong. Understanding the math behind the metric is the only way to catch errors and know what you're actually measuring.
 
 By the end of tonight, you will have implemented total return, annualized return, annual volatility, Sharpe ratio, max drawdown, win rate, and expectancy from scratch in Python. Then you'll run them on real data and compare your numbers to a published fund factsheet."
+
+> **Resource:** [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — Reference card for all metrics you'll implement tonight: Sharpe, drawdown, win rate, and expectancy with benchmark values.
 
 ---
 

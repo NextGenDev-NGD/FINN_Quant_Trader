@@ -218,6 +218,8 @@ plt.show()
 
 "Wednesday notebook pushed to GitHub by 11:59 PM. Filename: `W01_workshop_market_data_[initials].ipynb`. Friday we open with the highest-volume findings across the whole class."
 
+> **Resource:** [ig_platform_tradingview.html](../../resources/infographics/ig_platform_tradingview.html) — After tonight's session: open TradingView, load your 5 tickers, and configure your first watchlist using the interface guide.
+
 ---
 
 ## DELIVERABLES

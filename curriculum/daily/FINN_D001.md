@@ -9,6 +9,8 @@ EVENING   8:00–9:30  PM EST   90 min   60 min material · 30 min Q&A
 
 > **Prep:** TradingView open with SPY, QQQ, VIX loaded. Finviz heatmap ready. Hypothesis log open.
 
+> **Resource:** [Student Handbook Part 1 — Getting Started](../../resources/handbook/FINN_HB_P1_GettingStarted.md) — Pre-reading for Day 1: trade types, TradingView and Finviz setup, broker comparison.
+
 ---
 
 # MORNING — Daily Market Brief
@@ -30,6 +32,8 @@ Work through each item live. One sentence of context per item — students haven
 > "Before the open, futures show us where the market wants to go. Check the direction and magnitude."
 > [SHOW: ES, NQ, YM on TradingView]
 
+> **Resource:** [ig_platform_tradingview.html](../../resources/infographics/ig_platform_tradingview.html) — TradingView interface guide: chart types, watchlists, indicators, and layout setup.
+
 > **VIX**
 > "The fear gauge. VIX closed at 25.78 on Tuesday — that's elevated. Above 20 means the market is anxious. Above 30 means real fear. We check this every morning because it determines how we size trades."
 
@@ -49,6 +53,8 @@ Work through each item live. One sentence of context per item — students haven
 
 > **Bitcoin overnight**
 > "BTC was at $71,906 Tuesday morning, up $3,600 from the night before. Crypto trades 24/7 — it often signals global risk appetite before our markets open. It did exactly that this week."
+
+> **Resource:** [ig_market_open.html](../../resources/infographics/ig_market_open.html) — Opening session patterns: Asia-Europe range, gap scenarios, and what pre-market futures signal about the first 30 minutes.
 
 ---
 
@@ -134,6 +140,8 @@ Six categories. One real anchor for each.
 **Forex:** "EUR/USD reflects dollar strength. When the Fed cuts rates — dollar weakens. When yields fall like they did this week — watch the dollar."
 
 "Our scope: equities and ETFs. Everything else is context."
+
+> **Resource:** [ig_trade_types.html](../../resources/infographics/ig_trade_types.html) — 8 trade styles ranked by time horizon, capital requirement, and skill level — from scalping to position trading.
 
 ---
 

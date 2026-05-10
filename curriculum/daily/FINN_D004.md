@@ -102,6 +102,8 @@ Walk through Wiki Section 2.2 order types. For each, a concrete scenario with nu
 
 **MOO/MOC:** "Used by institutions for rebalancing. Market On Close ensures you trade at the closing auction. These create predictable volume spikes at open and close — which we see every day in the DMB."
 
+> **Resource:** [ig_order_types.html](../../resources/infographics/ig_order_types.html) — Complete order type taxonomy: all 12+ types with use cases, execution risks, and when each is appropriate.
+
 ---
 
 **8:35 | THE ORDER BOOK + MARKET IMPACT** `15 min`

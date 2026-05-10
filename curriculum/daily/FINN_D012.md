@@ -79,6 +79,8 @@ Sample questions:
 - "What is PFOF and why does it matter to a retail trader?"
 - "Define max drawdown. How is it calculated?"
 
+> **Resource:** [ig_quant_workflow.html](../../resources/infographics/ig_quant_workflow.html) · [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — Reference these when preparing for Part 1 concept recall questions.
+
 **Part 2 — Applied Interpretation (8 min)**
 
 Instructor presents one of the following. Student interprets out loud:
@@ -118,6 +120,8 @@ Notes: ___
 "Next month we go from understanding markets to building strategies. We add statistics, indicators, backtesting, and AI. The Python work gets significantly heavier. Everything we did this month is the foundation that makes Month 2 possible.
 
 The question we couldn't answer all month was: how do you know if a signal is real or random? Next month, we answer that mathematically."
+
+> **Resource:** [Student Handbook Parts 1–6](../../resources/handbook/) — Complete reference for all Month 1 content. Archive it — Month 2 builds directly on this foundation.
 
 **Pre-reading for Month 2, Week 5 (distributed tonight):**
 - Wiki Section 3.2 — Full statistics section (hypothesis testing, time series)
