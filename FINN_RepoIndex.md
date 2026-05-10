@@ -87,10 +87,10 @@ FINN_Class_MAIN/
 │       ├── finn-design.md           /finn-design [file] — UIX/Frontend infographic build mode
 │       ├── finn-research.md         /finn-research [target] — competitive/capability research mode
 │       ├── finn-marketing.md        /finn-marketing [type] — social content + product copy mode
-│       ├── finn-resume.md           /finn-resume — load project status + next steps (⬜ pending)
-│       ├── finn-weekly.md           /finn-weekly [W##] — create weekly file from schema (⬜ pending)
-│       ├── finn-daily.md            /finn-daily — load or create today's daily file (⬜ pending)
-│       └── finn-resource.md         /finn-resource [topic] — look up handbook + infographic (⬜ pending)
+│       ├── finn-resume.md           /finn-resume — session startup briefing from project status
+│       ├── finn-weekly.md           /finn-weekly [W##] — create weekly file from schema
+│       ├── finn-daily.md            /finn-daily [D###] — load or create daily session file
+│       └── finn-resource.md         /finn-resource [topic] — look up handbook + infographic + glossary
 │
 └── scripts/                         Utility scripts (future use)
 ```
@@ -151,10 +151,10 @@ For next active project: see `FINN_ProjectStatus.md` → Active Projects.
 | `/finn-design [file]` | UIX/Frontend build mode — upgrades infographic files using design system v2 | ✅ Built |
 | `/finn-research [target]` | Research mode — competitor audits, capability audits, market analysis | ✅ Built |
 | `/finn-marketing [type]` | Marketing mode — social posts, product copy, content briefs, positioning | ✅ Built |
-| `/finn-resume` | Reads project status, loads planning doc, reports current session + next steps | ⬜ Pending |
-| `/finn-weekly [W##]` | Creates a new weekly file using WeeklySchema + CurriculumIndex + monthly section | ⬜ Pending |
-| `/finn-daily` | Loads or creates today's daily file based on current date | ⬜ Pending |
-| `/finn-resource [topic]` | Looks up handbook section and infographic for any topic | ⬜ Pending |
+| `/finn-resume` | Reads project status, loads planning doc, reports current session + next steps | ✅ Built |
+| `/finn-weekly [W##]` | Creates a new weekly file using WeeklySchema + CurriculumIndex + monthly section | ✅ Built |
+| `/finn-daily [D###]` | Loads or creates today's daily file; creates if missing using weekly file as source | ✅ Built |
+| `/finn-resource [topic]` | Looks up handbook section, infographic, and glossary entry for any topic | ✅ Built |
 
 ---
 
