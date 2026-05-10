@@ -9,17 +9,22 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 
 ## Active Projects
 
-### Knowledge Base Build — Gap Integration (Tier 1 + Tier 2)
-**Status:** 🟢 Complete — 19/19 sessions done
-**Planning doc:** `research/planning/finn_kb_execution_plan.md`
-**Gap analysis:** `research/planning/finn_gap_analysis.md`
-**Progress:** 19 / 19 sessions complete
+### Infographics Upgrade — Visual Product Rebuild (v1 → v2)
+**Status:** 🟡 In progress — Phase A next (research)
+**Planning doc:** `research/planning/finn_infographics_upgrade_plan.md`
+**Progress:** 0 / 16 sessions complete
 
-**Last completed:** Session F1 (May 10, 2026) — Added resource callouts to all 12 daily files D001–D012. D001: HB P1 pre-reading + ig_platform_tradingview + ig_market_open + ig_trade_types (4 callouts). D002: ig_platform_tradingview watchlist config (1). D003: HB 2.2 + ig_support_resistance S&R observation (1). D004: ig_order_types after MOO/MOC (1). D005: ig_gap_types after Step 1 + ig_volume_analysis after Step 2 + HB 2.3 trendline observation (3). D006: ig_gap_types in pre-market scan + ig_volume_analysis in chart review (2). D007: ig_quant_workflow after workflow section + ig_performance_metrics after expectancy (2). D008: ig_performance_metrics in framing + HB 2.1 candlestick observation (2). D009: ig_quant_workflow in retrospective + ig_performance_metrics in metrics applied (2). D010: ig_gap_types in observation + ig_performance_metrics after Lightning Round + HB P1–5 review checklist (3). D011: ig_performance_metrics + HB P1–5 before Muddiest Point (2). D012: ig_quant_workflow + ig_performance_metrics before Part 1 + HB P1–6 archive note (2). Total: 25 callouts across 12 files.
+**Last completed:** Architecture plan created (May 10, 2026) — Full planning doc written. Covers: current state inventory (26 files, T1/T2/T3 tiers), technical architecture (design system v2, social media mode, animation system, component patterns), content architecture (upgrade sequence + 6 net-new files), phase/session plan (Phases A–F), open decisions, and success criteria.
 
-**Last completed:** Session F2 (May 10, 2026) — Added targeted resource callouts to daily files D013–D015 (Weeks 5). D013: ig_performance_metrics after IC definition block, before Part B (1). D014: ig_quant_workflow after FRAMING + ig_performance_metrics before Step 5 Rolling IC (2). D015: ig_candlestick_patterns after Wiki 5.2 assignment in Next Week Preview (1). Total: 4 callouts across 3 files.
+**Next session (Phase A — Session A1):**
+Competitor audit:
+- Top 10 trading educators on Twitter/X, LinkedIn, Instagram — content types, visual style, engagement patterns
+- Fintech edtech products (Investopedia, TradingView Learn, tastytrade) — interactive tools inventory
+- "Infographic product packs" in the market — pricing, scope, distribution
+- Output: `research/competitors/ig_competitor_audit.md`
+- See Phase A spec in `research/planning/finn_infographics_upgrade_plan.md`
 
-*Full session sequence and KB scope: see `research/planning/finn_kb_execution_plan.md`*
+*Full phase sequence, technical architecture, and content plan: see `research/planning/finn_infographics_upgrade_plan.md`*
 
 ---
 
