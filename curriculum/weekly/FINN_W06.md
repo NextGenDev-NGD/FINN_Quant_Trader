@@ -108,6 +108,8 @@ Feature usage: `df['EMA_20'] = ta.ema(df['Close'], length=20)`"
 "OBV = cumulative sum of volume, adding on up days and subtracting on down days. OBV divergence: price makes a new high but OBV doesn't = distribution (smart money selling).
 Feature usage: `df['OBV'] = ta.obv(df['Close'], df['Volume'])`"
 
+> **Resource:** Volume reading guide — OBV, volume breakout patterns, climactic volume, and reversal signals — the visual interpretation layer for the OBV feature built in this section → `resources/infographics/ig_volume_analysis.html` + `resources/handbook/FINN_HB_P6_MarketReference.md` §6.2
+
 - **VWAP:**
 "Volume-Weighted Average Price = sum(price × volume) / sum(volume) for the session. VWAP resets daily — it's an intraday indicator. Institutions use it as a fair value anchor. Price above VWAP = bullish intraday bias. Below = bearish bias. For daily data, we compute a rolling approximation. True VWAP requires intraday data."
 
@@ -117,6 +119,8 @@ Feature usage: `df['OBV'] = ta.obv(df['Close'], df['Volume'])`"
 **Topic C: Candlestick Patterns as Binary Features (5 min)**
 
 "Candlestick patterns are encoded as 1 or 0 in the feature matrix. `pandas-ta` provides `cdl_pattern()` which computes these automatically. As features, they add pattern-based signal to the numeric indicators."
+
+> **Resource:** Chart pattern visual library — continuation patterns (flag, pennant, triangle, wedge) and reversal patterns (H&S, double top/bottom, cup & handle); Heikin Ashi for trend-smoothed signal validation — the visual basis for the binary pattern features encoded with `cdl_pattern()` → `resources/infographics/ig_chart_patterns_continuation.html` + `resources/infographics/ig_chart_patterns_reversal.html` + `resources/infographics/ig_heikin_ashi.html` + `resources/handbook/FINN_HB_P2_ChartReading.md` §2.4–2.5 & 2.7
 
 #### Block 3 — Socratic Discussion (8:55–9:15 PM) | 20 min
 
@@ -376,6 +380,8 @@ Walk through this week's price action:
 - "Were there any high-volume days? What caused them?"
 
 Pull up one student's watchlist ticker: "If you had our full feature matrix running on this ticker this week, what signals would it have flagged? Let's read the indicator states together."
+
+> **Resource:** Chart reading frameworks for live analysis — Fibonacci retracements (key S/R levels and how to draw them) and multi-timeframe top-down framework (daily → 4hr → 1hr → 15min) for contextualizing the indicator states observed in Friday review → `resources/infographics/ig_fibonacci.html` + `resources/infographics/ig_mtf_analysis.html` + `resources/handbook/FINN_HB_P6_MarketReference.md` §6.1 & §6.3
 
 **Sector Rotation:** Standard Finviz heatmap review.
 

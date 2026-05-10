@@ -83,6 +83,8 @@ AI expands the signal universe to unstructured data — text that carries meanin
 
 These signals are available in real time but require AI to extract them. That's the structural edge that modern quant shops pursue."
 
+> **Resource:** Sentiment indicators (non-AI) — Fear & Greed index, AAII survey, Put/Call ratio, and VIX regime table — structured sentiment signals that complement FinBERT's unstructured text analysis → `resources/infographics/ig_sentiment_indicators.html` + `resources/handbook/FINN_HB_P6_MarketReference.md` §6.4
+
 **Topic B: The NLP Toolkit for Finance (15 min)**
 
 Walk through Wiki Section 6.2 tool options table.

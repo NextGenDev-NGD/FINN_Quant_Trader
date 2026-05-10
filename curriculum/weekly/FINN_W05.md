@@ -103,6 +103,8 @@ We collect data, compute a test statistic, and ask: how likely is this data if t
 **The Information Coefficient (IC):**
 "The IC is the correlation between your predicted rank and the actual return rank. IC of 0 = your model is random. IC of 1 = perfect. IC of 0.05 = modest but real edge. Professional quants consider IC > 0.05 meaningful. IC > 0.10 is strong."
 
+> **Resource:** FINN quant workflow — Step 4 (Statistical Testing) to Step 5 (Model Building): IC benchmarks, signal quality gates, and the full 9-step pipeline from hypothesis to live trading → `resources/infographics/ig_quant_workflow.html`
+
 **Type I and Type II errors:**
 "Type I error: you think the signal is real but it's noise — you trade a fake edge. Type II error: you think the signal is noise but it's real — you miss a genuine edge. In trading, Type I errors cost money directly. Type II errors cost opportunity. Multiple testing makes Type I errors far more likely — the more signals you test, the more false positives you find by chance alone. This is why quants are skeptical."
 

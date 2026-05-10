@@ -326,6 +326,8 @@ qs.reports.html(pf_aligned, benchmark=bm_aligned, output='spy_rsi_tearsheet.html
 print("\nTear sheet saved: spy_rsi_tearsheet.html")
 ```
 
+> **Resource:** Performance metrics reference — Sharpe, max drawdown, win rate, and expectancy — use to interpret the QuantStats tear sheet output and benchmark comparison produced in Step 4 → `resources/infographics/ig_performance_metrics.html`
+
 #### Block 3 — Independent Work (8:50–9:15 PM) | 25 min
 
 **Core Exercise:**

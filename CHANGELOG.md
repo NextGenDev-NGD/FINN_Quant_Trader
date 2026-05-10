@@ -31,6 +31,20 @@ Picked up next session:
 
 ---
 
+### [2026-05-09] — Knowledge Base Session E2 — Weekly File Resource Callouts (W05–W08)
+
+**Files modified:**
+- `curriculum/weekly/FINN_W05.md` — 1 resource callout added: ig_quant_workflow (after IC benchmark description, Monday Topic A — Step 4 statistical testing context)
+- `curriculum/weekly/FINN_W06.md` — 3 resource callouts added: ig_volume_analysis + HB P6 §6.2 (after OBV feature usage line, Monday Topic B); ig_chart_patterns_continuation + ig_chart_patterns_reversal + ig_heikin_ashi + HB P2 §2.4–2.7 (after Topic C candlestick pattern encoding); ig_fibonacci + ig_mtf_analysis + HB P6 §6.1 & §6.3 (after Friday chart review indicator states)
+- `curriculum/weekly/FINN_W07.md` — 1 resource callout added: ig_performance_metrics (before Block 3 Independent Work, after QuantStats Step 4 tear sheet)
+- `curriculum/weekly/FINN_W08.md` — 1 resource callout added: ig_sentiment_indicators + HB P6 §6.4 (after Topic A signal universe expansion, contrasting non-AI vs. AI sentiment)
+- `FINN_ProjectStatus.md` — E2 complete; progress 15/19; E3 scoped
+- `resources/FINN_ResourceIndex.md` — E2 marked ✅ Done
+
+**Status:** Session E2 complete. 6 callouts added across 4 weekly files. E-phase W05–W08 integration done.
+
+---
+
 ### [2026-05-09] — Knowledge Base Session E1 — Weekly File Resource Callouts (W01–W04)
 
 **Files modified:**
