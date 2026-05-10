@@ -134,6 +134,8 @@ Risk: regime misclassification creates abrupt strategy changes.
 
 "We implement Architecture 2 (scoring system) Wednesday because it is the most flexible and most directly applicable to the capstone design. Architecture 3 is the Month 6 extension for students who want to go further."
 
+> **Resource:** Multi-signal scoring framework (weighted composite — IC by component, veto logic, signal independence requirement) — `resources/infographics/ig_multi_signal.html`
+
 **Topic C: The Multi-Agent AI Concept (10 min)**
 
 Walk through Wiki Section 6.4 multi-agent framework.

@@ -99,6 +99,8 @@ Four phases, run in sequence each trading day:
 
 4. **End-of-Day Summary (4:00–5:00 PM):** Log the day's results: signals fired, trades placed, deviations from rules. Journal updated.
 
+> **Resource:** FINN's 9-step quant workflow — how the automated signal monitor fits the full pipeline (data → signal → position sizing → journal) — `resources/infographics/ig_quant_workflow.html`
+
 **Topic B: Signal Generation as a Pipeline (15 min)**
 
 Three stages — each produces a structured output that feeds the next:

@@ -131,7 +131,7 @@
 | E | E1 | ✅ Done | Weekly: W01–W04 additions |
 | E | E2 | ✅ Done | Weekly: W05–W08 additions |
 | E | E3 | ✅ Done | Weekly: W09–W12 additions |
-| E | E4 | ⬜ | Weekly: W13–W24 additions (lighter touch) |
+| E | E4 | ✅ Done | Weekly: W13–W24 additions (lighter touch) |
 | F | F1 | ⬜ | Daily: D001–D012 additions |
 | F | F2 | ⬜ | Daily: D013–D072 targeted additions |
 

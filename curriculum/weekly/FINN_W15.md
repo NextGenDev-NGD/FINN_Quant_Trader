@@ -82,6 +82,8 @@ The correct way to evaluate whether your adaptation improved the strategy:
    - *Worse:* V1.1 shows lower Sharpe or higher drawdown. Adaptation hurt performance. Revert.
    - *Insufficient data:* Fewer than 20 trades on V1.1. Cannot conclude anything. Continue and revisit at Week 16.
 
+> **Resource:** Performance metrics reference (Sharpe, max drawdown, win rate, expectancy — the four metrics in the V1.0/V1.1 comparison table) — `resources/infographics/ig_performance_metrics.html`
+
 **Topic B: Versioning Your Strategy (15 min)**
 
 Every adaptation deserves a version number, a changelog, and a permanent record.

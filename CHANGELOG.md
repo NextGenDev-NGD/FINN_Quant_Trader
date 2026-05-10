@@ -31,6 +31,23 @@ Picked up next session:
 
 ---
 
+### [2026-05-09] — Knowledge Base Session E4 — Weekly File Resource Callouts (W13–W24)
+
+**Files modified:**
+- `curriculum/weekly/FINN_W13.md` — 1 resource callout added: ig_quant_workflow (after End-of-Day Summary step 4 of automated workflow, before Topic B signal pipeline — automation pipeline context, new use vs. W01–W12)
+- `curriculum/weekly/FINN_W14.md` — 1 resource callout added: ig_risk_rules (after Rule 5 weekly rebalancing, before Topic C hedging — multi-position extension of the 6 non-negotiable rules)
+- `curriculum/weekly/FINN_W15.md` — 1 resource callout added: ig_performance_metrics (after insufficient data outcome category in the 4-outcome framework, before Topic B versioning — V1.0/V1.1 comparison context)
+- `curriculum/weekly/FINN_W19.md` — 1 resource callout added: ig_multi_signal (after Architecture 2 scoring system explanation / "Month 6 extension" sentence, before Topic C multi-agent AI concept — the multi-signal architecture itself)
+- `curriculum/weekly/FINN_W23.md` — 1 resource callout added: ig_performance_metrics (before Chart 2 rolling Sharpe build in capstone report charts workshop — capstone analytics context)
+- `FINN_ProjectStatus.md` — E4 complete; progress 17/19; F1 scoped
+- `resources/FINN_ResourceIndex.md` — E4 marked ✅ Done
+
+**Not modified:** W16 (milestone prep — all resources introduced), W17–W18 (ML/sentiment — already placed in W15/W08), W20–W22 (capstone design/launch/analytics — no new callout point of higher value), W24 (presentation-only, no new technical content)
+
+**Status:** Session E4 complete. 5 callouts added across 5 weekly files. E-phase (W01–W24) integration fully done.
+
+---
+
 ### [2026-05-09] — Knowledge Base Session E3 — Weekly File Resource Callouts (W09–W12)
 
 **Files modified:**

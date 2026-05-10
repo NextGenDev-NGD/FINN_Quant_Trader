@@ -90,6 +90,8 @@ These rules are non-negotiable for Month 4 and beyond:
 
 5. **Weekly rebalancing check every Friday.** No position should exceed 25% of portfolio value due to appreciation. If it has — trim to 20%.
 
+> **Resource:** Non-negotiable risk rules reference card (all 6 rules, including position limits and rebalancing) — `resources/infographics/ig_risk_rules.html`
+
 **Topic C: Hedging with Inverse ETFs (15 min)**
 
 When portfolio beta is too high and market conditions turn uncertain, inverse ETFs provide direct beta reduction without closing individual positions:

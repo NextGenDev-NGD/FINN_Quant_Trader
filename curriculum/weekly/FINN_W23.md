@@ -211,6 +211,8 @@ trades = trades.sort_values('date').reset_index(drop=True)
 # Label: 'Figure 1: Capstone Strategy Equity Curve vs SPY Benchmark, Months 3–6'
 ```
 
+> **Resource:** Performance metrics reference card (Sharpe, drawdown, win rate, expectancy — use while interpreting your capstone charts) — `resources/infographics/ig_performance_metrics.html`
+
 **Chart 2 — Rolling 20-trade Sharpe (7 min)**
 ```python
 def plot_rolling_sharpe(trades, window=20, risk_free=0.05/252):
