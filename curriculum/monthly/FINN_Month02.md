@@ -640,6 +640,8 @@ whether it does, quantify how much, and combine the strong signals into a model.
 
 We are not chart readers. We are feature engineers."
 
+> **Resource:** FINN 9-Step Quant Workflow — `resources/infographics/ig_quant_workflow.html` — Feature engineering is Step 3.
+
 **Topic B: The 10 Core Indicators — Deep Walk (30 min)**
 
 Walk through Wiki Section 5.1 indicator table. For each indicator,
@@ -683,6 +685,8 @@ Feature usage: `df['EMA_20'] = ta.ema(df['Close'], length=20)`"
 OBV divergence: price makes a new high but OBV doesn't = distribution (smart money selling).
 Feature usage: `df['OBV'] = ta.obv(df['Close'], df['Volume'])`"
 
+> **Resource:** Volume patterns guide — `resources/infographics/ig_volume_analysis.html` | Market reference handbook — `resources/handbook/FINN_HB_P6_MarketReference.md §6.2`
+
 - **VWAP:**
 "Volume-Weighted Average Price = sum(price × volume) / sum(volume) for the session.
 VWAP resets daily — it's an intraday indicator. Institutions use it as a fair value anchor.
@@ -699,6 +703,8 @@ Feature: use ADX as a regime filter — only apply trend-following signals when 
 "Candlestick patterns are encoded as 1 or 0 in the feature matrix.
 `pandas-ta` provides `cdl_pattern()` which computes these automatically.
 As features, they add pattern-based signal to the numeric indicators."
+
+> **Resources:** Candlestick patterns — `resources/infographics/ig_candlestick_patterns.html` | Continuation patterns — `resources/infographics/ig_chart_patterns_continuation.html` | Reversal patterns — `resources/infographics/ig_chart_patterns_reversal.html` | Fibonacci — `resources/infographics/ig_fibonacci.html` | Heikin Ashi — `resources/infographics/ig_heikin_ashi.html` | MTF analysis — `resources/infographics/ig_mtf_analysis.html` | Chart reading handbook — `resources/handbook/FINN_HB_P2_ChartReading.md`
 
 ---
 
@@ -1151,6 +1157,8 @@ At the end of tonight you'll have a real equity curve, a Sharpe ratio,
 a max drawdown, and a benchmark comparison — all from code you wrote.
 You'll also see exactly how easy it is to accidentally build a backtest that lies."
 
+> **Resource:** FINN 9-Step Quant Workflow — `resources/infographics/ig_quant_workflow.html` — tonight covers Steps 5 (Backtest) and 6 (Risk/Position Sizing).
+
 ---
 
 #### Block 2 — Guided Build (8:10–8:50 PM) | 40 minutes
@@ -1556,6 +1564,8 @@ Walk through Wiki Section 6.2 tool options table.
 - **VADER:** "Rule-based, fast, good for social media. Doesn't understand financial context.
   'The company's debt is not bearish' — VADER might flag 'bearish' as negative.
   FinBERT understands the full sentence in financial context."
+
+> **Resource:** Non-AI sentiment indicators — `resources/infographics/ig_sentiment_indicators.html` | Market reference handbook — `resources/handbook/FINN_HB_P6_MarketReference.md §6.4`
 
 - **FinBERT:** "BERT architecture pre-trained on financial text — Reuters, SEC filings,
   earnings transcripts. Fine-tuned for three-class sentiment: Positive, Negative, Neutral.

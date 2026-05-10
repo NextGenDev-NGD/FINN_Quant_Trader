@@ -126,8 +126,8 @@
 | C | C4 | ✅ Done | Infographics: Chart Patterns, Fibonacci, Heikin Ashi, Volume |
 | C | C5 | ✅ Done | Infographics: Psychology, Sentiment, Market Context |
 | C | C6 | ✅ Done | Infographics: FINN-Specific + Index finalized |
-| D | D1 | ⬜ | Monthly: Month 1 + 2 resource callouts |
-| D | D2 | ⬜ | Monthly: Month 3–6 resource callouts |
+| D | D1 | ✅ Done | Monthly: Month 1 + 2 resource callouts |
+| D | D2 | ✅ Done | Monthly: Month 3–6 resource callouts |
 | E | E1 | ⬜ | Weekly: W01–W04 additions |
 | E | E2 | ⬜ | Weekly: W05–W08 additions |
 | E | E3 | ⬜ | Weekly: W09–W12 additions |

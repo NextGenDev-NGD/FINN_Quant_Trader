@@ -33,6 +33,8 @@ By the end of Month 1, every student will be able to:
 - Form specific, falsifiable daily market hypotheses and evaluate their outcomes
 - Pass the Month 1 Milestone oral assessment without reference materials
 
+> **Pre-reading for Session 1:** Before the first class, students should review `resources/handbook/FINN_HB_P1_GettingStarted.md` — covers trade type taxonomy, TradingView setup, Finviz, and broker comparison.
+
 ### Month 1 Curriculum Sources
 *(from `FINN_Curriculum_Wiki.md`)*
 
@@ -79,6 +81,8 @@ Narrate every item on the checklist — explain what each data point means and w
 - [ ] Finviz sector heatmap — walk through reading it for the first time
 - [ ] 10-year yield — introduce the concept of risk-on/risk-off
 - [ ] BTC/ETH overnight — explain why crypto is used as a sentiment signal
+
+> **Resource:** Finviz platform guide — `resources/infographics/ig_platform_finviz.html` | Information sources map — `resources/infographics/ig_info_sources.html`
 
 **Instructor note:** Spend extra time in this first DMB explaining *why* each data point is
 on the checklist. Students have never done this before. The goal is not speed — it is
@@ -177,6 +181,8 @@ read the table — give a vivid real-world example:
 
 **Scope reminder:** Primary focus is equities and ETFs. Everything else is context.
 
+> **Resource:** Trade type taxonomy — `resources/infographics/ig_trade_types.html` | Getting Started — `resources/handbook/FINN_HB_P1_GettingStarted.md §1.1`
+
 **Topic B: Market Structure (15 min)**
 
 Walk through Wiki Section 2.2 — exchanges, market hours, and the order book concept.
@@ -201,6 +207,8 @@ Ask rhetorically: "If a hedge fund wants to buy $500 million of SPY without movi
 what do they do? They can't just hit market order. They slice it up over days.
 That's what institutional accumulation looks like on a chart — what retail calls 'sideways chop'
 is often a fund quietly building a position."
+
+> **Resources:** Information sources map — `resources/infographics/ig_info_sources.html` | Market open behavior — `resources/infographics/ig_market_open.html` | Trader's daily routine — `resources/handbook/FINN_HB_P4_MarketContext.md §4.1`
 
 ---
 
@@ -471,6 +479,8 @@ charts. Make sure your hypothesis log entries are complete before tonight."
 Note where the week opened and where it is closing. Was it a bullish week, bearish week,
 or inside week? Write it down."
 
+> **Resource:** TradingView interface guide — `resources/infographics/ig_platform_tradingview.html`
+
 ---
 
 ### Friday, April 17, 2026 — Review & Market Session
@@ -521,6 +531,8 @@ Open the hypothesis log. Review every hypothesis submitted Monday and Wednesday:
 
 Open TradingView. Walk through:
 
+> **Resources:** TradingView interface — `resources/infographics/ig_platform_tradingview.html` | Candlestick reference — `resources/infographics/ig_candlestick_patterns.html` | Chart reading handbook — `resources/handbook/FINN_HB_P2_ChartReading.md §2.1`
+
 *SPY — Weekly candle:*
 - "What was the dominant structure this week? Trend, range, or reversal?"
 - "Where did we open Monday? Where did we close Friday?"
@@ -538,6 +550,8 @@ Open TradingView. Walk through:
 - "How did it perform relative to SPY? What would our basic data pull have shown us?"
 
 **Step 3 — Sector Rotation (10 min)**
+
+> **Resource:** Finviz platform guide — `resources/infographics/ig_platform_finviz.html`
 
 Open Finviz heatmap. Walk through:
 - "Which sectors were green this week? Which were red?"
@@ -673,6 +687,8 @@ Walk through Wiki Section 2.2 order types table. For each, give a scenario:
   you trade at the opening print. Market On Close ensures you trade at the closing auction.
   These create predictable volume spikes at open and close."
 
+> **Resource:** Complete order taxonomy — `resources/infographics/ig_order_types.html` | Order execution handbook — `resources/handbook/FINN_HB_P3_OrderExecution.md §3.1`
+
 **Topic B: The Order Book & Market Microstructure (15 min)**
 
 Show a live or screenshot Level 2 order book in TradingView.
@@ -717,6 +733,8 @@ your hidden transaction cost is ~$5 round trip — just from the spread, before 
    *(Expected direction: market makers and HFTs know where retail stops cluster —
    at round numbers, at recent lows. They hunt those levels. This is called a stop hunt.
    Does that mean stops are bad? No — but placement matters.)*
+
+> **Resource:** Market traps visual guide — `resources/infographics/ig_market_traps.html` | Market context handbook — `resources/handbook/FINN_HB_P4_MarketContext.md §4.5`
 
 3. "We said institutions slice large orders to avoid moving the market. If you're watching
    a stock and see steady, small-volume buying all day with the price barely moving —
@@ -825,6 +843,8 @@ print(df['HL_Range_Pct'].nlargest(5))
 *"A large high-low range on high volume = market was very active, two-sided.
 Large range on low volume = thin market, less reliable signal."*
 
+> **Resource:** Gap types visual guide — `resources/infographics/ig_gap_types.html` | Chart reading handbook — `resources/handbook/FINN_HB_P2_ChartReading.md §2.6`
+
 **Step 2 — Volume analysis (10 min)**
 ```python
 # 20-day rolling average volume
@@ -843,6 +863,8 @@ print(unusual_days[['Close', 'Volume', 'Vol_Ratio', 'HL_Range_Pct']].head(10))
 *Deliberate mistake: Run rolling with window=20 before dropping NaN rows first —
 get NaN-heavy output. "See these NaNs? The rolling window needs 20 rows before
 it can compute. Always check your rolling calculations for leading NaNs."*
+
+> **Resource:** Volume patterns guide — `resources/infographics/ig_volume_analysis.html` | Market reference handbook — `resources/handbook/FINN_HB_P6_MarketReference.md §6.2`
 
 **Step 3 — Build a reusable flagging function (12 min)**
 ```python
@@ -1096,6 +1118,8 @@ Walk through Wiki Section 3.1 in detail. For each step, make it concrete:
   Emphasize the loop: "This is not linear. You iterate. Most hypotheses fail.
   That's the job."
 
+> **Resource:** FINN 9-Step Quant Workflow — `resources/infographics/ig_quant_workflow.html`
+
 **Topic B: Performance Metrics (20 min)**
 
 Walk through Wiki Section 3.3 metrics table. For each metric, use a concrete example:
@@ -1117,6 +1141,8 @@ Walk through Wiki Section 3.3 metrics table. For each metric, use a concrete exa
 - **Expectancy:** "Expected value per trade = (Win Rate × Avg Win) − (Loss Rate × Avg Loss).
   If this is positive, the strategy makes money over time, in expectation.
   This is the only number that matters in the long run."
+
+> **Resource:** Performance metrics reference card — `resources/infographics/ig_performance_metrics.html`
 
 ---
 
@@ -1548,6 +1574,8 @@ No new reading assigned. Existing material only.
 "Tonight's workshop is different. There's no guided build.
 You have all the code you need from the last 3 weeks — the data pull, the flagging function,
 the metrics. Tonight you apply all of it to a single stock of your choice.
+
+> **Resource:** Student reference handbook — `resources/handbook/` — Parts 1–4 cover all Month 1 concepts (trade types, platforms, orders, market context, performance metrics).
 
 The output is a complete analysis notebook: fetch data, clean it, flag notable days,
 calculate all performance metrics, visualize price and drawdown.

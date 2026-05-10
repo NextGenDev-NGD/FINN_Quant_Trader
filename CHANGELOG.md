@@ -31,6 +31,30 @@ Picked up next session:
 
 ---
 
+### [2026-05-09] — Knowledge Base Session D2 — Monthly File Resource Callouts (Month 3–6)
+
+**Files modified:**
+- `curriculum/monthly/FINN_Month03.md` — 7 resource callouts added: W9 — ig_trading_psychology + HB P5 §5.1–5.3 (after psychology section), ig_risk_rules (after Rule 6), HB P5 §5.5 (after journal whiteboard demo), ig_platform_webull + HB P1 §1.3 (after Webull SDK Step 1 MFA note); W10 — ig_risk_rules (after Equal Weight sizing), ig_performance_metrics (after Rolling Sharpe); W11 — ig_multi_signal (after IC test / three questions framework)
+- `curriculum/monthly/FINN_Month04.md` — 2 resource callouts added: W13 — ig_quant_workflow (after automated trading workflow diagram); W14 — ig_risk_rules (after multi-position rules)
+- `curriculum/monthly/FINN_Month05.md` — 4 resource callouts added: W17 — ig_multi_signal (after ML entry rule statement); W19 — ig_multi_signal (after ensemble stacking explanation), ig_performance_metrics (after regime-conditional architecture); W20 — full handbook reference (before capstone spec Block 4)
+- `curriculum/monthly/FINN_Month06.md` — 2 resource callouts added: W21 — HB P6 + glossary (after report writing standards); W22 async — ig_performance_metrics (before guided notes)
+- `FINN_ProjectStatus.md` — D2 complete; progress 13/19; E1 scoped
+
+**Status:** Session D2 complete. 15 callouts added across 4 files. All D-phase monthly file integration done.
+
+---
+
+### [2026-05-09] — Knowledge Base Session D1 — Monthly File Resource Callouts (Month 1 + 2)
+
+**Files modified:**
+- `curriculum/monthly/FINN_Month01.md` — 14 resource callouts added across Weeks 1–4: pre-reading note for HB P1, trade types (ig_trade_types + HB P1§1.1), Finviz + info sources (ig_platform_finviz + ig_info_sources), info sources + market open + daily routine (ig_info_sources + ig_market_open + HB P4§4.1), TradingView observation (ig_platform_tradingview), chart review (ig_platform_tradingview + ig_candlestick_patterns + HB P2§2.1), Finviz sector rotation (ig_platform_finviz), order types (ig_order_types + HB P3§3.1), market traps / stop hunt (ig_market_traps + HB P4§4.5), gap types (ig_gap_types + HB P2§2.6), volume analysis (ig_volume_analysis + HB P6§6.2), quant workflow (ig_quant_workflow), performance metrics (ig_performance_metrics), handbook review W4
+- `curriculum/monthly/FINN_Month02.md` — 5 resource callouts added across Weeks 6–8: quant workflow / feature engineering framing (ig_quant_workflow), volume/OBV section (ig_volume_analysis + HB P6§6.2), chart patterns / candlestick cluster (ig_candlestick_patterns + ig_chart_patterns_continuation + ig_chart_patterns_reversal + ig_fibonacci + ig_heikin_ashi + ig_mtf_analysis + HB P2), backtest quant workflow Step 5–6 (ig_quant_workflow), non-AI sentiment (ig_sentiment_indicators + HB P6§6.4)
+- `FINN_ProjectStatus.md` — D1 complete; progress 12/19; D2 scoped
+
+**Status:** Session D1 complete. No new files created. All existing library files now referenced at point-of-use in Month 1–2 curriculum.
+
+---
+
 ### [2026-05-08] — Knowledge Base Sessions B2, B3, C1 — Handbook Parts 3–6 + 4 Infographics
 
 **Context:** Sessions delivered in atomized sub-sessions (B2.a/b, B3.a/b, C1.a/b) to avoid context overflow. Each sub-session writes one file; parent session completes on ResourceIndex + ProjectStatus update.

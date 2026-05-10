@@ -258,6 +258,8 @@ by a number from your data. 'The strategy performed well' is not a claim.
 over the 16-week paper trading period, with alpha of +0.3% per week
 attributable to momentum factor exposure' is a claim."
 
+> **Resource:** Complete course reference library for capstone writing — `resources/handbook/FINN_HB_P6_MarketReference.md` (performance metrics, Fibonacci, volume, MTF, sentiment) + `resources/FINN_Glossary.md` (all key terms)
+
 ---
 
 #### Block 3 — Capstone Report Section 1 Workshop (8:55–9:15 PM) | 20 minutes
@@ -791,6 +793,8 @@ the analytics notebook without needing to review the conceptual framework first.
 - Re-read your capstone specification document Sections 4 and 5
 
 #### Guided Notes — Answer These in Writing
+
+> **Resource:** Performance metrics reference — Sharpe, drawdown, win rate, expectancy — use to compute and interpret all answers below → `resources/infographics/ig_performance_metrics.html`
 
 1. "Looking at ALL paper trades across Months 3–5 (not just Month 6):
    what was your overall win rate? Your overall R:R?

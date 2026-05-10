@@ -10,20 +10,20 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 ## Active Projects
 
 ### Knowledge Base Build — Gap Integration (Tier 1 + Tier 2)
-**Status:** 🟡 In progress — Session D1 next
+**Status:** 🟡 In progress — Session E1 next
 **Planning doc:** `research/planning/finn_kb_execution_plan.md`
 **Gap analysis:** `research/planning/finn_gap_analysis.md`
-**Progress:** 11 / 19 sessions complete
+**Progress:** 13 / 19 sessions complete
 
-**Last completed:** Session C6 (May 9, 2026) — Built 4 FINN-specific infographics: `ig_quant_workflow.html` (9-step workflow with phase labels Research/Build/Test/Trade, phase gates with IC thresholds, gate threshold reference table), `ig_performance_metrics.html` (Sharpe, max drawdown, win rate + expectancy, IC — formulas, Python functions, thresholds, interpretation matrix), `ig_risk_rules.html` (6 non-negotiable rules: 2% risk/trade, 6% daily kill switch, ATR stops, 2:1 R:R minimum, 20% sector cap, mandatory documentation — violation patterns, account-level kill switch), `ig_multi_signal.html` (5 weighted signal components with veto flags, score interpretation table with position sizing, 3 veto conditions, Python composite score engine). Updated ResourceIndex to mark all 4 ✅ Built (C6), C6 session row ✅ Done.
+**Last completed:** Session D2 (May 9, 2026) — Added 15 resource callouts across `FINN_Month03.md`, `FINN_Month04.md`, `FINN_Month05.md`, `FINN_Month06.md`. Month03: W9 — ig_trading_psychology + HB P5 (after psychology section), ig_risk_rules (after Rule 6), HB P5§5.5 (after journal demo), ig_platform_webull + HB P1§1.3 (after Webull SDK Step 1); W10 — ig_risk_rules (after Equal Weight sizing), ig_performance_metrics (after Rolling Sharpe); W11 — ig_multi_signal (after IC test / three questions). Month04: W13 — ig_quant_workflow (after automated workflow diagram); W14 — ig_risk_rules (after multi-position rules). Month05: W17 — ig_multi_signal (after ML model entry rule statement); W19 — ig_multi_signal (after ensemble logic), ig_performance_metrics (after regime-conditional architecture); W20 — full handbook (before capstone spec session Block 4). Month06: W21 — HB P6 + glossary (after writing standards); W22 async — ig_performance_metrics (before guided notes).
 
-**Next session (D1):**
-Add resource callouts to monthly curriculum files Month 1 + 2:
-- Read `curriculum/monthly/FINN_Month01.md` — identify weeks where new resources should be referenced
-- Read `curriculum/monthly/FINN_Month02.md` — same
-- For each week that covers a gap topic, add a `### Resources` sub-section pointing to the relevant handbook section and infographic
+**Next session (E1):**
+Add resource callouts to weekly files W01–W04:
+- Read each weekly file in `curriculum/weekly/FINN_W01.md` through `FINN_W04.md`
+- Add `> **Resource:**` callouts at the specific lab steps or theory blocks where each gap topic first appears in detail
 - Check `resources/FINN_ResourceIndex.md` Section 1 for topic-to-resource mappings
-- Do NOT rewrite or restructure the monthly files — append resource callouts only
+- Do NOT rewrite or restructure the weekly files — append callouts only
+- Key additions: W01 — ig_trade_types, ig_platform_tradingview, ig_platform_finviz, ig_info_sources, ig_quant_workflow; W02 — ig_order_types, ig_gap_types, ig_volume_analysis, ig_market_traps; W03 — ig_performance_metrics; W04 — HB P1 through P4 review
 
 *Full session sequence and KB scope: see `research/planning/finn_kb_execution_plan.md`*
 

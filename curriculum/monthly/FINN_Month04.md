@@ -187,6 +187,8 @@ END OF DAY:
 This is completely achievable with Python, yfinance, and a free email/SMS API.
 We build every component of this over the next two weeks."
 
+> **Resource:** FINN quant workflow — 9-step pipeline from data fetch to signal report → `resources/infographics/ig_quant_workflow.html`
+
 **Topic B: Signal Generation as a Pipeline (15 min)**
 
 Walk through Wiki Section 6.3 ML signal framework in applied context.
@@ -878,6 +880,8 @@ Always keep 20–30% of portfolio in cash. This serves two purposes:
 Every Friday, review: is any position now more than 25% of portfolio
 due to price appreciation? If yes, trim to target weight.
 This forces selling into strength — one of the hardest disciplines to maintain."
+
+> **Resource:** Risk rules reference — 6 non-negotiable rules including concentration limits and rebalancing triggers → `resources/infographics/ig_risk_rules.html`
 
 **Topic C: Hedging with ETFs (15 min)**
 

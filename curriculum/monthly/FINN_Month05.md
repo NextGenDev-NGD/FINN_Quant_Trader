@@ -209,6 +209,8 @@ It replaces the entry rule. Risk management, position sizing, and
 exit logic remain exactly as before. The only thing that changes
 is what triggers entry: a rules threshold → a model probability."
 
+> **Resource:** Multi-signal scoring — weighted composite and veto logic for combining technical, ML, and sentiment signals → `resources/infographics/ig_multi_signal.html`
+
 **Topic C: Model Evaluation for Trading (15 min)**
 
 "Standard ML metrics (accuracy, F1) are not sufficient for trading.
@@ -1451,6 +1453,8 @@ The intuition is the same: combining signals that are each
 moderately predictive and somewhat independent produces a result
 stronger than any one alone."
 
+> **Resource:** Multi-signal scoring — weighted composite (technical + ML + sentiment), veto logic, and signal combination architectures → `resources/infographics/ig_multi_signal.html`
+
 **Topic B: Three Combination Architectures (25 min)**
 
 Walk through three concrete architectures with code pseudocode:
@@ -1504,6 +1508,8 @@ Outcome: Adapts to market conditions. Strategy switches between modes.
 Use when: you have high confidence in regime detection.
 Risk: regime misclassification creates abrupt strategy changes.
 ```
+
+> **Resource:** Performance metrics reference — Sharpe, drawdown, win rate, expectancy — for evaluating signal and strategy quality → `resources/infographics/ig_performance_metrics.html`
 
 **Topic C: The Multi-Agent AI Concept (10 min)**
 
@@ -2042,6 +2048,8 @@ Target Sharpe (minimum acceptable for Month 6).
 Target win rate.
 Target alpha vs. SPY.
 Criteria for concluding the strategy works or doesn't."
+
+> **Resource:** Complete course reference library for capstone strategy design — `resources/handbook/` (all 6 parts) covers every framework, metric, and concept needed for the specification document
 
 ---
 

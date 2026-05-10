@@ -179,6 +179,8 @@ understand why you deviated. But always trade the system."
 you will still feel the pull to override your rules. Use that feeling.
 It is training for when the money is real."
 
+> **Resource:** Trading psychology primer — emotions (fear/greed/revenge), biases, and counter-strategies → `resources/infographics/ig_trading_psychology.html` + `resources/handbook/FINN_HB_P5_Psychology.md` §5.1–5.3
+
 **Topic B: The 6 Non-Negotiable Risk Rules (15 min)**
 
 Walk through Wiki Section 9.1 in full. For each rule, give a concrete scenario:
@@ -212,6 +214,8 @@ Walk through Wiki Section 9.1 in full. For each rule, give a concrete scenario:
   A single bad event wipes you out. Three uncorrelated positions means no single
   trade can kill your portfolio."
 
+> **Resource:** Risk rules reference card — 6 non-negotiable rules with scenarios and alert thresholds → `resources/infographics/ig_risk_rules.html`
+
 **Topic C: The Trading Journal — Non-Negotiable (10 min)**
 
 Walk through Wiki Section 8.4 journal field by field:
@@ -241,6 +245,8 @@ Exit Price:    [TBD]
 P&L:           [TBD]
 Post-trade:    [TBD]
 ```
+
+> **Resource:** Emotional journal fields — pre-trade checklist, impulse log, and post-trade review template → `resources/handbook/FINN_HB_P5_Psychology.md` §5.5
 
 ---
 
@@ -372,6 +378,8 @@ print("Connected to Webull Paper Trading ✓")
 
 *Note: "If MFA is required, Webull will prompt you for a verification code.
 This is normal — it's a security feature they added in 2020. Enter the code when prompted."*
+
+> **Resource:** Webull paper trading setup and SDK guide → `resources/infographics/ig_platform_webull.html` + `resources/handbook/FINN_HB_P1_GettingStarted.md` §1.3
 
 **Step 2 — Query current account state (10 min)**
 ```python
@@ -793,6 +801,8 @@ Walk through Wiki Section 9.2 in full. Use concrete numbers throughout.
   We use this as a baseline comparison — how do our sized strategies compare
   to simply equal-weighting positions?"
 
+> **Resource:** Risk rules reference — 6 non-negotiable rules with ATR sizing logic and drawdown circuit breakers → `resources/infographics/ig_risk_rules.html`
+
 **Topic B: Portfolio-Level Risk Metrics (10 min)**
 
 Walk through Wiki Section 9.3:
@@ -812,6 +822,8 @@ Walk through Wiki Section 9.3:
 - **Rolling Sharpe:** "If your rolling 20-day Sharpe drops below 0.5, something changed.
   Either the market regime shifted, or your execution is inconsistent.
   Diagnose before adding new positions."
+
+> **Resource:** Performance metrics reference — Sharpe ratio, drawdown, win rate, and expectancy → `resources/infographics/ig_performance_metrics.html`
 
 **Topic C: VaR Introduction (5 min)**
 
@@ -1339,6 +1351,8 @@ If IC has collapsed — the edge may be gone. Time to re-research.
 
 Only reach Question 3 after Questions 1 and 2 are answered. Most underperformance
 is explained by 1 or 2. Very rarely is the strategy genuinely broken."
+
+> **Resource:** Multi-signal scoring — weighted composite and veto logic for evaluating whether your edge is still present across signals → `resources/infographics/ig_multi_signal.html`
 
 ---
 
