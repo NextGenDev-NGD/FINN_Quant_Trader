@@ -1,6 +1,6 @@
 # FINN Repository Index
 ## Structural map — load this file when orientation or navigation is needed
-## Updated: May 8, 2026
+## Updated: May 10, 2026
 
 ---
 
@@ -35,6 +35,7 @@ FINN_Class_MAIN/
 ├── FINN_ProjectStatus.md            Active multi-session project tracker
 ├── FINN_RepoIndex.md                This file — structural map
 ├── CHANGELOG.md                     Curriculum change history
+├── FINN_ReleaseNotes.md             Audience-facing product release history
 ├── README.md                        Human-facing course description
 ├── finn_launch.py                   Course launch script
 │
@@ -52,20 +53,19 @@ FINN_Class_MAIN/
 │   └── notebooks/                   Jupyter notebooks (starters + student work)
 │
 ├── resources/                       BUILD-INCREMENTAL — student-facing reference library
-│   ├── FINN_ResourceIndex.md        Master navigation index (⬜ pending — Session A1)
-│   ├── FINN_Glossary.md             ~65 terms defined (⬜ pending — Session A1)
+│   ├── FINN_ResourceIndex.md        Master navigation index — all topics mapped to resources
+│   ├── FINN_Glossary.md             ~72 terms defined with week and cross-references
 │   ├── FINN_D002_Install_Guide.md   Python environment setup guide
 │   ├── FINN_D002_Jupyter_Session.md Jupyter notebook session guide
-│   ├── handbook/                    Student Reference Handbook — 6 parts (⬜ pending — Sessions A2–B3)
+│   ├── handbook/                    Student Reference Handbook — 6 parts ✅ Complete
 │   │   ├── FINN_HB_P1_GettingStarted.md
 │   │   ├── FINN_HB_P2_ChartReading.md
 │   │   ├── FINN_HB_P3_OrderExecution.md
 │   │   ├── FINN_HB_P4_MarketContext.md
 │   │   ├── FINN_HB_P5_Psychology.md
 │   │   └── FINN_HB_P6_MarketReference.md
-│   └── infographics/                HTML visual reference files (⬜ pending — Sessions C1–C6)
-│       ├── ig_TEMPLATE.html         Shared design system — build first (Session A1)
-│       └── [26 ig_*.html files]
+│   └── infographics/                26 HTML visual reference files ✅ Complete
+│       └── [ig_*.html files]
 │
 ├── research/                        MUTABLE — instructor planning and intelligence
 │   ├── competitors/                 Competitor curriculum analysis
@@ -101,6 +101,7 @@ FINN_Class_MAIN/
 | `FINN_ProjectStatus.md` | Multi-session project sessions | Full read — find active project + next session |
 | `FINN_RepoIndex.md` | Orientation or navigation needed | Full read — structural map |
 | `CHANGELOG.md` | After curriculum changes | Full read — verify recent changes |
+| `FINN_ReleaseNotes.md` | Writing release content or external comms | Full read — audience-facing product history |
 
 ---
 
@@ -133,10 +134,9 @@ FINN_Class_MAIN/
 
 ## Active Build Project
 
-**Knowledge Base Build** — 16 sessions, building `resources/` incrementally.
-Status and next session: see `FINN_ProjectStatus.md`
-Full plan: `research/planning/finn_kb_execution_plan.md`
-Gap analysis: `research/planning/finn_gap_analysis.md`
+No active build project. Knowledge Base Build (19 sessions) complete May 10, 2026.
+For completed project details: `FINN_ProjectStatus.md` → Completed Projects.
+For next active project: see `FINN_ProjectStatus.md` → Active Projects.
 
 ---
 

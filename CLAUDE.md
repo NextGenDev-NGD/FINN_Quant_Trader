@@ -105,6 +105,7 @@ Read only: `core/FINN_CurriculumIndex.md` — answers almost all scheduling and 
 | `FINN_RepoIndex.md` | root | ~130 lines | Full read — structural map; load when orientation or navigation is needed |
 | `README.md` | root | ~165 lines | Full read |
 | `CHANGELOG.md` | root | ~60 lines | Full read |
+| `FINN_ReleaseNotes.md` | root | ~80 lines | Full read — audience-facing product history; load when writing release content or external comms |
 | `FINN_Soul.md` | `core/` | ~530 lines | Full read |
 | `FINN_Context.md` | `core/` | Large | Chunk: 150 lines at a time |
 | `FINN_Curriculum_Wiki.md` | `core/` | Very large | Chunk: search by section header first |
