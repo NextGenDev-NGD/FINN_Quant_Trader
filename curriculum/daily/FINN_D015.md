@@ -113,6 +113,9 @@ Standard derivatives checklist. Add statistical framing: "The put/call ratio thi
 **Assign reading:**
 - Wiki Section 5.1 — Full indicators table (all 10 indicators)
 - Wiki Section 5.2 — Candlestick patterns as features
+
+> **Resource:** [ig_candlestick_patterns.html](../../resources/infographics/ig_candlestick_patterns.html) — Visual reference for candlestick patterns as technical features: pattern types, signal interpretation, and frequency in daily OHLCV data.
+
 - Wiki Section 4.3 — Code Pattern 2 (pandas-ta indicator setup)
 
 **DMB rotation:** Assign next week's leads.

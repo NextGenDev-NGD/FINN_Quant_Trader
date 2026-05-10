@@ -31,6 +31,41 @@ Picked up next session:
 
 ---
 
+### [2026-05-10] — Knowledge Base Session F2 — Daily File Resource Callouts (D013–D015) + KB Build Complete
+
+**Files modified:**
+- `curriculum/daily/FINN_D013.md` — 1 callout: ig_performance_metrics (before CONCEPT DELIVERY Part B — after IC definition and Type I/II block)
+- `curriculum/daily/FINN_D014.md` — 2 callouts: ig_quant_workflow (after FRAMING close — workflow step mapping), ig_performance_metrics (before Step 5 Rolling IC — after Step 4 IC code block)
+- `curriculum/daily/FINN_D015.md` — 1 callout: ig_candlestick_patterns (NEXT WEEK PREVIEW — after Wiki 5.2 candlestick reading assignment)
+- `FINN_ProjectStatus.md` — F2 complete; progress 19/19; KB Build project marked complete
+
+**Total callouts added:** 4 across 3 files.
+**Status:** Session F2 complete. Knowledge Base Build — Gap Integration (Tier 1 + Tier 2) project fully done. D001–D015 (Weeks 1–5) have targeted resource callouts at point-of-use. Daily files D016+ not yet created; no integration needed until they are written.
+
+---
+
+### [2026-05-10] — Knowledge Base Session F1 — Daily File Resource Callouts (D001–D012)
+
+**Files modified:**
+- `curriculum/daily/FINN_D001.md` — 4 callouts: HB P1 pre-reading (PREP block), ig_platform_tradingview (PRE-MARKET SCAN TradingView show), ig_market_open (end of PRE-MARKET SCAN), ig_trade_types (end of ASSET CLASSES section)
+- `curriculum/daily/FINN_D002.md` — 1 callout: ig_platform_tradingview (after SHARE-OUT — watchlist config task)
+- `curriculum/daily/FINN_D003.md` — 1 callout: HB 2.2 + ig_support_resistance (OBSERVATION ASSIGNMENT — S&R zone identification task)
+- `curriculum/daily/FINN_D004.md` — 1 callout: ig_order_types (after MOO/MOC — full taxonomy reference)
+- `curriculum/daily/FINN_D005.md` — 3 callouts: ig_gap_types (after Step 1 range/gap commentary), ig_volume_analysis (after Step 2 rolling NaN note), HB 2.3 (OBSERVATION ASSIGNMENT — trendline drawing task)
+- `curriculum/daily/FINN_D006.md` — 2 callouts: ig_gap_types (PRE-MARKET SCAN gap day note), ig_volume_analysis (CHART REVIEW high-impact day analysis)
+- `curriculum/daily/FINN_D007.md` — 2 callouts: ig_quant_workflow (after 9-step workflow [ASK] block), ig_performance_metrics (after Expectancy definition)
+- `curriculum/daily/FINN_D008.md` — 2 callouts: ig_performance_metrics (end of FRAMING — metrics reference card), HB 2.1 (OBSERVATION ASSIGNMENT — candlestick identification task)
+- `curriculum/daily/FINN_D009.md` — 2 callouts: ig_quant_workflow (after RETROSPECTIVE workflow question), ig_performance_metrics (MARKET AUTOPSY metrics applied section)
+- `curriculum/daily/FINN_D010.md` — 3 callouts: ig_gap_types (OBSERVATION ASSIGNMENT), ig_performance_metrics (after Lightning Round metrics bullet), HB P1–5 (review checklist — full M1 scope reference)
+- `curriculum/daily/FINN_D011.md` — 2 callouts: ig_performance_metrics (after "Milestone 1 artifact" framing), HB P1–5 (after MUDDIEST POINT — pre-assessment review prompt)
+- `curriculum/daily/FINN_D012.md` — 3 callouts: ig_quant_workflow + ig_performance_metrics (after Part 1 sample questions), HB P1–6 archive note (after Month 2 preview)
+- `FINN_ProjectStatus.md` — F1 complete; progress 18/19; F2 scoped
+
+**Total callouts added:** 25 across 12 files.
+**Status:** Session F1 complete. D-phase and E-phase (monthly + weekly) integration fully done. F1 (W01–W04 daily) integration done. One session remaining: F2 (D013–D072).
+
+---
+
 ### [2026-05-09] — Knowledge Base Session E4 — Weekly File Resource Callouts (W13–W24)
 
 **Files modified:**

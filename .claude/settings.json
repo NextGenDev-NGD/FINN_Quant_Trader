@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(curriculum/daily/*.md)"
+    ]
+  }
+}

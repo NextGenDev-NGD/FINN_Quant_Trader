@@ -71,6 +71,8 @@ Student rotation. Coaching feedback after the brief.
 
 Every line of code tonight maps directly to a concept from Monday. By the end you'll have run a real hypothesis test on a real signal. That is the beginning of quantitative research."
 
+> **Resource:** [ig_quant_workflow.html](../../resources/infographics/ig_quant_workflow.html) — The 9-step FINN quant workflow — tonight's pipeline maps to signal identification (Step 2), hypothesis testing (Step 3), and IC measurement (Step 4).
+
 ---
 
 **8:10 | GUIDED BUILD** `40 min`
@@ -165,6 +167,8 @@ def information_coefficient(predictions, actuals):
 
 ic = information_coefficient(-df_clean['RSI'], df_clean['Fwd_5d_Return'])
 ```
+
+> **Resource:** [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — IC thresholds and all 9 performance metrics — reference while interpreting your IC output.
 
 **Step 5 — Rolling 90-Day IC (7 min)**
 ```python

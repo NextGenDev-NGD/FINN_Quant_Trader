@@ -101,6 +101,8 @@ Walk through a concrete market example on the board:
 **Type I and Type II errors:**
 "Type I error: you think the signal is real but it's noise — you trade a fake edge. Type II error: you think the signal is noise but it's real — you miss a genuine edge. In trading, Type I errors cost money directly. Type II errors cost opportunity. Multiple testing makes Type I errors far more likely — the more signals you test, the more false positives you find by chance alone. This is why quants are skeptical."
 
+> **Resource:** [ig_performance_metrics.html](../../resources/infographics/ig_performance_metrics.html) — IC benchmarks and all 9 performance metrics at a glance — reference while studying tonight's IC definition.
+
 ---
 
 **8:35 | CONCEPT DELIVERY — PART B: Time Series Fundamentals** `20 min`
