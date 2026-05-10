@@ -14,6 +14,9 @@ __pycache__/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
+# Claude Code — personal settings (project settings.json is committed)
+.claude/settings.local.json
+
 # OS
 .DS_Store
 Thumbs.db

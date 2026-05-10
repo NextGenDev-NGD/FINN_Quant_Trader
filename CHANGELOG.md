@@ -31,6 +31,40 @@ Picked up next session:
 
 ---
 
+### [2026-05-10] — Slash Command Skills — 7 Skills Built
+
+**Files created:**
+- `.claude/commands/finn-design.md` — `/finn-design [file]`: UIX/Frontend build mode for infographic upgrades; loads design system v2 spec, enforces social media mode, animation system, component patterns, self-contained HTML constraint
+- `.claude/commands/finn-research.md` — `/finn-research [target]`: structured research mode; frames questions from planning doc first, separates observation from interpretation, resolves Open Decisions after research completes
+- `.claude/commands/finn-marketing.md` — `/finn-marketing [type]`: marketing mode; FINN brand context, platform specs (Twitter/X, LinkedIn, Instagram), copy rules, output formats for posts/copy/briefs
+- `.claude/commands/finn-resume.md` — `/finn-resume`: session startup briefing; reads ProjectStatus + planning doc, outputs structured scope/files/context summary
+- `.claude/commands/finn-weekly.md` — `/finn-weekly [W##]`: creates complete weekly file from CurriculumIndex + WeeklySchema + monthly section (offset/limit); updates CHANGELOG after writing
+- `.claude/commands/finn-daily.md` — `/finn-daily [D###]`: load mode if file exists (FINN persona briefing), create mode if not (derives from weekly file, adds resource callouts)
+- `.claude/commands/finn-resource.md` — `/finn-resource [topic]`: looks up handbook section + infographic + glossary entry, surfaces curriculum week where topic first appears
+
+**Files modified:**
+- `FINN_RepoIndex.md` — commands folder map updated, Skills table updated (all 7 marked ✅ Built)
+- `.gitignore` — added `.claude/settings.local.json` (personal overrides should not be committed)
+
+**Status:** Full slash command suite complete. Three build/research/marketing skills for the Infographics Upgrade project. Four curriculum operation skills for day-to-day FINN session work.
+
+---
+
+### [2026-05-10] — Infographics Upgrade — Architecture Plan + Project Initialized
+
+**Files created:**
+- `research/planning/finn_infographics_upgrade_plan.md` — full project architecture: current state inventory (26 files, T1/T2/T3 social tiers), design system v2 spec (CSS variables, social media mode at 1200×675px, animation system, component patterns), content upgrade sequence (8 T1 → 11 T2 → 7 T3), 6 net-new social-first files, 16-session phase plan (A–F), 7 open decisions, success criteria per phase
+- `FINN_ReleaseNotes.md` — audience-facing product history (v0.1–v0.4): versioned by capability milestone for developer/student/partner comms; separate from CHANGELOG (internal) — written for keynotes and sales context
+
+**Files modified:**
+- `FINN_ProjectStatus.md` — Infographics Upgrade added as active project; Phase A Session A1 scoped (competitor audit)
+- `FINN_RepoIndex.md` — FINN_ReleaseNotes.md added to folder map and Key Root Files table; resources/ pending markers updated to ✅ Complete; Active Build Project section updated
+- `CLAUDE.md` — FINN_ReleaseNotes.md added to File Map & Token Budget table
+
+**Status:** Architecture locked. Next session: `/finn-research competitors` to begin Phase A.
+
+---
+
 ### [2026-05-10] — Knowledge Base Session F2 — Daily File Resource Callouts (D013–D015) + KB Build Complete
 
 **Files modified:**
