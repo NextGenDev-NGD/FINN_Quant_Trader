@@ -102,6 +102,8 @@ Walk through Wiki Section 9.2 in full. Use concrete numbers throughout.
 - **Equal Weight:**
   "Simplest diversification. Divide portfolio by number of positions. No signal about edge size, no volatility adjustment. Useful for portfolio strategies, not for directional trading. We use this as a baseline comparison — how do our sized strategies compare to simply equal-weighting positions?"
 
+> **Resource:** Non-negotiable risk rules reference card (position limits, drawdown rules, diversification requirement) — `resources/infographics/ig_risk_rules.html`
+
 **Topic B: Portfolio-Level Risk Metrics (10 min)**
 
 Walk through Wiki Section 9.3:
@@ -113,6 +115,8 @@ Walk through Wiki Section 9.3:
 - **Correlation monitoring:** "Two positions can be in different sectors but still move together. NVDA and AVGO both benefit from AI spending — they're correlated even though one is in semis and one is in tech. Monitor correlations."
 
 - **Rolling Sharpe:** "If your rolling 20-day Sharpe drops below 0.5, something changed. Either the market regime shifted, or your execution is inconsistent. Diagnose before adding new positions."
+
+> **Resource:** Performance metrics reference (Sharpe, drawdown, win rate, expectancy) — `resources/infographics/ig_performance_metrics.html`
 
 **Topic C: VaR Introduction (5 min)**
 

@@ -113,6 +113,8 @@ How do you know which regime you're in?
 
 The critical question: was your strategy designed for the current regime? If your strategy is a mean-reversion system and SPY is in a strong trend — it will lose. That is not a broken strategy. That is a mismatched regime."
 
+> **Resource:** Multi-signal scoring framework (weighted composite of VIX, ADX, SMA, momentum — veto logic for regime filters) — `resources/infographics/ig_multi_signal.html`
+
 **Topic C: Strategy vs. Market — The Three Questions (10 min)**
 
 When performance is disappointing, ask these three questions in order:

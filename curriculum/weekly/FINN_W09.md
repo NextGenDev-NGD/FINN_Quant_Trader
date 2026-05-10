@@ -127,6 +127,8 @@ The rule-based system you built is your protection against all three. It tells y
 
 "Paper trading is not immune to psychology. Even with no real money at risk, you will still feel the pull to override your rules. Use that feeling. It is training for when the money is real."
 
+> **Resource:** Trading psychology primer (emotions, biases, manifestation in trades, counter-strategies) — `resources/infographics/ig_trading_psychology.html` | Student reference: `resources/handbook/FINN_HB_P5_Psychology.md` §5.1–5.3
+
 **Topic B: The 6 Non-Negotiable Risk Rules (15 min)**
 
 Walk through Wiki Section 9.1 in full. For each rule, give a concrete scenario:
@@ -148,6 +150,8 @@ Walk through Wiki Section 9.1 in full. For each rule, give a concrete scenario:
 
 - **Rule 6 — Minimum 3 uncorrelated positions:**
   "If your entire portfolio is in one trade, you have no diversification. A single bad event wipes you out. Three uncorrelated positions means no single trade can kill your portfolio."
+
+> **Resource:** Non-negotiable risk rules reference card (all 6 rules with concrete scenarios) — `resources/infographics/ig_risk_rules.html`
 
 **Topic C: The Trading Journal — Non-Negotiable (10 min)**
 
@@ -281,6 +285,8 @@ print("Connected to Webull Paper Trading ✓")
 ```
 
 *Note: "If MFA is required, Webull will prompt you for a verification code. This is normal — it's a security feature they added in 2020. Enter the code when prompted."*
+
+> **Resource:** Webull paper trading setup guide (interface, order entry, account query) — `resources/infographics/ig_platform_webull.html` | Student reference: `resources/handbook/FINN_HB_P1_GettingStarted.md` §1.3
 
 **Step 2 — Query current account state (10 min)**
 ```python

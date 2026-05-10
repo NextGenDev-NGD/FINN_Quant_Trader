@@ -246,6 +246,8 @@ ADAPTATION RECOMMENDATION:
     return summary
 ```
 
+> **Resource:** Performance metrics reference (win rate, R:R, expectancy — the numbers your Month 3 summary must justify) — `resources/infographics/ig_performance_metrics.html`
+
 #### Block 3 — Independent Work (8:50–9:15 PM) | 25 min
 
 Run both functions on your own Month 3 data. Answer in markdown cells:

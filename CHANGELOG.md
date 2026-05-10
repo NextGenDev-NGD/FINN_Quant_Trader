@@ -31,6 +31,20 @@ Picked up next session:
 
 ---
 
+### [2026-05-09] — Knowledge Base Session E3 — Weekly File Resource Callouts (W09–W12)
+
+**Files modified:**
+- `curriculum/weekly/FINN_W09.md` — 3 resource callouts added: ig_trading_psychology + HB P5 §5.1–5.3 (after Topic A psychology closing statement — "Use that feeling. It is training for when the money is real."); ig_risk_rules (after Rule 6 uncorrelated positions — Monday evening Block 2); ig_platform_webull + HB P1 §1.3 (after Webull MFA note, Wednesday Step 1 SDK connection)
+- `curriculum/weekly/FINN_W10.md` — 2 resource callouts added: ig_risk_rules (after Equal Weight baseline comparison, Monday Topic A four sizing models); ig_performance_metrics (after Rolling Sharpe threshold statement, Monday Topic B portfolio risk metrics)
+- `curriculum/weekly/FINN_W11.md` — 1 resource callout added: ig_multi_signal (after Topic B mismatched regime closing statement, before Topic C three questions framework)
+- `curriculum/weekly/FINN_W12.md` — 1 resource callout added: ig_performance_metrics (before Wednesday Block 3 Independent Work, after generate_month3_summary() guided build)
+- `FINN_ProjectStatus.md` — E3 complete; progress 16/19; E4 scoped
+- `resources/FINN_ResourceIndex.md` — E3 marked ✅ Done
+
+**Status:** Session E3 complete. 7 callouts added across 4 weekly files. E-phase W09–W12 integration done.
+
+---
+
 ### [2026-05-09] — Knowledge Base Session E2 — Weekly File Resource Callouts (W05–W08)
 
 **Files modified:**
