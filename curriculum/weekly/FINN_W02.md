@@ -103,6 +103,8 @@ Walk through Wiki Section 2.2 order types table. For each, give a concrete scena
 - **Trailing Stop:** "You're long SPY and it's rising. Set a 2% trailing stop. If SPY is at $500 and rises to $520, your stop rises to $509.60. If it then drops 2% from $520, you're out at $509.60 — locking in gains."
 - **MOO/MOC:** "Used by institutions for rebalancing. Market On Open ensures you trade at the opening print. Market On Close ensures you trade at the closing auction. These create predictable volume spikes at open and close."
 
+> **Resource:** Complete order type taxonomy — 12+ order types with use cases, risk profiles, and when to use each → `resources/infographics/ig_order_types.html` + `resources/handbook/FINN_HB_P3_OrderExecution.md` §3.1
+
 **Topic B: The Order Book & Market Microstructure (15 min)**
 
 Show a live or screenshot Level 2 order book in TradingView. Point out: bid side (buyers), ask side (sellers), the spread.
@@ -129,6 +131,8 @@ Concrete example: "On 100 shares of a $50 stock with a $0.10 spread, your hidden
 
 2. "Devil's advocate: Is a stop-loss actually dangerous? Think about who is on the other side of your stop order when it triggers. Who benefits from stop runs?"
    *(Expected direction: market makers and HFTs know where retail stops cluster — at round numbers, at recent lows. They hunt those levels. This is called a stop hunt. Does that mean stops are bad? No — but placement matters.)*
+
+> **Resource:** Market traps — bull trap, bear trap, stop hunt, and false breakout: visual patterns, triggers, and counter-strategies → `resources/infographics/ig_market_traps.html` + `resources/handbook/FINN_HB_P4_MarketContext.md` §4.5
 
 3. "We said institutions slice large orders to avoid moving the market. If you're watching a stock and see steady, small-volume buying all day with the price barely moving — what might that be? How would you distinguish accumulation from just low interest?"
 
@@ -232,6 +236,8 @@ print(unusual_days[['Close', 'Volume', 'Vol_Ratio', 'HL_Range_Pct']].head(10))
 ```
 *Deliberate mistake: Run rolling with window=20 before dropping NaN rows first — get NaN-heavy output. "See these NaNs? The rolling window needs 20 rows before it can compute. Always check your rolling calculations for leading NaNs."*
 
+> **Resource:** Volume reading guide — volume patterns for breakouts, reversals, OBV, and climactic volume — use alongside the `Vol_Ratio` analysis built in this step → `resources/infographics/ig_volume_analysis.html` + `resources/handbook/FINN_HB_P6_MarketReference.md` §6.2
+
 **Step 3 — Build a reusable flagging function (12 min)**
 ```python
 def flag_notable_days(df, vol_threshold=2.0, gap_threshold=1.5):
@@ -268,6 +274,8 @@ high_impact = df_flagged[df_flagged['Flag_High_Impact']]
 print(f"High-impact days: {len(high_impact)}")
 print(high_impact[['Close', 'Gap_Pct', 'Vol_Ratio']].head(10))
 ```
+
+> **Resource:** Gap types — 4 gap types (common, breakaway, continuation, exhaustion) with visual patterns and FINN code reference for the `Flag_Gap_Up`/`Flag_Gap_Down` flags → `resources/infographics/ig_gap_types.html` + `resources/handbook/FINN_HB_P2_ChartReading.md` §2.6
 
 **Step 4 — Visualize (10 min)**
 ```python

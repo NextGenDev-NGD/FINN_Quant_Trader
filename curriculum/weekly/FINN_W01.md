@@ -59,6 +59,8 @@ Work through the full checklist aloud. For each item, explain what it is and why
 - [ ] **10-year yield** — introduce the concept of risk-on/risk-off. "When yields rise, money moves from growth stocks to bonds. Risk-off. When yields fall — risk-on. Watch this every day."
 - [ ] **BTC/ETH overnight** — explain why crypto is used as a sentiment signal. "Crypto trades 24/7. An overnight Bitcoin crash often signals global risk appetite falling before our markets open."
 
+> **Resource:** Information sources map — 6 categories and 30+ sources covering futures, economic calendars, earnings, heatmaps, sentiment signals, and news feeds → `resources/infographics/ig_info_sources.html` + `resources/handbook/FINN_HB_P4_MarketContext.md` §4.2
+
 #### Block 2 — Student-Led Brief (9:15–9:35 AM)
 Week 1: Instructor demonstrates what a student brief will look like. Choose 3 tickers from a prepared watchlist and walk through the brief format live:
 
@@ -131,6 +133,8 @@ Walk through the asset class table from Wiki Section 2.1. For each class, do NOT
 
 **Scope reminder:** Primary focus is equities and ETFs. Everything else is context.
 
+> **Resource:** Trade type taxonomy — 8 trade styles with time horizon, capital requirements, and skill level → `resources/infographics/ig_trade_types.html` + `resources/handbook/FINN_HB_P1_GettingStarted.md` §1.1
+
 **Topic B: Market Structure (15 min)**
 
 Walk through Wiki Section 2.2 — exchanges, market hours, and the order book concept.
@@ -139,6 +143,8 @@ Key points to hit with force:
 - "Pre-market and after-hours trading is thinner — the spread is wider, moves are more violent, and prices are less reliable. Institutions wait for the open."
 - "The order book is the real market. Price is just the last agreed transaction. What's pending — the bids and asks — tells you the real story."
 - Draw the order book on a whiteboard or show a live Level 2 example in TradingView: show bid stack, ask stack, and the spread between them.
+
+> **Resource:** TradingView platform guide — interface walkthrough, chart setup, Level 2 display, and watchlist configuration → `resources/infographics/ig_platform_tradingview.html` + `resources/handbook/FINN_HB_P1_GettingStarted.md` §1.2
 
 **Topic C: Market Participants (10 min)**
 
@@ -431,6 +437,8 @@ Open TradingView. Walk through:
 
 **Step 3 — Sector Rotation (10 min)**
 
+> **Resource:** Finviz platform guide — heatmap, screener, news, and futures overview → `resources/infographics/ig_platform_finviz.html` + `resources/handbook/FINN_HB_P1_GettingStarted.md` §1.4
+
 Open Finviz heatmap. Walk through:
 - "Which sectors were green this week? Which were red?"
 - "Does this match the macro context from our DMBs?"
@@ -447,6 +455,8 @@ Open TradingView or a free options scanner:
 - "Weekly options expired today. We don't trade them yet — but notice where SPY closed relative to the most popular strikes. This is called 'max pain.'"
 
 Tell students: "For the next 8 weeks, you are observers here. Just watch, listen, and ask questions. By Month 3 you'll interpret this on your own."
+
+> **Resource:** Reading the market open — opening types, Asia-Europe range, first-30-min patterns, and how to set context for the trading session → `resources/infographics/ig_market_open.html` + `resources/handbook/FINN_HB_P4_MarketContext.md` §4.3
 
 #### Block 4 — Next Week Preview & Close (9:20–9:30 PM) | 10 min
 

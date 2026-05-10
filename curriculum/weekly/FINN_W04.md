@@ -178,6 +178,8 @@ Section 5: Written Analysis (300 words minimum)
   - Would this be a suitable paper trading target? Why?
 ```
 
+> **Resource:** Performance metrics reference — Sharpe, drawdown, win rate, and expectancy with formulas and interpretation benchmarks — use during independent work to verify calculations → `resources/infographics/ig_performance_metrics.html`
+
 #### Block 3 — Share-Out & Muddiest Point (9:10–9:30 PM) | 20 min
 
 **Share-out (15 min):** 3 students present their analysis. Focus on the written section — "Did your interpretation of the data make sense? Did you connect the metrics to real-world meaning?"
@@ -228,6 +230,8 @@ Instructor presents one of the following scenarios. Student interprets out loud:
 One open-ended question requiring synthesis of multiple concepts:
 - "A retail trader wants to day trade a small-cap stock with $50,000. Walk me through every risk they face — from market structure, to order mechanics, to performance measurement."
 - "Using the quant workflow, walk me through the first 4 steps for a hypothesis you would personally want to test."
+
+> **Resource:** FINN quant workflow — 9-step pipeline reference for Milestone 1 questions requiring workflow recall and application → `resources/infographics/ig_quant_workflow.html`
 
 **Pass criteria:** Student can explain any concept in their own words with a real-world example, without notes, demonstrating genuine understanding not memorization.
 
@@ -322,6 +326,8 @@ Notes: ___
 - Can you walk through the FINN Quant Workflow from memory?
 - Can you explain *why* each metric matters — not just what it is?
 - Can you describe a specific trade scenario end-to-end: asset class → order type → execution cost → performance measurement?
+
+> **Resource:** Complete Month 1 reference library — `resources/handbook/FINN_HB_P1_GettingStarted.md` (trade types, platforms) · `resources/handbook/FINN_HB_P2_ChartReading.md` (chart patterns) · `resources/handbook/FINN_HB_P3_OrderExecution.md` (order types) · `resources/handbook/FINN_HB_P4_MarketContext.md` (daily routine, market context) — covers every framework and concept assessed in Milestone 1
 
 ---
 

@@ -31,6 +31,20 @@ Picked up next session:
 
 ---
 
+### [2026-05-09] — Knowledge Base Session E1 — Weekly File Resource Callouts (W01–W04)
+
+**Files modified:**
+- `curriculum/weekly/FINN_W01.md` — 5 resource callouts added: ig_trade_types + HB P1 §1.1 (after scope reminder, Topic A asset classes); ig_info_sources + HB P4 §4.2 (after BTC/ETH checklist item, Monday DMB Block 1); ig_platform_tradingview + HB P1 §1.2 (after Level 2 TradingView mention, Topic B Market Structure); ig_platform_finviz + HB P1 §1.4 (before Finviz heatmap, Friday Block 2 Step 3 Sector Rotation); ig_market_open + HB P4 §4.3 (after Derivatives Window tell-students line, Friday Block 3)
+- `curriculum/weekly/FINN_W02.md` — 4 resource callouts added: ig_order_types + HB P3 §3.1 (after MOO/MOC volume spikes statement, Monday Topic A); ig_market_traps + HB P4 §4.5 (after stop hunt expected direction note, Monday Block 3 Socratic Q2); ig_volume_analysis + HB P6 §6.2 (after Wednesday Step 2 deliberate mistake note); ig_gap_types + HB P2 §2.6 (before Wednesday Step 4, after Step 3 gap flag code)
+- `curriculum/weekly/FINN_W03.md` — 2 resource callouts added: ig_quant_workflow (after Steps 5–9 loop emphasis statement, Topic A); ig_performance_metrics (after Expectancy definition, closing Topic B Performance Metrics)
+- `curriculum/weekly/FINN_W04.md` — 3 resource callouts added: ig_performance_metrics (before Block 3 Share-Out, after integration notebook independent work section); ig_quant_workflow (after Part 3 integration question in Friday assessment format); HB P1–P4 full reference (after Friday review checklist, before file footer)
+- `FINN_ProjectStatus.md` — E1 complete; progress 14/19; E2 scoped
+- `resources/FINN_ResourceIndex.md` — E1 marked ✅ Done
+
+**Status:** Session E1 complete. 14 callouts added across 4 weekly files. E-phase W01–W04 integration done.
+
+---
+
 ### [2026-05-09] — Knowledge Base Session D2 — Monthly File Resource Callouts (Month 3–6)
 
 **Files modified:**

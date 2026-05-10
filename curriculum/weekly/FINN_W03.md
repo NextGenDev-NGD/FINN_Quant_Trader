@@ -80,6 +80,8 @@ Walk through Wiki Section 3.1 in detail. For each step, make it concrete:
 
 - **Steps 5–9:** Walk through model → backtest → risk → paper trade → review. Emphasize the loop: "This is not linear. You iterate. Most hypotheses fail. That's the job."
 
+> **Resource:** FINN quant workflow — 9-step pipeline from hypothesis to signal report, with decision points and iteration logic → `resources/infographics/ig_quant_workflow.html`
+
 **Topic B: Performance Metrics (20 min)**
 
 Walk through Wiki Section 3.3 metrics table. For each metric, use a concrete example:
@@ -91,6 +93,8 @@ Walk through Wiki Section 3.3 metrics table. For each metric, use a concrete exa
 - **Win Rate + R:R:** "A 40% win rate is not a bad strategy. If your average winner is 3× your average loser — you make money at 40% win rate. A 70% win rate with a 0.5 R:R is a losing strategy. Never judge by win rate alone."
 
 - **Expectancy:** "Expected value per trade = (Win Rate × Avg Win) − (Loss Rate × Avg Loss). If this is positive, the strategy makes money over time, in expectation. This is the only number that matters in the long run."
+
+> **Resource:** Performance metrics reference — Sharpe ratio, max drawdown, win rate, expectancy, and Calmar ratio — definitions, formulas, and interpretation benchmarks → `resources/infographics/ig_performance_metrics.html`
 
 #### Block 3 — Socratic Discussion (8:55–9:15 PM) | 20 min
 
