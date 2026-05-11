@@ -266,12 +266,14 @@ New files built for social distribution first, course integration second:
 ## Social Media Architecture
 
 ### Platform Specs
-| Platform | Primary Dimension | Format | Notes |
-|----------|-----------------|--------|-------|
-| Twitter/X | 1200 × 675px | Screenshot or screen recording | `body.social` class |
-| LinkedIn | 1200 × 627px | Screenshot | Near-identical to Twitter/X |
-| Instagram | 1080 × 1080px | Screenshot | `body.social.square` class |
-| Instagram Stories / TikTok | 1080 × 1920px | Screen recording | `body.social.vertical` — future phase |
+| Platform | Primary Dimension | Format | Role | Notes |
+|----------|-----------------|--------|------|-------|
+| YouTube | 1280 × 720px (16:9) | Video overlay, chapter slide, thumbnail | Long-term brand + AdSense revenue | Infographics as visual assets inside videos; Shorts at 1080×1920 |
+| Facebook | 1080 × 1080px (1:1) | Section-by-section image posts; video ads | Paid acquisition + course conversion | Never post full infographic as one image — post sections individually |
+| LinkedIn | 1200 × 627px | Carousel screenshot (one concept per slide) | Professional credibility + organic engagement | Near-identical to Twitter/X; 21.77% carousel engagement rate |
+| Instagram | 1080 × 1080px | Carousel screenshot + Reels overlay | Visual discovery | Reels for reach; carousels for engagement |
+| Twitter/X | 1200 × 675px | Screenshot or screen recording | Thought leadership + thread distribution | `body.social` class |
+| Instagram Stories / TikTok / YouTube Shorts / Facebook Reels | 1080 × 1920px | Screen recording or animated pan | Broad awareness | `body.social.vertical` — future phase |
 
 ### Screenshot Workflow (no tooling required)
 1. Open HTML file in Chrome
@@ -279,10 +281,12 @@ New files built for social distribution first, course integration second:
 3. DevTools → `Ctrl+Shift+P` → "Capture full size screenshot"
 4. Or: add `body.social` class, capture at exact dimensions
 
-### Content Strategy by Platform (inform Phase A research)
-- **Twitter/X**: Single-concept cards, "did you know" format, quiz hooks ("Can you name this pattern?")
-- **LinkedIn**: Workflow explainers, professional framing ("How quants measure edge"), longer-form carousel potential
-- **Instagram**: Visual-first content — patterns, candles, psychology cards. Caption drives engagement, visual stops the scroll.
+### Content Strategy by Platform (resolved from Phase A research)
+- **YouTube**: FINN infographics as chapter slide backgrounds and explainer overlays inside long-form tutorials. Shorts (15–60 sec) as animated infographic previews for discovery. Thumbnail design using FINN visual system. Long-form finance CPM: $15–$50+. Hybrid Shorts + long-form strategy for reach + revenue.
+- **Facebook**: Paid ad → free webinar → course funnel (standard for $100–$1,000 products). Organic group content (80/20 value/promo). Post infographics section-by-section (one readable panel per post = 3–5 posts per infographic). Lead Gen Ads with Instant Forms for email capture. Target: interest stacking + Lookalike Audiences.
+- **LinkedIn**: One concept per carousel slide. Professional framing ("How quants measure edge," "The IC test every trader should run"). Question in copy = +77% comments. 3–5 posts per week. 21.77% median engagement on carousels.
+- **Instagram**: Reels (15–30 sec) for reach and discovery. Carousels for engagement and saves. Caption drives engagement, visual stops the scroll. 1080×1080px square social mode.
+- **Twitter/X**: Single-concept cards, thread-based frameworks, "did you know" quiz hooks. Anti-promotional credibility stance earns organic reshares.
 
 ---
 
@@ -340,7 +344,7 @@ These must be resolved in Phase A before Phase B begins. Update this section aft
 |---|----------|---------|------------|
 | 1 | Animation library | CSS-only vs. inline Anime.js (~7KB) | ⬜ Pending Phase A Session A2 (capability audit) |
 | 2 | Chart integration | Chart.js inline vs. pure CSS charts | ⬜ Pending Phase A Session A2 (capability audit) |
-| 3 | Platform priority | Twitter/X vs. LinkedIn vs. Instagram | ✅ **LinkedIn first** (21.77% carousel engagement rate, exact audience fit), **Instagram second** (12% carousel engagement, reels for reach), **Twitter/X third** (thread + image distribution). Source: ig_competitor_audit.md |
+| 3 | Platform priority | Twitter/X vs. LinkedIn vs. Instagram | ✅ **Platform role map (not a ranked list — each has a distinct function):** YouTube = long-term brand equity + AdSense revenue + course funnel anchor. Facebook = paid acquisition engine (Ad → webinar → course, 12× ROAS documented). LinkedIn = organic professional credibility (21.77% carousel engagement). Instagram = visual discovery (Reels reach + carousel engagement). Twitter/X = thought leadership + thread distribution. Source: ig_competitor_audit.md |
 | 4 | Quiz mode scope | T1 only vs. all tiers | ⬜ Pending Phase B validation |
 | 5 | Standalone packaging | ZIP download vs. Gumroad vs. Teachable | ⬜ Pending user decision (Gumroad recommended — established trading education audience, free lead magnet + paid bundle model validated by market) |
 | 6 | SVG vs. CSS for pattern diagrams | CSS divs (current) vs. inline SVG | ✅ **CSS for simple elements** (current system preserved), **inline SVG for complex pattern diagrams** (candlestick formations, annotated chart patterns). TradingView uses SVG as industry standard; static PNG competitors use raster. SVG enables screenshot-quality at any resolution. Source: ig_competitor_audit.md |

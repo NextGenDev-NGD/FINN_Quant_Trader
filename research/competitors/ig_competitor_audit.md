@@ -1,16 +1,17 @@
 # Infographics Upgrade — Competitor Audit
-## Date: 2026-05-11
+## Date: 2026-05-11 (updated with YouTube + Facebook: 2026-05-11)
 ## Project: FINN Infographics Upgrade — Phase A, Session A1
 
 ---
 
 ## Questions This Research Answers
 
-1. Who are the top trading/finance educators on Twitter/X, LinkedIn, and Instagram — and what content formats perform best for each?
+1. Who are the top trading/finance educators on Twitter/X, LinkedIn, Instagram, **YouTube, and Facebook** — and what content formats perform best for each?
 2. What visual design patterns repeat in high-engagement fintech/trading educational content?
 3. What does interactive trading education look like at the product level?
 4. Are there existing infographic product packs being sold — at what price point and what scope?
 5. What content topics get the most engagement in the trading education space on social?
+6. *(Added)* How do YouTube and Facebook specifically drive monetization and course sales for trading educators?
 
 ---
 
@@ -234,13 +235,154 @@ The entire interactive calculator market (options P/L, position size, risk gauge
 
 ---
 
+### Finding 6 — YouTube: Top Educators, Formats, Monetization, and Funnel
+
+#### Top Educators by Subscriber Count
+| Educator | Subscribers | Format | Focus |
+|----------|------------|--------|-------|
+| Rayner Teo | 18.3M | Long-form tutorials, educational series | Price action, TA |
+| CA Rachana Phadke Ranade | 5.4M | Finance education series | Finance education |
+| Coin Bureau (Guy Turner & Nic Puckrin) | 2.7M | Long-form educational | Crypto trading |
+| Grant Cardone | 2.38M | Long-form motivation/education hybrid | Business, real estate |
+| Warrior Trading (Ross Cameron) | 2M | Daily market analysis, tutorials | Day trading |
+| Brian Jung | 2.09M | Crypto news, personal finance | Crypto, investing |
+| Patrick Wieland | 1.1M | Trading education | Trading methodology |
+| NickRTFM (Nick Bartels) | 1M+ | Daily updates, technical insights | Technical analysis |
+| The Financial Diet | 1M+ | Educational series, myth-busting | Personal finance |
+| The Swedish Investor | 957K | Investment strategies | Investing simplification |
+| Ryan Scribner | 800K+ | Finance education | General finance |
+| The Money Guy Show | 540K | Personal finance, wealth-building | Certified financial content |
+
+#### Content Format Performance on YouTube
+- **Long-form vs. Shorts RPM:** Long-form earns 5–10× higher RPM than Shorts ($3–$6 typical; finance reaches $15–$40+ CPM)
+- **Shorts reach:** 10–100× more views than long-form, but lower conversion to sales
+- **Hybrid strategy (Shorts + long-form):** $50,000–$100,000/month potential within 12 months vs. $15,000–$30,000 Shorts-only
+- **Thumbnail:** 1280×720px (16:9); custom thumbnails used by 90% of top-performing videos; formula: one focal image + one text line + one logo
+- **Title:** 40–70 characters optimal (55–60 ideal); most important keyword first
+- **Chapters:** Minimum 3 timestamps; increases watch time and rewatch behavior
+- **Pattern:** Free YouTube → email capture → paid course. Completion moment (end of video/series) is highest-trust pitch point
+
+#### YouTube Monetization Structure
+| Revenue Source | Typical Range | Notes |
+|---------------|---------------|-------|
+| AdSense (finance CPM) | $15–$50+ per 1K views | Finance is premium AdSense niche |
+| Sponsorships | $500–$10,000+ per video | Brokerages, fintech platforms pay top rates |
+| Course upsells | $1,997–$4,997 | Coaching programs at high-ticket range |
+| Channel Memberships | Variable | Diversification layer |
+| Super Chat | Variable | Live stream donations |
+
+- **Risk:** Channels >70% AdSense-dependent are vulnerable to demonetization events
+- **Recommended structure:** AdSense + sponsorships + course upsell (three legs)
+
+#### Visual Production Quality on YouTube
+- "Professional but not Hollywood-grade" dominates — consistency beats perfection
+- Screen recordings of platforms, slide decks, animated explainers, AI voiceover (faceless channels viable)
+- Callout arrows, text overlays, and motion graphics are standard
+- Branded intro/outro sequences with consistent color scheme — instant recognition
+- The Infographics Show model: Adobe After Effects + consistent visual brand + daily cadence
+
+---
+
+### Finding 7 — Facebook: Pages, Groups, Ads, and Sales Funnel
+
+#### Top Pages and Groups
+| Account | Size | Content Format |
+|---------|------|---------------|
+| MT5 Forum (Page) | 5M+ followers | Multiple daily posts, market updates |
+| HFM Broker (Page) | 2.4M+ followers | Market updates, educational sessions |
+| Warrior Trading (Page) | 175K followers | Daily posts + free video + paid course CTA |
+| Samuel Leach (CEO Page) | 286K Instagram → Facebook | Trading programs, market commentary |
+| TradeCiety (Page) | 31K followers | Daily posts, reward-risk, webinars |
+| Market Traders & Penny Stocks (Group) | 62,900 members | Fast-growing; discussion, strategy |
+| Robinhood Stock Trading (Group) | 38,000 members | 450+ posts/day; community-driven |
+
+#### Facebook Ad Formats for Trading Education
+| Format | Best Use | Notes |
+|--------|----------|-------|
+| Lead Generation Ads (Instant Forms) | Email capture, webinar signup | Pre-filled forms, no redirect — clear winner for leads |
+| Video Ads | Awareness, trust-building | 1.25B+ monthly Facebook video viewers |
+| Carousel Ads | Multiple concepts in one ad; strategy breakdowns | Swipeable portfolio of trading concepts |
+| Image Ads | Retargeting, offer-specific | Sharp copy + clear CTA required |
+| Stories Ads | Broad awareness | 1080×1920px, full-screen |
+
+**Ad targeting layers used:** Demographics + interest stacking (e.g., "technical analysis" AND "trading platform") + Custom Audiences (email list) + Lookalike Audiences (2–10M optimal size)
+
+**ROAS benchmarks:**
+- Trading bot content: 12× ROAS documented
+- Average across all industries: 2.19:1
+- Healthy target range: 3–5×
+- Key finding: 70–80% of sales lost to poor follow-up timing, not bad leads — email sequence post-ad is critical
+
+#### Facebook Sales Funnel by Price Point
+| Course Price | Funnel Structure |
+|-------------|-----------------|
+| $100–$1,000 | Facebook Ad → Free Webinar (60–90 min) → Pitch at trust peak → Checkout |
+| $1,000–$10,000+ | Facebook Ad → Application/DM → 1-on-1 Zoom call → Close |
+| Low-ticket ($1–few hundred) | Still needs funnel; direct "Buy my course" ads do not work |
+
+**Standard webinar funnel:** Ad → Registration page → Confirmation email sequence → Live event → Pitch → Checkout. Email integration is non-optional.
+
+#### Facebook Group Engagement Rules
+- 80/20 rule: 80% value content (education, community), 20% promotional
+- Group content earns **3× more engagement than Facebook Page content**
+- High-engagement formats: Facebook Live Q&As, polls, AMA sessions, infographic posts, discussion threads
+- Constant link-dropping and self-promotion kills group engagement
+
+#### Facebook Visual Content Specs
+| Format | Optimal Dimensions | Notes |
+|--------|--------------------|-------|
+| Feed image | 1080×1080px (1:1) or 1080×1350px (4:5) | 1:1 is default safe format |
+| Reels ad (video) | 1080×1920px (9:16) | Under 60 seconds; MP4/MOV |
+| Stories ad | 1080×1920px | Leave 250px top + 340px bottom safe zone |
+| Feed horizontal | Scaled to 500px wide | Avoid: too small for infographic text |
+
+**Critical infographic finding:** Do NOT post a full infographic as a single Facebook image — it renders too small to read. Strategy: share one readable section per post on different days. A single infographic becomes 3–5 posts, extending content longevity and maintaining algorithm freshness.
+
+---
+
+## Implications for FINN (Updated — 5 Platforms)
+
+**1. FINN's visual system is already aligned — extend, don't rebuild.**
+The dark `#0d1117` palette, card-based layouts, and structured typography match 2025 fintech visual conventions. The v2 upgrade is an extension (gradients, animation, social dimensions) not a redesign. The foundation is competitive.
+
+**2. YouTube is the long-term brand equity platform — and the highest-revenue channel.**
+Rayner Teo has 18.3M subscribers teaching price action and TA — the exact intellectual adjacent space to FINN. Finance AdSense CPM of $15–$50+ is premium tier. A Shorts → long-form hybrid strategy drives discovery (Shorts reach) while building depth and course conversion (long-form). FINN infographics work as YouTube visual assets: chapter slide backgrounds, explainer overlays, thumbnail design.
+
+**3. Facebook is the paid acquisition engine — highest ROAS for course sales.**
+12× ROAS documented on trading bot education content. The Facebook Ad → free webinar → course funnel is the industry standard for $100–$1,000 course price points. FINN's audience (working professionals, adult learners) is exactly who Facebook's interest + demographic targeting captures well. Facebook is not for organic content reach — it is for paid conversion.
+
+**4. LinkedIn carousel is the highest organic engagement rate — the professional credibility channel.**
+21.77% median engagement on LinkedIn carousel posts. Professional adult learner audience. Educational carousel screenshots from FINN infographics map directly to this format. LinkedIn builds institutional and partner credibility; it's the B2B discovery surface.
+
+**5. Instagram carousels + Reels = visual discovery funnel.**
+Reels for reach (36% more than carousels), carousels for engagement depth (12% higher rate). Two-format approach: Reels as 15–30 second explainers, carousels as the full infographic slide breakdown. The 1080×1080 square social mode covers Instagram carousels; the 1200×675 mode covers LinkedIn and Twitter/X.
+
+**6. The market for trading infographic packs is weak — all static PNG/Canva templates.**
+No interactive HTML product exists anywhere in the market. FINN's animated HTML files are a technically distinct category. Price ceiling in the market ($20 for 100 static PNGs) is irrelevant — the premium interactive bundle at $49–$99 has no comparable competitor.
+
+**7. Infographic-to-Facebook strategy: section-by-section, not full image.**
+Do not post full infographics to Facebook as single images — they render unreadable. Each infographic becomes 3–5 individual posts (one section per day). This is actually an advantage: one upgraded FINN infographic generates a week of Facebook content.
+
+**8. Free cheat sheet on Gumroad = lead magnet; YouTube Shorts = discovery; Facebook Ad = conversion.**
+This is the three-channel funnel: Gumroad free pack builds email list → YouTube Shorts drives organic awareness → Facebook Ads close course sales. Each channel has a distinct role. FINN's infographics are the content asset that serves all three.
+
+**9. Candlestick patterns + psychology = first two social posts (unchanged).**
+Still the top engagement topics across all five platforms. Both are FINN T1 files.
+
+**10. Interactive calculators are lead magnets, not products.**
+Every interactive calculator in the market is free. FINN's `ig_risk_calculator.html` is a free top-of-funnel tool, not a paid item.
+
+---
+
 ## Open Questions Remaining
 
-1. What does an Anime.js vs. CSS-only animation comparison actually look like at FINN's content complexity level? (Answers in Phase A Session A2 capability audit)
-2. Can Chart.js be inlined at under 200KB and still produce themeable charts? (Session A2)
-3. What is the realistic screenshot workflow for 1200×675px dimensions across Chrome/Firefox/Safari? (Session B1 validation)
+1. What does an Anime.js vs. CSS-only animation comparison actually look like at FINN's content complexity level? (Session A2)
+2. Can Chart.js be inlined at under 200KB and produce clean themeable charts? (Session A2)
+3. What is the realistic screenshot workflow for 1200×675px and 1080×1080px across Chrome/Firefox? (Session B1)
 4. What specific LinkedIn carousel format performs best — 5 slides? 8 slides? Fixed aspect ratio? (Test in Phase B2)
 5. Is there appetite for a paid bundle among FINN's existing student audience before building toward external sale? (User decision)
+6. What YouTube Shorts format works for infographic-based content — slideshow style, animated pan, screen recording? (Test in Phase C)
+7. What is the minimum viable Facebook Group size before running paid ads to it? (User/marketing decision)
 
 ---
 
@@ -250,8 +392,8 @@ From `research/planning/finn_infographics_upgrade_plan.md` — Open Decisions ta
 
 | # | Decision | Resolution | Confidence |
 |---|----------|-----------|------------|
-| 3 | Platform priority | **LinkedIn first, then Instagram, then Twitter/X.** LinkedIn carousel at 21.77% engagement is the highest-performing format. Instagram carousels provide secondary reach with strong engagement. Twitter/X supports thread + image distribution as tertiary. | High |
-| 6 | SVG vs. CSS for pattern diagrams | **CSS for simple patterns (current system preserved), SVG for complex diagrams (candlestick formations, chart patterns with annotated price paths).** TradingView uses SVG-based interactive charts as the industry standard. Candlestick pattern files specifically need SVG to achieve visual quality competitive with the market. | Medium-High |
+| 3 | Platform priority | **YouTube (long-term brand + AdSense), Facebook (paid acquisition + course sales), LinkedIn (organic professional credibility), Instagram (visual discovery), Twitter/X (thought leadership).** Each platform has a distinct role — not a ranked list, a role map. | High |
+| 6 | SVG vs. CSS for pattern diagrams | **CSS for simple elements (current system preserved), inline SVG for complex pattern diagrams** (candlestick formations, annotated chart pattern price paths). TradingView uses SVG as industry standard. SVG enables screenshot-quality at any resolution. | Medium-High |
 
 Decisions #1, #2, #4, #5, #7 remain open — pending Session A2 capability audit and user decisions.
 
