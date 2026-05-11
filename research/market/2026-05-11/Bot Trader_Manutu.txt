@@ -1,0 +1,785 @@
+//+------------------------------------------------------------------+
+//| Expert Advisor: XAU_EXPERT_PRICE_ACTION_VB1000                   |
+//| MT5 / MQL5                                                       |
+//| Expert-style price action EA for XAUUSD                          |
+//+------------------------------------------------------------------+
+#property strict
+#include <Trade/Trade.mqh>
+CTrade trade;
+
+//---------------- INPUTS ----------------//
+input bool   QuickTestMode            = true;
+
+// Risk / account behavior
+input bool   UseVirtualBalance        = true;
+input double VirtualBalance           = 1000.0;
+input double StopTradingAtEquity      = 900.0;
+input bool   UseFixedLot              = false;
+input double FixedLot                 = 0.01;
+input double MaxLotCap                = 0.02;
+input double RiskPercent              = 1.0;
+
+// Timeframes
+input ENUM_TIMEFRAMES TradeTF         = PERIOD_M5;
+input ENUM_TIMEFRAMES TrendTF         = PERIOD_M15;
+
+// Indicators / volatility
+input int    ATRPeriod                = 14;
+input double ATR_SL_Mult              = 1.2;
+input double ATR_TP_Mult              = 2.2;
+input double MinATRPoints             = 80.0;
+input int    TrendMAPeriod            = 50;
+
+// Structure and pullback
+input int    SwingLookback            = 10;
+input int    PullbackLookback         = 6;
+input double MaxDistanceFromTrendATR  = 1.2;
+
+// Candle reading
+input bool   RequireBullishCandleBuy  = true;
+input bool   RequireBearishCandleSell = true;
+input bool   UseBodyFilter            = true;
+input double MinBodyToRangeRatio      = 0.35;
+input bool   UseWickFilter            = true;
+input double MinWickToBodyRatio       = 0.80;
+input bool   UseEngulfingFilter       = false;
+
+// Trading controls
+input int    MaxSpreadPoints          = 120;
+input int    MaxPositions             = 1;
+input int    TradeStartHour           = 7;
+input int    TradeEndHour             = 20;
+input int    MaxTradesPerDay          = 5;
+input double MaxDailyLossPercent      = 5.0;
+input int    TradeCooldownMinutes     = 15;
+input int    MaxConsecutiveLosses     = 3;
+input bool   ExitOnOppositeSignal     = true;
+
+// Position management
+input int    BreakEvenPoints          = 100;
+input int    ProfitLockTrigger        = 150;
+input int    ProfitLockPoints         = 40;
+input int    TrailingStart            = 220;
+input int    TrailingDistance         = 120;
+
+// Misc
+input ulong  MagicNumber              = 777333;
+input int    SlippagePoints           = 30;
+
+//---------------- INDICATOR HANDLES ----------------//
+int atrHandle   = INVALID_HANDLE;
+int trendMA     = INVALID_HANDLE;
+
+//---------------- GLOBALS ----------------//
+datetime lastBarTime         = 0;
+datetime lastTradeTime       = 0;
+int      tradesToday         = 0;
+double   dayStartBalance     = 0.0;
+int      lastDayOfMonth      = -1;
+int      consecutiveLosses   = 0;
+datetime lastProcessedDealTime = 0;
+
+//+------------------------------------------------------------------+
+//| Helpers                                                          |
+//+------------------------------------------------------------------+
+int CurrentHour()
+{
+  MqlDateTime dt;
+  TimeToStruct(TimeCurrent(), dt);
+  return dt.hour;
+}
+
+int CurrentDayOfMonth()
+{
+  MqlDateTime dt;
+  TimeToStruct(TimeCurrent(), dt);
+  return dt.day;
+}
+
+bool IsNewBar()
+{
+  datetime t = iTime(_Symbol, TradeTF, 0);
+  if(t == 0)
+     return false;
+
+  if(t == lastBarTime)
+     return false;
+
+  lastBarTime = t;
+  return true;
+}
+
+bool SessionAllowed()
+{
+  if(QuickTestMode)
+     return true;
+
+  int hour = CurrentHour();
+  return (hour >= TradeStartHour && hour <= TradeEndHour);
+}
+
+bool SpreadTooHigh()
+{
+  if(QuickTestMode)
+     return false;
+
+  double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+  double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+
+  if(ask <= 0 || bid <= 0)
+     return true;
+
+  double spreadPoints = (ask - bid) / _Point;
+  return (spreadPoints > MaxSpreadPoints);
+}
+
+void ResetDailyStats()
+{
+  int today = CurrentDayOfMonth();
+
+  if(today != lastDayOfMonth)
+  {
+     tradesToday = 0;
+     dayStartBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+     lastDayOfMonth = today;
+     consecutiveLosses = 0;
+     Print("New day reset. BalanceStart=", DoubleToString(dayStartBalance, 2));
+  }
+}
+
+bool DailyLossExceeded()
+{
+  if(QuickTestMode)
+     return false;
+
+  double balance = AccountInfoDouble(ACCOUNT_BALANCE);
+  if(dayStartBalance <= 0.0)
+     return false;
+
+  double lossPercent = 100.0 * (dayStartBalance - balance) / dayStartBalance;
+  return (lossPercent >= MaxDailyLossPercent);
+}
+
+bool EquityGuardHit()
+{
+  if(!UseVirtualBalance)
+     return false;
+
+  double equity = AccountInfoDouble(ACCOUNT_EQUITY);
+  return (equity <= StopTradingAtEquity);
+}
+
+int CountMyPositions()
+{
+  int total = 0;
+
+  for(int i = PositionsTotal() - 1; i >= 0; i--)
+  {
+     ulong ticket = PositionGetTicket(i);
+     if(ticket == 0)
+        continue;
+     if(!PositionSelectByTicket(ticket))
+        continue;
+     if(PositionGetString(POSITION_SYMBOL) != _Symbol)
+        continue;
+     if((ulong)PositionGetInteger(POSITION_MAGIC) != MagicNumber)
+        continue;
+     total++;
+  }
+
+  return total;
+}
+
+double ClampVolume(double vol)
+{
+  double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
+  double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
+  double step   = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
+
+  if(minLot <= 0 || maxLot <= 0 || step <= 0)
+     return 0.0;
+
+  vol = MathMin(vol, MaxLotCap);
+  vol = MathMax(minLot, MathMin(maxLot, vol));
+  vol = MathFloor(vol / step) * step;
+
+  int digits = (int)MathRound(-MathLog10(step));
+  if(digits < 0)
+     digits = 2;
+
+  return NormalizeDouble(vol, digits);
+}
+
+double CalcLot(double stopDistancePrice)
+{
+  if(UseFixedLot)
+     return ClampVolume(FixedLot);
+
+  if(stopDistancePrice <= 0.0)
+     return 0.0;
+
+  double balanceForRisk = UseVirtualBalance ? VirtualBalance : AccountInfoDouble(ACCOUNT_BALANCE);
+  double riskMoney = balanceForRisk * (RiskPercent / 100.0);
+
+  if(riskMoney <= 0.0)
+     return 0.0;
+
+  double tickValue = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
+  double tickSize  = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
+
+  if(tickValue <= 0.0 || tickSize <= 0.0)
+     return 0.0;
+
+  double stopPoints = stopDistancePrice / _Point;
+  if(stopPoints <= 0.0)
+     return 0.0;
+
+  double valuePerPoint = tickValue * (_Point / tickSize);
+  if(valuePerPoint <= 0.0)
+     return 0.0;
+
+  double rawLots = riskMoney / (stopPoints * valuePerPoint);
+  return ClampVolume(rawLots);
+}
+
+//+------------------------------------------------------------------+
+//| Candle helpers                                                   |
+//+------------------------------------------------------------------+
+double CandleBody(const MqlRates &c)
+{
+  return MathAbs(c.close - c.open);
+}
+
+double CandleRange(const MqlRates &c)
+{
+  return c.high - c.low;
+}
+
+double UpperWick(const MqlRates &c)
+{
+  return c.high - MathMax(c.open, c.close);
+}
+
+double LowerWick(const MqlRates &c)
+{
+  return MathMin(c.open, c.close) - c.low;
+}
+
+bool IsBullishCandle(const MqlRates &c)
+{
+  return (c.close > c.open);
+}
+
+bool IsBearishCandle(const MqlRates &c)
+{
+  return (c.close < c.open);
+}
+
+bool BodyFilterOK(const MqlRates &c)
+{
+  double range = CandleRange(c);
+  if(range <= 0.0)
+     return false;
+
+  double body = CandleBody(c);
+  return ((body / range) >= MinBodyToRangeRatio);
+}
+
+bool BullishRejectionOK(const MqlRates &c)
+{
+  double body = CandleBody(c);
+  if(body <= 0.0)
+     return false;
+
+  double lower = LowerWick(c);
+  double upper = UpperWick(c);
+  return (lower >= body * MinWickToBodyRatio && lower > upper);
+}
+
+bool BearishRejectionOK(const MqlRates &c)
+{
+  double body = CandleBody(c);
+  if(body <= 0.0)
+     return false;
+
+  double lower = LowerWick(c);
+  double upper = UpperWick(c);
+  return (upper >= body * MinWickToBodyRatio && upper > lower);
+}
+
+bool BullishEngulfing(const MqlRates &prev, const MqlRates &curr)
+{
+  return (prev.close < prev.open &&
+          curr.close > curr.open &&
+          curr.open <= prev.close &&
+          curr.close >= prev.open);
+}
+
+bool BearishEngulfing(const MqlRates &prev, const MqlRates &curr)
+{
+  return (prev.close > prev.open &&
+          curr.close < curr.open &&
+          curr.open >= prev.close &&
+          curr.close <= prev.open);
+}
+
+//+------------------------------------------------------------------+
+//| Structure helpers                                                |
+//+------------------------------------------------------------------+
+double HighestHigh(const MqlRates &rates[], int startIndex, int count)
+{
+  double hh = -DBL_MAX;
+  for(int i = startIndex; i < startIndex + count; i++)
+     hh = MathMax(hh, rates[i].high);
+  return hh;
+}
+
+double LowestLow(const MqlRates &rates[], int startIndex, int count)
+{
+  double ll = DBL_MAX;
+  for(int i = startIndex; i < startIndex + count; i++)
+     ll = MathMin(ll, rates[i].low);
+  return ll;
+}
+
+bool IsUpStructure(const MqlRates &rates[])
+{
+  // Compare most recent closed swing window vs earlier swing window
+  double recentHigh = HighestHigh(rates, 1, SwingLookback);
+  double recentLow  = LowestLow(rates, 1, SwingLookback);
+  double olderHigh  = HighestHigh(rates, 1 + SwingLookback, SwingLookback);
+  double olderLow   = LowestLow(rates, 1 + SwingLookback, SwingLookback);
+
+  return (recentHigh > olderHigh && recentLow > olderLow);
+}
+
+bool IsDownStructure(const MqlRates &rates[])
+{
+  double recentHigh = HighestHigh(rates, 1, SwingLookback);
+  double recentLow  = LowestLow(rates, 1, SwingLookback);
+  double olderHigh  = HighestHigh(rates, 1 + SwingLookback, SwingLookback);
+  double olderLow   = LowestLow(rates, 1 + SwingLookback, SwingLookback);
+
+  return (recentHigh < olderHigh && recentLow < olderLow);
+}
+
+bool PullbackBuyOK(const MqlRates &rates[], double trendValue, double atrValue)
+{
+  // Last closed candle retraced toward trend/value area but held above it
+  MqlRates c1 = rates[1];
+  double maxDistance = atrValue * MaxDistanceFromTrendATR;
+
+  bool nearTrend = MathAbs(c1.low - trendValue) <= maxDistance ||
+                   MathAbs(c1.close - trendValue) <= maxDistance;
+
+  bool heldAboveTrend = c1.close >= trendValue;
+  bool notDeepBreak   = c1.low > (trendValue - atrValue * 0.5);
+
+  return (nearTrend && heldAboveTrend && notDeepBreak);
+}
+
+bool PullbackSellOK(const MqlRates &rates[], double trendValue, double atrValue)
+{
+  MqlRates c1 = rates[1];
+  double maxDistance = atrValue * MaxDistanceFromTrendATR;
+
+  bool nearTrend = MathAbs(c1.high - trendValue) <= maxDistance ||
+                   MathAbs(c1.close - trendValue) <= maxDistance;
+
+  bool heldBelowTrend = c1.close <= trendValue;
+  bool notDeepBreak   = c1.high < (trendValue + atrValue * 0.5);
+
+  return (nearTrend && heldBelowTrend && notDeepBreak);
+}
+
+//+------------------------------------------------------------------+
+//| Loss streak tracking                                             |
+//+------------------------------------------------------------------+
+void UpdateLossStreak()
+{
+  if(!HistorySelect(TimeCurrent() - 86400 * 10, TimeCurrent()))
+     return;
+
+  int totalDeals = HistoryDealsTotal();
+  if(totalDeals <= 0)
+     return;
+
+  for(int i = totalDeals - 1; i >= 0; i--)
+  {
+     ulong dealTicket = HistoryDealGetTicket(i);
+     if(dealTicket == 0)
+        continue;
+
+     long entry = HistoryDealGetInteger(dealTicket, DEAL_ENTRY);
+     if(entry != DEAL_ENTRY_OUT)
+        continue;
+
+     string symbol = HistoryDealGetString(dealTicket, DEAL_SYMBOL);
+     if(symbol != _Symbol)
+        continue;
+
+     long magic = HistoryDealGetInteger(dealTicket, DEAL_MAGIC);
+     if((ulong)magic != MagicNumber)
+        continue;
+
+     datetime dealTime = (datetime)HistoryDealGetInteger(dealTicket, DEAL_TIME);
+     if(dealTime <= lastProcessedDealTime)
+        break;
+
+     double profit = HistoryDealGetDouble(dealTicket, DEAL_PROFIT)
+                   + HistoryDealGetDouble(dealTicket, DEAL_SWAP)
+                   + HistoryDealGetDouble(dealTicket, DEAL_COMMISSION);
+
+     if(profit < 0.0)
+        consecutiveLosses++;
+     else if(profit > 0.0)
+        consecutiveLosses = 0;
+
+     if(dealTime > lastProcessedDealTime)
+        lastProcessedDealTime = dealTime;
+  }
+}
+
+bool LossStreakExceeded()
+{
+  if(QuickTestMode)
+     return false;
+
+  return (consecutiveLosses >= MaxConsecutiveLosses);
+}
+
+//+------------------------------------------------------------------+
+//| Signal engine                                                    |
+//+------------------------------------------------------------------+
+bool GetSignals(bool &buySignal, bool &sellSignal, double &stopDistance, double &takeDistance)
+{
+  buySignal = false;
+  sellSignal = false;
+  stopDistance = 0.0;
+  takeDistance = 0.0;
+
+  double atr[2], trend[2];
+  MqlRates rates[];
+  int needBars = 1 + (SwingLookback * 2) + 5;
+  ArraySetAsSeries(rates, true);
+
+  if(CopyBuffer(atrHandle, 0, 0, 2, atr) != 2)
+     return false;
+  if(CopyBuffer(trendMA, 0, 0, 2, trend) != 2)
+     return false;
+  if(CopyRates(_Symbol, TradeTF, 0, needBars, rates) != needBars)
+     return false;
+
+  double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+  double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+  if(bid <= 0.0 || ask <= 0.0)
+     return false;
+
+  double atrValue = atr[1];
+  double atrPoints = atrValue / _Point;
+
+  stopDistance = atrValue * ATR_SL_Mult;
+  takeDistance = atrValue * ATR_TP_Mult;
+
+  if(stopDistance <= 0.0 || takeDistance <= 0.0)
+     return false;
+
+  if(atrPoints < MinATRPoints)
+     return true;
+
+  MqlRates c1 = rates[1];
+  MqlRates c2 = rates[2];
+
+  bool structureUp   = IsUpStructure(rates);
+  bool structureDown = IsDownStructure(rates);
+
+  bool trendOkBuy  = QuickTestMode ? true : (bid > trend[1]);
+  bool trendOkSell = QuickTestMode ? true : (bid < trend[1]);
+
+  bool pullbackBuy  = PullbackBuyOK(rates, trend[1], atrValue);
+  bool pullbackSell = PullbackSellOK(rates, trend[1], atrValue);
+
+  bool candleBuyOK  = true;
+  bool candleSellOK = true;
+
+  if(RequireBullishCandleBuy)
+     candleBuyOK = candleBuyOK && IsBullishCandle(c1);
+  if(RequireBearishCandleSell)
+     candleSellOK = candleSellOK && IsBearishCandle(c1);
+
+  if(UseBodyFilter)
+  {
+     candleBuyOK  = candleBuyOK && BodyFilterOK(c1);
+     candleSellOK = candleSellOK && BodyFilterOK(c1);
+  }
+
+  if(UseWickFilter)
+  {
+     candleBuyOK  = candleBuyOK && BullishRejectionOK(c1);
+     candleSellOK = candleSellOK && BearishRejectionOK(c1);
+  }
+
+  if(UseEngulfingFilter)
+  {
+     candleBuyOK  = candleBuyOK && BullishEngulfing(c2, c1);
+     candleSellOK = candleSellOK && BearishEngulfing(c2, c1);
+  }
+
+  buySignal  = (structureUp   && trendOkBuy  && pullbackBuy  && candleBuyOK);
+  sellSignal = (structureDown && trendOkSell && pullbackSell && candleSellOK);
+
+  return true;
+}
+
+//+------------------------------------------------------------------+
+//| Position management                                              |
+//+------------------------------------------------------------------+
+void ManagePositions()
+{
+  double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+  double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+  if(bid <= 0 || ask <= 0)
+     return;
+
+  for(int i = PositionsTotal() - 1; i >= 0; i--)
+  {
+     ulong ticket = PositionGetTicket(i);
+     if(ticket == 0)
+        continue;
+     if(!PositionSelectByTicket(ticket))
+        continue;
+     if(PositionGetString(POSITION_SYMBOL) != _Symbol)
+        continue;
+     if((ulong)PositionGetInteger(POSITION_MAGIC) != MagicNumber)
+        continue;
+
+     long type = PositionGetInteger(POSITION_TYPE);
+     double open = PositionGetDouble(POSITION_PRICE_OPEN);
+     double tp   = PositionGetDouble(POSITION_TP);
+     double sl   = PositionGetDouble(POSITION_SL);
+
+     double profitPoints = (type == POSITION_TYPE_BUY)
+                         ? (bid - open) / _Point
+                         : (open - ask) / _Point;
+
+     if(profitPoints >= BreakEvenPoints)
+     {
+        double be = NormalizeDouble(open, _Digits);
+
+        if(type == POSITION_TYPE_BUY)
+        {
+           if(sl < be || sl == 0.0)
+              trade.PositionModify(ticket, be, tp);
+        }
+        else
+        {
+           if(sl > be || sl == 0.0)
+              trade.PositionModify(ticket, be, tp);
+        }
+     }
+
+     if(profitPoints >= ProfitLockTrigger)
+     {
+        if(type == POSITION_TYPE_BUY)
+        {
+           double lockSL = NormalizeDouble(open + ProfitLockPoints * _Point, _Digits);
+           if(lockSL > sl)
+              trade.PositionModify(ticket, lockSL, tp);
+        }
+        else
+        {
+           double lockSL = NormalizeDouble(open - ProfitLockPoints * _Point, _Digits);
+           if(sl == 0.0 || lockSL < sl)
+              trade.PositionModify(ticket, lockSL, tp);
+        }
+     }
+
+     if(profitPoints >= TrailingStart)
+     {
+        double newSL = sl;
+
+        if(type == POSITION_TYPE_BUY)
+        {
+           double candidate = NormalizeDouble(bid - TrailingDistance * _Point, _Digits);
+           if(candidate > sl)
+              newSL = candidate;
+        }
+        else
+        {
+           double candidate = NormalizeDouble(ask + TrailingDistance * _Point, _Digits);
+           if(sl == 0.0 || candidate < sl)
+              newSL = candidate;
+        }
+
+        if(newSL != sl && newSL > 0.0)
+           trade.PositionModify(ticket, newSL, tp);
+     }
+  }
+}
+
+void CheckOppositeExit()
+{
+  if(!ExitOnOppositeSignal)
+     return;
+
+  bool buySignal = false, sellSignal = false;
+  double stopDistance = 0.0, takeDistance = 0.0;
+
+  if(!GetSignals(buySignal, sellSignal, stopDistance, takeDistance))
+     return;
+
+  for(int i = PositionsTotal() - 1; i >= 0; i--)
+  {
+     ulong ticket = PositionGetTicket(i);
+     if(ticket == 0)
+        continue;
+     if(!PositionSelectByTicket(ticket))
+        continue;
+     if(PositionGetString(POSITION_SYMBOL) != _Symbol)
+        continue;
+     if((ulong)PositionGetInteger(POSITION_MAGIC) != MagicNumber)
+        continue;
+
+     long type = PositionGetInteger(POSITION_TYPE);
+
+     if(type == POSITION_TYPE_BUY && sellSignal)
+        trade.PositionClose(ticket);
+
+     if(type == POSITION_TYPE_SELL && buySignal)
+        trade.PositionClose(ticket);
+  }
+}
+
+//+------------------------------------------------------------------+
+//| Entry logic                                                      |
+//+------------------------------------------------------------------+
+void CheckEntry()
+{
+  bool buySignal = false, sellSignal = false;
+  double stopDistance = 0.0, takeDistance = 0.0;
+
+  if(!GetSignals(buySignal, sellSignal, stopDistance, takeDistance))
+     return;
+
+  if(!buySignal && !sellSignal)
+     return;
+
+  double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+  double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+  if(bid <= 0.0 || ask <= 0.0)
+     return;
+
+  double lot = CalcLot(stopDistance);
+  if(lot <= 0.0)
+     return;
+
+  if(buySignal)
+  {
+     double sl = NormalizeDouble(bid - stopDistance, _Digits);
+     double tp = NormalizeDouble(bid + takeDistance, _Digits);
+
+     if(trade.Buy(lot, _Symbol, ask, sl, tp))
+     {
+        lastTradeTime = TimeCurrent();
+        tradesToday++;
+        Print("BUY opened. lot=", lot, " sl=", sl, " tp=", tp);
+     }
+     else
+     {
+        Print("BUY failed. retcode=", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription());
+     }
+  }
+  else if(sellSignal)
+  {
+     double sl = NormalizeDouble(ask + stopDistance, _Digits);
+     double tp = NormalizeDouble(ask - takeDistance, _Digits);
+
+     if(trade.Sell(lot, _Symbol, bid, sl, tp))
+     {
+        lastTradeTime = TimeCurrent();
+        tradesToday++;
+        Print("SELL opened. lot=", lot, " sl=", sl, " tp=", tp);
+     }
+     else
+     {
+        Print("SELL failed. retcode=", trade.ResultRetcode(), " ", trade.ResultRetcodeDescription());
+     }
+  }
+}
+
+//+------------------------------------------------------------------+
+//| Init / Deinit / Tick                                             |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+  trade.SetExpertMagicNumber(MagicNumber);
+  trade.SetDeviationInPoints(SlippagePoints);
+
+  atrHandle = iATR(_Symbol, TradeTF, ATRPeriod);
+  trendMA   = iMA(_Symbol, TrendTF, TrendMAPeriod, 0, MODE_EMA, PRICE_CLOSE);
+
+  if(atrHandle == INVALID_HANDLE || trendMA == INVALID_HANDLE)
+  {
+     Print("Indicator handle creation failed.");
+     return INIT_FAILED;
+  }
+
+  dayStartBalance = AccountInfoDouble(ACCOUNT_BALANCE);
+  lastDayOfMonth  = CurrentDayOfMonth();
+
+  Print("XAU_EXPERT_PRICE_ACTION_VB1000 started.");
+  return INIT_SUCCEEDED;
+}
+
+void OnDeinit(const int reason)
+{
+  if(atrHandle != INVALID_HANDLE) IndicatorRelease(atrHandle);
+  if(trendMA   != INVALID_HANDLE) IndicatorRelease(trendMA);
+}
+
+void OnTick()
+{
+  ResetDailyStats();
+  UpdateLossStreak();
+
+  // Manage open trades every tick
+  ManagePositions();
+
+  if(!IsNewBar())
+     return;
+
+  if(EquityGuardHit())
+  {
+     Print("Equity guard hit. No new trades.");
+     return;
+  }
+
+  if(!SessionAllowed())
+     return;
+
+  if(SpreadTooHigh())
+     return;
+
+  if(DailyLossExceeded())
+     return;
+
+  if(LossStreakExceeded())
+     return;
+
+  CheckOppositeExit();
+
+  if(CountMyPositions() >= MaxPositions)
+     return;
+
+  if(!QuickTestMode)
+  {
+     if(tradesToday >= MaxTradesPerDay)
+        return;
+
+     if(TimeCurrent() - lastTradeTime < TradeCooldownMinutes * 60)
+        return;
+  }
+
+  CheckEntry();
+}
+//+------------------------------------------------------------------+

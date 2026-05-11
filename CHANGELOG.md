@@ -31,6 +31,29 @@ Picked up next session:
 
 ---
 
+### [2026-05-11] — Market Research: XAUUSD Algo Bot Analysis (Standalone Exercise)
+
+**Context:** External analysis exercise — three algo trading bots developed by a third party (Manutu). No FINN curriculum files modified. Work is self-contained in `research/market/2026-05-11/`.
+
+**Source files received:**
+- `Bot Trader_Manutu.txt` — MQL5 EA: price action pullback scalper on XAUUSD (V1)
+- `Multi_Timeframe_RSI_Gold_Scalper_MT5.mq5` — MQL5 EA: multi-timeframe RSI mean-reversion scalper (V2)
+- `XAUUSD_MTF_RSI_Gold_Scalper_PRO.mq5` — MQL5 EA: upgraded PRO version with full risk architecture (V3)
+
+**Files created:**
+- `research/market/2026-05-11/Old Bot Gold Scalper_Manutu.md` — full strategy breakdown: 4-layer signal chain (structure + EMA + pullback + pin bar), ATR sizing, 3-stage position ladder, risk kill-switches, 5 technical gaps, 8 proposed augmentations, open validation questions
+- `research/market/2026-05-11/Multi_Timeframe_RSI_Gold_Scalper_Context.md` — full strategy breakdown: root cause diagnosis (no stop loss — `trade.Buy()` passes sl=0), 6 confirmed bugs ranked by severity, V1 vs. PRO risk infrastructure comparison, top 10 augmentations in priority order
+- `research/market/2026-05-11/XAUUSD_MTF_RSI_Gold_Scalper_PRO_Context.md` — V2→V3 upgrade audit: 13 fixes confirmed, 8 remaining issues identified (ATR scale mismatch on SL/trail the highest severity), top 10 augmentations for PRO version, open validation questions
+
+**Key findings:**
+- V1 (Manutu): Solid price action EA. No critical bugs. Gaps are refinement-level (window-based structure detection, fixed ATR TP, QuickTestMode defaulting to true).
+- V2 (RSI Scalper): Critical — no stop loss, live bar RSI, fixed 0.10 lots, OR exit logic. Root cause of reported "good wins → one big loss" pattern.
+- V3 (PRO): All V2 bugs fixed. Primary remaining issue: SL, TP, and trailing stop are all sized to M1 ATR (~$0.60–$1.20) for trades that take 30–90 min to resolve at H1 scale — stop and trail will fire on normal M1 price noise before the trade develops.
+
+**Status:** Standalone exercise complete. No follow-on project created.
+
+---
+
 ### [2026-05-10] — Slash Command Skills — 7 Skills Built
 
 **Files created:**
