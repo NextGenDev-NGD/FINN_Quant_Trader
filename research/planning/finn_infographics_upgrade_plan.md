@@ -338,12 +338,12 @@ These must be resolved in Phase A before Phase B begins. Update this section aft
 
 | # | Decision | Options | Resolution |
 |---|----------|---------|------------|
-| 1 | Animation library | CSS-only vs. inline Anime.js (~7KB) | ⬜ Pending Phase A |
-| 2 | Chart integration | Chart.js inline vs. pure CSS charts | ⬜ Pending Phase A |
-| 3 | Platform priority | Twitter/X vs. LinkedIn vs. Instagram | ⬜ Pending Phase A |
+| 1 | Animation library | CSS-only vs. inline Anime.js (~7KB) | ⬜ Pending Phase A Session A2 (capability audit) |
+| 2 | Chart integration | Chart.js inline vs. pure CSS charts | ⬜ Pending Phase A Session A2 (capability audit) |
+| 3 | Platform priority | Twitter/X vs. LinkedIn vs. Instagram | ✅ **LinkedIn first** (21.77% carousel engagement rate, exact audience fit), **Instagram second** (12% carousel engagement, reels for reach), **Twitter/X third** (thread + image distribution). Source: ig_competitor_audit.md |
 | 4 | Quiz mode scope | T1 only vs. all tiers | ⬜ Pending Phase B validation |
-| 5 | Standalone packaging | ZIP download vs. Gumroad vs. Teachable | ⬜ Pending user decision |
-| 6 | SVG vs. CSS for pattern diagrams | CSS divs (current) vs. inline SVG | ⬜ Pending Phase A |
+| 5 | Standalone packaging | ZIP download vs. Gumroad vs. Teachable | ⬜ Pending user decision (Gumroad recommended — established trading education audience, free lead magnet + paid bundle model validated by market) |
+| 6 | SVG vs. CSS for pattern diagrams | CSS divs (current) vs. inline SVG | ✅ **CSS for simple elements** (current system preserved), **inline SVG for complex pattern diagrams** (candlestick formations, annotated chart patterns). TradingView uses SVG as industry standard; static PNG competitors use raster. SVG enables screenshot-quality at any resolution. Source: ig_competitor_audit.md |
 | 7 | Vertical format | Build Stories/TikTok variants in Phase D or later | ⬜ Pending user decision |
 
 ---

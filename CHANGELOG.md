@@ -31,6 +31,29 @@ Picked up next session:
 
 ---
 
+### [2026-05-11] — Infographics Upgrade Session A1 — Competitor Audit
+
+**Files created:**
+- `research/competitors/ig_competitor_audit.md` — Full Phase A Session A1 output: top trading educators by platform (Twitter/X, LinkedIn, Instagram), interactive edtech product inventory (Investopedia, TradingView, tastytrade, options calculators), infographic product pack market survey (Etsy/Gumroad), visual design pattern analysis, top engagement topics ranked
+
+**Files modified:**
+- `research/planning/finn_infographics_upgrade_plan.md` — Open Decisions #3 and #6 resolved
+- `FINN_ProjectStatus.md` — A1 marked complete (1/16), A2 scoped as next session
+
+**Key findings:**
+- LinkedIn carousel posts earn 21.77% median engagement — highest-performing format in trading/finance education; exact audience fit for FINN
+- The entire Etsy/Gumroad infographic market is static PNG/Canva templates ($1.20–$20.64) — no interactive HTML product exists; FINN has no direct competitor in this format
+- Candlestick patterns (#1) and trading psychology (#2) are the top engagement topics across all platforms — both are FINN T1 upgrade files
+- Free cheat sheets (Gumroad) are the market-standard lead magnet format — FINN should build a free "Quant Starter Pack" as top-of-funnel
+
+**Open Decisions resolved:**
+- #3 Platform priority: LinkedIn first → Instagram second → Twitter/X third
+- #6 SVG vs CSS: CSS preserved for simple elements, inline SVG for complex pattern diagrams (candlestick formations, chart pattern price paths)
+
+**Status:** Session A1 complete. Session A2 (capability audit — animation libraries, Chart.js, vanilla JS quiz patterns) is next.
+
+---
+
 ### [2026-05-11] — Market Research: XAUUSD Algo Bot Analysis (Standalone Exercise)
 
 **Context:** External analysis exercise — three algo trading bots developed by a third party (Manutu). No FINN curriculum files modified. Work is self-contained in `research/market/2026-05-11/`.

@@ -10,19 +10,21 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 ## Active Projects
 
 ### Infographics Upgrade — Visual Product Rebuild (v1 → v2)
-**Status:** 🟡 In progress — Phase A next (research)
+**Status:** 🟡 In progress — Phase A Session A2 next (capability audit)
 **Planning doc:** `research/planning/finn_infographics_upgrade_plan.md`
-**Progress:** 0 / 16 sessions complete
+**Progress:** 1 / 16 sessions complete
 
-**Last completed:** Architecture plan created (May 10, 2026) — Full planning doc written. Covers: current state inventory (26 files, T1/T2/T3 tiers), technical architecture (design system v2, social media mode, animation system, component patterns), content architecture (upgrade sequence + 6 net-new files), phase/session plan (Phases A–F), open decisions, and success criteria.
+**Last completed:** Phase A Session A1 — Competitor audit (May 11, 2026). Full audit of top trading educators across Twitter/X, LinkedIn, Instagram; interactive edtech products (Investopedia, TradingView, tastytrade); infographic product packs on Etsy/Gumroad. Two Open Decisions resolved: #3 Platform priority (LinkedIn first → Instagram → Twitter/X), #6 SVG vs CSS (CSS preserved, inline SVG for complex pattern diagrams). Output: `research/competitors/ig_competitor_audit.md`.
 
-**Next session (Phase A — Session A1):**
-Competitor audit:
-- Top 10 trading educators on Twitter/X, LinkedIn, Instagram — content types, visual style, engagement patterns
-- Fintech edtech products (Investopedia, TradingView Learn, tastytrade) — interactive tools inventory
-- "Infographic product packs" in the market — pricing, scope, distribution
-- Output: `research/competitors/ig_competitor_audit.md`
-- See Phase A spec in `research/planning/finn_infographics_upgrade_plan.md`
+**Next session (Phase A — Session A2):**
+Capability audit:
+- Animation libraries: CSS-only vs. Anime.js vs. GSAP Lite — real capability delta for FINN's needs, file size tradeoffs
+- Chart.js inline feasibility: can it be inlined under 200KB and produce clean themeable charts?
+- Vanilla JS quiz/flashcard patterns: best approaches without a framework
+- Open-source fintech HTML components worth studying or adapting
+- File size ceiling for self-contained shareable HTML
+- Output: `research/planning/ig_capability_audit.md`
+- Update Open Decisions #1 and #2 in planning doc after research
 
 *Full phase sequence, technical architecture, and content plan: see `research/planning/finn_infographics_upgrade_plan.md`*
 
