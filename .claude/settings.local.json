@@ -35,7 +35,12 @@
       "Bash(not exist *)",
       "Bash(Get-ChildItem -Recurse .claude)",
       "Bash(Select-Object FullName)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git -C \"C:\\\\Users\\\\icarr\\\\Documents\\\\NGD Github\\\\FINN_Quant_Trader\" status)",
+      "Bash(git -C \"C:\\\\Users\\\\icarr\\\\Documents\\\\NGD Github\\\\FINN_Quant_Trader\" log --oneline -5)",
+      "Bash(git *)",
+      "Skill(finn-resume)",
+      "Skill(finn-research)"
     ]
   }
 }
