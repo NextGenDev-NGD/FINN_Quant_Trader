@@ -349,6 +349,7 @@ These must be resolved in Phase A before Phase B begins. Update this section aft
 | 5 | Standalone packaging | ZIP download vs. Gumroad vs. Teachable | ⬜ Pending user decision (Gumroad recommended — established trading education audience, free lead magnet + paid bundle model validated by market) |
 | 6 | SVG vs. CSS for pattern diagrams | CSS divs (current) vs. inline SVG | ✅ **CSS for simple elements** (current system preserved), **inline SVG for complex pattern diagrams** (candlestick formations, annotated chart patterns). TradingView uses SVG as industry standard; static PNG competitors use raster. SVG enables screenshot-quality at any resolution. Source: ig_competitor_audit.md |
 | 7 | Vertical format | Build Stories/TikTok variants in Phase D or later | ⬜ Pending user decision |
+| 8 | Content design per platform | Which platform to design content for first, cadence, format specifics | ⬜ **Deferred — return after build phases.** User leans YouTube. Core audience: day traders + people learning to day trade. All platform research is complete in `ig_competitor_audit.md` and ready when this decision is revisited. |
 
 ---
 
