@@ -1,220 +1,392 @@
 <!DOCTYPE html>
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot | add class="social square" for 1080×1080px -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FINN — Performance Metrics Reference</title>
 <style>
-  :root {
-    --bg: #0d1117;
-    --card: #161b22;
-    --border: #30363d;
-    --text: #e6edf3;
-    --blue: #58a6ff;
-    --green: #3fb950;
-    --red: #f85149;
-    --amber: #d29922;
-    --muted: #8b949e;
-    --purple: #bc8cff;
-  }
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --blue: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --amber: #d29922;
+  --muted: #8b949e;
+  --purple: #bc8cff;
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    font-size: 13px;
-    line-height: 1.5;
-    padding: 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .header {
-    border-bottom: 2px solid var(--blue);
-    padding-bottom: 12px;
-    margin-bottom: 20px;
-  }
-  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .finn-tag { font-size: 11px; color: var(--blue); letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-  h1 { font-size: 22px; font-weight: 700; color: var(--text); }
-  .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .badge { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: var(--muted); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 28px 24px;
+  max-width: 1160px;
+  margin: 0 auto;
+}
 
-  .section-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 10px; margin-top: 20px;
-  }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; padding: 20px 24px; }
+body.social.square { width: 1080px; min-height: 1080px; }
 
-  .framing-box {
-    background: var(--card); border: 1px solid var(--blue); border-left: 4px solid var(--blue);
-    border-radius: 6px; padding: 12px 16px; margin-bottom: 20px;
-  }
-  .framing-box p { color: var(--text); font-size: 12px; }
-  .framing-box strong { color: var(--blue); }
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* Primary metric cards */
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
+/* ── Header ── */
+.header { margin-bottom: 18px; }
+.header-inner {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.finn-tag {
+  font-size: 10px; color: var(--blue); letter-spacing: 2.5px;
+  font-weight: 700; text-transform: uppercase; margin-bottom: 5px;
+  display: flex; align-items: center; gap: 7px;
+}
+.live-dot {
+  width: 7px; height: 7px; background: var(--green); border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(63,185,80,0.5); }
+  50%      { opacity:.8; box-shadow:0 0 0 6px rgba(63,185,80,0); }
+}
+h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.3px; }
+.subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; max-width: 520px; }
+.header-badge {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 12px; font-size: 11px; color: var(--muted);
+}
 
-  .metric-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
+/* Metric strip */
+.metric-strip {
+  display: flex; background: var(--card);
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.strip-item {
+  flex: 1; padding: 9px 14px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.strip-item:last-child { border-right: none; }
+.strip-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.strip-value { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.strip-sub { font-size: 9px; color: var(--muted); }
 
-  .metric-header {
-    padding: 10px 14px 8px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .metric-name { font-size: 15px; font-weight: 700; color: var(--text); }
-  .metric-abbrev {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--blue);
-    background: rgba(88,166,255,0.1);
-    border: 1px solid rgba(88,166,255,0.2);
-    border-radius: 4px;
-    padding: 2px 8px;
-  }
+/* ── Section labels ── */
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px; margin-top: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .metric-body { padding: 12px 14px; }
+/* ── Framing box ── */
+.framing-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 4px solid var(--blue); border-radius: 6px;
+  padding: 12px 16px; margin-bottom: 20px;
+}
+.framing-box p { color: var(--text); font-size: 12px; line-height: 1.7; }
+.framing-box strong { color: var(--blue); }
 
-  .metric-formula {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 10px;
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 11px;
-    color: var(--purple);
-    margin-bottom: 10px;
-    line-height: 1.5;
-  }
+/* ── Metric cards ── */
+.metrics-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-bottom: 24px;
+}
+.metric-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med);
+}
+.metric-card.c-blue:hover  { transform:translateY(-3px); border-color:rgba(88,166,255,.35); box-shadow:0 8px 28px var(--blue-glow),0 4px 12px rgba(0,0,0,.3); }
+.metric-card.c-red:hover   { transform:translateY(-3px); border-color:rgba(248,81,73,.35);  box-shadow:0 8px 28px var(--red-glow),0 4px 12px rgba(0,0,0,.3); }
+.metric-card.c-amber:hover { transform:translateY(-3px); border-color:rgba(210,153,34,.35); box-shadow:0 8px 28px var(--amber-glow),0 4px 12px rgba(0,0,0,.3); }
+.metric-card.c-purple:hover{ transform:translateY(-3px); border-color:rgba(188,140,255,.35);box-shadow:0 8px 28px rgba(188,140,255,.12),0 4px 12px rgba(0,0,0,.3); }
 
-  .metric-what { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.card-accent { height: 3px; }
+.c-blue  .card-accent { background: linear-gradient(90deg,var(--blue),rgba(88,166,255,.3)); }
+.c-red   .card-accent { background: linear-gradient(90deg,var(--red),rgba(248,81,73,.3)); }
+.c-amber .card-accent { background: linear-gradient(90deg,var(--amber),rgba(210,153,34,.3)); }
+.c-purple.card-accent,
+.c-purple .card-accent { background: linear-gradient(90deg,var(--purple),rgba(188,140,255,.3)); }
 
-  .thresholds-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 6px;
-  }
-  .threshold-rows { display: flex; flex-direction: column; gap: 3px; }
-  .threshold-row {
-    display: flex; align-items: center; gap: 8px;
-    padding: 4px 6px; border-radius: 3px;
-  }
-  .th-range { font-size: 11px; font-weight: 700; font-family: monospace; min-width: 90px; }
-  .th-label { font-size: 11px; flex: 1; }
-  .th-action { font-size: 10px; }
+.metric-header {
+  padding: 12px 16px 10px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.metric-name { font-size: 15px; font-weight: 700; color: var(--text); }
+.metric-abbrev {
+  font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 4px;
+}
+.c-blue   .metric-abbrev { color:var(--blue);   background:rgba(88,166,255,.1);  border:1px solid rgba(88,166,255,.2);  }
+.c-red    .metric-abbrev { color:var(--red);    background:rgba(248,81,73,.1);   border:1px solid rgba(248,81,73,.2);   }
+.c-amber  .metric-abbrev { color:var(--amber);  background:rgba(210,153,34,.1);  border:1px solid rgba(210,153,34,.2);  }
+.c-purple .metric-abbrev { color:var(--purple); background:rgba(188,140,255,.1); border:1px solid rgba(188,140,255,.2); }
 
-  .row-great  { background: rgba(63,185,80,.08); }
-  .row-good   { background: rgba(88,166,255,.08); }
-  .row-ok     { background: rgba(210,153,34,.08); }
-  .row-bad    { background: rgba(248,81,73,.08); }
+.metric-body { padding: 14px 16px; }
+.metric-formula {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  padding: 10px 12px; font-family: 'Consolas','Courier New',monospace;
+  font-size: 11px; color: var(--purple); margin-bottom: 10px; line-height: 1.65;
+}
+.metric-what { font-size: 11px; color: var(--muted); margin-bottom: 12px; line-height: 1.6; }
 
-  .color-great { color: var(--green); }
-  .color-good  { color: var(--blue); }
-  .color-ok    { color: var(--amber); }
-  .color-bad   { color: var(--red); }
+/* Signal gauge */
+.gauge-wrap { margin-bottom: 12px; }
+.gauge-label-row {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;
+}
+.gauge-title { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.gauge-target { font-size: 9px; color: var(--green); font-weight: 600; }
+.gauge-track {
+  height: 6px; background: rgba(255,255,255,.06);
+  border-radius: 3px; overflow: hidden;
+}
+.gauge-fill {
+  height: 100%; border-radius: 3px;
+  width: 0; transition: width 1.2s var(--ease-out);
+}
+.gauge-zones { display: flex; gap: 10px; margin-top: 5px; flex-wrap: wrap; }
+.gz { display: flex; align-items: center; gap: 3px; font-size: 9px; color: var(--muted); }
+.gz-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 
-  /* Python snippet */
-  .code-section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 14px;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-  }
-  .code-title { font-size: 11px; font-weight: 700; color: var(--text); }
-  .code-lang { font-size: 10px; color: var(--muted); }
-  pre.code-block {
-    padding: 12px 14px;
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 11px;
-    line-height: 1.6;
-    color: var(--text);
-    overflow-x: auto;
-    white-space: pre;
-  }
-  .c-comment { color: var(--muted); }
-  .c-keyword  { color: var(--purple); }
-  .c-func     { color: var(--blue); }
-  .c-string   { color: var(--green); }
-  .c-num      { color: var(--amber); }
+/* Thresholds */
+.thresholds-label { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.threshold-rows { display: flex; flex-direction: column; gap: 3px; }
+.threshold-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 8px; border-radius: 4px;
+  transition: filter var(--dur-fast);
+}
+.threshold-row:hover { filter: brightness(1.15); }
+.th-range { font-size: 11px; font-weight: 700; font-family: monospace; font-variant-numeric: tabular-nums; min-width: 92px; }
+.th-label { font-size: 11px; flex: 1; color: var(--text); }
+.row-great { background: rgba(63,185,80,.09); }
+.row-good  { background: rgba(88,166,255,.09); }
+.row-ok    { background: rgba(210,153,34,.09); }
+.row-bad   { background: rgba(248,81,73,.09); }
+.color-great { color: var(--green); }
+.color-good  { color: var(--blue); }
+.color-ok    { color: var(--amber); }
+.color-bad   { color: var(--red); }
+.tag { display:inline-block; padding:2px 7px; border-radius:4px; font-size:10px; font-weight:600; }
+.tag-g { background:rgba(63,185,80,.15); color:var(--green); }
+.tag-b { background:rgba(88,166,255,.12); color:var(--blue); }
+.tag-a { background:rgba(210,153,34,.15); color:var(--amber); }
+.tag-r { background:rgba(248,81,73,.15); color:var(--red); }
 
-  /* Interpretation matrix */
-  .interp-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .interp-table th {
-    background: var(--bg); color: var(--muted); font-size: 10px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase; padding: 8px 12px;
-    text-align: left; border-bottom: 1px solid var(--border);
-  }
-  .interp-table td {
-    padding: 8px 12px; font-size: 11px; border-bottom: 1px solid var(--border); vertical-align: top;
-  }
-  .interp-table tr:last-child td { border-bottom: none; }
-  .interp-table tr:hover td { background: rgba(88,166,255,.04); }
+/* ── Expectancy Calculator ── */
+.calc-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-bottom: 24px;
+}
+.calc-header {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(88,166,255,.04);
+}
+.calc-icon {
+  width: 30px; height: 30px;
+  background: rgba(88,166,255,.12); border: 1px solid rgba(88,166,255,.25);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.calc-head-text { font-size: 13px; font-weight: 700; color: var(--text); }
+.calc-head-sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.calc-body {
+  padding: 16px; display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; align-items: end;
+}
+.calc-field label {
+  display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+.calc-field input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 10px; color: var(--text);
+  font-size: 14px; font-family: 'Consolas', monospace;
+  font-variant-numeric: tabular-nums; outline: none;
+  transition: border-color var(--dur-fast);
+}
+.calc-field input:focus { border-color: var(--blue); }
+.calc-result {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 10px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.calc-result-label { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
+.calc-result-value {
+  font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums;
+  transition: color var(--dur-med);
+}
+.calc-result-verdict { font-size: 10px; font-weight: 600; transition: color var(--dur-med); }
 
-  .tag { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; font-weight:600; }
-  .tag-g { background:rgba(63,185,80,.15); color:var(--green); }
-  .tag-b { background:rgba(88,166,255,.12); color:var(--blue); }
-  .tag-a { background:rgba(210,153,34,.15); color:var(--amber); }
-  .tag-r { background:rgba(248,81,73,.15); color:var(--red); }
+/* ── Code section ── */
+.code-section {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-bottom: 24px;
+}
+.code-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 9px 14px; border-bottom: 1px solid var(--border); background: var(--bg);
+}
+.code-title { font-size: 11px; font-weight: 700; color: var(--text); }
+.code-lang {
+  font-size: 10px; color: var(--muted); background: var(--card);
+  border: 1px solid var(--border); padding: 2px 7px; border-radius: 4px;
+}
+pre.code-block {
+  padding: 14px 16px; font-family: 'Consolas','Courier New',monospace;
+  font-size: 11px; line-height: 1.7; color: var(--text);
+  overflow-x: auto; white-space: pre;
+}
+.c-comment { color: var(--muted); }
+.c-keyword  { color: var(--purple); }
+.c-func     { color: var(--blue); }
+.c-string   { color: var(--green); }
+.c-num      { color: var(--amber); }
 
-  .finn-voice {
-    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--amber);
-    border-radius: 6px; padding: 12px 16px; margin-top: 20px;
-  }
-  .finn-voice-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
-  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; }
+/* ── Interpretation table ── */
+.interp-table {
+  width: 100%; border-collapse: collapse; background: var(--card);
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px;
+}
+.interp-table th {
+  background: var(--bg); color: var(--muted); font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; padding: 9px 12px;
+  text-align: left; border-bottom: 1px solid var(--border);
+}
+.interp-table td {
+  padding: 9px 12px; font-size: 11px; border-bottom: 1px solid var(--border);
+  vertical-align: top; font-variant-numeric: tabular-nums;
+}
+.interp-table tr:last-child td { border-bottom: none; }
+.interp-table .data-row {
+  cursor: pointer; transition: background var(--dur-fast);
+}
+.interp-table .data-row:hover td { background: rgba(88,166,255,.05); }
+.interp-table .data-row.expanded td:first-child::before {
+  content: '▾ '; font-size: 9px; color: var(--blue);
+}
+.interp-table .data-row td:first-child::before {
+  content: '▸ '; font-size: 9px; color: var(--muted);
+}
+.detail-row { display: none; }
+.detail-row.open { display: table-row; }
+.detail-row td {
+  background: rgba(88,166,255,.03); font-size: 11px; color: var(--muted);
+  padding: 8px 16px 12px 28px; font-style: italic;
+  border-top: 1px dashed var(--border);
+}
 
-  @media print {
-    body { background: white; color: black; padding: 12px; }
-    .metric-card, .code-section, .interp-table, .framing-box, .finn-voice { border-color: #ccc !important; }
-    pre.code-block, .metric-formula { background: #f6f8fa; color: black; }
-  }
+/* ── FINN voice ── */
+.finn-voice {
+  background: rgba(210,153,34,.05); border: 1px solid rgba(210,153,34,.25);
+  border-left: 4px solid var(--amber); border-radius: 8px;
+  padding: 14px 18px; backdrop-filter: blur(12px);
+}
+.finn-voice-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 7px;
+}
+.finn-voice p { font-size: 12px; color: var(--text); font-style: italic; line-height: 1.7; }
+
+/* ── Footer ── */
+.footer {
+  margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-left { font-size: 11px; color: var(--muted); }
+.footer-right { display: flex; gap: 10px; align-items: center; }
+.footer-tag {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 700; color: var(--blue);
+}
+.footer-date { font-size: 10px; color: var(--muted); }
+
+@media print {
+  body { background: white; color: black; padding: 12px; }
+  .metric-card, .code-section, .interp-table, .framing-box, .finn-voice, .calc-card { border-color: #ccc !important; }
+  pre.code-block, .metric-formula { background: #f6f8fa; color: black; }
+  .card-accent { display: none; }
+  .reveal { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-top">
+<div class="header reveal">
+  <div class="header-inner">
     <div>
-      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <div class="finn-tag">
+        <span class="live-dot"></span>
+        FINN — Quantitative Trading
+      </div>
       <h1>Performance Metrics Reference</h1>
-      <div class="subtitle">Sharpe ratio, max drawdown, win rate, expectancy, IC — definitions, formulas, thresholds</div>
+      <div class="subtitle">Sharpe · Drawdown · Expectancy · IC — formulas, thresholds, interpretation matrix</div>
     </div>
-    <div class="badge">Tier 2 · FINN-Specific</div>
+    <div class="header-badge">T1 · FINN-Specific</div>
+  </div>
+  <div class="metric-strip">
+    <div class="strip-item">
+      <div class="strip-label">Sharpe Floor</div>
+      <div class="strip-value color-good">&gt; 1.0</div>
+      <div class="strip-sub">min tradeable</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">IC Floor</div>
+      <div class="strip-value color-good">&gt; 0.05</div>
+      <div class="strip-sub">good signal quality</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Max Drawdown</div>
+      <div class="strip-value color-great">&lt; 15%</div>
+      <div class="strip-sub">acceptable</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Win Rate</div>
+      <div class="strip-value color-ok">40 – 70%</div>
+      <div class="strip-sub">typical range</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Expectancy</div>
+      <div class="strip-value color-good">&gt; $0.50/R</div>
+      <div class="strip-sub">tradeable edge</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">p-value</div>
+      <div class="strip-value color-great">&lt; 0.05</div>
+      <div class="strip-sub">statistical sig.</div>
+    </div>
   </div>
 </div>
 
-<div class="framing-box">
-  <p><strong>FINN framing rule:</strong> A strategy has a win rate. A strategy has a Sharpe ratio. These are not the same thing, and neither alone tells you whether the strategy is worth trading. A complete performance picture requires at least: Sharpe (risk-adjusted return), max drawdown (survivability), expectancy (per-trade profit expectation), and IC (signal quality). Know what each measures before you cite it.</p>
+<div class="framing-box reveal">
+  <p><strong>FINN framing rule:</strong> A strategy has a win rate. A strategy has a Sharpe ratio. These are not the same thing, and neither alone tells you whether the strategy is worth trading. A complete performance picture requires at minimum: Sharpe (risk-adjusted return), max drawdown (survivability), expectancy (per-trade profit expectation), and IC (signal quality). Know what each measures before you cite it.</p>
 </div>
 
 <div class="section-label">Core Metrics — Definitions, Formulas, Thresholds</div>
@@ -222,7 +394,8 @@
 <div class="metrics-grid">
 
   <!-- Sharpe Ratio -->
-  <div class="metric-card">
+  <div class="metric-card c-blue reveal">
+    <div class="card-accent"></div>
     <div class="metric-header">
       <div class="metric-name">Sharpe Ratio</div>
       <div class="metric-abbrev">SR</div>
@@ -234,18 +407,35 @@ R_p  = portfolio return (annualized)
 R_f  = risk-free rate (~5% currently)
 σ_p  = annualized std dev of returns</div>
       <div class="metric-what">Measures return per unit of risk. A Sharpe of 1.0 means you earned 1× your volatility above the risk-free rate. Does not distinguish between upside and downside volatility.</div>
+      <div class="gauge-wrap">
+        <div class="gauge-label-row">
+          <span class="gauge-title">Quality Gauge</span>
+          <span class="gauge-target">Target: SR &gt; 1.0</span>
+        </div>
+        <div class="gauge-track">
+          <div class="gauge-fill" data-target="67"
+               style="background:linear-gradient(90deg,var(--red) 0%,var(--amber) 33%,var(--blue) 58%,var(--green) 85%)"></div>
+        </div>
+        <div class="gauge-zones">
+          <div class="gz"><div class="gz-dot" style="background:var(--red)"></div>&lt;0.5 reject</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--amber)"></div>0.5–1.0 refine</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--blue)"></div>1.0–2.0 trade</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--green)"></div>&gt;2.0 exceptional</div>
+        </div>
+      </div>
       <div class="thresholds-label">Thresholds</div>
       <div class="threshold-rows">
-        <div class="threshold-row row-great"><span class="th-range color-great">&gt; 2.0</span><span class="th-label">Exceptional — institutional quality</span><span class="th-action tag tag-g">Strong signal</span></div>
-        <div class="threshold-row row-good"><span class="th-range color-good">1.0 – 2.0</span><span class="th-label">Good — tradeable edge</span><span class="th-action tag tag-b">Trade it</span></div>
-        <div class="threshold-row row-ok"><span class="th-range color-ok">0.5 – 1.0</span><span class="th-label">Marginal — refine before allocating</span><span class="th-action tag tag-a">Refine</span></div>
-        <div class="threshold-row row-bad"><span class="th-range color-bad">&lt; 0.5</span><span class="th-label">Not worth the risk — rebuild</span><span class="th-action tag tag-r">Reject</span></div>
+        <div class="threshold-row row-great"><span class="th-range color-great">&gt; 2.0</span><span class="th-label">Exceptional — institutional quality</span><span class="tag tag-g">Strong</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">1.0 – 2.0</span><span class="th-label">Good — tradeable edge</span><span class="tag tag-b">Trade</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">0.5 – 1.0</span><span class="th-label">Marginal — refine before allocating</span><span class="tag tag-a">Refine</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">&lt; 0.5</span><span class="th-label">Not worth the risk — rebuild</span><span class="tag tag-r">Reject</span></div>
       </div>
     </div>
   </div>
 
   <!-- Max Drawdown -->
-  <div class="metric-card">
+  <div class="metric-card c-red reveal">
+    <div class="card-accent"></div>
     <div class="metric-header">
       <div class="metric-name">Maximum Drawdown</div>
       <div class="metric-abbrev">MDD</div>
@@ -257,18 +447,35 @@ Peak   = highest portfolio value before trough
 Trough = lowest portfolio value after peak
 Expressed as a negative percentage</div>
       <div class="metric-what">Measures the worst peak-to-trough loss. Tells you the most pain you would have endured staying in the strategy. More important than average return for position sizing decisions.</div>
+      <div class="gauge-wrap">
+        <div class="gauge-label-row">
+          <span class="gauge-title">Risk Gauge</span>
+          <span class="gauge-target">Target: MDD &lt; 15%</span>
+        </div>
+        <div class="gauge-track">
+          <div class="gauge-fill" data-target="38"
+               style="background:linear-gradient(90deg,var(--green) 0%,var(--blue) 28%,var(--amber) 58%,var(--red) 100%)"></div>
+        </div>
+        <div class="gauge-zones">
+          <div class="gz"><div class="gz-dot" style="background:var(--green)"></div>&lt;10% excellent</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--blue)"></div>10–20% watch</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--amber)"></div>20–35% reduce</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--red)"></div>&gt;35% halt</div>
+        </div>
+      </div>
       <div class="thresholds-label">Thresholds</div>
       <div class="threshold-rows">
-        <div class="threshold-row row-great"><span class="th-range color-great">&lt; 10%</span><span class="th-label">Excellent capital preservation</span><span class="th-action tag tag-g">Continue</span></div>
-        <div class="threshold-row row-good"><span class="th-range color-good">10% – 20%</span><span class="th-label">Acceptable — monitor closely</span><span class="th-action tag tag-b">Watch</span></div>
-        <div class="threshold-row row-ok"><span class="th-range color-ok">20% – 35%</span><span class="th-label">High — reduce position size</span><span class="th-action tag tag-a">Reduce</span></div>
-        <div class="threshold-row row-bad"><span class="th-range color-bad">&gt; 35%</span><span class="th-label">Catastrophic — halt trading</span><span class="th-action tag tag-r">Halt</span></div>
+        <div class="threshold-row row-great"><span class="th-range color-great">&lt; 10%</span><span class="th-label">Excellent capital preservation</span><span class="tag tag-g">Continue</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">10% – 20%</span><span class="th-label">Acceptable — monitor closely</span><span class="tag tag-b">Watch</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">20% – 35%</span><span class="th-label">High — reduce position size</span><span class="tag tag-a">Reduce</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">&gt; 35%</span><span class="th-label">Catastrophic — halt trading</span><span class="tag tag-r">Halt</span></div>
       </div>
     </div>
   </div>
 
   <!-- Win Rate + Expectancy -->
-  <div class="metric-card">
+  <div class="metric-card c-amber reveal">
+    <div class="card-accent"></div>
     <div class="metric-header">
       <div class="metric-name">Win Rate + Expectancy</div>
       <div class="metric-abbrev">WR / E</div>
@@ -277,49 +484,116 @@ Expressed as a negative percentage</div>
       <div class="metric-formula">WR = Winning trades / Total trades
 
 E  = (WR × Avg_Win) − (LR × Avg_Loss)
-LR = 1 − WR (loss rate)
+LR = 1 − WR  (loss rate)
 E &gt; 0 required for profitable strategy</div>
       <div class="metric-what">Win rate alone is meaningless. A strategy with 40% WR and 3:1 R:R outperforms a 70% WR strategy with 0.5:1 R:R. Expectancy combines both into a single per-trade profit expectation.</div>
+      <div class="gauge-wrap">
+        <div class="gauge-label-row">
+          <span class="gauge-title">Expectancy Gauge</span>
+          <span class="gauge-target">Target: E &gt; $0.50/R</span>
+        </div>
+        <div class="gauge-track">
+          <div class="gauge-fill" data-target="72"
+               style="background:linear-gradient(90deg,var(--red) 0%,var(--amber) 25%,var(--blue) 55%,var(--green) 85%)"></div>
+        </div>
+        <div class="gauge-zones">
+          <div class="gz"><div class="gz-dot" style="background:var(--red)"></div>≤$0 reject</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--amber)"></div>$0–0.50 refine</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--blue)"></div>$0.50–1.50 trade</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--green)"></div>&gt;$1.50 scale</div>
+        </div>
+      </div>
       <div class="thresholds-label">Expectancy Thresholds</div>
       <div class="threshold-rows">
-        <div class="threshold-row row-great"><span class="th-range color-great">&gt; $1.50/R</span><span class="th-label">Strong edge per unit of risk</span><span class="th-action tag tag-g">Scale up</span></div>
-        <div class="threshold-row row-good"><span class="th-range color-good">$0.50–$1.50/R</span><span class="th-label">Tradeable — consistent execution needed</span><span class="th-action tag tag-b">Trade it</span></div>
-        <div class="threshold-row row-ok"><span class="th-range color-ok">$0.01–$0.50/R</span><span class="th-label">Slim edge — transaction costs matter</span><span class="th-action tag tag-a">Refine</span></div>
-        <div class="threshold-row row-bad"><span class="th-range color-bad">≤ $0</span><span class="th-label">Negative expectancy — losing strategy</span><span class="th-action tag tag-r">Reject</span></div>
+        <div class="threshold-row row-great"><span class="th-range color-great">&gt; $1.50/R</span><span class="th-label">Strong edge per unit of risk</span><span class="tag tag-g">Scale up</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">$0.50–$1.50/R</span><span class="th-label">Tradeable — consistent execution needed</span><span class="tag tag-b">Trade</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">$0.01–$0.50/R</span><span class="th-label">Slim edge — transaction costs matter</span><span class="tag tag-a">Refine</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">≤ $0</span><span class="th-label">Negative expectancy — losing strategy</span><span class="tag tag-r">Reject</span></div>
       </div>
     </div>
   </div>
 
   <!-- Information Coefficient -->
-  <div class="metric-card">
+  <div class="metric-card c-purple reveal">
+    <div class="card-accent"></div>
     <div class="metric-header">
       <div class="metric-name">Information Coefficient</div>
       <div class="metric-abbrev">IC</div>
     </div>
     <div class="metric-body">
       <div class="metric-formula">IC = Spearman_correlation(
-         signal_today,
-         forward_return_N_days
-     )
+    signal_today,
+    forward_return_N_days
+)
 
-Ranges: −1.0 to +1.0
+Range: −1.0 to +1.0
 IC = 0 → signal has no predictive power</div>
-      <div class="metric-what">FINN's primary signal quality measure. Measures rank correlation between signal values and subsequent returns. An IC of 0.10 is considered strong in professional quant work — most real edges are IC 0.03–0.08.</div>
+      <div class="metric-what">FINN's primary signal quality measure. Rank correlation between signal values and subsequent returns. IC of 0.10 is exceptional in professional quant work — most real edges live in IC 0.03–0.08.</div>
+      <div class="gauge-wrap">
+        <div class="gauge-label-row">
+          <span class="gauge-title">IC Quality Gauge</span>
+          <span class="gauge-target">Target: IC &gt; 0.05</span>
+        </div>
+        <div class="gauge-track">
+          <div class="gauge-fill" data-target="58"
+               style="background:linear-gradient(90deg,var(--red) 0%,var(--amber) 30%,var(--blue) 57%,var(--green) 85%)"></div>
+        </div>
+        <div class="gauge-zones">
+          <div class="gz"><div class="gz-dot" style="background:var(--red)"></div>&lt;0.03 no edge</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--amber)"></div>0.03–0.05 combine</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--blue)"></div>0.05–0.10 trade</div>
+          <div class="gz"><div class="gz-dot" style="background:var(--green)"></div>&gt;0.10 exceptional</div>
+        </div>
+      </div>
       <div class="thresholds-label">IC Thresholds (FINN Standards)</div>
       <div class="threshold-rows">
-        <div class="threshold-row row-great"><span class="th-range color-great">&gt; 0.10</span><span class="th-label">Exceptional — publish or scale</span><span class="th-action tag tag-g">Strong</span></div>
-        <div class="threshold-row row-good"><span class="th-range color-good">0.05 – 0.10</span><span class="th-label">Good — tradeable signal quality</span><span class="th-action tag tag-b">Trade</span></div>
-        <div class="threshold-row row-ok"><span class="th-range color-ok">0.03 – 0.05</span><span class="th-label">Weak — needs combination with other signals</span><span class="th-action tag tag-a">Combine</span></div>
-        <div class="threshold-row row-bad"><span class="th-range color-bad">&lt; 0.03</span><span class="th-label">No edge — rebuild</span><span class="th-action tag tag-r">Reject</span></div>
+        <div class="threshold-row row-great"><span class="th-range color-great">&gt; 0.10</span><span class="th-label">Exceptional — publish or scale</span><span class="tag tag-g">Strong</span></div>
+        <div class="threshold-row row-good"><span class="th-range color-good">0.05 – 0.10</span><span class="th-label">Good — tradeable signal quality</span><span class="tag tag-b">Trade</span></div>
+        <div class="threshold-row row-ok"><span class="th-range color-ok">0.03 – 0.05</span><span class="th-label">Weak — needs combination with other signals</span><span class="tag tag-a">Combine</span></div>
+        <div class="threshold-row row-bad"><span class="th-range color-bad">&lt; 0.03</span><span class="th-label">No edge — rebuild</span><span class="tag tag-r">Reject</span></div>
       </div>
     </div>
   </div>
 
 </div><!-- end metrics-grid -->
 
-<!-- Python code reference -->
+<!-- Expectancy Calculator -->
+<div class="section-label">Interactive — Expectancy Calculator</div>
+<div class="calc-card reveal">
+  <div class="calc-header">
+    <div class="calc-icon">⚡</div>
+    <div>
+      <div class="calc-head-text">Expectancy Calculator</div>
+      <div class="calc-head-sub">Enter win rate and R values — see expected profit per trade in real time</div>
+    </div>
+  </div>
+  <div class="calc-body">
+    <div class="calc-field">
+      <label>Win Rate (%)</label>
+      <input type="number" id="calc-wr" value="45" min="1" max="99" step="1">
+    </div>
+    <div class="calc-field">
+      <label>Avg Win ($R)</label>
+      <input type="number" id="calc-aw" value="2.00" min="0.01" step="0.01">
+    </div>
+    <div class="calc-field">
+      <label>Avg Loss ($R)</label>
+      <input type="number" id="calc-al" value="1.00" min="0.01" step="0.01">
+    </div>
+    <div class="calc-field">
+      <label>Result</label>
+      <div class="calc-result">
+        <div class="calc-result-label">Expectancy / trade</div>
+        <div class="calc-result-value" id="calc-output">$0.45</div>
+        <div class="calc-result-verdict" id="calc-verdict">Tradeable edge</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Python Reference -->
 <div class="section-label">Python Reference — Compute All 4 Metrics</div>
-<div class="code-section">
+<div class="code-section reveal">
   <div class="code-header">
     <div class="code-title">performance_metrics.py — FINN standard calculation block</div>
     <div class="code-lang">Python 3.11</div>
@@ -345,7 +619,7 @@ IC = 0 → signal has no predictive power</div>
     wins   = trade_pnl[trade_pnl &gt; <span class="c-num">0</span>]
     losses = trade_pnl[trade_pnl &lt; <span class="c-num">0</span>]
     wr     = <span class="c-func">len</span>(wins) / <span class="c-func">len</span>(trade_pnl)
-    avg_w  = wins.mean()  <span class="c-keyword">if</span> <span class="c-func">len</span>(wins) &gt; <span class="c-num">0</span> <span class="c-keyword">else</span> <span class="c-num">0</span>
+    avg_w  = wins.mean()   <span class="c-keyword">if</span> <span class="c-func">len</span>(wins)   &gt; <span class="c-num">0</span> <span class="c-keyword">else</span> <span class="c-num">0</span>
     avg_l  = losses.mean() <span class="c-keyword">if</span> <span class="c-func">len</span>(losses) &gt; <span class="c-num">0</span> <span class="c-keyword">else</span> <span class="c-num">0</span>
     <span class="c-keyword">return</span> wr * avg_w + (<span class="c-num">1</span> - wr) * avg_l
 
@@ -357,16 +631,16 @@ IC = 0 → signal has no predictive power</div>
 <span class="c-comment"># --- Summary ---</span>
 <span class="c-keyword">def</span> <span class="c-func">performance_summary</span>(returns, equity, trade_pnl, signal, fwd_ret):
     <span class="c-keyword">return</span> {
-        <span class="c-string">'sharpe'</span>:    <span class="c-func">round</span>(<span class="c-func">sharpe_ratio</span>(returns), <span class="c-num">3</span>),
-        <span class="c-string">'max_dd'</span>:    <span class="c-func">round</span>(<span class="c-func">max_drawdown</span>(equity) * <span class="c-num">100</span>, <span class="c-num">2</span>),
+        <span class="c-string">'sharpe'</span>:     <span class="c-func">round</span>(<span class="c-func">sharpe_ratio</span>(returns), <span class="c-num">3</span>),
+        <span class="c-string">'max_dd'</span>:     <span class="c-func">round</span>(<span class="c-func">max_drawdown</span>(equity) * <span class="c-num">100</span>, <span class="c-num">2</span>),
         <span class="c-string">'expectancy'</span>: <span class="c-func">round</span>(<span class="c-func">expectancy</span>(trade_pnl), <span class="c-num">4</span>),
-        <span class="c-string">'ic'</span>:        <span class="c-func">round</span>(<span class="c-func">information_coefficient</span>(signal, fwd_ret), <span class="c-num">4</span>),
+        <span class="c-string">'ic'</span>:         <span class="c-func">round</span>(<span class="c-func">information_coefficient</span>(signal, fwd_ret), <span class="c-num">4</span>),
     }</pre>
 </div>
 
 <!-- Interpretation matrix -->
-<div class="section-label">Strategy Interpretation Matrix</div>
-<table class="interp-table">
+<div class="section-label">Strategy Interpretation Matrix — click a row for detail</div>
+<table class="interp-table reveal">
   <thead>
     <tr>
       <th>Sharpe</th>
@@ -378,38 +652,111 @@ IC = 0 → signal has no predictive power</div>
     </tr>
   </thead>
   <tbody>
-    <tr>
+    <tr class="data-row" onclick="toggleDetail(this)">
       <td>&gt; 1.5</td><td>&lt; 15%</td><td>&gt; $1.00</td><td>&gt; 0.07</td>
       <td><span class="tag tag-g">Strong edge</span></td>
       <td>Allocate capital; scale methodically</td>
     </tr>
-    <tr>
+    <tr class="detail-row"><td colspan="6">All four metrics confirm a real edge. Size up to your risk rules — never exceed 2% per trade regardless of conviction. Document this baseline; you'll compare future variants against it.</td></tr>
+
+    <tr class="data-row" onclick="toggleDetail(this)">
       <td>1.0–1.5</td><td>15–25%</td><td>$0.50–$1.00</td><td>0.04–0.07</td>
       <td><span class="tag tag-b">Tradeable</span></td>
       <td>Paper trade first; enter at reduced size</td>
     </tr>
-    <tr>
+    <tr class="detail-row"><td colspan="6">Legitimate but not exceptional. Confirm on OOS data before allocating live capital. Start at 50% of target position size and scale only after 20+ trades confirm the edge holds out-of-sample.</td></tr>
+
+    <tr class="data-row" onclick="toggleDetail(this)">
       <td>0.5–1.0</td><td>20–35%</td><td>&gt; $0</td><td>0.03–0.05</td>
       <td><span class="tag tag-a">Marginal</span></td>
       <td>Combine with other signals; do not trade alone</td>
     </tr>
-    <tr>
+    <tr class="detail-row"><td colspan="6">The signal contributes something, but not enough to trade standalone. Add it to a composite signal stack. Re-evaluate the IC in 60 days — marginal signals decay faster than strong ones.</td></tr>
+
+    <tr class="data-row" onclick="toggleDetail(this)">
       <td>High Sharpe</td><td>&gt; 35%</td><td>Any</td><td>Any</td>
       <td><span class="tag tag-r">Suspicious</span></td>
       <td>Check for look-ahead bias or overfitting</td>
     </tr>
-    <tr>
+    <tr class="detail-row"><td colspan="6">A high Sharpe alongside catastrophic drawdown is a contradiction — it almost always means the backtest is leaking future information. Audit your signal calculation for any data that wasn't available at signal time.</td></tr>
+
+    <tr class="data-row" onclick="toggleDetail(this)">
       <td>Any</td><td>Any</td><td>≤ $0</td><td>&lt; 0.03</td>
       <td><span class="tag tag-r">No edge</span></td>
       <td>Return to hypothesis — rebuild from Step 1</td>
     </tr>
+    <tr class="detail-row"><td colspan="6">Negative expectancy and no IC means the strategy has no statistical basis. Do not optimize parameters — generate a new hypothesis. Parameter optimization on a broken signal is how overfitting happens.</td></tr>
   </tbody>
 </table>
 
-<div class="finn-voice">
-  <div class="finn-voice-label">FINN</div>
+<div class="finn-voice reveal">
+  <div class="finn-voice-label">▸ FINN</div>
   <p>"Win rate is a vanity metric. I've seen 70% win-rate strategies blow up and 35% win-rate strategies compound for years. What matters is the combination of Sharpe, drawdown, and expectancy — and none of those matter if the IC says the signal has no predictive power to begin with. Start with IC. Everything else follows."</p>
 </div>
+
+<div class="footer reveal">
+  <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network · Performance Metrics Reference</div>
+  <div class="footer-right">
+    <span class="footer-tag">v2</span>
+    <span class="footer-date">May 2026</span>
+  </div>
+</div>
+
+<script>
+// Scroll reveal with stagger
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Gauge fill on card reveal
+const gaugeObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const fill = e.target.querySelector('.gauge-fill');
+      if (fill) setTimeout(() => { fill.style.width = (fill.dataset.target || 50) + '%'; }, 250);
+      gaugeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.metric-card').forEach(el => gaugeObs.observe(el));
+
+// Interpretation table toggle
+function toggleDetail(row) {
+  const detail = row.nextElementSibling;
+  const isOpen = detail.classList.contains('open');
+  // close all others
+  document.querySelectorAll('.detail-row.open').forEach(r => r.classList.remove('open'));
+  document.querySelectorAll('.data-row.expanded').forEach(r => r.classList.remove('expanded'));
+  if (!isOpen) {
+    detail.classList.add('open');
+    row.classList.add('expanded');
+  }
+}
+
+// Expectancy calculator
+function updateCalc() {
+  const wr = parseFloat(document.getElementById('calc-wr').value) / 100 || 0;
+  const aw = parseFloat(document.getElementById('calc-aw').value) || 0;
+  const al = parseFloat(document.getElementById('calc-al').value) || 0;
+  const e  = (wr * aw) - ((1 - wr) * al);
+  const out = document.getElementById('calc-output');
+  const vrd = document.getElementById('calc-verdict');
+  const sign = e >= 0 ? '$' : '-$';
+  out.textContent = sign + Math.abs(e).toFixed(2) + '/R';
+  if (e > 1.50)      { out.style.color = 'var(--green)';  vrd.style.color = 'var(--green)';  vrd.textContent = 'Strong edge — scale up'; }
+  else if (e > 0.50) { out.style.color = 'var(--blue)';   vrd.style.color = 'var(--blue)';   vrd.textContent = 'Tradeable edge'; }
+  else if (e > 0)    { out.style.color = 'var(--amber)';  vrd.style.color = 'var(--amber)';  vrd.textContent = 'Slim edge — refine first'; }
+  else               { out.style.color = 'var(--red)';    vrd.style.color = 'var(--red)';    vrd.textContent = 'Negative expectancy — reject'; }
+}
+['calc-wr','calc-aw','calc-al'].forEach(id => document.getElementById(id).addEventListener('input', updateCalc));
+updateCalc();
+</script>
 
 </body>
 </html>

@@ -10,17 +10,19 @@ Update `Status`, `Progress`, and `Next session` fields at the END of each work s
 ## Active Projects
 
 ### Infographics Upgrade — Visual Product Rebuild (v1 → v2)
-**Status:** 🟡 In progress — Phase C Session C1 next (2 T1 files)
+**Status:** 🟡 In progress — Phase D Session D2 next (3 net-new social files)
 **Planning doc:** `research/planning/finn_infographics_upgrade_plan.md`
-**Progress:** 4 / 16 sessions complete
+**Progress:** 12 / 16 sessions complete
 
-**Last completed:** Phase B Session B2 — First T1 infographic upgrade (May 12, 2026). Built full v2 upgrade of `resources/infographics/ig_trade_types.html`. Features: 8 interactive trade type cards (d1–d5 difficulty color-coded, gradient accent-top strips, hover lift + glow), click-to-expand detail panels with parameters and FINN notes, tab filter (All / Long-Term / Short-Term / Intraday), IntersectionObserver stagger reveal on card grid (70ms per card), TradingView-style metric strip header (6 metrics), at-a-glance comparison table with colored difficulty dots, glassmorphism FINN recommendation box (backdrop-filter blur), live pulsing dot badge, social media mode (1200×675 and 1080×1080), v2 footer.
+**Last completed:** Phase D Session D1 — 2 net-new social-first tools (May 13, 2026). Built `ig_pattern_quiz.html` and `ig_risk_calculator.html`.
+- `ig_pattern_quiz.html`: 10-question candlestick identification drill. Questions progress from single-candle (Hammer, Shooting Star, Doji, Hanging Man, Inverted Hammer, Dragonfly Doji) to two-candle (Bullish/Bearish Engulfing) to three-candle (Morning Star, Evening Star). Each question: inline SVG candle visual, 4 multiple-choice options, correct/wrong feedback with full explanation, progress bar. End screen: score, percentage, FINN verdict by band (10/10 → pass →  near-miss → not ready), retry button. v2 design system, metric strip, social mode, FINN voice, stagger reveal, v2 footer.
+- `ig_risk_calculator.html`: Live position sizing and risk management calculator. Inputs: account size, risk%, entry price, stop loss, target price. Outputs auto-calculate: dollar risk, stop distance ($+%), position size (shares), position value, portfolio allocation %, R:R ratio with animated gauge, potential gain. Direction detection (long/short) from stop vs. entry. Risk level indicator bar (green ≤2% / amber 2–4% / red >4%). Expectancy calculator: win rate + avg win/loss → expectancy per trade with verdict. 6 FINN risk rules grid. FINN voice, social mode, stagger reveal, v2 footer.
 
-**Next session (Phase C — Session C1):**
-Upgrade next 2 T1 infographic files (check `finn_infographics_upgrade_plan.md` for the ordered T1 file list — B2 proved the template; C1 begins the batch run)
-- Apply same v2 design system established in ig_trade_types.html
-- Each file gets appropriate interactive component from the template (tab switcher, flip cards, expandable rows, or quiz mode — whichever fits content)
-- Confirm social mode at 1200×675px on each file before marking done
+**Next session (Phase D — Session D2):**
+Build 3 remaining net-new social-first files: `ig_market_regime.html` + `ig_trade_anatomy.html` + `ig_bias_cards.html`
+- `ig_market_regime.html`: Bull/Bear/Choppy regime identification framework — visual card with detection criteria per regime and strategy adjustments
+- `ig_trade_anatomy.html`: Single trade entry-to-exit visual walkthrough — step breakdown from signal to sizing to entry to management to exit
+- `ig_bias_cards.html`: 9 cognitive biases as social-shareable flip card deck — front (bias name + definition), back (trading manifestation + FINN countermeasure)
 
 *Full phase sequence, technical architecture, and content plan: see `research/planning/finn_infographics_upgrade_plan.md`*
 

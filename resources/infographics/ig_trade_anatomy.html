@@ -1,0 +1,499 @@
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Trade Anatomy</title>
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+  --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+body.social.square { width: 1080px; min-height: 1080px; }
+
+.page { max-width: 960px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* HEADER */
+.header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.finn-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); text-transform: uppercase; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); padding: 3px 8px; border-radius: 4px; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse-g 2s ease-in-out infinite; }
+@keyframes pulse-g { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
+h1 { font-size: 22px; font-weight: 700; }
+.header-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+/* METRIC STRIP */
+.metric-strip { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 28px; }
+.metric-item { background: var(--card); padding: 10px 14px; }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
+.metric-value { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--blue); }
+
+/* PRICE DIAGRAM */
+.diagram-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 28px; }
+.diagram-header { padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--card-elevated); border-bottom: 1px solid var(--border); }
+.diagram-body { padding: 20px; display: flex; justify-content: center; }
+
+/* MAIN ANATOMY LAYOUT */
+.anatomy-layout { display: grid; grid-template-columns: 200px 1fr; gap: 0; margin-bottom: 24px; }
+@media (max-width: 680px) { .anatomy-layout { grid-template-columns: 1fr; } }
+
+/* PHASE RAIL */
+.phase-rail { padding-right: 0; }
+.phase-block { padding: 0 16px 0 0; margin-bottom: 0; }
+.phase-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; padding: 6px 12px; border-radius: 3px 0 0 3px; border-right: none; text-align: right; }
+.phase-pre { background: rgba(88,166,255,0.1); color: var(--blue); border: 1px solid rgba(88,166,255,0.2); border-right: none; }
+.phase-exec { background: rgba(63,185,80,0.1); color: var(--green); border: 1px solid rgba(63,185,80,0.2); border-right: none; }
+.phase-mgmt { background: rgba(210,153,34,0.1); color: var(--amber); border: 1px solid rgba(210,153,34,0.2); border-right: none; }
+.phase-post { background: rgba(139,148,158,0.1); color: var(--muted); border: 1px solid rgba(139,148,158,0.2); border-right: none; }
+
+/* STEPS COLUMN */
+.steps-col { border-left: 1px solid var(--border); }
+
+/* STEP CARD */
+.step-card { border-bottom: 1px solid var(--border); transition: background var(--dur-fast); }
+.step-card:last-child { border-bottom: none; }
+.step-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; user-select: none; }
+.step-header:hover { background: rgba(255,255,255,0.02); }
+.step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; }
+.sn-blue { background: var(--blue-glow); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+.sn-green { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.sn-amber { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(210,153,34,0.3); }
+.sn-muted { background: rgba(139,148,158,0.1); color: var(--muted); border: 1px solid var(--border); }
+.step-title-wrap { flex: 1; }
+.step-title { font-size: 14px; font-weight: 700; }
+.step-tagline { font-size: 12px; color: var(--muted); }
+.step-chevron { color: var(--muted); font-size: 12px; transition: transform var(--dur-med) var(--ease-out); }
+.step-card.open .step-chevron { transform: rotate(180deg); }
+
+/* STEP DETAIL */
+.step-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-out); }
+.step-card.open .step-detail { max-height: 400px; }
+.sd-body { padding: 0 18px 18px 58px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 680px) { .sd-body { grid-template-columns: 1fr; padding-left: 18px; } }
+
+.sd-block { background: var(--card-elevated); border-radius: 5px; padding: 12px 14px; }
+.sd-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+.sd-text { font-size: 12px; line-height: 1.6; color: var(--text); }
+.sd-warn { font-size: 12px; line-height: 1.6; color: var(--red); }
+.sd-check { font-size: 12px; line-height: 1.6; color: var(--blue); }
+.sd-full { grid-column: 1 / -1; }
+
+.checklist { list-style: none; margin-top: 4px; }
+.checklist li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; margin-bottom: 4px; line-height: 1.4; }
+.checklist li::before { content: '·'; color: var(--muted); flex-shrink: 0; margin-top: 1px; }
+
+/* OUTCOME GRID */
+.outcome-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 600px) { .outcome-grid { grid-template-columns: 1fr; } }
+.outcome-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; }
+.oc-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+.oc-hit { color: var(--green); border-top: 2px solid var(--green); }
+.oc-stop { color: var(--red); border-top: 2px solid var(--red); }
+.oc-rule { color: var(--amber); border-top: 2px solid var(--amber); }
+.oc-body { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* FINN VOICE */
+.finn-voice { position: relative; background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.3); border-radius: 8px; padding: 18px 20px 18px 28px; font-size: 13px; line-height: 1.7; backdrop-filter: blur(12px); }
+.finn-voice::before { content: 'FINN'; position: absolute; top: -1px; left: 16px; transform: translateY(-50%); background: var(--amber); color: #0d1117; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 3px; }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 12px; color: var(--muted); }
+.footer-right { font-size: 11px; color: var(--border); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header reveal">
+    <div class="header-top">
+      <span class="finn-logo">FINN</span>
+      <div class="live-dot"></div>
+    </div>
+    <h1>Trade Anatomy</h1>
+    <div class="header-sub">7-step walkthrough from signal to journal entry — every trade, every time</div>
+  </div>
+
+  <div class="metric-strip reveal">
+    <div class="metric-item"><div class="metric-label">Steps</div><div class="metric-value">7</div></div>
+    <div class="metric-item"><div class="metric-label">Pre-Trade</div><div class="metric-value" style="color:var(--blue)">3 steps</div></div>
+    <div class="metric-item"><div class="metric-label">Execution</div><div class="metric-value" style="color:var(--green)">1 step</div></div>
+    <div class="metric-item"><div class="metric-label">Management</div><div class="metric-value" style="color:var(--amber)">2 steps</div></div>
+    <div class="metric-item"><div class="metric-label">Post-Trade</div><div class="metric-value" style="color:var(--muted)">1 step</div></div>
+    <div class="metric-item"><div class="metric-label">Non-Negotiable</div><div class="metric-value" style="font-size:12px;color:var(--red)">Log Every Trade</div></div>
+  </div>
+
+  <!-- PRICE DIAGRAM -->
+  <div class="diagram-wrap reveal">
+    <div class="diagram-header">Annotated Trade — Long Setup</div>
+    <div class="diagram-body">
+      <svg viewBox="0 0 700 200" width="100%" style="max-width:700px;" height="200">
+        <!-- Grid lines -->
+        <line x1="60" y1="20" x2="680" y2="20" stroke="#1c2128" stroke-width="1"/>
+        <line x1="60" y1="60" x2="680" y2="60" stroke="#1c2128" stroke-width="1"/>
+        <line x1="60" y1="100" x2="680" y2="100" stroke="#1c2128" stroke-width="1"/>
+        <line x1="60" y1="140" x2="680" y2="140" stroke="#1c2128" stroke-width="1"/>
+        <line x1="60" y1="180" x2="680" y2="180" stroke="#1c2128" stroke-width="1"/>
+
+        <!-- TARGET line -->
+        <line x1="300" y1="42" x2="680" y2="42" stroke="#3fb950" stroke-width="1" stroke-dasharray="6,4" opacity="0.6"/>
+        <text x="62" y="39" font-size="10" fill="#3fb950" font-family="monospace">TARGET</text>
+        <text x="62" y="50" font-size="9" fill="#3fb950" font-family="monospace">$54.00</text>
+
+        <!-- ENTRY line -->
+        <line x1="300" y1="100" x2="680" y2="100" stroke="#58a6ff" stroke-width="1" stroke-dasharray="6,4" opacity="0.6"/>
+        <text x="62" y="97" font-size="10" fill="#58a6ff" font-family="monospace">ENTRY</text>
+        <text x="62" y="108" font-size="9" fill="#58a6ff" font-family="monospace">$50.00</text>
+
+        <!-- STOP line -->
+        <line x1="300" y1="142" x2="680" y2="142" stroke="#f85149" stroke-width="1" stroke-dasharray="6,4" opacity="0.6"/>
+        <text x="62" y="139" font-size="10" fill="#f85149" font-family="monospace">STOP</text>
+        <text x="62" y="150" font-size="9" fill="#f85149" font-family="monospace">$48.00</text>
+
+        <!-- Price action leading to entry -->
+        <polyline points="160,160 185,148 205,155 225,130 245,138 265,115 285,118 300,100"
+          fill="none" stroke="#8b949e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Price action after entry (winning trade) -->
+        <polyline points="300,100 330,88 355,94 380,76 410,80 440,58 470,62 500,48 530,44 560,42"
+          fill="none" stroke="#3fb950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Entry point marker -->
+        <circle cx="300" cy="100" r="5" fill="#58a6ff" stroke="#0d1117" stroke-width="2"/>
+        <text x="304" y="88" font-size="10" fill="#58a6ff" font-family="monospace" font-weight="bold">ENTRY</text>
+
+        <!-- Exit point marker -->
+        <circle cx="560" cy="42" r="5" fill="#3fb950" stroke="#0d1117" stroke-width="2"/>
+        <text x="564" y="40" font-size="10" fill="#3fb950" font-family="monospace" font-weight="bold">EXIT</text>
+
+        <!-- RISK bracket -->
+        <line x1="620" y1="100" x2="620" y2="142" stroke="#f85149" stroke-width="1.5"/>
+        <line x1="615" y1="100" x2="625" y2="100" stroke="#f85149" stroke-width="1.5"/>
+        <line x1="615" y1="142" x2="625" y2="142" stroke="#f85149" stroke-width="1.5"/>
+        <text x="630" y="125" font-size="10" fill="#f85149" font-family="monospace">RISK $2</text>
+
+        <!-- REWARD bracket -->
+        <line x1="645" y1="42" x2="645" y2="100" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="640" y1="42" x2="650" y2="42" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="640" y1="100" x2="650" y2="100" stroke="#3fb950" stroke-width="1.5"/>
+        <text x="654" y="74" font-size="10" fill="#3fb950" font-family="monospace">REWARD $4</text>
+
+        <!-- R:R label -->
+        <text x="630" y="185" font-size="11" fill="#8b949e" font-family="monospace">R:R = 2:1</text>
+
+        <!-- Step number callouts -->
+        <rect x="230" y="164" width="46" height="16" rx="3" fill="rgba(88,166,255,0.15)" stroke="rgba(88,166,255,0.3)" stroke-width="1"/>
+        <text x="253" y="175" font-size="9" fill="#58a6ff" text-anchor="middle" font-family="monospace">Step 1–3</text>
+
+        <rect x="288" y="108" width="32" height="14" rx="3" fill="rgba(63,185,80,0.15)" stroke="rgba(63,185,80,0.3)" stroke-width="1"/>
+        <text x="304" y="118" font-size="9" fill="#3fb950" text-anchor="middle" font-family="monospace">Step 4</text>
+
+        <rect x="380" y="56" width="70" height="14" rx="3" fill="rgba(210,153,34,0.15)" stroke="rgba(210,153,34,0.3)" stroke-width="1"/>
+        <text x="415" y="66" font-size="9" fill="#d29922" text-anchor="middle" font-family="monospace">Step 5–6</text>
+
+        <rect x="568" y="24" width="32" height="14" rx="3" fill="rgba(139,148,158,0.15)" stroke="rgba(139,148,158,0.3)" stroke-width="1"/>
+        <text x="584" y="34" font-size="9" fill="#8b949e" text-anchor="middle" font-family="monospace">Step 7</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- STEP CARDS -->
+  <div class="anatomy-layout reveal">
+
+    <!-- PHASE LABELS (hidden on mobile, shown via card headers) -->
+    <div class="phase-rail" style="display:flex;flex-direction:column;gap:0;">
+      <div style="height:53px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;">
+        <span class="phase-label phase-pre">PRE-TRADE</span>
+      </div>
+      <div style="height:53px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;">
+        <span class="phase-label phase-pre" style="opacity:0;">.</span>
+      </div>
+      <div style="height:53px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;">
+        <span class="phase-label phase-pre" style="opacity:0;">.</span>
+      </div>
+      <div style="height:53px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;">
+        <span class="phase-label phase-exec">EXECUTION</span>
+      </div>
+      <div style="height:53px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;">
+        <span class="phase-label phase-mgmt">MANAGEMENT</span>
+      </div>
+      <div style="height:53px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;">
+        <span class="phase-label phase-mgmt" style="opacity:0;">.</span>
+      </div>
+      <div style="height:53px;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;">
+        <span class="phase-label phase-post">POST-TRADE</span>
+      </div>
+    </div>
+
+    <div class="steps-col">
+
+      <!-- STEP 1 -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-header">
+          <div class="step-num sn-blue">1</div>
+          <div class="step-title-wrap">
+            <div class="step-title">Signal Identified</div>
+            <div class="step-tagline">Something triggered your attention — define what</div>
+          </div>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-detail">
+          <div class="sd-body">
+            <div class="sd-block">
+              <div class="sd-label">What to do</div>
+              <div class="sd-text">Write down the specific signal: pattern name, indicator level, or rule trigger. "Stock looked interesting" is not a signal. "Bullish engulfing on daily at 200d SMA support, IC = 0.07 on this setup in backtest" is a signal.</div>
+            </div>
+            <div class="sd-block">
+              <div class="sd-label">FINN Check</div>
+              <div class="sd-check">What does the backtest say? What is the IC on this exact setup type, in this regime, on this ticker? If you don't know, you don't have a signal — you have an impulse.</div>
+            </div>
+            <div class="sd-block sd-full">
+              <div class="sd-label">Common Mistake</div>
+              <div class="sd-warn">Acting on "feel" without a defined signal. If you can't write a one-sentence rule that would generate the same signal mechanically, you're not trading a system.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-header">
+          <div class="step-num sn-blue">2</div>
+          <div class="step-title-wrap">
+            <div class="step-title">Context Check</div>
+            <div class="step-tagline">Regime, structure, volume — does the environment support the signal?</div>
+          </div>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-detail">
+          <div class="sd-body">
+            <div class="sd-block">
+              <div class="sd-label">What to check</div>
+              <ul class="checklist">
+                <li>Market regime: bull / bear / choppy (is this the right signal type for the regime?)</li>
+                <li>Price structure: is the signal in the direction of the larger trend?</li>
+                <li>Volume: above or below average on the signal candle?</li>
+                <li>Key levels: is there a major S/R level within the stop distance?</li>
+                <li>Upcoming catalysts: earnings, Fed, macro event within hold period?</li>
+              </ul>
+            </div>
+            <div class="sd-block">
+              <div class="sd-label">FINN Check</div>
+              <div class="sd-check">Is the regime correct for this signal type? A momentum signal in a choppy market has near-zero IC. If the context doesn't support the signal, don't trade it — wait for alignment.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-header">
+          <div class="step-num sn-blue">3</div>
+          <div class="step-title-wrap">
+            <div class="step-title">Size Calculated</div>
+            <div class="step-tagline">Position size = dollar risk ÷ stop distance. Always.</div>
+          </div>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-detail">
+          <div class="sd-body">
+            <div class="sd-block">
+              <div class="sd-label">The Formula</div>
+              <div class="sd-text" style="font-family:'SF Mono','Fira Code',monospace;font-size:12px;line-height:2;">
+                Dollar Risk = Account × 2%<br>
+                Stop Distance = |Entry − Stop|<br>
+                Shares = Dollar Risk ÷ Stop Distance<br>
+                Verify: Position Value ≤ 20% of Account
+              </div>
+            </div>
+            <div class="sd-block">
+              <div class="sd-label">FINN Check</div>
+              <div class="sd-check">What is your dollar risk on this trade? Say the number out loud before placing the order. If losing this amount would affect your emotional state, reduce size until it doesn't.</div>
+            </div>
+            <div class="sd-block sd-full">
+              <div class="sd-label">Common Mistake</div>
+              <div class="sd-warn">Sizing to a dollar amount ("I'll buy $5,000 worth") instead of to a risk amount. This is position-based, not risk-based sizing — it violates Rule 1 and leads to inconsistent exposure across trades.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-header">
+          <div class="step-num sn-green">4</div>
+          <div class="step-title-wrap">
+            <div class="step-title">Order Placed</div>
+            <div class="step-tagline">Entry type, stop order, and target set before you click</div>
+          </div>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-detail">
+          <div class="sd-body">
+            <div class="sd-block">
+              <div class="sd-label">Order Sequence</div>
+              <ul class="checklist">
+                <li>Entry: limit order at the signal level (not market — control slippage)</li>
+                <li>Stop: stop-limit order placed immediately after fill</li>
+                <li>Target: limit sell order at calculated target (2:1+ R:R minimum)</li>
+                <li>Confirm all three orders are live before walking away</li>
+              </ul>
+            </div>
+            <div class="sd-block">
+              <div class="sd-label">FINN Check</div>
+              <div class="sd-check">Are all three orders — entry, stop, and target — in the system before the trade is live? A trade without a stop is not a trade. It's a gamble with no exit plan.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-header">
+          <div class="step-num sn-amber">5</div>
+          <div class="step-title-wrap">
+            <div class="step-title">Trade Managed</div>
+            <div class="step-tagline">Move stop to breakeven at 1:1 — then let it run</div>
+          </div>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-detail">
+          <div class="sd-body">
+            <div class="sd-block">
+              <div class="sd-label">Management Rules</div>
+              <ul class="checklist">
+                <li>At 1:1 R:R (price moved one risk unit in your favor): move stop to breakeven</li>
+                <li>At 1.5:1: trail stop using 1× ATR below most recent swing low</li>
+                <li>At 2:1: take partial profit (⅓ position) if pre-planned</li>
+                <li>Do not add to losing positions. Ever.</li>
+              </ul>
+            </div>
+            <div class="sd-block">
+              <div class="sd-label">FINN Check</div>
+              <div class="sd-check">Is your stop protecting capital or protecting ego? Moving a stop further out to avoid being stopped is not management — it's risk expansion without additional edge.</div>
+            </div>
+            <div class="sd-block sd-full">
+              <div class="sd-label">Common Mistake</div>
+              <div class="sd-warn">Moving stop further away when price moves against you. The stop was placed at the invalidation level. If price reaches it, the thesis is wrong. Honor the original plan.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-header">
+          <div class="step-num sn-amber">6</div>
+          <div class="step-title-wrap">
+            <div class="step-title">Exit Executed</div>
+            <div class="step-tagline">Target hit, stop hit, or rule-based exit — all three are valid</div>
+          </div>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-detail">
+          <div class="sd-body">
+            <div class="sd-block">
+              <div class="sd-label">Exit Types</div>
+              <div class="sd-text"><strong style="color:var(--green)">Target hit:</strong> pre-planned exit fires. Best outcome — plan worked. Don't second-guess and hold for more.<br><br>
+              <strong style="color:var(--red)">Stop hit:</strong> thesis was wrong. Get out clean. Do not convert to an investment.<br><br>
+              <strong style="color:var(--amber)">Rule-based:</strong> time stop (held past max hold period), regime change, or catalyst risk ahead of earnings.</div>
+            </div>
+            <div class="sd-block">
+              <div class="sd-label">FINN Check</div>
+              <div class="sd-check">Did you exit at the planned level or did you move the target? Moving a target higher because a trade is working is fine — if you have a rule for it. Improvising at the exit is not management.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step-card" onclick="toggleStep(this)">
+        <div class="step-header">
+          <div class="step-num sn-muted">7</div>
+          <div class="step-title-wrap">
+            <div class="step-title">Trade Logged</div>
+            <div class="step-tagline">Every trade. Entry, exit, size, rationale, outcome, emotional state.</div>
+          </div>
+          <span class="step-chevron">▼</span>
+        </div>
+        <div class="step-detail">
+          <div class="sd-body">
+            <div class="sd-block">
+              <div class="sd-label">Required Journal Fields</div>
+              <ul class="checklist">
+                <li>Ticker, date, direction (long/short)</li>
+                <li>Signal: exact rule that triggered the trade</li>
+                <li>Entry price, stop price, target price</li>
+                <li>Position size (shares) and dollar risk</li>
+                <li>Exit price, P&amp;L, R-multiple (actual / planned)</li>
+                <li>Pre-trade emotional state (1–5 scale)</li>
+                <li>What did the data say? What would change your mind?</li>
+              </ul>
+            </div>
+            <div class="sd-block">
+              <div class="sd-label">FINN Check</div>
+              <div class="sd-check">No log = no feedback loop = no edge development. You cannot improve a process you're not measuring. The log is not optional. It is the mechanism that converts experience into edge.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3 OUTCOMES -->
+  <div class="outcome-grid reveal">
+    <div class="outcome-card oc-hit">
+      <div class="oc-title">✓ Target Hit</div>
+      <div class="oc-body">Plan worked. Exit at the pre-planned level. Log the win, review the setup quality. Resist the urge to hold for more — discipline in winners builds the habit that protects in losers.</div>
+    </div>
+    <div class="outcome-card oc-stop">
+      <div class="oc-title">✗ Stop Hit</div>
+      <div class="oc-body">Thesis was wrong. Exit clean. A loss at the planned stop is a correctly executed trade — the signal had negative IC on this instance. Log the loss and move to the next trade.</div>
+    </div>
+    <div class="outcome-card oc-rule">
+      <div class="oc-title">→ Rule-Based Exit</div>
+      <div class="oc-body">Regime changed, hold period expired, or catalyst risk emerged. Exit not because of price, but because the original context is no longer valid. Log the reason — these exits generate the most useful data.</div>
+    </div>
+  </div>
+
+  <div class="finn-voice reveal">
+    Most traders spend 90% of their time on signal generation and 10% on execution and logging. FINN spends it the other way. The signal is a starting point. The execution, management, and log are where edge is built or destroyed.
+  </div>
+
+  <div class="footer reveal">
+    <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network</div>
+    <div class="footer-right">v2.0 · May 2026 · ig_trade_anatomy</div>
+  </div>
+
+</div>
+<script>
+function toggleStep(card) {
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.step-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+const obs = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('visible');
+}), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

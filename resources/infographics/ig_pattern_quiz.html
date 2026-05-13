@@ -1,0 +1,424 @@
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Candlestick Pattern Quiz</title>
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+  --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+body.social.square { width: 1080px; min-height: 1080px; }
+
+.page { max-width: 860px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* HEADER */
+.header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.finn-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); text-transform: uppercase; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); padding: 3px 8px; border-radius: 4px; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); animation: pulse-blue 2s ease-in-out infinite; }
+@keyframes pulse-blue { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+h1 { font-size: 22px; font-weight: 700; }
+.header-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+/* METRIC STRIP */
+.metric-strip { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 28px; }
+.metric-item { background: var(--card); padding: 10px 14px; }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
+.metric-value { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--blue); }
+
+/* PROGRESS */
+.progress-wrap { margin-bottom: 24px; }
+.progress-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.progress-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.progress-count { font-size: 13px; font-weight: 700; color: var(--blue); font-variant-numeric: tabular-nums; }
+.progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 0.4s var(--ease-out); }
+
+/* QUIZ CARD */
+.quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+.quiz-card-header { padding: 7px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--card-elevated); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.quiz-body { padding: 32px 24px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.candle-stage { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 24px 40px; display: flex; align-items: center; justify-content: center; min-height: 180px; }
+.question-text { font-size: 16px; font-weight: 600; text-align: center; max-width: 560px; }
+
+/* OPTIONS */
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 560px; }
+.opt-btn { padding: 13px 18px; background: var(--card-elevated); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; text-align: left; transition: border-color var(--dur-fast), background var(--dur-fast); display: flex; align-items: center; gap: 10px; }
+.opt-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-glow); }
+.opt-btn .opt-letter { font-size: 11px; font-weight: 700; color: var(--muted); background: var(--border); border-radius: 3px; padding: 2px 6px; flex-shrink: 0; min-width: 22px; text-align: center; }
+.opt-btn.correct { border-color: var(--green) !important; background: var(--green-glow) !important; }
+.opt-btn.correct .opt-letter { background: var(--green); color: #0d1117; }
+.opt-btn.wrong { border-color: var(--red) !important; background: var(--red-glow) !important; }
+.opt-btn.wrong .opt-letter { background: var(--red); color: #0d1117; }
+.opt-btn:disabled { cursor: default; }
+
+/* FEEDBACK */
+.feedback { width: 100%; max-width: 560px; border-radius: 6px; padding: 14px 16px; font-size: 13px; line-height: 1.7; display: none; }
+.feedback.correct { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.3); display: block; }
+.feedback.wrong { background: var(--red-glow); border: 1px solid rgba(248,81,73,0.3); display: block; }
+.feedback-verdict { font-weight: 700; margin-bottom: 5px; font-size: 13px; }
+.feedback.correct .feedback-verdict { color: var(--green); }
+.feedback.wrong .feedback-verdict { color: var(--red); }
+
+/* NEXT */
+.next-wrap { display: flex; justify-content: center; }
+.next-btn { padding: 12px 32px; background: var(--blue); color: #0d1117; border: none; border-radius: 6px; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity var(--dur-fast); display: none; }
+.next-btn:hover { opacity: 0.85; }
+.next-btn.visible { display: inline-block; }
+
+/* END SCREEN */
+.end-screen { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 48px 32px; text-align: center; }
+.end-screen.visible { display: block; }
+.score-num { font-size: 72px; font-weight: 800; font-variant-numeric: tabular-nums; line-height: 1; }
+.score-pct { font-size: 16px; color: var(--muted); margin: 6px 0 28px; }
+.verdict-box { background: var(--card-elevated); border: 1px solid var(--border); border-radius: 6px; padding: 18px 22px; margin: 0 auto 28px; max-width: 520px; text-align: left; }
+.verdict-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.verdict-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.retry-btn { padding: 12px 28px; background: transparent; color: var(--blue); border: 1px solid var(--blue); border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background var(--dur-fast); }
+.retry-btn:hover { background: var(--blue-glow); }
+
+/* FINN VOICE */
+.finn-voice { position: relative; background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.3); border-radius: 8px; padding: 18px 20px 18px 28px; margin-top: 32px; font-size: 13px; line-height: 1.7; backdrop-filter: blur(12px); }
+.finn-voice::before { content: 'FINN'; position: absolute; top: -1px; left: 16px; transform: translateY(-50%); background: var(--amber); color: #0d1117; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 3px; }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 12px; color: var(--muted); }
+.footer-right { font-size: 11px; color: var(--border); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header reveal">
+    <div class="header-top">
+      <span class="finn-logo">FINN</span>
+      <div class="live-dot"></div>
+    </div>
+    <h1>Candlestick Pattern Quiz</h1>
+    <div class="header-sub">10-question identification drill · Read the candle, name the pattern</div>
+  </div>
+
+  <div class="metric-strip reveal">
+    <div class="metric-item"><div class="metric-label">Questions</div><div class="metric-value">10</div></div>
+    <div class="metric-item"><div class="metric-label">Bullish</div><div class="metric-value" style="color:var(--green)">5</div></div>
+    <div class="metric-item"><div class="metric-label">Bearish</div><div class="metric-value" style="color:var(--red)">4</div></div>
+    <div class="metric-item"><div class="metric-label">Neutral</div><div class="metric-value" style="color:var(--amber)">1</div></div>
+    <div class="metric-item"><div class="metric-label">Multi-Candle</div><div class="metric-value">4</div></div>
+    <div class="metric-item"><div class="metric-label">Pass Score</div><div class="metric-value">7/10</div></div>
+  </div>
+
+  <div class="progress-wrap reveal" id="progressWrap">
+    <div class="progress-header">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="progressCount">1 / 10</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+  </div>
+
+  <div id="quizArea">
+    <div class="quiz-card reveal" id="quizCard">
+      <div class="quiz-card-header">
+        <span id="qLabel">Question 1 of 10</span>
+        <span id="qType" style="color:var(--blue);font-size:11px;"></span>
+      </div>
+      <div class="quiz-body">
+        <div class="candle-stage" id="candleStage"></div>
+        <div class="question-text" id="questionText"></div>
+        <div class="options-grid" id="optionsGrid"></div>
+        <div class="feedback" id="feedback">
+          <div class="feedback-verdict" id="feedbackVerdict"></div>
+          <div id="feedbackBody"></div>
+        </div>
+        <div class="next-wrap">
+          <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="end-screen reveal" id="endScreen">
+    <div class="score-num" id="scoreNum"></div>
+    <div class="score-pct" id="scorePct"></div>
+    <div class="verdict-box">
+      <div class="verdict-title" id="verdictTitle"></div>
+      <div class="verdict-body" id="verdictBody"></div>
+    </div>
+    <button class="retry-btn" onclick="restartQuiz()">Retake Quiz</button>
+  </div>
+
+  <div class="finn-voice reveal">
+    Pattern recognition is the first skill. The edge comes from knowing <em>context</em> — what precedes the candle matters more than the shape itself. A hammer after a three-week downtrend at major support is a trade. A hammer in the middle of a range is noise. Never trade the pattern alone. Always ask: what is the IC on this setup, in this context, in this ticker's history?
+  </div>
+
+  <div class="footer reveal">
+    <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network</div>
+    <div class="footer-right">v2.0 · May 2026 · ig_pattern_quiz</div>
+  </div>
+
+</div>
+<script>
+const questions = [
+  {
+    type: 'Single Candle — Bullish',
+    svg: `<svg viewBox="0 0 60 130" width="64" height="130">
+      <line x1="30" y1="8" x2="30" y2="22" stroke="#3fb950" stroke-width="2"/>
+      <rect x="12" y="22" width="36" height="22" fill="#3fb950" rx="1"/>
+      <line x1="30" y1="44" x2="30" y2="118" stroke="#3fb950" stroke-width="2"/>
+    </svg>`,
+    question: 'Identify this single-candle pattern.',
+    options: ['Hammer', 'Shooting Star', 'Doji', 'Hanging Man'],
+    correct: 0,
+    explanation: 'Hammer: small body near the top of the range, long lower shadow (≥ 2× body length), little or no upper shadow. Bullish reversal signal after a downtrend — sellers drove price down aggressively intraday, but buyers rejected those lows and closed near the open. Requires a bullish confirmation candle.'
+  },
+  {
+    type: 'Single Candle — Bearish',
+    svg: `<svg viewBox="0 0 60 130" width="64" height="130">
+      <line x1="30" y1="8" x2="30" y2="80" stroke="#f85149" stroke-width="2"/>
+      <rect x="12" y="80" width="36" height="22" fill="#f85149" rx="1"/>
+      <line x1="30" y1="102" x2="30" y2="118" stroke="#f85149" stroke-width="2"/>
+    </svg>`,
+    question: 'Identify this single-candle pattern.',
+    options: ['Inverted Hammer', 'Hanging Man', 'Shooting Star', 'Gravestone Doji'],
+    correct: 2,
+    explanation: 'Shooting Star: small body at the bottom of the range, long upper shadow (≥ 2× body), little or no lower shadow. Bearish reversal after an uptrend. Buyers pushed price up aggressively, but sellers took control and pushed it back down near the open — a failed rally. Best confirmed by a red candle the following session.'
+  },
+  {
+    type: 'Single Candle — Neutral',
+    svg: `<svg viewBox="0 0 60 130" width="64" height="130">
+      <line x1="30" y1="8" x2="30" y2="62" stroke="#d29922" stroke-width="2"/>
+      <rect x="8" y="62" width="44" height="4" fill="#d29922" rx="1"/>
+      <line x1="30" y1="66" x2="30" y2="118" stroke="#d29922" stroke-width="2"/>
+    </svg>`,
+    question: 'Open and close are nearly equal, forming a cross. Identify this pattern.',
+    options: ['Spinning Top', 'Inside Bar', 'Doji', 'Hammer'],
+    correct: 2,
+    explanation: 'Doji: open and close at (nearly) the same price — a cross or plus sign. Signals pure indecision. Neither bulls nor bears won the session. Significance depends entirely on context: a doji after a sustained trend is far more important than one during consolidation. The longer the preceding trend, the higher the IC.'
+  },
+  {
+    type: 'Single Candle — Bearish',
+    svg: `<svg viewBox="0 0 60 130" width="64" height="130">
+      <line x1="30" y1="8" x2="30" y2="22" stroke="#f85149" stroke-width="2"/>
+      <rect x="12" y="22" width="36" height="22" fill="#f85149" rx="1"/>
+      <line x1="30" y1="44" x2="30" y2="118" stroke="#f85149" stroke-width="2"/>
+    </svg>`,
+    question: 'Same shape as a Hammer — but this appears after a sustained uptrend. What is it?',
+    options: ['Hammer', 'Hanging Man', 'Shooting Star', 'Pin Bar'],
+    correct: 1,
+    explanation: 'Hanging Man: visually identical to a Hammer, but context makes it bearish. Appearing after an uptrend, the long lower wick signals sellers are beginning to test lower prices. FINN rule: never trade the Hanging Man without a bearish confirmation candle. The shape alone is ambiguous — the prior trend and confirmation are everything.'
+  },
+  {
+    type: 'Single Candle — Bullish',
+    svg: `<svg viewBox="0 0 60 130" width="64" height="130">
+      <line x1="30" y1="8" x2="30" y2="80" stroke="#3fb950" stroke-width="2"/>
+      <rect x="12" y="80" width="36" height="22" fill="#3fb950" rx="1"/>
+      <line x1="30" y1="102" x2="30" y2="118" stroke="#3fb950" stroke-width="2"/>
+    </svg>`,
+    question: 'Same shape as a Shooting Star — but this appears after a downtrend. What is it?',
+    options: ['Shooting Star', 'Gravestone Doji', 'Inverted Hammer', 'Spinning Top'],
+    correct: 2,
+    explanation: 'Inverted Hammer: long upper shadow, small body at the bottom, appears after a downtrend. Bullish — buyers tried to push price higher; sellers regained control intraday, but the attempt signals a shift in sentiment. Lower IC than a Hammer alone — requires a bullish confirmation candle before any long entry.'
+  },
+  {
+    type: 'Single Candle — Bullish',
+    svg: `<svg viewBox="0 0 60 130" width="64" height="130">
+      <rect x="8" y="16" width="44" height="5" fill="#3fb950" rx="1"/>
+      <line x1="30" y1="21" x2="30" y2="118" stroke="#3fb950" stroke-width="2"/>
+    </svg>`,
+    question: 'Open, high, and close are all at the same level. Long lower shadow. Identify this pattern.',
+    options: ['Hammer', 'Dragonfly Doji', 'Gravestone Doji', 'Long-Legged Doji'],
+    correct: 1,
+    explanation: 'Dragonfly Doji: open = high = close, with a long lower shadow — a T-shape. Strong bullish signal. Sellers drove price down hard intraday; buyers absorbed all of it and pushed price all the way back to the open. The rejection is total. Higher IC than a standard Hammer. Most powerful at key support levels with above-average volume.'
+  },
+  {
+    type: 'Two Candles — Bullish',
+    svg: `<svg viewBox="0 0 130 130" width="140" height="130">
+      <line x1="32" y1="28" x2="32" y2="40" stroke="#f85149" stroke-width="2"/>
+      <rect x="18" y="40" width="28" height="34" fill="#f85149" rx="1"/>
+      <line x1="32" y1="74" x2="32" y2="84" stroke="#f85149" stroke-width="2"/>
+      <line x1="97" y1="18" x2="97" y2="28" stroke="#3fb950" stroke-width="2"/>
+      <rect x="79" y="28" width="36" height="76" fill="#3fb950" rx="1"/>
+      <line x1="97" y1="104" x2="97" y2="114" stroke="#3fb950" stroke-width="2"/>
+    </svg>`,
+    question: 'The second candle fully engulfs the prior candle\'s body. Identify this two-candle pattern.',
+    options: ['Piercing Line', 'Bullish Engulfing', 'Morning Star', 'Tweezer Bottom'],
+    correct: 1,
+    explanation: 'Bullish Engulfing: a large green candle opens below and closes above the entire body of the prior red candle. Strong reversal signal after a downtrend. Among the highest-IC two-candle patterns — especially when the green candle carries above-average volume. The larger the engulfing body, the stronger the signal.'
+  },
+  {
+    type: 'Two Candles — Bearish',
+    svg: `<svg viewBox="0 0 130 130" width="140" height="130">
+      <line x1="32" y1="28" x2="32" y2="40" stroke="#3fb950" stroke-width="2"/>
+      <rect x="18" y="40" width="28" height="34" fill="#3fb950" rx="1"/>
+      <line x1="32" y1="74" x2="32" y2="84" stroke="#3fb950" stroke-width="2"/>
+      <line x1="97" y1="18" x2="97" y2="28" stroke="#f85149" stroke-width="2"/>
+      <rect x="79" y="28" width="36" height="76" fill="#f85149" rx="1"/>
+      <line x1="97" y1="104" x2="97" y2="114" stroke="#f85149" stroke-width="2"/>
+    </svg>`,
+    question: 'The second candle fully engulfs the prior candle\'s body. Identify this two-candle pattern.',
+    options: ['Bullish Engulfing', 'Dark Cloud Cover', 'Bearish Engulfing', 'Evening Star'],
+    correct: 2,
+    explanation: 'Bearish Engulfing: a large red candle opens above and closes below the entire body of the prior green candle. Bears overwhelmed bulls in a single session. Bearish reversal after an uptrend. Volume on the red candle is critical — high volume confirms institutional distribution, not just retail panic.'
+  },
+  {
+    type: 'Three Candles — Bullish',
+    svg: `<svg viewBox="0 0 190 130" width="200" height="130">
+      <line x1="32" y1="10" x2="32" y2="20" stroke="#f85149" stroke-width="2"/>
+      <rect x="16" y="20" width="32" height="70" fill="#f85149" rx="1"/>
+      <line x1="32" y1="90" x2="32" y2="102" stroke="#f85149" stroke-width="2"/>
+      <line x1="95" y1="96" x2="95" y2="102" stroke="#d29922" stroke-width="2"/>
+      <rect x="82" y="102" width="26" height="16" fill="#d29922" rx="1"/>
+      <line x1="95" y1="118" x2="95" y2="122" stroke="#d29922" stroke-width="2"/>
+      <line x1="158" y1="10" x2="158" y2="20" stroke="#3fb950" stroke-width="2"/>
+      <rect x="142" y="20" width="32" height="62" fill="#3fb950" rx="1"/>
+      <line x1="158" y1="82" x2="158" y2="94" stroke="#3fb950" stroke-width="2"/>
+    </svg>`,
+    question: 'Large bearish candle → small star candle → large bullish candle. Identify this pattern.',
+    options: ['Evening Star', 'Three White Soldiers', 'Morning Star', 'Abandoned Baby'],
+    correct: 2,
+    explanation: 'Morning Star: three-candle bullish reversal. Large red candle (strong selling) → small star candle (indecision, potential exhaustion) → large green candle (bulls confirm control). IC improves when the star gaps away from both adjacent candles and the green candle closes above the midpoint of candle one.'
+  },
+  {
+    type: 'Three Candles — Bearish',
+    svg: `<svg viewBox="0 0 190 130" width="200" height="130">
+      <line x1="32" y1="22" x2="32" y2="32" stroke="#3fb950" stroke-width="2"/>
+      <rect x="16" y="32" width="32" height="70" fill="#3fb950" rx="1"/>
+      <line x1="32" y1="102" x2="32" y2="112" stroke="#3fb950" stroke-width="2"/>
+      <line x1="95" y1="8" x2="95" y2="14" stroke="#d29922" stroke-width="2"/>
+      <rect x="82" y="14" width="26" height="16" fill="#d29922" rx="1"/>
+      <line x1="95" y1="30" x2="95" y2="36" stroke="#d29922" stroke-width="2"/>
+      <line x1="158" y1="22" x2="158" y2="32" stroke="#f85149" stroke-width="2"/>
+      <rect x="142" y="32" width="32" height="66" fill="#f85149" rx="1"/>
+      <line x1="158" y1="98" x2="158" y2="110" stroke="#f85149" stroke-width="2"/>
+    </svg>`,
+    question: 'Large bullish candle → small star candle → large bearish candle. Identify this pattern.',
+    options: ['Morning Star', 'Three Black Crows', 'Shooting Star', 'Evening Star'],
+    correct: 3,
+    explanation: 'Evening Star: three-candle bearish reversal — the mirror of the Morning Star. Uptrend peaks with a large green candle; the star signals hesitation at the high; the large red candle confirms distribution. The red candle must close below the midpoint of the first green candle for the signal to be valid. High volume on candle three confirms institutional selling.'
+  }
+];
+
+const LABELS = ['A','B','C','D'];
+let currentQ = 0, score = 0, answered = false;
+
+function renderQuestion(i) {
+  answered = false;
+  const q = questions[i];
+  document.getElementById('qLabel').textContent = `Question ${i+1} of ${questions.length}`;
+  document.getElementById('qType').textContent = q.type;
+  document.getElementById('candleStage').innerHTML = q.svg;
+  document.getElementById('questionText').textContent = q.question;
+
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = '';
+  q.options.forEach((opt, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${LABELS[idx]}</span>${opt}`;
+    btn.addEventListener('click', () => selectAnswer(idx));
+    grid.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className = 'feedback';
+  document.getElementById('nextBtn').className = 'next-btn';
+
+  const pct = ((i + 1) / questions.length * 100).toFixed(0);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = `${i+1} / ${questions.length}`;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const isCorrect = idx === q.correct;
+  if (isCorrect) score++;
+
+  document.querySelectorAll('.opt-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === idx && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
+  document.getElementById('feedbackVerdict').textContent = isCorrect ? '✓ Correct' : `✗ Incorrect — the answer is ${q.options[q.correct]}`;
+  document.getElementById('feedbackBody').textContent = q.explanation;
+
+  const nb = document.getElementById('nextBtn');
+  nb.className = 'next-btn visible';
+  nb.textContent = currentQ < questions.length - 1 ? 'Next →' : 'See Results';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) showEndScreen();
+  else renderQuestion(currentQ);
+}
+
+function showEndScreen() {
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('quizCard').style.display = 'none';
+  const pct = Math.round(score / questions.length * 100);
+  const color = pct >= 70 ? 'var(--green)' : pct >= 50 ? 'var(--amber)' : 'var(--red)';
+  const sn = document.getElementById('scoreNum');
+  sn.textContent = `${score}/${questions.length}`;
+  sn.style.color = color;
+  document.getElementById('scorePct').textContent = `${pct}% accuracy`;
+
+  let title, body;
+  if (score === 10) {
+    title = 'Perfect — pattern recognition locked in.';
+    body = 'Now test in context: open a live chart, cover the right side, and name patterns before the price resolves. That\'s how FINN trains edge. Identification is the floor, not the ceiling.';
+  } else if (score >= 7) {
+    title = 'Pass — strong foundation.';
+    body = `You missed ${10 - score}. Review each missed pattern carefully — the explanation tells you exactly what the market is communicating. Retake until you hit 10/10 cold before using these patterns in live analysis.`;
+  } else if (score >= 5) {
+    title = 'Near miss — review and retake.';
+    body = `${10 - score} wrong. At this rate, you\'re pattern-reading at noise level. Study ig_candlestick_patterns.html, understand the context rules for each shape, then retake. Don\'t trade patterns you can\'t identify cold.`;
+  } else {
+    title = 'Not ready.';
+    body = 'Under 50% means the patterns aren\'t in memory — they\'re still lookup tasks. Real markets don\'t wait for lookups. Study the candlestick reference, drill this quiz until you pass, then move to live chart practice.';
+  }
+  document.getElementById('verdictTitle').textContent = title;
+  document.getElementById('verdictBody').textContent = body;
+  const es = document.getElementById('endScreen');
+  es.classList.add('visible');
+  obs.observe(es);
+}
+
+function restartQuiz() {
+  currentQ = 0; score = 0;
+  document.getElementById('progressWrap').style.display = '';
+  document.getElementById('quizCard').style.display = '';
+  document.getElementById('endScreen').classList.remove('visible');
+  renderQuestion(0);
+}
+
+renderQuestion(0);
+
+const obs = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('visible');
+}), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

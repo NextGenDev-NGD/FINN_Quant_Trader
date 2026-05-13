@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,179 +10,693 @@
     --bg: #0d1117; --card: #161b22; --border: #30363d;
     --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
     --red: #f85149; --amber: #d29922; --muted: #8b949e;
+    --card-elevated: #1c2128;
+    --blue-glow: rgba(88,166,255,0.12);
+    --green-glow: rgba(63,185,80,0.12);
+    --red-glow: rgba(248,81,73,0.12);
+    --amber-glow: rgba(210,153,34,0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
-  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; padding: 24px 16px; }
+  .page-wrap { max-width: 1160px; margin: 0 auto; }
 
-  /* Header */
-  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
-  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+  body.social { width: 1200px; min-height: 675px; overflow: hidden; padding: 20px 24px; }
+  body.social.square { width: 1080px; min-height: 1080px; }
 
-  /* Section headers */
-  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  /* ── Header ── */
+  .page-header { text-align: center; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+  .page-header h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+  .page-header .subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .finn-tag { display: inline-block; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); color: var(--blue); font-size: 10px; padding: 2px 10px; border-radius: 20px; margin-top: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
 
-  /* Anatomy block */
-  .anatomy-grid { display: grid; grid-template-columns: 200px 1fr; gap: 20px; margin-bottom: 8px; }
-  .candle-demo { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 16px; display: flex; justify-content: space-around; align-items: center; }
-  .candle-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: var(--muted); }
-  .wick { width: 2px; background: var(--muted); border-radius: 1px; }
-  .body-bull { background: var(--green); border-radius: 2px; }
-  .body-bear { background: var(--red); border-radius: 2px; }
-  .anatomy-notes { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 14px; }
-  .anatomy-notes p { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
-  .anatomy-notes p:last-child { margin-bottom: 0; }
-  .anatomy-notes strong { color: var(--text); }
+  /* ── Metric strip ── */
+  .metric-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 22px; }
+  .ms-item { background: var(--card-elevated); padding: 10px 14px; text-align: center; }
+  .ms-val { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 3px; }
+  .ms-val.blue { color: var(--blue); } .ms-val.green { color: var(--green); }
+  .ms-val.red { color: var(--red); } .ms-val.amber { color: var(--amber); }
+  .ms-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
 
-  /* Pattern table */
-  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  thead tr { background: #1c2128; }
-  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #1c2128; }
-  .pname { font-weight: 600; color: var(--text); }
-  .bull { color: var(--green); }
-  .bear { color: var(--red); }
-  .neutral { color: var(--amber); }
-  .sig-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-  .sig-bull { background: rgba(63,185,80,0.15); color: var(--green); }
-  .sig-bear { background: rgba(248,81,73,0.15); color: var(--red); }
-  .sig-neu { background: rgba(210,153,34,0.15); color: var(--amber); }
+  /* ── Anatomy ── */
+  .anatomy-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 22px; display: grid; grid-template-columns: 160px 1fr; gap: 20px; align-items: center; }
+  .anatomy-candles { display: flex; gap: 28px; justify-content: center; }
+  .candle-wrap { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .candle-label { font-size: 10px; color: var(--muted); margin-top: 6px; text-align: center; }
+  .anatomy-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+  .an-item { font-size: 11px; color: var(--muted); }
+  .an-item strong { color: var(--text); display: block; font-size: 11px; }
 
-  /* Visual candle column */
-  .vc { display: flex; align-items: center; justify-content: center; gap: 3px; min-width: 60px; }
-  .cv { display: flex; flex-direction: column; align-items: center; }
-  .cw { width: 1px; background: var(--muted); }
-  .cb-b { background: var(--green); width: 10px; border-radius: 1px; }
-  .cb-r { background: var(--red); width: 10px; border-radius: 1px; }
-  .cb-d { background: var(--amber); width: 10px; border-radius: 1px; height: 2px; }
+  /* ── Filter bar ── */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+  .filter-btn { background: var(--card-elevated); border: 1px solid var(--border); color: var(--muted); font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all var(--dur-fast); }
+  .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-btn.active { background: var(--blue-glow); border-color: rgba(88,166,255,0.4); color: var(--blue); }
+  .filter-btn.active.bull { background: var(--green-glow); border-color: rgba(63,185,80,0.4); color: var(--green); }
+  .filter-btn.active.bear { background: var(--red-glow); border-color: rgba(248,81,73,0.4); color: var(--red); }
+  .filter-btn.active.neutral { background: var(--amber-glow); border-color: rgba(210,153,34,0.4); color: var(--amber); }
 
-  /* Key rule box */
-  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
-  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
+  /* ── Section title ── */
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 22px 0 12px; padding-left: 10px; border-left: 3px solid var(--blue); }
+
+  /* ── Pattern cards ── */
+  .pattern-grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 8px; }
+  .pattern-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 8px; }
+  .pattern-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 8px; }
+
+  .pattern-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; cursor: pointer; transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+  .pattern-card:hover { transform: translateY(-2px); }
+  .pattern-card[data-direction="bull"] { border-top: 3px solid var(--green); }
+  .pattern-card[data-direction="bull"]:hover { box-shadow: 0 6px 20px var(--green-glow); }
+  .pattern-card[data-direction="bear"] { border-top: 3px solid var(--red); }
+  .pattern-card[data-direction="bear"]:hover { box-shadow: 0 6px 20px var(--red-glow); }
+  .pattern-card[data-direction="neutral"] { border-top: 3px solid var(--amber); }
+  .pattern-card[data-direction="neutral"]:hover { box-shadow: 0 6px 20px var(--amber-glow); }
+  .pattern-card.hidden-filter { display: none; }
+
+  .pc-visual { display: flex; justify-content: center; align-items: center; padding: 14px 0 10px; background: #0d1117; border-bottom: 1px solid var(--border); min-height: 80px; }
+  .pc-info { padding: 10px 12px 8px; }
+  .pc-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+  .pc-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+  .sig-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sig-badge.bull { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+  .sig-badge.bear { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.25); }
+  .sig-badge.neutral { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(210,153,34,0.25); }
+  .type-badge { font-size: 9px; color: var(--muted); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; }
+  .pc-hint { padding: 0 12px 8px; font-size: 9px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+  .hint-arrow { transition: transform var(--dur-fast); }
+  .pattern-card.open .hint-arrow { transform: rotate(180deg); }
+
+  /* Expand panel */
+  .pc-detail { max-height: 0; overflow: hidden; transition: max-height 0.35s var(--ease-out); border-top: 0px solid var(--border); }
+  .pattern-card.open .pc-detail { max-height: 260px; border-top-width: 1px; }
+  .pd-inner { padding: 10px 12px; display: flex; flex-direction: column; gap: 7px; }
+  .pd-row { font-size: 10px; line-height: 1.5; }
+  .pd-row .pd-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 2px; }
+  .pd-row .pd-text { color: var(--muted); }
+  .pd-row .pd-text strong { color: var(--text); }
+  .pd-finn { background: var(--green-glow); border-radius: 4px; padding: 6px 8px; }
+  .pd-finn .pd-text { color: var(--green); font-style: italic; font-size: 10px; }
+
+  /* ── Reveal ── */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Rule box ── */
+  .rule-box { background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.2); border-radius: 10px; padding: 16px 20px; margin: 22px 0; }
+  .rule-box p { font-size: 12px; color: var(--muted); margin-bottom: 8px; line-height: 1.6; }
   .rule-box p:last-child { margin-bottom: 0; }
   .rule-box strong { color: var(--blue); }
 
-  /* Footer */
-  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+  /* ── FINN voice box ── */
+  .finn-voice { background: rgba(210,153,34,0.05); border: 1px solid rgba(210,153,34,0.25); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; backdrop-filter: blur(12px); position: relative; }
+  .finn-voice::before { content: 'FINN'; position: absolute; top: -10px; left: 20px; background: var(--bg); padding: 0 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--amber); }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; line-height: 1.65; }
 
-  @media print {
-    body { background: #fff; color: #111; }
-    .page { padding: 12px; }
-    .card, .anatomy-notes, .rule-box { border-color: #ccc; background: #f8f8f8; }
-    .header { border-color: #333; }
-    .logo, .blue { color: #1a56db; }
-    .bull { color: #16a34a; } .bear { color: #dc2626; } .neutral { color: #b45309; }
-    th { color: #1a56db; background: #f0f4ff; }
-    td { border-color: #ddd; }
-    tr:hover td { background: transparent; }
-  }
+  /* ── Footer ── */
+  .page-footer { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 10px; }
+  .footer-right { display: flex; align-items: center; gap: 8px; }
+  .footer-v-badge { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.3); color: var(--green); font-size: 9px; padding: 1px 7px; border-radius: 4px; font-weight: 700; }
 </style>
 </head>
 <body>
-<div class="page">
+<div class="page-wrap">
 
-  <div class="header">
-    <div>
-      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
-      <div class="title">Candlestick Pattern Reference</div>
-      <div class="subtitle">Visual guide to single, two-candle, and three-candle formations · Handbook §2.1</div>
-    </div>
-    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C1</div>
+  <div class="page-header">
+    <h1>Candlestick Pattern Reference</h1>
+    <div class="subtitle">Single, Two-Candle &amp; Three-Candle Formations · Signal Direction · Confirmation Rules</div>
+    <div class="finn-tag">FINN Knowledge Base · HB P2 §2.1</div>
+  </div>
+
+  <div class="metric-strip">
+    <div class="ms-item"><div class="ms-val blue">20</div><div class="ms-label">Total Patterns</div></div>
+    <div class="ms-item"><div class="ms-val blue">10</div><div class="ms-label">Single-Candle</div></div>
+    <div class="ms-item"><div class="ms-val blue">6</div><div class="ms-label">Two-Candle</div></div>
+    <div class="ms-item"><div class="ms-val green">9</div><div class="ms-label">Bullish Signals</div></div>
+    <div class="ms-item"><div class="ms-val red">9</div><div class="ms-label">Bearish Signals</div></div>
+    <div class="ms-item"><div class="ms-val amber">IC&gt;0.05</div><div class="ms-label">Test Before Use</div></div>
   </div>
 
   <!-- Anatomy -->
-  <div class="section-label">Candlestick Anatomy</div>
-  <div class="anatomy-grid">
-    <div class="candle-demo">
+  <div class="anatomy-card reveal">
+    <div class="anatomy-candles">
       <div class="candle-wrap">
-        <div class="wick" style="height:18px"></div>
-        <div class="body-bull" style="width:16px;height:28px"></div>
-        <div class="wick" style="height:8px"></div>
-        <div style="margin-top:6px">Bullish</div>
+        <svg width="28" height="70" viewBox="0 0 28 70">
+          <line x1="14" y1="5" x2="14" y2="14" stroke="#8b949e" stroke-width="1.5"/>
+          <rect x="5" y="14" width="18" height="38" fill="#3fb950" rx="1"/>
+          <line x1="14" y1="52" x2="14" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+        </svg>
+        <div class="candle-label">Bullish<br>Close &gt; Open</div>
       </div>
       <div class="candle-wrap">
-        <div class="wick" style="height:8px"></div>
-        <div class="body-bear" style="width:16px;height:28px"></div>
-        <div class="wick" style="height:18px"></div>
-        <div style="margin-top:6px">Bearish</div>
+        <svg width="28" height="70" viewBox="0 0 28 70">
+          <line x1="14" y1="5" x2="14" y2="14" stroke="#8b949e" stroke-width="1.5"/>
+          <rect x="5" y="14" width="18" height="38" fill="#f85149" rx="1"/>
+          <line x1="14" y1="52" x2="14" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+        </svg>
+        <div class="candle-label">Bearish<br>Close &lt; Open</div>
       </div>
     </div>
     <div class="anatomy-notes">
-      <p><strong>Body</strong> — filled rectangle between open and close. <span class="bull">Green/white = close &gt; open (bullish)</span>. <span class="bear">Red/black = close &lt; open (bearish)</span>.</p>
-      <p><strong>Upper wick</strong> — line above body to the period high. Long upper wick = price was rejected at the high.</p>
-      <p><strong>Lower wick</strong> — line below body to the period low. Long lower wick = price was rejected at the low.</p>
-      <p><strong>Long body</strong> = strong directional commitment. <strong>Short body</strong> = indecision. <strong>No opposing wick</strong> = no rejection from that extreme.</p>
+      <div class="an-item"><strong>Body</strong>Rectangle between open &amp; close. Size = directional commitment.</div>
+      <div class="an-item"><strong>Upper wick</strong>High of session. Long upper wick = price rejected at the high.</div>
+      <div class="an-item"><strong>Lower wick</strong>Low of session. Long lower wick = price rejected at the low.</div>
+      <div class="an-item"><strong>Context first</strong>Same pattern at support in an uptrend ≠ same pattern in a range. Location determines probability.</div>
     </div>
   </div>
 
-  <!-- Single candle -->
-  <div class="section-label">Single-Candle Patterns</div>
-  <table>
-    <thead><tr><th style="width:130px">Pattern</th><th style="width:80px">Signal</th><th>Body &amp; Wicks</th><th>Meaning</th><th>Context Required</th></tr></thead>
-    <tbody>
-      <tr><td class="pname">Bullish Marubozu</td><td><span class="sig-badge sig-bull">Bullish</span></td><td>Large bullish; no/minimal wicks</td><td>Complete bull control; buyers dominated open to close</td><td>Strongest at base of consolidation or support</td></tr>
-      <tr><td class="pname">Bearish Marubozu</td><td><span class="sig-badge sig-bear">Bearish</span></td><td>Large bearish; no/minimal wicks</td><td>Complete bear control; sellers dominated open to close</td><td>Strongest at top of rally or resistance</td></tr>
-      <tr><td class="pname">Hammer</td><td><span class="sig-badge sig-bull">Bullish Rev.</span></td><td>Small body at top of range; lower wick ≥ 2× body; minimal upper wick</td><td>Buyers rejected a low — bullish reversal signal</td><td>Must appear after a downtrend or at support. Identical shape to Hanging Man — position in trend determines meaning.</td></tr>
-      <tr><td class="pname">Hanging Man</td><td><span class="sig-badge sig-bear">Bearish Rev.</span></td><td>Small body at top of range; lower wick ≥ 2× body; minimal upper wick</td><td>Same shape as Hammer — at the top, signals sellers tested the low</td><td>Must appear after an uptrend or at resistance. Requires next-candle confirmation.</td></tr>
-      <tr><td class="pname">Inverted Hammer</td><td><span class="sig-badge sig-bull">Bullish Rev.</span></td><td>Small body at bottom of range; upper wick ≥ 2× body; minimal lower wick</td><td>Buyers tested higher — potential reversal, needs confirmation</td><td>Must appear after a downtrend. Identical shape to Shooting Star.</td></tr>
-      <tr><td class="pname">Shooting Star</td><td><span class="sig-badge sig-bear">Bearish Rev.</span></td><td>Small body at bottom of range; upper wick ≥ 2× body; minimal lower wick</td><td>Sellers rejected a rally — bearish reversal signal</td><td>Must appear after an uptrend or at resistance</td></tr>
-      <tr><td class="pname">Doji</td><td><span class="sig-badge sig-neu">Indecision</span></td><td>Near-zero body (open ≈ close); wicks both sides</td><td>Neither side controls — balance between buyers and sellers</td><td>Significance depends on prior trend and what follows</td></tr>
-      <tr><td class="pname">Dragonfly Doji</td><td><span class="sig-badge sig-bull">Bullish Ind.</span></td><td>Near-zero body at top of range; long lower wick; no upper wick</td><td>Buyers recovered all losses — bullish indecision</td><td>Strongest at support after a downtrend</td></tr>
-      <tr><td class="pname">Gravestone Doji</td><td><span class="sig-badge sig-bear">Bearish Ind.</span></td><td>Near-zero body at bottom of range; long upper wick; no lower wick</td><td>Sellers recovered all gains — bearish indecision</td><td>Strongest at resistance after an uptrend</td></tr>
-      <tr><td class="pname">Spinning Top</td><td><span class="sig-badge sig-neu">Indecision</span></td><td>Small body, centered; roughly equal wicks both sides</td><td>Neither side wins decisively — trend may be pausing</td><td>Context and next candle determine meaning</td></tr>
-    </tbody>
-  </table>
+  <!-- Filter -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all" onclick="filterPatterns('all','all')">All (20)</button>
+    <button class="filter-btn" data-filter="bull" onclick="filterPatterns('bull','bull')">Bullish (9)</button>
+    <button class="filter-btn" data-filter="bear" onclick="filterPatterns('bear','bear')">Bearish (9)</button>
+    <button class="filter-btn" data-filter="neutral" onclick="filterPatterns('neutral','neutral')">Neutral (2)</button>
+  </div>
 
-  <div class="rule-box">
-    <p><strong>Hammer vs. Hanging Man:</strong> Identical shape. Meaning is determined entirely by position in trend. Bottom of downtrend = Hammer (bullish). Top of uptrend = Hanging Man (bearish).</p>
-    <p><strong>Inverted Hammer vs. Shooting Star:</strong> Same rule. Bottom of downtrend = Inverted Hammer (bullish). Top of uptrend = Shooting Star (bearish).</p>
+  <!-- Single candle -->
+  <div class="pattern-section" id="sec-single">
+    <div class="section-title">Single-Candle Patterns</div>
+    <div class="pattern-grid-5 reveal">
+
+      <!-- 1. Bullish Marubozu -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <rect x="5" y="5" width="18" height="60" fill="#3fb950" rx="1"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Bullish Marubozu</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Large bullish body; no or minimal wicks. Buyers controlled open to close completely.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Strongest at base of consolidation or support. Above-average volume preferred.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Complete bull control — but confirm the level before treating as entry."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 2. Bearish Marubozu -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <rect x="5" y="5" width="18" height="60" fill="#f85149" rx="1"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Bearish Marubozu</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Large bearish body; no or minimal wicks. Sellers controlled open to close completely.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Strongest at top of rally or resistance. Signals strong directional conviction.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Complete bear control. Same rule: location first, pattern second."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 3. Hammer -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <rect x="5" y="8" width="18" height="14" fill="#3fb950" rx="1"/>
+            <line x1="14" y1="22" x2="14" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Hammer</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Rev.</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Small body at top of range; lower wick ≥ 2× body; minimal upper wick. Buyers rejected a low.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text"><strong>Must appear after a downtrend or at support.</strong> Identical shape to Hanging Man — position in trend determines meaning.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Same shape as Hanging Man. The trend tells you which one it is."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 4. Hanging Man -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <rect x="5" y="8" width="18" height="14" fill="#f85149" rx="1"/>
+            <line x1="14" y1="22" x2="14" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Hanging Man</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Rev.</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Same shape as Hammer — small body at top, long lower wick. At the top, sellers tested the low.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text"><strong>Must appear after an uptrend or at resistance.</strong> Requires next-candle confirmation (bearish close).</div></div>
+          <div class="pd-finn"><div class="pd-text">"Context is everything. Bottom of downtrend = Hammer. Top of uptrend = Hanging Man."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 5. Inverted Hammer -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <line x1="14" y1="5" x2="14" y2="48" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="5" y="48" width="18" height="14" fill="#3fb950" rx="1"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Inverted Hammer</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Rev.</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Small body at bottom of range; upper wick ≥ 2× body; minimal lower wick. Buyers tested higher.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text"><strong>Must appear after a downtrend.</strong> Identical shape to Shooting Star. Needs next-candle confirmation.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Buyers tried and were partially rejected. Watch the next candle."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 6. Shooting Star -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <line x1="14" y1="5" x2="14" y2="48" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="5" y="48" width="18" height="14" fill="#f85149" rx="1"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Shooting Star</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Rev.</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Small body at bottom of range; upper wick ≥ 2× body. Sellers rejected a rally from the high.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text"><strong>Must appear after an uptrend or at resistance.</strong> Same shape as Inverted Hammer — position determines meaning.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Sellers slammed the high. Top of uptrend + this shape = watch for reversal."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 7. Doji -->
+      <div class="pattern-card" data-direction="neutral" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <line x1="14" y1="5" x2="14" y2="32" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="3" y="32" width="22" height="3" fill="#d29922" rx="1"/>
+            <line x1="14" y1="35" x2="14" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Doji</div>
+          <div class="pc-badges"><span class="sig-badge neutral">Indecision</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Near-zero body (open ≈ close); wicks on both sides. Neither buyers nor sellers controlled the session.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Significance depends on prior trend and next candle. A Doji after a long trend signals exhaustion — not a reversal on its own.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Indecision is data. What happens next is the signal."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 8. Dragonfly Doji -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <rect x="3" y="5" width="22" height="3" fill="#d29922" rx="1"/>
+            <line x1="14" y1="8" x2="14" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Dragonfly Doji</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Ind.</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Near-zero body at the top of range; long lower wick; no upper wick. Buyers recovered all losses from the session low.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Strongest at support after a downtrend. Long lower wick shows significant buying pressure at the low.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Sellers tried. Buyers erased it all. That's the signal."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 9. Gravestone Doji -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <line x1="14" y1="5" x2="14" y2="62" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="3" y="62" width="22" height="3" fill="#d29922" rx="1"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Gravestone Doji</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Ind.</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Near-zero body at bottom of range; long upper wick; no lower wick. Sellers recovered all gains from the session high.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Strongest at resistance after an uptrend. Long upper wick = buyers were rejected hard at the high.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Buyers tried. Sellers erased it all. Mirror image of the Dragonfly."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 10. Spinning Top -->
+      <div class="pattern-card" data-direction="neutral" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="28" height="70" viewBox="0 0 28 70">
+            <line x1="14" y1="5" x2="14" y2="23" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="5" y="23" width="18" height="24" fill="#d29922" rx="1"/>
+            <line x1="14" y1="47" x2="14" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Spinning Top</div>
+          <div class="pc-badges"><span class="sig-badge neutral">Indecision</span><span class="type-badge">Single</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Small body; roughly equal wicks on both sides. Neither side wins decisively — trend may be pausing.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Context and next candle determine meaning. Multiple spinning tops in a row = range-bound market.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Indecision cluster = wait for resolution before trading."</div></div>
+        </div></div>
+      </div>
+
+    </div>
   </div>
 
   <!-- Two candle -->
-  <div class="section-label">Two-Candle Patterns</div>
-  <table>
-    <thead><tr><th style="width:160px">Pattern</th><th style="width:80px">Signal</th><th>Formation</th><th>Confirmation Required</th></tr></thead>
-    <tbody>
-      <tr><td class="pname">Bullish Engulfing</td><td><span class="sig-badge sig-bull">Bullish Rev.</span></td><td>Small bearish candle followed by a larger bullish candle whose body fully engulfs the prior body</td><td>Next candle closes higher; volume on the engulfing candle above prior candle volume</td></tr>
-      <tr><td class="pname">Bearish Engulfing</td><td><span class="sig-badge sig-bear">Bearish Rev.</span></td><td>Small bullish candle followed by a larger bearish candle whose body fully engulfs the prior body</td><td>Next candle closes lower; volume on the engulfing candle above prior candle volume</td></tr>
-      <tr><td class="pname">Bullish Harami</td><td><span class="sig-badge sig-bull">Bullish Rev.</span></td><td>Large bearish candle followed by a small bullish candle that fits inside the prior body</td><td>Less powerful than Engulfing — requires next-candle confirmation; more of a pause signal</td></tr>
-      <tr><td class="pname">Bearish Harami</td><td><span class="sig-badge sig-bear">Bearish Rev.</span></td><td>Large bullish candle followed by a small bearish candle that fits inside the prior body</td><td>Requires next-candle confirmation</td></tr>
-      <tr><td class="pname">Tweezer Bottom</td><td><span class="sig-badge sig-bull">Bullish Rev.</span></td><td>Two candles with matching or near-matching lows at support</td><td>Strongest when second candle is bullish after a bearish first — double rejection of a low</td></tr>
-      <tr><td class="pname">Tweezer Top</td><td><span class="sig-badge sig-bear">Bearish Rev.</span></td><td>Two candles with matching or near-matching highs at resistance</td><td>Strongest when second candle is bearish after a bullish first — double rejection of a high</td></tr>
-    </tbody>
-  </table>
+  <div class="pattern-section" id="sec-two">
+    <div class="section-title">Two-Candle Patterns</div>
+    <div class="pattern-grid-3 reveal">
 
-  <!-- Three candle -->
-  <div class="section-label">Three-Candle Patterns</div>
-  <table>
-    <thead><tr><th style="width:160px">Pattern</th><th style="width:80px">Signal</th><th>Formation</th><th>Volume Signature</th></tr></thead>
-    <tbody>
-      <tr><td class="pname">Morning Star</td><td><span class="sig-badge sig-bull">Bullish Rev.</span></td><td>Large bearish candle → small indecision candle (gap or small body) → large bullish candle closing into the first candle's body</td><td>Highest volume on the third candle. Appears after a downtrend.</td></tr>
-      <tr><td class="pname">Evening Star</td><td><span class="sig-badge sig-bear">Bearish Rev.</span></td><td>Large bullish candle → small indecision candle → large bearish candle closing into the first candle's body</td><td>Highest volume on the third candle. Appears after an uptrend.</td></tr>
-      <tr><td class="pname">Three White Soldiers</td><td><span class="sig-badge sig-bull">Bullish Cont.</span></td><td>Three consecutive large bullish candles, each opening within the prior body and closing near its own high</td><td>Declining volume on the third candle can signal exhaustion — watch closely</td></tr>
-      <tr><td class="pname">Three Black Crows</td><td><span class="sig-badge sig-bear">Bearish Cont.</span></td><td>Three consecutive large bearish candles, each opening within the prior body and closing near its own low</td><td>Declining volume on the third candle may indicate selling exhaustion</td></tr>
-    </tbody>
-  </table>
+      <!-- 11. Bullish Engulfing -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <line x1="20" y1="18" x2="20" y2="22" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="12" y="22" width="16" height="22" fill="#f85149" rx="1"/>
+            <line x1="20" y1="44" x2="20" y2="48" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="50" y1="7" x2="50" y2="10" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="10" width="16" height="52" fill="#3fb950" rx="1"/>
+            <line x1="50" y1="62" x2="50" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Bullish Engulfing</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Rev.</span><span class="type-badge">Two-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Small bearish candle followed by a larger bullish candle whose body fully engulfs the prior body.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Next candle closes higher. <strong>Volume on the engulfing candle above prior candle volume</strong> — critical. At support.</div></div>
+          <div class="pd-finn"><div class="pd-text">"The engulfing candle with high volume is the signal. Low volume = suspect."</div></div>
+        </div></div>
+      </div>
 
-  <!-- FINN Rules -->
-  <div class="section-label">FINN Application Rules</div>
-  <div class="rule-box">
-    <p><strong>Every candlestick pattern is a hypothesis, not a guarantee.</strong> A hammer at support does not mean the stock will rise — it means buying pressure was present at that level.</p>
-    <p><strong>Context &gt; Pattern.</strong> The same pattern at support in an uptrend has a higher probability than in the middle of a range. Always identify trend and level before identifying the candle.</p>
-    <p><strong>Volume confirms.</strong> A reversal candle on above-average volume is significantly stronger than the same candle on below-average volume.</p>
-    <p><strong>Run the IC test.</strong> Before using any pattern as a systematic entry signal, test it on your universe: does it predict positive forward returns with IC &gt; 0.05 and p &lt; 0.05 over a 3-year sample?</p>
+      <!-- 12. Bearish Engulfing -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <line x1="20" y1="18" x2="20" y2="22" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="12" y="22" width="16" height="22" fill="#3fb950" rx="1"/>
+            <line x1="20" y1="44" x2="20" y2="48" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="50" y1="7" x2="50" y2="10" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="10" width="16" height="52" fill="#f85149" rx="1"/>
+            <line x1="50" y1="62" x2="50" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Bearish Engulfing</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Rev.</span><span class="type-badge">Two-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Small bullish candle followed by a larger bearish candle whose body fully engulfs the prior body.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Next candle closes lower. Volume on the engulfing candle above prior. At resistance after uptrend.</div></div>
+          <div class="pd-finn"><div class="pd-text">"One of the most reliable reversal signals — when volume confirms."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 13. Bullish Harami -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <line x1="20" y1="5" x2="20" y2="8" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="12" y="8" width="16" height="54" fill="#f85149" rx="1"/>
+            <line x1="20" y1="62" x2="20" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="27" width="16" height="18" fill="#3fb950" rx="1"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Bullish Harami</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Rev.</span><span class="type-badge">Two-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Large bearish candle followed by a small bullish candle that fits inside the prior body — "inside bar."</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Less powerful than Engulfing. More of a pause signal — requires next-candle confirmation. Stronger at support.</div></div>
+          <div class="pd-finn"><div class="pd-text">"A pause, not a reversal on its own. Wait for confirmation."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 14. Bearish Harami -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <line x1="20" y1="5" x2="20" y2="8" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="12" y="8" width="16" height="54" fill="#3fb950" rx="1"/>
+            <line x1="20" y1="62" x2="20" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="27" width="16" height="18" fill="#f85149" rx="1"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Bearish Harami</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Rev.</span><span class="type-badge">Two-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Large bullish candle followed by a small bearish candle that fits inside the prior body.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Requires next-candle confirmation. At resistance after uptrend. Weaker signal than Bearish Engulfing.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Same principle: the pause needs confirmation before it's a reversal."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 15. Tweezer Bottom -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <line x1="20" y1="12" x2="20" y2="16" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="12" y="16" width="16" height="30" fill="#f85149" rx="1"/>
+            <line x1="20" y1="46" x2="20" y2="62" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="50" y1="18" x2="50" y2="22" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="22" width="16" height="26" fill="#3fb950" rx="1"/>
+            <line x1="50" y1="48" x2="50" y2="62" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="8" y1="62" x2="62" y2="62" stroke="#d29922" stroke-width="1" stroke-dasharray="3,2"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Tweezer Bottom</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Rev.</span><span class="type-badge">Two-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Two candles with matching or near-matching lows. Double rejection of the same price level.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Strongest when second candle is bullish after a bearish first. At support. Volume expansion preferred.</div></div>
+          <div class="pd-finn"><div class="pd-text">"The market tested the low twice. Both times, buyers defended it."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 16. Tweezer Top -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="70" height="70" viewBox="0 0 70 70">
+            <line x1="8" y1="8" x2="62" y2="8" stroke="#d29922" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="20" y1="8" x2="20" y2="12" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="12" y="12" width="16" height="26" fill="#3fb950" rx="1"/>
+            <line x1="20" y1="38" x2="20" y2="52" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="50" y1="8" x2="50" y2="12" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="12" width="16" height="26" fill="#f85149" rx="1"/>
+            <line x1="50" y1="38" x2="50" y2="52" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Tweezer Top</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Rev.</span><span class="type-badge">Two-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Two candles with matching or near-matching highs at resistance. Double rejection of the same high.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Strongest when second candle is bearish after a bullish first. At resistance after uptrend.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Sellers rejected the same high twice. That's a defended level."</div></div>
+        </div></div>
+      </div>
+
+    </div>
   </div>
 
-  <div class="footer">
-    <span>FINN Reference Library · ig_candlestick_patterns.html · Built May 2026</span>
-    <span>Handbook §2.1 · See also: ig_support_resistance.html · ig_gap_types.html</span>
+  <!-- Three candle -->
+  <div class="pattern-section" id="sec-three">
+    <div class="section-title">Three-Candle Patterns</div>
+    <div class="pattern-grid-4 reveal">
+
+      <!-- 17. Morning Star -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="100" height="70" viewBox="0 0 100 70">
+            <line x1="18" y1="7" x2="18" y2="10" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="10" y="10" width="16" height="38" fill="#f85149" rx="1"/>
+            <line x1="18" y1="48" x2="18" y2="52" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="50" y1="50" x2="50" y2="54" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="43" y="54" width="14" height="8" fill="#d29922" rx="1"/>
+            <line x1="50" y1="62" x2="50" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="82" y1="7" x2="82" y2="10" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="74" y="10" width="16" height="42" fill="#3fb950" rx="1"/>
+            <line x1="82" y1="52" x2="82" y2="55" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Morning Star</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Rev.</span><span class="type-badge">Three-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Large bearish → small indecision (gap or small body, lower) → large bullish closing into the first body.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text"><strong>Highest volume on the third candle.</strong> After a downtrend. Third candle should close at least 50% into the first body.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Three-candle story: sellers, indecision, buyers win. Volume on candle 3 is the verdict."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 18. Evening Star -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="100" height="70" viewBox="0 0 100 70">
+            <line x1="18" y1="18" x2="18" y2="22" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="10" y="22" width="16" height="38" fill="#3fb950" rx="1"/>
+            <line x1="18" y1="60" x2="18" y2="63" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="50" y1="5" x2="50" y2="9" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="43" y="9" width="14" height="8" fill="#d29922" rx="1"/>
+            <line x1="50" y1="17" x2="50" y2="20" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="82" y1="18" x2="82" y2="22" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="74" y="22" width="16" height="38" fill="#f85149" rx="1"/>
+            <line x1="82" y1="60" x2="82" y2="63" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Evening Star</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Rev.</span><span class="type-badge">Three-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Large bullish → small indecision at the top → large bearish closing into the first body. Mirror of Morning Star.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text"><strong>Highest volume on the third (bearish) candle.</strong> After an uptrend. Third candle closes at least 50% into first body.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Buyers, indecision at the top, sellers win. The high volume bearish candle is the tell."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 19. Three White Soldiers -->
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="100" height="70" viewBox="0 0 100 70">
+            <line x1="18" y1="42" x2="18" y2="45" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="10" y="45" width="16" height="20" fill="#3fb950" rx="1"/>
+            <line x1="50" y1="26" x2="50" y2="30" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="30" width="16" height="20" fill="#3fb950" rx="1"/>
+            <line x1="50" y1="50" x2="50" y2="53" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="82" y1="8" x2="82" y2="12" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="74" y="12" width="16" height="20" fill="#3fb950" rx="1"/>
+            <line x1="82" y1="32" x2="82" y2="35" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Three White Soldiers</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Cont.</span><span class="type-badge">Three-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Three consecutive large bullish candles, each opening within the prior body and closing near its own high.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text"><strong>Declining volume on the third candle can signal exhaustion</strong> — watch for stalling. Strongest after a downtrend base.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Three strong bulls in a row is momentum — but check if the third has less volume."</div></div>
+        </div></div>
+      </div>
+
+      <!-- 20. Three Black Crows -->
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-visual">
+          <svg width="100" height="70" viewBox="0 0 100 70">
+            <line x1="18" y1="5" x2="18" y2="8" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="10" y="8" width="16" height="20" fill="#f85149" rx="1"/>
+            <line x1="18" y1="28" x2="18" y2="31" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="50" y1="20" x2="50" y2="24" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="42" y="24" width="16" height="20" fill="#f85149" rx="1"/>
+            <line x1="50" y1="44" x2="50" y2="47" stroke="#8b949e" stroke-width="1.5"/>
+            <line x1="82" y1="38" x2="82" y2="42" stroke="#8b949e" stroke-width="1.5"/>
+            <rect x="74" y="42" width="16" height="20" fill="#f85149" rx="1"/>
+            <line x1="82" y1="62" x2="82" y2="65" stroke="#8b949e" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">Three Black Crows</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Cont.</span><span class="type-badge">Three-Candle</span></div>
+        </div>
+        <div class="pc-hint">Details <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Formation</div><div class="pd-text">Three consecutive large bearish candles, each opening within the prior body and closing near its own low.</div></div>
+          <div class="pd-row"><div class="pd-label">Confirmation</div><div class="pd-text">Declining volume on the third may indicate selling exhaustion. Strongest after an uptrend or at resistance breakdown.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Three sessions of sustained selling. The trend is asserting itself."</div></div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Rule box -->
+  <div class="rule-box reveal">
+    <p><strong>Identical shapes, opposite meanings:</strong> Hammer (bullish) and Hanging Man (bearish) are the same candle. Inverted Hammer (bullish) and Shooting Star (bearish) are the same candle. The trend context before the candle — not the shape — determines the interpretation.</p>
+    <p><strong>Volume is the confirming variable.</strong> A reversal candle on above-average volume is significantly stronger than the same candle on below-average volume. IC-test any pattern before systematic use: does it predict positive forward returns with IC &gt; 0.05 and p &lt; 0.05 over a 3-year sample?</p>
+  </div>
+
+  <!-- FINN voice -->
+  <div class="finn-voice reveal">
+    <p>"Every candlestick pattern is a hypothesis, not a guarantee. A hammer at support does not mean the stock will rise — it means buying pressure was present at that level. Context first. Level second. Pattern third. Volume confirms."</p>
+  </div>
+
+  <div class="page-footer">
+    <span>FINN Knowledge Base · ig_candlestick_patterns.html · HB P2 §2.1</span>
+    <div class="footer-right">
+      <span class="footer-v-badge">v2</span>
+      <span>May 2026</span>
+    </div>
   </div>
 
 </div>
+
+<script>
+  // Reveal
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  }), { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Card expand/collapse (accordion)
+  function toggleCard(card) {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.pattern-card.open').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+
+  // Tab filter
+  function filterPatterns(dir, btnClass) {
+    document.querySelectorAll('.pattern-card').forEach(c => {
+      c.classList.toggle('hidden-filter', dir !== 'all' && c.dataset.direction !== dir);
+      if (c.classList.contains('hidden-filter')) c.classList.remove('open');
+    });
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('active', 'bull', 'bear', 'neutral');
+      if (b.dataset.filter === dir) { b.classList.add('active'); if (btnClass !== 'all') b.classList.add(btnClass); }
+    });
+    document.querySelectorAll('.pattern-section').forEach(section => {
+      const visible = section.querySelectorAll('.pattern-card:not(.hidden-filter)').length > 0;
+      section.style.display = visible ? '' : 'none';
+    });
+  }
+</script>
 </body>
 </html>

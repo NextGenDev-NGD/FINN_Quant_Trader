@@ -31,6 +31,147 @@ Picked up next session:
 
 ---
 
+### [2026-05-13] — Infographics Upgrade Session D1 — ig_pattern_quiz.html + ig_risk_calculator.html (net-new)
+
+**Scope:** Phase D Session D1 complete. 2 net-new social-first interactive tools built from scratch. Progress: 12 / 16 sessions.
+
+**Files created:**
+- `resources/infographics/ig_pattern_quiz.html` — 10-question candlestick identification drill:
+  - Questions span single-candle (Hammer, Shooting Star, Doji, Hanging Man, Inverted Hammer, Dragonfly Doji), two-candle (Bullish Engulfing, Bearish Engulfing), three-candle (Morning Star, Evening Star)
+  - Each question: handcrafted inline SVG candle visual (single 64×130, two-candle 140×130, three-candle 200×130), 4 multiple-choice options with A/B/C/D letter labels
+  - Answer feedback: correct (green) / wrong (red) styling on selected and correct buttons, full explanation text for every pattern
+  - Progress bar fills 10% per question, question counter updates live
+  - End screen: score display (color-coded by band), FINN verdict in 4 bands (10/10 / 7–9 / 5–6 / <5), retry button
+  - Metric strip: 10 questions, 5 bullish, 4 bearish, 1 neutral, 4 multi-candle, pass score 7/10
+  - v2 design system, FINN voice, social mode 1200×675, stagger reveal, v2 footer
+- `resources/infographics/ig_risk_calculator.html` — Position size + stop-loss calculator:
+  - Inputs: account size ($), risk per trade (%), entry price, stop loss price, target price
+  - Live outputs: dollar risk, stop distance ($ + %), position size (shares), position value, portfolio allocation %, R:R ratio, potential gain
+  - Direction auto-detected (LONG/SHORT badge) from stop vs. entry relationship
+  - Risk level indicator bar: green (≤2%) / amber (2–4%) / red (>4%), color-coded input border on risk% field
+  - R:R gauge bar: fills to max at 4:1, green ≥2:1 / amber ≥1:1 / red <1:1
+  - Expectancy calculator: win rate % + avg win $ + avg loss $ → expectancy per trade with color verdict
+  - Dollar risk auto-syncs to avg loss field; potential gain auto-syncs to avg win field
+  - 6 FINN risk rules in 3×2 red-accent grid (2% / 6% / 2:1 / 1.5× ATR / 20% / Log All)
+  - Metric strip, FINN voice, social mode 1200×675, stagger reveal, v2 footer
+- `FINN_ProjectStatus.md` — D1 marked complete; progress updated to 12/16; D2 scoped (ig_market_regime + ig_trade_anatomy + ig_bias_cards)
+
+**Status:** Phase D Session D1 complete. D2 next: 3 remaining net-new social-first files.
+
+---
+
+### [2026-05-13] — Infographics Upgrade Session C4 — ig_chart_patterns_reversal.html v2
+
+**Scope:** Phase C Session C4 complete. Final T1 infographic fully rebuilt from v1 (static, 842 lines) to v2 (interactive, TradingView-style). All 8 T1 files now upgraded. Progress: 11 / 16 sessions.
+
+**Files modified:**
+- `resources/infographics/ig_chart_patterns_reversal.html` — complete v2 rebuild:
+  - v2 CSS variable set (full design system including glow vars, ease-out, duration scale)
+  - 6 pattern cards in 2 sections: Bearish Topping (Double Top, Head & Shoulders) and Bullish Bottoming (Double Bottom, Inverse H&S, Cup & Handle, Rounding Bottom); 3-col grid per section
+  - ASCII price-path diagrams preserved from v1, restyled in v2 dark panels with color spans (.d-g green, .d-r red, .d-a amber, .d-b blue)
+  - Tab filter (All / Bearish Topping / Bullish Bottoming) — same tab + section-hide pattern as continuation file
+  - Click-to-expand accordion: Neckline / Structure, Target Formula, Breakout Signal, Invalidation, FINN Note — one card open at a time
+  - Animated volume bars on card open: bars start at width:0, animate to data-target via 120ms setTimeout after .open class added; reset to width:0 when card closes (new technique vs. C3 files)
+  - Volume fill color classes: .vf-g (green gradient), .vf-r (red gradient), .vf-a (amber gradient), .vf-m (muted)
+  - Neckline callout box: amber glow background, ::before label "THE NECKLINE", amber border
+  - Anatomy strip: 6-item horizontal grid (1fr × 6)
+  - 6 FINN rules in 3×2 blue-glow grid
+  - Target formula monospace boxes, trigger boxes (.pd-trigger.bull/.bear), invalidation boxes (.pd-invalid)
+  - 6-item metric strip (6 Patterns, 2 Bearish, 4 Bullish, Neck, +50% Vol, Close)
+  - Glassmorphism FINN voice box (amber border, backdrop-filter blur), stagger reveal, social mode 1200×675, v2 footer
+- `FINN_ProjectStatus.md` — C4 marked complete; progress updated to 11/16; Phase D scoped (T2 files)
+
+**Status:** Phase C complete. All 8 T1 files upgraded (ig_trade_types, ig_performance_metrics, ig_risk_rules, ig_quant_workflow, ig_trading_psychology, ig_candlestick_patterns, ig_chart_patterns_continuation, ig_chart_patterns_reversal). Phase D next: T2 infographic upgrades.
+
+---
+
+### [2026-05-13] — Infographics Upgrade Session C3 — ig_candlestick_patterns.html + ig_chart_patterns_continuation.html v2
+
+**Scope:** Phase C Session C3 complete. Files #6 and #7 from the T1 upgrade sequence fully rebuilt from v1 (static tables) to v2 (interactive, TradingView-style). Progress: 10 / 16 sessions.
+
+**Files modified:**
+- `resources/infographics/ig_candlestick_patterns.html` — complete v2 rebuild:
+  - v2 CSS variable set (full design system)
+  - 20 pattern cards across 3 sections (10 single-candle, 6 two-candle, 4 three-candle), each with gradient accent-top (green/red/amber by signal direction) and hover lift + glow
+  - Inline SVG candle visuals per pattern: handcrafted wicks, bodies, and multi-candle compositions (2-candle at 70×70, 3-candle at 100×70 SVGs)
+  - Tab filter (All / Bullish / Bearish / Neutral) with JS-driven show/hide of cards and section labels; filter buttons color-coded to signal direction
+  - Click-to-expand accordion per card: Formation, Confirmation, FINN Note — one card open at a time
+  - Anatomy card with bilateral candle SVGs (bullish/bearish) + 4-item anatomy key
+  - 6-item metric strip (20 total, 10 single, 6 two-candle, 9 bullish, 9 bearish, IC>0.05 test)
+  - Glassmorphism FINN voice box, stagger reveal, social mode 1200×675, v2 footer
+- `resources/infographics/ig_chart_patterns_continuation.html` — complete v2 rebuild:
+  - v2 CSS variable set (full design system)
+  - 9 pattern cards across 4 sections (Flags ×2, Pennants/Wedges ×2, Triangles ×3, Rectangle ×1) with ASCII monospace price-path diagrams styled in dark panel
+  - Tab filter (All / Bullish / Bearish / Neutral) — same pattern as candlestick file
+  - Click-to-expand per card: Prior Trend Required, Breakout Signal, Target Calculation, Failure Mode (new v2 content — not in v1), FINN Note
+  - Quick reference table (all 9 patterns: direction, structure, volume, duration) styled v2
+  - 6-item metric strip (9 patterns, 2 flags, 3 triangles, 1.5× vol, 2+ touches, prior trend required)
+  - Glassmorphism FINN voice box, stagger reveal, social mode 1200×675, v2 footer
+- `FINN_ProjectStatus.md` — C3 marked complete; progress updated to 10/16; C4 scoped (ig_chart_patterns_reversal)
+
+**Status:** Phase C Session C3 complete. 7 of 8 T1 files upgraded. C4 next: ig_chart_patterns_reversal (final T1 file).
+
+---
+
+### [2026-05-13] — Infographics Upgrade Session C2 — ig_quant_workflow.html + ig_trading_psychology.html v2
+
+**Scope:** Phase C Session C2 complete. Files #4 and #5 from the T1 upgrade sequence fully rebuilt from v1 (static) to v2 (interactive, TradingView-style). Progress: 8 / 16 sessions.
+
+**Files modified:**
+- `resources/infographics/ig_quant_workflow.html` — complete v2 rebuild:
+  - v2 CSS variable set (full design system)
+  - 9 step cards across 4 phase columns (Research=blue, Build=green, Test=amber, Trade=purple), each with gradient accent-top strip and phase-matched hover glow
+  - Animated spine lines: `transform: scaleY(0)` → `scaleY(1)` via IntersectionObserver, triggered per-phase with per-step stagger delay (120ms intervals)
+  - Click-to-expand per step: each card has an expand button opening a `.step-detail` panel with a unique FINN Check and Common Mistake for all 9 steps
+  - 4 gate boxes styled as amber dashed panels with threshold badges, positioned between phases
+  - TradingView-style 6-item metric strip (9 Steps, 4 Phases, 4 Gates, IS IC >0.05, OOS IC >0.03, Min 20 Trades)
+  - Glassmorphism FINN voice box, social mode (1200×675 + 1080×1080), v2 footer
+- `resources/infographics/ig_trading_psychology.html` — complete v2 rebuild:
+  - v2 CSS variable set (full design system, added --purple and --purple-glow)
+  - 3 emotion cards (Fear/Greed/Revenge Trading) with color-coded accent-top strips (red/amber/purple), hover lift + glow, animated intensity gauge bars (Fear 85%, Greed 90%, Revenge 95%) with live counter display
+  - 7 CSS 3D flip cards for all cognitive biases: front (bias name + definition + HIGH/MEDIUM risk badge), back (trading manifestation + FINN countermeasure + FINN quote), onclick toggle — 4-card row (Confirmation, Recency, Loss Aversion, Sunk Cost) + 3-card row (Anchoring, Overconfidence, Hindsight Bias)
+  - Pre/Post trade psychological check: two-panel card with pulsing dots (blue/green), 6 checklist items each with bold title + explanation
+  - 6 FINN psychological standards in 3×2 rule card grid
+  - Glassmorphism FINN voice box with amber border, 6-item metric strip
+  - Social mode (1200×675 + 1080×1080), stagger reveal (IntersectionObserver), v2 footer
+- `FINN_ProjectStatus.md` — C2 marked complete; progress updated to 8/16; C3 scoped
+
+**Status:** Phase C Session C2 complete. 5 of 8 T1 files upgraded (ig_trade_types, ig_performance_metrics, ig_risk_rules, ig_quant_workflow, ig_trading_psychology). C3 next: ig_candlestick_patterns + ig_chart_patterns_continuation.
+
+---
+
+### [2026-05-13] — Infographics Upgrade Session C1 — ig_performance_metrics.html + ig_risk_rules.html v2
+
+**Scope:** Phase C Session C1 complete. Files #2 and #3 from the T1 upgrade sequence fully rebuilt from v1 (static) to v2 (interactive, TradingView-style). Progress: 6 / 16 sessions.
+
+**Files modified:**
+- `resources/infographics/ig_performance_metrics.html` — complete v2 rebuild:
+  - v2 CSS variable set (card-elevated, glow vars, ease-out, duration scale)
+  - 4 metric cards (Sharpe, MDD, Win Rate/Expectancy, IC) with color-coded variants (blue/red/amber/purple), gradient accent-top strip, hover lift + glow, IntersectionObserver stagger reveal
+  - Signal quality gauge per card: animated horizontal fill bar (width 0 → target% on scroll, 1.2s ease-out), color-gradient fill (red → amber → blue → green), zone legend
+  - Live Expectancy Calculator: 3 inputs (win rate %, avg win $R, avg loss $R), real-time result with color-coded verdict (green/blue/amber/red thresholds)
+  - TradingView-style 6-item metric strip header (Sharpe floor, IC floor, MDD, win rate range, expectancy, p-value)
+  - Click-to-expand interpretation matrix rows (accordion, one open at a time)
+  - Pulsing green live-dot badge in header
+  - Social media mode (1200×675 + 1080×1080)
+  - v2 footer with FINN attribution + version tag
+- `resources/infographics/ig_risk_rules.html` — complete v2 rebuild:
+  - v2 CSS variable set (full design system)
+  - 6 rule cards in 3×2 grid, red gradient accent-top strip, click-to-expand rationale panel per card
+  - Default state: rule number + title + spec value + brief description + "See rationale" toggle
+  - Expanded state: deep rationale (why the rule exists) + violation pattern (what it looks like + how it ends), slide-down animation
+  - Pulsing red alert-dot in header (distinct from performance metrics live-dot — thematic to risk)
+  - TradingView-style 6-item metric strip (one slot per rule's key number: 2%, 6% DD, 1.5×ATR, 2:1, 20%, Log All)
+  - Kill switch section with kill-conditions list + hover highlight
+  - Glassmorphism FINN voice box (backdrop-filter blur)
+  - Social media mode (1200×675 + 1080×1080)
+  - v2 footer with FINN attribution + version tag
+- `FINN_ProjectStatus.md` — C1 marked complete; progress updated to 6/16; C2 scoped (ig_quant_workflow + ig_trading_psychology)
+
+**Status:** Phase C Session C1 complete. 4 of 8 T1 files upgraded (ig_trade_types, ig_performance_metrics, ig_risk_rules — with ig_quant_workflow via C2 next).
+
+---
+
 ### [2026-05-12] — Infographics Upgrade Session B2 — ig_trade_types.html v2
 
 **Scope:** Phase B Session B2 complete. First T1 infographic fully upgraded from v1 (static, ~250 lines) to v2 (interactive, TradingView-inspired, ~480 lines). Template proven end-to-end.

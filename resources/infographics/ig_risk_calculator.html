@@ -1,0 +1,509 @@
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Position Size & Risk Calculator</title>
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+  --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+body.social.square { width: 1080px; min-height: 1080px; }
+
+.page { max-width: 960px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* HEADER */
+.header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.finn-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); text-transform: uppercase; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); padding: 3px 8px; border-radius: 4px; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse-green 2s ease-in-out infinite; }
+@keyframes pulse-green { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(0.85)} }
+h1 { font-size: 22px; font-weight: 700; }
+.header-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+/* METRIC STRIP */
+.metric-strip { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 24px; }
+.metric-item { background: var(--card); padding: 10px 14px; }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
+.metric-value { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--blue); }
+
+/* MAIN CALCULATOR GRID */
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+@media (max-width: 680px) { .calc-grid { grid-template-columns: 1fr; } }
+
+.calc-panel { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.panel-header { padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--card-elevated); border-bottom: 1px solid var(--border); }
+.panel-body { padding: 20px 18px; }
+
+/* INPUTS */
+.input-group { margin-bottom: 16px; }
+.input-group:last-child { margin-bottom: 0; }
+.input-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.input-hint { font-size: 11px; color: var(--border); font-style: italic; }
+.input-row { display: flex; align-items: center; gap: 0; }
+.input-prefix { background: var(--card-elevated); border: 1px solid var(--border); border-right: none; padding: 9px 12px; font-size: 13px; color: var(--muted); border-radius: 6px 0 0 6px; font-variant-numeric: tabular-nums; }
+.calc-input { flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-size: 14px; font-variant-numeric: tabular-nums; padding: 9px 12px; outline: none; transition: border-color var(--dur-fast); border-radius: 0; }
+.calc-input:last-child { border-radius: 0 6px 6px 0; }
+.calc-input:focus { border-color: var(--blue); }
+.calc-input.warning { border-color: var(--amber); }
+.calc-input.danger { border-color: var(--red); }
+.input-suffix { background: var(--card-elevated); border: 1px solid var(--border); border-left: none; padding: 9px 12px; font-size: 13px; color: var(--muted); border-radius: 0 6px 6px 0; }
+.solo-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px; font-variant-numeric: tabular-nums; padding: 9px 12px; outline: none; transition: border-color var(--dur-fast); }
+.solo-input:focus { border-color: var(--blue); }
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+/* DIRECTION BADGE */
+.dir-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+.dir-badge.long { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.dir-badge.short { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+.dir-badge.neutral { background: var(--blue-glow); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+
+/* OUTPUTS */
+.output-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.output-row:last-child { border-bottom: none; }
+.output-label { font-size: 12px; color: var(--muted); }
+.output-sub { font-size: 11px; color: var(--border); margin-top: 2px; }
+.output-val { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; }
+.output-val.green { color: var(--green); }
+.output-val.red { color: var(--red); }
+.output-val.amber { color: var(--amber); }
+.output-val.blue { color: var(--blue); }
+.output-val.muted { color: var(--muted); font-size: 14px; }
+
+/* RISK LEVEL INDICATOR */
+.risk-bar-wrap { margin-top: 12px; }
+.risk-bar-label { font-size: 11px; color: var(--muted); margin-bottom: 5px; display: flex; justify-content: space-between; }
+.risk-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.risk-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s var(--ease-out), background 0.3s; }
+
+/* R:R GAUGE */
+.rr-bar-wrap { margin-top: 6px; }
+.rr-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.rr-bar-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width 0.3s var(--ease-out), background 0.3s; }
+
+/* FORMULA BOX */
+.formula-box { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 10px 14px; font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--muted); margin-top: 12px; line-height: 1.8; }
+.formula-box span { color: var(--blue); }
+
+/* EXPECTANCY PANEL */
+.exp-panel { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+.exp-body { padding: 20px 18px; }
+.exp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+@media (max-width: 680px) { .exp-grid { grid-template-columns: 1fr; } }
+.exp-result { background: var(--card-elevated); border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; display: flex; justify-content: space-between; align-items: center; }
+.exp-result-label { font-size: 13px; color: var(--muted); }
+.exp-result-val { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.exp-verdict { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* RULES GRID */
+.rules-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+@media (max-width: 680px) { .rules-grid { grid-template-columns: 1fr; } }
+.rule-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; border-top: 2px solid var(--red); }
+.rule-num { font-size: 10px; color: var(--red); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.rule-val { font-size: 20px; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+.rule-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+/* FINN VOICE */
+.finn-voice { position: relative; background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.3); border-radius: 8px; padding: 18px 20px 18px 28px; margin-top: 8px; font-size: 13px; line-height: 1.7; backdrop-filter: blur(12px); }
+.finn-voice::before { content: 'FINN'; position: absolute; top: -1px; left: 16px; transform: translateY(-50%); background: var(--amber); color: #0d1117; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 3px; }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 12px; color: var(--muted); }
+.footer-right { font-size: 11px; color: var(--border); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+section-label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 12px; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header reveal">
+    <div class="header-top">
+      <span class="finn-logo">FINN</span>
+      <div class="live-dot"></div>
+    </div>
+    <h1>Position Size &amp; Risk Calculator</h1>
+    <div class="header-sub">Enter your trade parameters — position size, risk, and R:R update live</div>
+  </div>
+
+  <div class="metric-strip reveal">
+    <div class="metric-item"><div class="metric-label">Max Risk / Trade</div><div class="metric-value" style="color:var(--red)">2%</div></div>
+    <div class="metric-item"><div class="metric-label">Max Portfolio DD</div><div class="metric-value" style="color:var(--red)">6%</div></div>
+    <div class="metric-item"><div class="metric-label">Min R:R Ratio</div><div class="metric-value" style="color:var(--amber)">2:1</div></div>
+    <div class="metric-item"><div class="metric-label">Formula</div><div class="metric-value" style="font-size:12px;padding-top:2px;color:var(--blue)">Risk ÷ Stop$</div></div>
+    <div class="metric-item"><div class="metric-label">Position Rule</div><div class="metric-value" style="font-size:12px;padding-top:2px;color:var(--muted)">≤ 20% acct</div></div>
+    <div class="metric-item"><div class="metric-label">Log All</div><div class="metric-value" style="font-size:12px;padding-top:2px;color:var(--muted)">Every Trade</div></div>
+  </div>
+
+  <!-- MAIN CALCULATOR -->
+  <div class="calc-grid reveal">
+
+    <!-- INPUTS -->
+    <div class="calc-panel">
+      <div class="panel-header">Trade Parameters</div>
+      <div class="panel-body">
+
+        <div class="input-group">
+          <div class="input-label">
+            Account Size
+            <span class="input-hint">total capital</span>
+          </div>
+          <div class="input-row">
+            <span class="input-prefix">$</span>
+            <input class="calc-input" id="accountSize" type="number" value="10000" min="0" step="100" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            Risk Per Trade
+            <span class="input-hint">max 2% (FINN rule)</span>
+          </div>
+          <div class="input-row">
+            <input class="calc-input" id="riskPct" type="number" value="2" min="0" max="100" step="0.25" style="border-radius:6px 0 0 6px;" oninput="calculate()">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="input-group">
+          <div class="input-label">
+            Entry Price
+            <span id="dirLabel"><span class="dir-badge neutral">Set stop to detect direction</span></span>
+          </div>
+          <div class="input-row">
+            <span class="input-prefix">$</span>
+            <input class="calc-input" id="entryPrice" type="number" value="50.00" min="0" step="0.01" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            Stop Loss Price
+            <span class="input-hint">hard stop level</span>
+          </div>
+          <div class="input-row">
+            <span class="input-prefix">$</span>
+            <input class="calc-input" id="stopPrice" type="number" value="48.50" min="0" step="0.01" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            Target Price
+            <span class="input-hint">optional — for R:R</span>
+          </div>
+          <div class="input-row">
+            <span class="input-prefix">$</span>
+            <input class="calc-input" id="targetPrice" type="number" value="53.00" min="0" step="0.01" oninput="calculate()">
+          </div>
+        </div>
+
+        <div class="formula-box">
+          Shares = <span>Dollar Risk</span> ÷ <span>Stop Distance</span><br>
+          Dollar Risk = <span>Account</span> × <span>Risk %</span> / 100<br>
+          R:R = <span>|Target − Entry|</span> / <span>|Entry − Stop|</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- OUTPUTS -->
+    <div class="calc-panel">
+      <div class="panel-header">Calculated Results</div>
+      <div class="panel-body">
+
+        <div class="output-row">
+          <div>
+            <div class="output-label">Dollar Risk</div>
+            <div class="output-sub">max loss on this trade</div>
+          </div>
+          <div class="output-val green" id="outDollarRisk">$200</div>
+        </div>
+
+        <div class="output-row">
+          <div>
+            <div class="output-label">Stop Distance</div>
+            <div class="output-sub">entry to stop</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="output-val blue" id="outStopDist">$1.50</div>
+            <div style="font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;" id="outStopPct">3.00%</div>
+          </div>
+        </div>
+
+        <div class="output-row">
+          <div>
+            <div class="output-label">Position Size</div>
+            <div class="output-sub">shares to buy/sell</div>
+          </div>
+          <div class="output-val blue" id="outShares">133 shares</div>
+        </div>
+
+        <div class="output-row">
+          <div>
+            <div class="output-label">Position Value</div>
+            <div class="output-sub">total capital deployed</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="output-val" id="outPosValue">$6,650</div>
+            <div style="font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;" id="outAlloc">66.5% of account</div>
+          </div>
+        </div>
+
+        <div class="output-row">
+          <div>
+            <div class="output-label">Risk : Reward</div>
+            <div class="output-sub">target vs. stop distance</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="output-val" id="outRR">2.00 : 1</div>
+            <div class="rr-bar-wrap" style="width:120px;">
+              <div class="rr-bar"><div class="rr-bar-fill" id="rrBarFill" style="width:50%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="output-row">
+          <div>
+            <div class="output-label">Potential Gain</div>
+            <div class="output-sub">if target hit</div>
+          </div>
+          <div class="output-val green" id="outGain">$400</div>
+        </div>
+
+        <div class="risk-bar-wrap">
+          <div class="risk-bar-label">
+            <span>Risk Level</span>
+            <span id="riskLevelLabel" style="color:var(--green);font-weight:700;">LOW — 2.0%</span>
+          </div>
+          <div class="risk-bar"><div class="risk-bar-fill" id="riskBarFill" style="width:40%;background:var(--green)"></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPECTANCY -->
+  <div class="exp-panel reveal">
+    <div class="panel-header">Expectancy Calculator — Add Win Rate for Expected Value per Trade</div>
+    <div class="exp-body">
+      <div class="exp-grid">
+        <div class="input-group" style="margin-bottom:0;">
+          <div class="input-label">Win Rate</div>
+          <div class="input-row">
+            <input class="calc-input" id="winRate" type="number" value="45" min="0" max="100" step="1" style="border-radius:6px 0 0 6px;" oninput="calcExpectancy()">
+            <span class="input-suffix">%</span>
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <div class="input-label">Avg Win ($R)</div>
+          <div class="input-row">
+            <span class="input-prefix">$</span>
+            <input class="calc-input" id="avgWin" type="number" value="400" min="0" step="10" oninput="calcExpectancy()">
+          </div>
+        </div>
+        <div class="input-group" style="margin-bottom:0;">
+          <div class="input-label">Avg Loss ($R)</div>
+          <div class="input-row">
+            <span class="input-prefix">$</span>
+            <input class="calc-input" id="avgLoss" type="number" value="200" min="0" step="10" oninput="calcExpectancy()">
+          </div>
+        </div>
+      </div>
+      <div class="exp-result">
+        <div>
+          <div class="exp-result-label">Expectancy per Trade</div>
+          <div class="exp-verdict" id="expVerdict">Positive edge — keep the system running</div>
+        </div>
+        <div class="exp-result-val" id="expVal" style="color:var(--green)">+$80</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINN RISK RULES -->
+  <div style="margin-bottom:12px;" class="reveal">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);font-weight:600;margin-bottom:12px;">FINN Non-Negotiable Risk Rules</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-num">Rule 1</div>
+        <div class="rule-val">2%</div>
+        <div class="rule-desc">Max risk per trade. One bad trade cannot significantly damage the account.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">Rule 2</div>
+        <div class="rule-val">6%</div>
+        <div class="rule-desc">Max portfolio drawdown. Three losing trades at 2% = pause and review.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">Rule 3</div>
+        <div class="rule-val">2:1</div>
+        <div class="rule-desc">Minimum R:R before entering. Don't risk $1 to make less than $2.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">Rule 4</div>
+        <div class="rule-val">1.5× ATR</div>
+        <div class="rule-desc">Stop-loss placement minimum. Inside the noise = stopped out by normal volatility.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">Rule 5</div>
+        <div class="rule-val">20%</div>
+        <div class="rule-desc">Max single-position size as % of account. Concentration risk kills accounts.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">Rule 6</div>
+        <div class="rule-val">Log All</div>
+        <div class="rule-desc">Every trade: entry, exit, size, rationale, outcome. No log = no edge development.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="finn-voice reveal">
+    Position sizing is not optional math — it's the mechanism that keeps you in the game long enough to let your edge compound. A system with IC = 0.06 and 2% risk per trade survives a 30-trade losing streak. The same system with 10% risk per trade is bankrupt in 7 losses. The edge doesn't matter if you can't survive the variance.
+  </div>
+
+  <div class="footer reveal">
+    <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network</div>
+    <div class="footer-right">v2.0 · May 2026 · ig_risk_calculator</div>
+  </div>
+
+</div>
+<script>
+function fmt$(n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtN(n,d=0) { return n.toLocaleString('en-US', {minimumFractionDigits:d,maximumFractionDigits:d}); }
+
+function calculate() {
+  const acct = parseFloat(document.getElementById('accountSize').value) || 0;
+  const riskPct = parseFloat(document.getElementById('riskPct').value) || 0;
+  const entry = parseFloat(document.getElementById('entryPrice').value) || 0;
+  const stop = parseFloat(document.getElementById('stopPrice').value) || 0;
+  const target = parseFloat(document.getElementById('targetPrice').value) || 0;
+
+  const dollarRisk = acct * riskPct / 100;
+  const stopDist = Math.abs(entry - stop);
+  const stopPct = entry > 0 ? (stopDist / entry * 100) : 0;
+  const shares = stopDist > 0 ? Math.floor(dollarRisk / stopDist) : 0;
+  const posValue = shares * entry;
+  const allocPct = acct > 0 ? posValue / acct * 100 : 0;
+
+  // Direction
+  const isLong = stop < entry;
+  const isShort = stop > entry;
+  const dl = document.getElementById('dirLabel');
+  if (entry > 0 && stop > 0 && entry !== stop) {
+    dl.innerHTML = isLong
+      ? '<span class="dir-badge long">▲ LONG</span>'
+      : '<span class="dir-badge short">▼ SHORT</span>';
+  } else {
+    dl.innerHTML = '<span class="dir-badge neutral">Set stop to detect direction</span>';
+  }
+
+  // R:R
+  let rr = 0;
+  let gain = 0;
+  if (stopDist > 0 && target > 0 && entry > 0) {
+    const targetDist = Math.abs(target - entry);
+    rr = targetDist / stopDist;
+    gain = shares * targetDist;
+  }
+
+  // Risk level color
+  const riskEl = document.getElementById('riskPct');
+  if (riskPct <= 2) { riskEl.className = 'calc-input'; }
+  else if (riskPct <= 4) { riskEl.className = 'calc-input warning'; }
+  else { riskEl.className = 'calc-input danger'; }
+
+  // Outputs
+  document.getElementById('outDollarRisk').textContent = fmt$(dollarRisk);
+  document.getElementById('outDollarRisk').className = 'output-val ' + (riskPct <= 2 ? 'green' : riskPct <= 4 ? 'amber' : 'red');
+
+  document.getElementById('outStopDist').textContent = fmt$(stopDist);
+  document.getElementById('outStopPct').textContent = fmtN(stopPct, 2) + '%';
+
+  document.getElementById('outShares').textContent = fmtN(shares) + ' shares';
+
+  const posEl = document.getElementById('outPosValue');
+  posEl.textContent = fmt$(posValue);
+  posEl.className = 'output-val ' + (allocPct <= 20 ? '' : allocPct <= 40 ? 'amber' : 'red');
+  document.getElementById('outAlloc').textContent = fmtN(allocPct, 1) + '% of account';
+
+  const rrEl = document.getElementById('outRR');
+  if (rr > 0) {
+    rrEl.textContent = fmtN(rr, 2) + ' : 1';
+    rrEl.className = 'output-val ' + (rr >= 2 ? 'green' : rr >= 1 ? 'amber' : 'red');
+    const rrBarPct = Math.min(rr / 4 * 100, 100);
+    const rrFill = document.getElementById('rrBarFill');
+    rrFill.style.width = rrBarPct + '%';
+    rrFill.style.background = rr >= 2 ? 'var(--green)' : rr >= 1 ? 'var(--amber)' : 'var(--red)';
+  } else {
+    rrEl.textContent = '— (no target)';
+    rrEl.className = 'output-val muted';
+    document.getElementById('rrBarFill').style.width = '0%';
+  }
+
+  document.getElementById('outGain').textContent = gain > 0 ? fmt$(gain) : '—';
+
+  // Risk bar
+  const riskBarPct = Math.min(riskPct / 5 * 100, 100);
+  const fill = document.getElementById('riskBarFill');
+  fill.style.width = riskBarPct + '%';
+  const riskColor = riskPct <= 2 ? 'var(--green)' : riskPct <= 4 ? 'var(--amber)' : 'var(--red)';
+  fill.style.background = riskColor;
+  const riskLabel = riskPct <= 2 ? 'LOW' : riskPct <= 4 ? 'ELEVATED' : 'HIGH — REDUCE SIZE';
+  document.getElementById('riskLevelLabel').textContent = `${riskLabel} — ${fmtN(riskPct,2)}%`;
+  document.getElementById('riskLevelLabel').style.color = riskColor;
+
+  // Sync expectancy avg loss with dollar risk
+  document.getElementById('avgLoss').value = fmtN(dollarRisk, 0);
+  if (gain > 0) document.getElementById('avgWin').value = fmtN(gain, 0);
+  calcExpectancy();
+}
+
+function calcExpectancy() {
+  const wr = (parseFloat(document.getElementById('winRate').value) || 0) / 100;
+  const avgW = parseFloat(document.getElementById('avgWin').value) || 0;
+  const avgL = parseFloat(document.getElementById('avgLoss').value) || 0;
+  const exp = (wr * avgW) - ((1 - wr) * avgL);
+
+  const el = document.getElementById('expVal');
+  el.textContent = (exp >= 0 ? '+' : '') + fmt$(exp);
+  el.style.color = exp > 0 ? 'var(--green)' : exp === 0 ? 'var(--amber)' : 'var(--red)';
+
+  let verdict;
+  if (exp > 50) verdict = 'Positive edge — keep the system running.';
+  else if (exp > 0) verdict = 'Marginally positive — monitor IC closely.';
+  else if (exp === 0) verdict = 'Break-even — transaction costs will make this negative.';
+  else verdict = 'Negative expectancy — this system loses money over time.';
+  document.getElementById('expVerdict').textContent = verdict;
+}
+
+// Init
+calculate();
+
+const obs = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('visible');
+}), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

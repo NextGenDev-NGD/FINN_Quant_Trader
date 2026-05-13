@@ -1,0 +1,445 @@
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Cognitive Bias Cards</title>
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+  --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+body.social.square { width: 1080px; min-height: 1080px; }
+
+.page { max-width: 1000px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* HEADER */
+.header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.finn-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); text-transform: uppercase; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); padding: 3px 8px; border-radius: 4px; }
+.alert-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: pulse-red 2s ease-in-out infinite; }
+@keyframes pulse-red { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+h1 { font-size: 22px; font-weight: 700; }
+.header-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+/* METRIC STRIP */
+.metric-strip { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 28px; }
+.metric-item { background: var(--card); padding: 10px 14px; }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
+.metric-value { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--blue); }
+
+/* FLIP CARDS GRID */
+.bias-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 28px; }
+@media (max-width: 680px) { .bias-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 440px) { .bias-grid { grid-template-columns: 1fr; } }
+
+/* FLIP CARD MECHANICS */
+.flip-card { height: 230px; perspective: 1000px; cursor: pointer; }
+.flip-inner { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.55s var(--ease-out); position: relative; }
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+
+.flip-front, .flip-back {
+  position: absolute; width: 100%; height: 100%;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 8px; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.flip-back { transform: rotateY(180deg); }
+
+/* FRONT FACE */
+.flip-front { background: var(--card); border: 1px solid var(--border); }
+.flip-front.high { border-top: 3px solid var(--red); }
+.flip-front.med { border-top: 3px solid var(--amber); }
+.ff-body { flex: 1; padding: 18px 16px 12px; display: flex; flex-direction: column; }
+.ff-name { font-size: 16px; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
+.ff-def { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; }
+.ff-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid var(--border); }
+.risk-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; padding: 2px 7px; border-radius: 3px; }
+.rb-high { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+.rb-med { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(210,153,34,0.3); }
+.flip-hint { font-size: 10px; color: var(--border); }
+
+/* BACK FACE */
+.flip-back { background: var(--card-elevated); border: 1px solid var(--border); }
+.flip-back.high { border-top: 3px solid var(--red); }
+.flip-back.med { border-top: 3px solid var(--amber); }
+.fb-body { flex: 1; padding: 14px 14px 10px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+.fb-section { }
+.fb-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+.fb-text { font-size: 11px; line-height: 1.45; color: var(--text); }
+.fb-quote { font-size: 11px; font-style: italic; color: var(--blue); line-height: 1.45; }
+.fb-footer { padding: 6px 14px 8px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.flip-back-hint { font-size: 10px; color: var(--border); }
+
+/* SECTION LABEL */
+.section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
+
+/* AUDIT STRIP */
+.audit-strip { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+.audit-header { padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--card-elevated); border-bottom: 1px solid var(--border); }
+.audit-body { padding: 16px 18px; }
+.audit-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+@media (max-width: 600px) { .audit-grid { grid-template-columns: 1fr; } }
+.audit-q { display: flex; gap: 10px; align-items: flex-start; }
+.audit-num { font-size: 11px; font-weight: 800; color: var(--blue); flex-shrink: 0; width: 18px; }
+.audit-text { font-size: 12px; line-height: 1.5; color: var(--muted); }
+
+/* FINN VOICE */
+.finn-voice { position: relative; background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.3); border-radius: 8px; padding: 18px 20px 18px 28px; font-size: 13px; line-height: 1.7; backdrop-filter: blur(12px); }
+.finn-voice::before { content: 'FINN'; position: absolute; top: -1px; left: 16px; transform: translateY(-50%); background: var(--amber); color: #0d1117; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 3px; }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 12px; color: var(--muted); }
+.footer-right { font-size: 11px; color: var(--border); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header reveal">
+    <div class="header-top">
+      <span class="finn-logo">FINN</span>
+      <div class="alert-dot"></div>
+    </div>
+    <h1>Cognitive Bias Cards</h1>
+    <div class="header-sub">9 biases that destroy trading accounts · Tap each card to flip — front: definition · back: what it costs you</div>
+  </div>
+
+  <div class="metric-strip reveal">
+    <div class="metric-item"><div class="metric-label">Biases</div><div class="metric-value">9</div></div>
+    <div class="metric-item"><div class="metric-label">High Risk</div><div class="metric-value" style="color:var(--red)">6</div></div>
+    <div class="metric-item"><div class="metric-label">Medium Risk</div><div class="metric-value" style="color:var(--amber)">3</div></div>
+    <div class="metric-item"><div class="metric-label">Tap to Flip</div><div class="metric-value" style="font-size:12px;color:var(--blue)">Each Card</div></div>
+    <div class="metric-item"><div class="metric-label">Audit</div><div class="metric-value" style="font-size:12px;color:var(--muted)">Monthly</div></div>
+    <div class="metric-item"><div class="metric-label">Fix</div><div class="metric-value" style="font-size:12px;color:var(--muted)">Rules + Log</div></div>
+  </div>
+
+  <div class="section-label reveal">Tap any card to reveal the trading manifestation and countermeasure →</div>
+
+  <div class="bias-grid reveal">
+
+    <!-- 1. Confirmation Bias -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Confirmation Bias</div>
+            <div class="ff-def">Seeking out information that supports your existing view while ignoring evidence that contradicts it.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-high">HIGH RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back high">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">You're bullish on a stock. You read 5 bullish articles and dismiss the one bearish analyst. You hold through warning signs because you're curating your information to fit your thesis.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Write the bear case before entering. Assign a specific IC to the signal — not to the story. The IC doesn't care about your thesis.</div>
+            </div>
+            <div class="fb-quote">"What would make me wrong? Write it down before you enter."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Recency Bias -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Recency Bias</div>
+            <div class="ff-def">Overweighting recent events and assuming they are more representative of the future than they actually are.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-high">HIGH RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back high">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">After a 3-week bull run, you size up assuming the trend continues forever. After 3 straight losses, you size down to near-zero convinced you've lost your edge permanently.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Evaluate edge over at least 20–30 trades, not 3–5. Size consistently based on pre-defined rules, not on recent P&amp;L. The IC is calculated on historical data, not last week's results.</div>
+            </div>
+            <div class="fb-quote">"Three losses is not a sample. It is three data points."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Loss Aversion -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Loss Aversion</div>
+            <div class="ff-def">Losses feel approximately 2× more painful than equivalent gains feel good. Pain of losing $100 ≠ pleasure of making $100.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-high">HIGH RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back high">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">You take profits too early on winners (relieving the fear of giving them back) and hold losers too long (refusing to accept the loss as real). Net effect: small wins, large losses.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Pre-define exit levels before entry. The plan was made when you were rational — honor it when you're emotional. Use the R-multiple to measure trades, not dollar P&amp;L.</div>
+            </div>
+            <div class="fb-quote">"The stop was placed at invalidation. If price is there, the thesis is wrong."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Sunk Cost Fallacy -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Sunk Cost Fallacy</div>
+            <div class="ff-def">Continuing to hold (or add to) a position because of what you've already lost in it, not because of its current expected value.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-high">HIGH RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back high">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">"I'm down 20% — I can't sell now, I need to get back to breakeven." The original capital is gone regardless of what you do next. Your decision should be based on what the position will do from here, not from entry.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Ask: "If I had no position in this stock right now, would I buy it at today's price?" If no, the only rational action is to exit. The past loss is irrelevant to the current decision.</div>
+            </div>
+            <div class="fb-quote">"The market does not know what you paid. It does not care."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Anchoring Bias -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front med">
+          <div class="ff-body">
+            <div class="ff-name">Anchoring Bias</div>
+            <div class="ff-def">Over-relying on the first piece of information encountered (the "anchor") when making decisions, even when that information is irrelevant.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-med">MEDIUM RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back med">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">You bought a stock at $80. It's at $60. You keep targeting $80 as your "get out" level — anchored to your cost basis rather than what the chart says is resistance. Or: you're anchored to last year's P/E and miss that fundamentals changed.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Define price targets from the current chart structure, not from where you bought. Your entry price is not support. The market did not draw that level — you did.</div>
+            </div>
+            <div class="fb-quote">"Set targets from the structure. Not from where you got in."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Overconfidence Bias -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Overconfidence Bias</div>
+            <div class="ff-def">Overestimating your own ability to predict market outcomes, assess risks, or outperform — especially after a winning streak.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-high">HIGH RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back high">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">After 5 winning trades, you increase size to 2× and skip the context check because you're "in the zone." One bad trade at 2× wipes out all 5 wins. Overconfidence is the primary driver of blowup accounts.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Size is defined by the risk rules, not by your win streak. After 5 winners, ask: "Is my position sizing the same as it was on trade 1?" If not, you are no longer trading your system.</div>
+            </div>
+            <div class="fb-quote">"Show me the IC. Not the streak."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Hindsight Bias -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front med">
+          <div class="ff-body">
+            <div class="ff-name">Hindsight Bias</div>
+            <div class="ff-def">Believing, after the fact, that an outcome was predictable or obvious — even when it wasn't at the time of the decision.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-med">MEDIUM RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back med">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">"Of course it crashed — the chart was so obvious." You selectively remember only the signals that predicted the move, not the 15 other signals that gave the same reading but didn't result in a move. This inflates your perceived skill.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Review trades using only the information you had at the time of entry. The journal records the pre-trade rationale. Judge the decision quality, not the outcome quality. Right process, wrong outcome = still a good trade.</div>
+            </div>
+            <div class="fb-quote">"Judge the decision, not the outcome. They are not the same thing."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Disposition Effect -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Disposition Effect</div>
+            <div class="ff-def">The tendency to sell winning positions too early and hold losing positions too long — the inverse of what edge-based trading requires.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-high">HIGH RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back high">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">You exit winners at +5% because "a profit is a profit." You hold losers at −15% hoping they'll come back. After 20 trades: average win = $150, average loss = $600. Negative expectancy despite a 60% win rate.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Target and stop are set before entry and honored after entry. Wins are held until target or trailing stop. Losses are cut at the predefined stop. Calculate the R-multiple on every trade — the disposition effect shows up in the data immediately.</div>
+            </div>
+            <div class="fb-quote">"Cut losers fast. Let winners run. The math requires both."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Gambler's Fallacy -->
+    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+      <div class="flip-inner">
+        <div class="flip-front med">
+          <div class="ff-body">
+            <div class="ff-name">Gambler's Fallacy</div>
+            <div class="ff-def">Believing that past random outcomes influence future ones — that after a losing streak, a win is "due," or that a hot signal must cool off.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge rb-med">MEDIUM RISK</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back med">
+          <div class="fb-body">
+            <div class="fb-section">
+              <div class="fb-label">In Trading</div>
+              <div class="fb-text">"I've had 4 losses in a row, so the next trade must win — I'll size up." Each trade is independent. The market has no memory of your prior trades. Increasing size after a losing streak based on "I'm due" is not risk management — it's gambling logic applied to trading.</div>
+            </div>
+            <div class="fb-section">
+              <div class="fb-label">FINN Countermeasure</div>
+              <div class="fb-text">Edge is expressed over large samples. A system with 55% win rate can produce 6 consecutive losses naturally. Treat each trade as independent. Size to the rule, not to the recent sequence.</div>
+            </div>
+            <div class="fb-quote">"The next trade does not know about the last five. Neither should your position size."</div>
+          </div>
+          <div class="fb-footer"><span class="flip-back-hint">← tap to flip back</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MONTHLY BIAS AUDIT -->
+  <div class="audit-strip reveal">
+    <div class="audit-header">Monthly Bias Audit — 9 Questions to Ask Yourself</div>
+    <div class="audit-body">
+      <div class="audit-grid">
+        <div class="audit-q"><span class="audit-num">01</span><span class="audit-text">Did I hold any position past its stop because I believed it would recover?</span></div>
+        <div class="audit-q"><span class="audit-num">02</span><span class="audit-text">Did I exit a winner early because I was afraid of giving the gain back?</span></div>
+        <div class="audit-q"><span class="audit-num">03</span><span class="audit-text">Did I size up after a winning streak without a rule that justified it?</span></div>
+        <div class="audit-q"><span class="audit-num">04</span><span class="audit-text">Did I look for confirming evidence for a thesis I already held?</span></div>
+        <div class="audit-q"><span class="audit-num">05</span><span class="audit-text">Did I set an exit target based on my entry price rather than the chart structure?</span></div>
+        <div class="audit-q"><span class="audit-num">06</span><span class="audit-text">After a losing streak, did I change my size based on being "due" for a win?</span></div>
+        <div class="audit-q"><span class="audit-num">07</span><span class="audit-text">Did I judge any trade as "obvious in hindsight" without checking my pre-trade rationale?</span></div>
+        <div class="audit-q"><span class="audit-num">08</span><span class="audit-text">Did I continue holding a position primarily because of what I had already lost in it?</span></div>
+        <div class="audit-q"><span class="audit-num">09</span><span class="audit-text">Did I overestimate my ability to predict a specific outcome based on recent success?</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="finn-voice reveal">
+    Biases aren't flaws. They're evolved heuristics that worked well for human survival and work very poorly in financial markets. The countermeasure isn't willpower — it's rules. A written stop order doesn't negotiate with loss aversion. A pre-defined target doesn't bow to overconfidence. Systems are the answer. The log is how you catch what slips through.
+  </div>
+
+  <div class="footer reveal">
+    <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network</div>
+    <div class="footer-right">v2.0 · May 2026 · ig_bias_cards</div>
+  </div>
+
+</div>
+<script>
+const obs = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('visible');
+}), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

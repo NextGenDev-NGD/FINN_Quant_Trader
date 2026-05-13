@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,83 +10,158 @@
     --bg: #0d1117; --card: #161b22; --border: #30363d;
     --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
     --red: #f85149; --amber: #d29922; --muted: #8b949e;
-    --subtext: #c9d1d9;
+    --card-elevated: #1c2128;
+    --purple: #bc8cff;
+    --blue-glow: rgba(88,166,255,0.12);
+    --green-glow: rgba(63,185,80,0.12);
+    --red-glow: rgba(248,81,73,0.12);
+    --amber-glow: rgba(210,153,34,0.12);
+    --purple-glow: rgba(188,140,255,0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; padding: 24px 16px; }
-  .page-wrap { max-width: 1200px; margin: 0 auto; }
+  .page-wrap { max-width: 1160px; margin: 0 auto; }
 
-  .page-header { text-align: center; margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid var(--blue); }
-  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--blue); }
-  .page-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
-  .finn-tag { display: inline-block; background: #1f2937; border: 1px solid var(--blue); color: var(--blue); font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-top: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
+  body.social { width: 1200px; min-height: 675px; overflow: hidden; padding: 20px 24px; }
+  body.social.square { width: 1080px; min-height: 1080px; }
 
-  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 28px 0 14px; padding-left: 10px; border-left: 3px solid var(--blue); }
+  /* ── Header ── */
+  .page-header { text-align: center; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+  .page-header h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+  .page-header .subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .finn-tag { display: inline-block; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); color: var(--blue); font-size: 10px; padding: 2px 10px; border-radius: 20px; margin-top: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
 
-  /* Emotion cards — 3 column */
-  .emotion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 24px; }
-  .emotion-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .emotion-card.fear { border-top: 3px solid var(--red); }
+  /* ── Metric strip ── */
+  .metric-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 28px; }
+  .ms-item { background: var(--card-elevated); padding: 10px 14px; text-align: center; }
+  .ms-val { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 3px; }
+  .ms-val.blue { color: var(--blue); }
+  .ms-val.red { color: var(--red); }
+  .ms-val.amber { color: var(--amber); }
+  .ms-val.green { color: var(--green); }
+  .ms-val.purple { color: var(--purple); }
+  .ms-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+
+  /* ── Section title ── */
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 28px 0 14px; padding-left: 10px; border-left: 3px solid var(--blue); }
+
+  /* ── Reveal animation ── */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Emotion cards ── */
+  .emotion-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+  .emotion-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+  .emotion-card:hover { transform: translateY(-2px); }
+  .emotion-card.fear  { border-top: 3px solid var(--red); }
+  .emotion-card.fear:hover  { box-shadow: 0 8px 24px var(--red-glow); }
   .emotion-card.greed { border-top: 3px solid var(--amber); }
-  .emotion-card.revenge { border-top: 3px solid #bc8cff; }
+  .emotion-card.greed:hover { box-shadow: 0 8px 24px var(--amber-glow); }
+  .emotion-card.revenge { border-top: 3px solid var(--purple); }
+  .emotion-card.revenge:hover { box-shadow: 0 8px 24px var(--purple-glow); }
 
-  .ec-header { padding: 14px 16px 10px; border-bottom: 1px solid var(--border); }
-  .ec-emotion { font-size: 18px; font-weight: 700; }
+  .ec-header { padding: 14px 16px 12px; border-bottom: 1px solid var(--border); }
+  .ec-emotion { font-size: 17px; font-weight: 700; }
   .ec-emotion.fear { color: var(--red); }
   .ec-emotion.greed { color: var(--amber); }
-  .ec-emotion.revenge { color: #bc8cff; }
-  .ec-tagline { font-size: 11px; color: var(--muted); margin-top: 2px; font-style: italic; }
+  .ec-emotion.revenge { color: var(--purple); }
+  .ec-tagline { font-size: 11px; color: var(--muted); margin-top: 3px; font-style: italic; }
+
+  .intensity-bar { margin-top: 10px; }
+  .intensity-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .intensity-label .il-name { font-size: 9px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+  .intensity-label .il-val { font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .il-val.fear-col { color: var(--red); }
+  .il-val.greed-col { color: var(--amber); }
+  .il-val.revenge-col { color: var(--purple); }
+  .gauge-track { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .gauge-fill { height: 100%; width: 0; border-radius: 3px; transition: width 0.9s var(--ease-out); }
+  .gauge-fill.fear   { background: linear-gradient(90deg, #7f1d1d, var(--red)); }
+  .gauge-fill.greed  { background: linear-gradient(90deg, #78350f, var(--amber)); }
+  .gauge-fill.revenge { background: linear-gradient(90deg, #4c1d95, var(--purple)); }
 
   .ec-body { padding: 14px 16px; }
   .ec-row { margin-bottom: 10px; }
-  .ec-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 3px; }
-  .ec-val { font-size: 12px; color: var(--subtext); }
+  .ec-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 3px; }
+  .ec-val { font-size: 11px; color: var(--muted); line-height: 1.5; }
   .ec-val strong { color: var(--text); }
   .ec-val.red { color: var(--red); }
   .ec-val.amber { color: var(--amber); }
   .ec-val.green { color: var(--green); }
-  .ec-val.purple { color: #bc8cff; }
+  .ec-val.purple { color: var(--purple); }
 
-  /* Bias table */
-  table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
-  thead tr { background: #1c2128; }
-  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: top; color: var(--subtext); }
-  td:first-child { color: var(--text); font-weight: 600; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #1c2128; }
-  .tag-r { color: var(--red); }
-  .tag-a { color: var(--amber); }
-  .tag-g { color: var(--green); }
-  .tag-b { color: var(--blue); }
+  /* ── Bias flip cards ── */
+  .bias-grid   { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 14px; }
+  .bias-row-2  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
 
-  /* Pre/Post check grid */
-  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
-  .check-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .check-header { padding: 10px 14px; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 13px; }
-  .check-header.pre { color: var(--blue); }
-  .check-header.post { color: var(--green); }
-  .check-list { list-style: none; padding: 14px 16px; }
-  .check-list li { font-size: 12px; color: var(--subtext); margin-bottom: 8px; padding-left: 20px; position: relative; }
-  .check-list li::before { content: '□'; position: absolute; left: 0; color: var(--border); font-size: 13px; }
-  .check-list li strong { color: var(--text); display: block; margin-bottom: 1px; }
-  .check-list li span { color: var(--muted); font-size: 11px; }
+  .flip-card { perspective: 1000px; cursor: pointer; height: 196px; }
+  .flip-card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.55s var(--ease-out); }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
 
-  /* FINN rules strip */
-  .rules-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
-  .rule-item { background: rgba(88,166,255,0.06); border: 1px solid rgba(88,166,255,0.2); border-radius: 8px; padding: 12px 14px; }
-  .rule-num { color: var(--blue); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .rule-text { font-size: 12px; color: var(--text); }
-
-  .finn-note { background: rgba(63,185,80,0.06); border-left: 3px solid var(--green); padding: 12px 16px; margin: 20px 0; border-radius: 0 6px 6px 0; }
-  .finn-note p { font-size: 13px; color: var(--text); font-style: italic; }
-
-  .page-footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
-
-  @media print {
-    body { background: #fff; color: #000; }
-    .emotion-card, .check-card { border: 1px solid #ccc; break-inside: avoid; }
+  .flip-front, .flip-back {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: 10px; overflow: hidden;
+    display: flex; flex-direction: column;
   }
+  .flip-back { transform: rotateY(180deg); }
+
+  .flip-front { background: var(--card); border: 1px solid var(--border); }
+  .flip-front.high   { border-top: 3px solid var(--red); }
+  .flip-front.medium { border-top: 3px solid var(--amber); }
+
+  .ff-body { padding: 14px 14px 8px; flex: 1; display: flex; flex-direction: column; }
+  .ff-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 8px; }
+  .ff-def  { font-size: 10px; color: var(--muted); line-height: 1.5; flex: 1; }
+  .ff-footer { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; border-top: 1px solid var(--border); background: var(--card-elevated); flex-shrink: 0; }
+  .risk-badge { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 7px; border-radius: 4px; }
+  .risk-badge.high   { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+  .risk-badge.medium { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(210,153,34,0.3); }
+  .flip-hint { font-size: 9px; color: var(--muted); opacity: 0; transition: opacity var(--dur-med); }
+  .flip-card:hover .flip-hint { opacity: 1; }
+
+  .flip-back { background: var(--card-elevated); border: 1px solid var(--border); }
+  .fb-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; gap: 9px; overflow: hidden; }
+  .fb-section-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 2px; }
+  .fb-text { font-size: 10px; color: var(--muted); line-height: 1.5; }
+  .fb-text strong { color: var(--green); }
+  .fb-footer { padding: 7px 14px; border-top: 1px solid var(--border); background: rgba(63,185,80,0.05); flex-shrink: 0; }
+  .fb-counter { font-size: 9px; color: var(--green); font-style: italic; }
+
+  /* ── Pre/Post check ── */
+  .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .check-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .check-header { padding: 11px 16px; border-bottom: 1px solid var(--border); font-weight: 700; font-size: 12px; display: flex; align-items: center; gap: 8px; }
+  .check-header.pre  { color: var(--blue); }
+  .check-header.post { color: var(--green); }
+  .pulse-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .pulse-dot.blue  { background: var(--blue); animation: pulse-blue 2s ease infinite; }
+  .pulse-dot.green { background: var(--green); animation: pulse-green 2s ease infinite; }
+  @keyframes pulse-blue  { 0%,100% { box-shadow: 0 0 0 0 rgba(88,166,255,0.4); } 50% { box-shadow: 0 0 0 5px rgba(88,166,255,0); } }
+  @keyframes pulse-green { 0%,100% { box-shadow: 0 0 0 0 rgba(63,185,80,0.4); }  50% { box-shadow: 0 0 0 5px rgba(63,185,80,0); } }
+  .check-list { list-style: none; padding: 12px 16px; display: flex; flex-direction: column; gap: 9px; }
+  .check-list li { font-size: 11px; color: var(--muted); padding-left: 18px; position: relative; line-height: 1.45; }
+  .check-list li::before { content: '□'; position: absolute; left: 0; color: var(--border); font-size: 12px; top: -1px; }
+  .check-list li strong { color: var(--text); display: block; font-size: 11px; margin-bottom: 1px; }
+
+  /* ── FINN rules ── */
+  .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+  .rule-card { background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.18); border-radius: 8px; padding: 14px; transition: box-shadow var(--dur-med); }
+  .rule-card:hover { box-shadow: 0 4px 16px var(--blue-glow); }
+  .rule-num  { color: var(--blue); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .rule-text { font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+  /* ── FINN voice box ── */
+  .finn-voice { background: rgba(210,153,34,0.05); border: 1px solid rgba(210,153,34,0.25); border-radius: 10px; padding: 18px 22px; margin-bottom: 28px; backdrop-filter: blur(12px); position: relative; }
+  .finn-voice::before { content: 'FINN'; position: absolute; top: -10px; left: 20px; background: var(--bg); padding: 0 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--amber); }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; line-height: 1.7; }
+
+  /* ── Footer ── */
+  .page-footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 10px; }
+  .footer-right { display: flex; align-items: center; gap: 8px; }
+  .footer-v-badge { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.3); color: var(--green); font-size: 9px; padding: 1px 7px; border-radius: 4px; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -93,257 +169,440 @@
 
   <div class="page-header">
     <h1>Trading Psychology</h1>
-    <div class="subtitle">The 3 Dangerous Emotions · Cognitive Biases · Pre/Post Trade Check · FINN Standards</div>
+    <div class="subtitle">3 Dangerous Emotions · 7 Cognitive Biases · Pre/Post Trade Check · FINN Standards</div>
     <div class="finn-tag">FINN Knowledge Base · HB P5 §5.1–5.3</div>
   </div>
 
-  <!-- The 3 emotions -->
+  <div class="metric-strip">
+    <div class="ms-item"><div class="ms-val red">3</div><div class="ms-label">Dangerous Emotions</div></div>
+    <div class="ms-item"><div class="ms-val amber">7</div><div class="ms-label">Cognitive Biases</div></div>
+    <div class="ms-item"><div class="ms-val red">HIGH</div><div class="ms-label">Max Bias Risk</div></div>
+    <div class="ms-item"><div class="ms-val green">2:1</div><div class="ms-label">Min R:R Required</div></div>
+    <div class="ms-item"><div class="ms-val amber">2×</div><div class="ms-label">Loss vs. Gain Pain</div></div>
+    <div class="ms-item"><div class="ms-val blue">6</div><div class="ms-label">FINN Rules</div></div>
+  </div>
+
+  <!-- ── Section 1: Emotions ── -->
   <div class="section-title">The 3 Dangerous Emotions — How They Destroy Edge</div>
   <div class="emotion-grid">
 
-    <div class="emotion-card fear">
+    <div class="emotion-card fear reveal">
       <div class="ec-header">
         <div class="ec-emotion fear">Fear</div>
         <div class="ec-tagline">"This could go against me."</div>
+        <div class="intensity-bar">
+          <div class="intensity-label">
+            <span class="il-name">Danger Level</span>
+            <span class="il-val fear-col intensity-display" data-target="85">0%</span>
+          </div>
+          <div class="gauge-track"><div class="gauge-fill fear" data-target="85"></div></div>
+        </div>
       </div>
       <div class="ec-body">
         <div class="ec-row">
           <div class="ec-label">Core Mechanism</div>
-          <div class="ec-val">The brain registers unrealized loss as a threat. The stress response activates before any actual loss occurs.</div>
+          <div class="ec-val">Brain registers unrealized loss as a threat. The stress response fires before any actual loss occurs.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">How It Manifests</div>
-          <div class="ec-val red">Exiting winning trades early — locking in a small gain before it can "disappear." Failing to enter valid setups. Cutting positions at the worst moment (during normal pullbacks in a good trade).</div>
+          <div class="ec-val red">Exiting winning trades early. Failing to enter valid setups. Cutting positions during normal pullbacks in a good trade.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">The Real Cost</div>
-          <div class="ec-val">Systematically truncating right tail — the big wins never develop because they're exited early. The win rate may look fine; the R-multiple distribution is broken.</div>
+          <div class="ec-val">Systematically truncated right tail — big wins never develop. Win rate looks fine; R-multiple distribution is broken.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">FINN Counter</div>
-          <div class="ec-val green">Set target and stop <strong>before entering</strong>. Write them in the journal. Once in trade, the only job is to manage to the plan — not to feel good about the unrealized P&L.</div>
+          <div class="ec-val green">Set target and stop <strong>before entering</strong>. Write them in the journal. Once in trade, manage to the plan — not to the feeling.</div>
         </div>
       </div>
     </div>
 
-    <div class="emotion-card greed">
+    <div class="emotion-card greed reveal" style="transition-delay:100ms">
       <div class="ec-header">
         <div class="ec-emotion greed">Greed</div>
         <div class="ec-tagline">"It's going to keep going."</div>
+        <div class="intensity-bar">
+          <div class="intensity-label">
+            <span class="il-name">Danger Level</span>
+            <span class="il-val greed-col intensity-display" data-target="90">0%</span>
+          </div>
+          <div class="gauge-track"><div class="gauge-fill greed" data-target="90"></div></div>
+        </div>
       </div>
       <div class="ec-body">
         <div class="ec-row">
           <div class="ec-label">Core Mechanism</div>
-          <div class="ec-val">Winning activates dopamine. The brain seeks more of the same stimulus. Risk tolerance inflates after wins, deflates after losses — opposite of what's rational.</div>
+          <div class="ec-val">Winning activates dopamine. Brain seeks more stimulus. Risk tolerance inflates after wins, deflates after losses — opposite of rational.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">How It Manifests</div>
-          <div class="ec-val amber">Holding winners past targets. Ignoring take-profit rules. Increasing position size after a good week. Adding to losing positions ("it'll come back"). Chasing stocks already extended from setup.</div>
+          <div class="ec-val amber">Holding winners past targets. Increasing size after a good week. Adding to losing positions. Chasing stocks already extended from setup.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">The Real Cost</div>
-          <div class="ec-val">Winners become losers. Small losing positions become catastrophic losses. Account equity curves develop left skew — occasional large losses wipe out multiple wins.</div>
+          <div class="ec-val">Winners become losers. Account equity develops left skew — occasional large losses wipe out multiple wins.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">FINN Counter</div>
-          <div class="ec-val green">Targets are pre-set rules, not feelings. <strong>The target was set when you were thinking clearly</strong> — before the trade, before the P&L affected your judgment. Honor the plan you made when sober.</div>
+          <div class="ec-val green">Targets are pre-set rules, not feelings. <strong>The target was set when you were thinking clearly</strong> — honor the plan made before the trade.</div>
         </div>
       </div>
     </div>
 
-    <div class="emotion-card revenge">
+    <div class="emotion-card revenge reveal" style="transition-delay:200ms">
       <div class="ec-header">
         <div class="ec-emotion revenge">Revenge Trading</div>
         <div class="ec-tagline">"I need to make it back."</div>
+        <div class="intensity-bar">
+          <div class="intensity-label">
+            <span class="il-name">Danger Level</span>
+            <span class="il-val revenge-col intensity-display" data-target="95">0%</span>
+          </div>
+          <div class="gauge-track"><div class="gauge-fill revenge" data-target="95"></div></div>
+        </div>
       </div>
       <div class="ec-body">
         <div class="ec-row">
           <div class="ec-label">Core Mechanism</div>
-          <div class="ec-val">After a loss, the brain frames recovery as restoring justice rather than managing risk. Trading becomes emotional rather than analytical.</div>
+          <div class="ec-val">After a loss, brain frames recovery as restoring justice rather than managing risk. Trading becomes emotional, not analytical.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">How It Manifests</div>
-          <div class="ec-val" style="color:#bc8cff">Entering trades immediately after a loss without a valid setup. Increasing size to "make it back faster." Trading the same name that just took you down. Abandoning all rules because rules "don't work."</div>
+          <div class="ec-val purple">Entering immediately after a loss without a valid setup. Increasing size to "make it back faster." Abandoning all rules because they "don't work."</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">The Real Cost</div>
-          <div class="ec-val">The worst trading days in history are usually three or four bad trades in a row, not one. The first loss is small; revenge trading converts it into a drawdown that takes weeks to recover.</div>
+          <div class="ec-val">Worst trading days are 3–4 bad trades in sequence, not one. First loss is small; revenge trading converts it into a drawdown that takes weeks to recover.</div>
         </div>
         <div class="ec-row">
           <div class="ec-label">FINN Counter</div>
-          <div class="ec-val green"><strong>The daily loss limit rule exists for this moment.</strong> When you hit your daily max loss, you stop — no exceptions. The rule does not negotiate. Close the platform. Log the loss. Come back tomorrow.</div>
+          <div class="ec-val green"><strong>The daily loss limit rule exists for this moment.</strong> When you hit the limit, you stop — no exceptions. Close the platform. Log the loss. Come back tomorrow.</div>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- Cognitive biases -->
-  <div class="section-title">Cognitive Biases — The Invisible Errors in Every Trader's Brain</div>
-  <table>
-    <thead>
-      <tr>
-        <th>Bias</th>
-        <th>Definition</th>
-        <th>How It Appears in Trading</th>
-        <th>Counter-Strategy</th>
-        <th>Risk Level</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Confirmation Bias</td>
-        <td>Seeking information that confirms existing belief; dismissing contradictory data</td>
-        <td>Bullish on a stock → ignoring bearish signals, reading bullish news, avoiding charts that show weakness</td>
-        <td>Before each trade, actively list the top 2 reasons the thesis is wrong. What would the bears say? Run the IC.</td>
-        <td class="tag-r">HIGH</td>
-      </tr>
-      <tr>
-        <td>Recency Bias</td>
-        <td>Overweighting recent events relative to the long-run base rate</td>
-        <td>After a winning week → overconfidence, position sizing up without statistical basis. After a losing week → abandoning valid strategies.</td>
-        <td>Evaluate strategies over the full backtest period, not last week's results. Require at least 30 trade sample before assessing edge.</td>
-        <td class="tag-r">HIGH</td>
-      </tr>
-      <tr>
-        <td>Loss Aversion</td>
-        <td>Losses feel ~2× as painful as equivalent gains feel good (Kahneman-Tversky)</td>
-        <td>Holding losers too long to avoid "realizing" the loss. Taking profits early to lock in the good feeling. Asymmetric decision-making that systematically harms R/R.</td>
-        <td>Pre-set stops and targets. Once in a trade, P&L display is noise — only the price relative to your levels matters.</td>
-        <td class="tag-r">HIGH</td>
-      </tr>
-      <tr>
-        <td>Sunk Cost Fallacy</td>
-        <td>Continuing an action because of past investment rather than future merit</td>
-        <td>"I already lost $800 on this — I can't sell now." The position is held because of what was already lost, not because of what the data says about the future.</td>
-        <td>The market doesn't know what you paid. Your entry price is irrelevant to the forward probability. Ask: would I enter this position fresh at the current price? If no, exit.</td>
-        <td class="tag-a">MEDIUM</td>
-      </tr>
-      <tr>
-        <td>Anchoring</td>
-        <td>Over-relying on the first piece of information encountered (the "anchor")</td>
-        <td>Stock bought at $50 → still mentally anchored to $50 as "value" even after fundamental deterioration. Or anchoring to an entry price that no longer has structural meaning.</td>
-        <td>Evaluate the stock where it is now, not where you bought it. Reassess from current levels using the same criteria you would use for a new position.</td>
-        <td class="tag-a">MEDIUM</td>
-      </tr>
-      <tr>
-        <td>Overconfidence</td>
-        <td>Overestimating predictive ability and underestimating uncertainty</td>
-        <td>Sizing up after wins. Skipping confirmation steps. "I know this one is going to work." The IC was 0.04 — the confidence is 0.85.</td>
-        <td>The data provides the confidence level, not your feeling. Run the IC test. Look at the OOS result. Confidence must be earned by the numbers, not felt.</td>
-        <td class="tag-a">MEDIUM</td>
-      </tr>
-      <tr>
-        <td>Hindsight Bias</td>
-        <td>Believing past events were predictable after knowing the outcome</td>
-        <td>"I knew that was going to happen." Distorts the journal — entries are written to explain a known outcome rather than document real-time reasoning. Prevents accurate learning.</td>
-        <td>Write journal entries <strong>before</strong> you know the outcome. Pre-trade: hypothesis, setup, entry criteria, stop, target. Post-trade: outcome vs. hypothesis — what the data said.</td>
-        <td class="tag-a">MEDIUM</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- ── Section 2: Bias Flip Cards ── -->
+  <div class="section-title">Cognitive Biases — Click Each Card to Reveal (Bias → Manifestation → Countermeasure)</div>
 
-  <!-- Pre/Post trade check -->
+  <!-- Row 1: 4 biases -->
+  <div class="bias-grid reveal">
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')" title="Click to flip">
+      <div class="flip-card-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Confirmation Bias</div>
+            <div class="ff-def">Seeking information that confirms existing belief; actively dismissing contradictory data.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge high">HIGH</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="fb-body">
+            <div>
+              <div class="fb-section-label">In Trading</div>
+              <div class="fb-text">Bullish on a stock → ignoring bearish signals, only reading bullish news, avoiding charts that show weakness.</div>
+            </div>
+            <div>
+              <div class="fb-section-label">FINN Counter</div>
+              <div class="fb-text">Before each trade, list <strong>the top 2 reasons the thesis is wrong</strong>. What would the bears say? Run the IC.</div>
+            </div>
+          </div>
+          <div class="fb-footer"><div class="fb-counter">"What does the data say against this?"</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')" title="Click to flip">
+      <div class="flip-card-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Recency Bias</div>
+            <div class="ff-def">Overweighting recent events relative to the long-run base rate.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge high">HIGH</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="fb-body">
+            <div>
+              <div class="fb-section-label">In Trading</div>
+              <div class="fb-text">After a winning week → overconfidence, sizing up without statistical basis. After a losing week → abandoning valid strategies.</div>
+            </div>
+            <div>
+              <div class="fb-section-label">FINN Counter</div>
+              <div class="fb-text">Evaluate strategies over the <strong>full backtest period</strong>, not last week. Require 30+ trade sample before assessing edge.</div>
+            </div>
+          </div>
+          <div class="fb-footer"><div class="fb-counter">"Show me the IC over 30+ trades."</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')" title="Click to flip">
+      <div class="flip-card-inner">
+        <div class="flip-front high">
+          <div class="ff-body">
+            <div class="ff-name">Loss Aversion</div>
+            <div class="ff-def">Losses feel ~2× as painful as equivalent gains feel good (Kahneman-Tversky, 1979).</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge high">HIGH</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="fb-body">
+            <div>
+              <div class="fb-section-label">In Trading</div>
+              <div class="fb-text">Holding losers too long to avoid "realizing" the loss. Taking profits early. Asymmetric decisions that systematically harm R/R.</div>
+            </div>
+            <div>
+              <div class="fb-section-label">FINN Counter</div>
+              <div class="fb-text">Pre-set stops and targets. Once in a trade, <strong>P&amp;L display is noise</strong> — only price relative to your levels matters.</div>
+            </div>
+          </div>
+          <div class="fb-footer"><div class="fb-counter">"The stop was set when I was thinking clearly."</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')" title="Click to flip">
+      <div class="flip-card-inner">
+        <div class="flip-front medium">
+          <div class="ff-body">
+            <div class="ff-name">Sunk Cost Fallacy</div>
+            <div class="ff-def">Continuing an action because of past investment rather than future merit.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge medium">MEDIUM</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="fb-body">
+            <div>
+              <div class="fb-section-label">In Trading</div>
+              <div class="fb-text">"I already lost $800 on this — I can't sell now." Position held because of what was already lost, not what the data says forward.</div>
+            </div>
+            <div>
+              <div class="fb-section-label">FINN Counter</div>
+              <div class="fb-text">The market doesn't know your entry price. Ask: <strong>Would I enter this position fresh at today's price?</strong> If no — exit.</div>
+            </div>
+          </div>
+          <div class="fb-footer"><div class="fb-counter">"My entry price is irrelevant to forward probability."</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Row 2: 3 biases -->
+  <div class="bias-row-2 reveal" style="transition-delay:100ms">
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')" title="Click to flip">
+      <div class="flip-card-inner">
+        <div class="flip-front medium">
+          <div class="ff-body">
+            <div class="ff-name">Anchoring</div>
+            <div class="ff-def">Over-relying on the first piece of information encountered as a reference point.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge medium">MEDIUM</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="fb-body">
+            <div>
+              <div class="fb-section-label">In Trading</div>
+              <div class="fb-text">Stock bought at $50 → still anchored to $50 as "value" even after fundamental deterioration. Entry price no longer has structural meaning.</div>
+            </div>
+            <div>
+              <div class="fb-section-label">FINN Counter</div>
+              <div class="fb-text">Evaluate the stock <strong>where it is now</strong>, not where you bought it. Use the same entry criteria you'd apply to a brand-new position.</div>
+            </div>
+          </div>
+          <div class="fb-footer"><div class="fb-counter">"What would I do with this if I were new to it?"</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')" title="Click to flip">
+      <div class="flip-card-inner">
+        <div class="flip-front medium">
+          <div class="ff-body">
+            <div class="ff-name">Overconfidence</div>
+            <div class="ff-def">Overestimating predictive ability and underestimating uncertainty.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge medium">MEDIUM</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="fb-body">
+            <div>
+              <div class="fb-section-label">In Trading</div>
+              <div class="fb-text">Sizing up after wins. Skipping confirmation steps. "I know this one is going to work." The IC was 0.04 — the confidence is 0.85.</div>
+            </div>
+            <div>
+              <div class="fb-section-label">FINN Counter</div>
+              <div class="fb-text">Data provides the confidence level, not your feeling. <strong>Run the IC. Check the OOS result.</strong> Confidence is earned by numbers, not felt.</div>
+            </div>
+          </div>
+          <div class="fb-footer"><div class="fb-counter">"Show me the IC. That's your confidence level."</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-card" onclick="this.classList.toggle('flipped')" title="Click to flip">
+      <div class="flip-card-inner">
+        <div class="flip-front medium">
+          <div class="ff-body">
+            <div class="ff-name">Hindsight Bias</div>
+            <div class="ff-def">Believing past events were predictable after already knowing the outcome.</div>
+          </div>
+          <div class="ff-footer">
+            <span class="risk-badge medium">MEDIUM</span>
+            <span class="flip-hint">tap to flip →</span>
+          </div>
+        </div>
+        <div class="flip-back">
+          <div class="fb-body">
+            <div>
+              <div class="fb-section-label">In Trading</div>
+              <div class="fb-text">"I knew that was going to happen." Journal entries written to explain a known outcome — not real-time reasoning. Prevents accurate learning.</div>
+            </div>
+            <div>
+              <div class="fb-section-label">FINN Counter</div>
+              <div class="fb-text">Write journal entries <strong>before you know the outcome</strong>: hypothesis, setup, criteria, stop, target. Post-trade: outcome vs. hypothesis.</div>
+            </div>
+          </div>
+          <div class="fb-footer"><div class="fb-counter">"Journal entry goes in before the trade closes."</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Section 3: Pre/Post Check ── -->
   <div class="section-title">Pre-Trade &amp; Post-Trade Psychological Check</div>
-  <div class="check-grid">
+  <div class="check-grid reveal">
     <div class="check-card">
-      <div class="check-header pre">Pre-Trade Check — Before Every Entry</div>
+      <div class="check-header pre">
+        <div class="pulse-dot blue"></div>
+        Pre-Trade Check — Before Every Entry
+      </div>
       <ul class="check-list">
-        <li>
-          <strong>Emotional state</strong>
-          <span>Rate 1–5: Am I calm (1) or emotionally activated (5)? If above 3 after a loss, do not enter.</span>
-        </li>
-        <li>
-          <strong>Setup validity</strong>
-          <span>Does this meet all entry criteria in my written rules — or am I forcing it because I want to trade?</span>
-        </li>
-        <li>
-          <strong>Risk defined</strong>
-          <span>Stop level identified. Position size calculated. Risk in dollars known before click.</span>
-        </li>
-        <li>
-          <strong>Target defined</strong>
-          <span>Where is the first profit target? What is the R/R ratio? Is it at least 2:1?</span>
-        </li>
-        <li>
-          <strong>Confirmation check</strong>
-          <span>What is the best argument against this trade? Have I actively considered it?</span>
-        </li>
-        <li>
-          <strong>Daily loss status</strong>
-          <span>Am I within my daily loss limit? If at 80%, reduce size by half. If at 100%, stop.</span>
-        </li>
+        <li><strong>Emotional state</strong>Rate 1–5: calm (1) → activated (5). Above 3 after a loss? Do not enter.</li>
+        <li><strong>Setup validity</strong>Does this meet all written entry criteria — or am I forcing a trade because I want to be in?</li>
+        <li><strong>Risk defined</strong>Stop level identified. Position size calculated. Dollar risk known before the click.</li>
+        <li><strong>Target defined</strong>First profit target set. R/R ratio confirmed — at least 2:1?</li>
+        <li><strong>Confirmation check</strong>What is the best argument against this trade? Have I actively considered it?</li>
+        <li><strong>Daily loss status</strong>Within daily loss limit? At 80%, reduce size by half. At 100%, stop trading.</li>
       </ul>
     </div>
     <div class="check-card">
-      <div class="check-header post">Post-Trade Check — After Every Close</div>
+      <div class="check-header post">
+        <div class="pulse-dot green"></div>
+        Post-Trade Check — After Every Close
+      </div>
       <ul class="check-list">
-        <li>
-          <strong>Outcome vs. hypothesis</strong>
-          <span>Was the hypothesis correct? Was the outcome correct? These are separate questions — a good process can produce a bad outcome and vice versa.</span>
-        </li>
-        <li>
-          <strong>Rule adherence</strong>
-          <span>Did I follow entry, stop, and target rules exactly? If not — what deviated, why, and what was the P&L impact?</span>
-        </li>
-        <li>
-          <strong>Emotional log</strong>
-          <span>What was the emotional state at entry? At exit? Did emotion influence any decision?</span>
-        </li>
-        <li>
-          <strong>Signal assessment</strong>
-          <span>Was the IC of this signal positive in the 30 days prior to this trade? Was this a good signal or a lucky outcome?</span>
-        </li>
-        <li>
-          <strong>One learning</strong>
-          <span>What is one specific, actionable thing I learned from this trade — win or loss?</span>
-        </li>
-        <li>
-          <strong>Tomorrow's readiness</strong>
-          <span>After this session, am I in a state to trade tomorrow calmly? If no — what would need to change?</span>
-        </li>
+        <li><strong>Outcome vs. hypothesis</strong>Was the hypothesis correct? Was the outcome correct? These are separate questions — a good process can produce a bad outcome.</li>
+        <li><strong>Rule adherence</strong>Followed entry, stop, and target rules exactly? If not — what deviated, why, and what was the P&amp;L impact?</li>
+        <li><strong>Emotional log</strong>Emotional state at entry? At exit? Did emotion influence any decision?</li>
+        <li><strong>Signal assessment</strong>Was the IC of this signal positive in the 30 days prior? Good signal or lucky outcome?</li>
+        <li><strong>One learning</strong>One specific, actionable thing learned from this trade — win or loss.</li>
+        <li><strong>Tomorrow's readiness</strong>Am I in a state to trade tomorrow calmly? If no — what would need to change?</li>
       </ul>
     </div>
   </div>
 
-  <!-- FINN rules -->
+  <!-- ── Section 4: FINN Rules ── -->
   <div class="section-title">FINN Psychological Standards</div>
-  <div class="rules-strip">
-    <div class="rule-item">
-      <div class="rule-num">Rule 1</div>
+  <div class="rules-grid reveal">
+    <div class="rule-card">
+      <div class="rule-num">Rule 01</div>
       <div class="rule-text">The daily loss limit is not a guideline. It is a circuit breaker. When it trips, trading stops — not slows, stops. No exceptions. The rule exists for the moment when you feel most certain it doesn't apply.</div>
     </div>
-    <div class="rule-item">
-      <div class="rule-num">Rule 2</div>
-      <div class="rule-text">Wrong predictions are required. A trader who only logs their correct predictions is training on corrupted data. Document every hypothesis — especially the ones that fail. That is where the actual learning lives.</div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 02</div>
+      <div class="rule-text">Wrong predictions are required. A trader who only logs correct predictions is training on corrupted data. Document every hypothesis — especially the ones that fail. That is where the actual learning lives.</div>
     </div>
-    <div class="rule-item">
-      <div class="rule-num">Rule 3</div>
-      <div class="rule-text">The journal is more valuable than the P&L. P&L is the outcome of luck + skill. The journal is the record of your decision process. Improving the journal improves the decisions. Improving the decisions is how edge is built.</div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 03</div>
+      <div class="rule-text">The journal is more valuable than the P&amp;L. P&amp;L is the outcome of luck + skill. The journal is the record of your decision process. Improving the journal is how edge is built over time.</div>
     </div>
-    <div class="rule-item">
-      <div class="rule-num">Rule 4</div>
-      <div class="rule-text">Deviations from rules are data, not failures — but they must be logged and analyzed. "The setup looked different" is the beginning of an entry, not the end. Document the specific reason, the specific outcome, and the implication for your rules.</div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 04</div>
+      <div class="rule-text">Deviations from rules are data, not failures — but they must be logged and analyzed. "The setup looked different" is the beginning of a journal entry, not the end. Document the specific reason, outcome, and implication.</div>
     </div>
-    <div class="rule-item">
-      <div class="rule-num">Rule 5</div>
-      <div class="rule-text">Emotional confidence and analytical confidence are not the same thing. Feeling certain is not evidence. The IC score is evidence. The backtest result is evidence. The feeling is a data point about your emotional state — nothing more.</div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 05</div>
+      <div class="rule-text">Emotional confidence and analytical confidence are not the same thing. Feeling certain is not evidence. The IC score is evidence. The backtest is evidence. The feeling is a data point about your emotional state — nothing more.</div>
     </div>
-    <div class="rule-item">
-      <div class="rule-num">Rule 6</div>
-      <div class="rule-text">The plan was written when you were thinking clearly. Honor it. The moment of entry or exit is the moment of maximum emotional distortion. The plan written before the trade was written by a calmer, more analytical version of you. Trust that version.</div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 06</div>
+      <div class="rule-text">The plan was written when you were thinking clearly. Honor it. The moment of entry or exit is the moment of maximum emotional distortion. Trust the calmer, more analytical version of you who wrote the plan before the trade.</div>
     </div>
   </div>
 
-  <div class="finn-note">
-    <p>"The market does not care about your feelings. It will not wait for you to calm down. It will not give back what you lost because you deserve it. The only variable the market cannot take from you is the quality of your decision process. Protect that. The P&L will take care of itself."</p>
+  <!-- ── FINN Voice ── -->
+  <div class="finn-voice reveal">
+    <p>"The market does not care about your feelings. It will not wait for you to calm down. It will not give back what you lost because you deserve it. The only variable the market cannot take from you is the quality of your decision process. Protect that. The P&amp;L will take care of itself."</p>
   </div>
 
   <div class="page-footer">
     <span>FINN Knowledge Base · ig_trading_psychology.html · HB P5 §5.1–5.3</span>
-    <span>Session C5.a · Built May 2026</span>
+    <div class="footer-right">
+      <span class="footer-v-badge">v2</span>
+      <span>May 2026</span>
+    </div>
   </div>
 
 </div>
+
+<script>
+  // Scroll-triggered reveal
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Emotion card gauge fills + animated counter display
+  const gaugeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const fill = e.target.querySelector('.gauge-fill');
+        const display = e.target.querySelector('.intensity-display');
+        if (fill) {
+          const target = parseInt(fill.dataset.target || 50);
+          setTimeout(() => {
+            fill.style.width = target + '%';
+            if (display) {
+              let current = 0;
+              const step = target / 30;
+              const timer = setInterval(() => {
+                current = Math.min(current + step, target);
+                display.textContent = Math.round(current) + '%';
+                if (current >= target) clearInterval(timer);
+              }, 20);
+            }
+          }, 300);
+        }
+        gaugeObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.emotion-card').forEach(el => gaugeObs.observe(el));
+</script>
 </body>
 </html>

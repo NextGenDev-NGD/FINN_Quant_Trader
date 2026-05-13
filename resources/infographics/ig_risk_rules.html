@@ -1,256 +1,379 @@
 <!DOCTYPE html>
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot | add class="social square" for 1080×1080px -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FINN — 6 Non-Negotiable Risk Rules</title>
 <style>
-  :root {
-    --bg: #0d1117;
-    --card: #161b22;
-    --border: #30363d;
-    --text: #e6edf3;
-    --blue: #58a6ff;
-    --green: #3fb950;
-    --red: #f85149;
-    --amber: #d29922;
-    --muted: #8b949e;
-    --purple: #bc8cff;
-  }
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --blue: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --amber: #d29922;
+  --muted: #8b949e;
+  --purple: #bc8cff;
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    font-size: 13px;
-    line-height: 1.5;
-    padding: 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .header {
-    border-bottom: 2px solid var(--red);
-    padding-bottom: 12px;
-    margin-bottom: 20px;
-  }
-  .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .finn-tag { font-size: 11px; color: var(--red); letter-spacing: 2px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-  h1 { font-size: 22px; font-weight: 700; color: var(--text); }
-  .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .badge { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 4px 10px; font-size: 11px; color: var(--muted); }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 28px 24px;
+  max-width: 1160px;
+  margin: 0 auto;
+}
 
-  .section-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 10px; margin-top: 20px;
-  }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; padding: 20px 24px; }
+body.social.square { width: 1080px; min-height: 1080px; }
 
-  /* Opening statement */
-  .opening {
-    background: var(--card);
-    border: 1px solid var(--red);
-    border-left: 4px solid var(--red);
-    border-radius: 6px;
-    padding: 14px 16px;
-    margin-bottom: 24px;
-  }
-  .opening p { font-size: 13px; color: var(--text); font-weight: 600; }
-  .opening .sub { font-size: 11px; color: var(--muted); margin-top: 5px; font-weight: 400; }
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* Rule cards — 3-column grid, 2 rows */
-  .rules-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 24px;
-  }
+/* ── Header ── */
+.header { margin-bottom: 18px; }
+.header-inner {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.finn-tag {
+  font-size: 10px; color: var(--red); letter-spacing: 2.5px;
+  font-weight: 700; text-transform: uppercase; margin-bottom: 5px;
+  display: flex; align-items: center; gap: 7px;
+}
+.alert-dot {
+  width: 7px; height: 7px; background: var(--red); border-radius: 50%;
+  animation: pulse-alert 1.8s ease-in-out infinite;
+}
+@keyframes pulse-alert {
+  0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(248,81,73,0.5); }
+  50%      { opacity:.75; box-shadow:0 0 0 6px rgba(248,81,73,0); }
+}
+h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.3px; }
+.subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; max-width: 540px; }
+.header-badge {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 6px; padding: 6px 12px; font-size: 11px; color: var(--muted);
+}
 
-  .rule-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
+/* Metric strip */
+.metric-strip {
+  display: flex; background: var(--card);
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.strip-item {
+  flex: 1; padding: 9px 14px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.strip-item:last-child { border-right: none; }
+.strip-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.strip-value { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.strip-sub { font-size: 9px; color: var(--muted); }
 
-  .rule-top {
-    padding: 12px 14px 10px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-  .rule-num-badge {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 2px solid var(--red);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--red);
-    flex-shrink: 0;
-    background: rgba(248,81,73,0.08);
-  }
-  .rule-title-wrap {}
-  .rule-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.3;
-  }
-  .rule-short {
-    font-size: 10px;
-    color: var(--muted);
-    margin-top: 2px;
-    font-style: italic;
-  }
+/* ── Section labels ── */
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px; margin-top: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  .rule-body { padding: 10px 14px 12px; }
+/* ── Opening statement ── */
+.opening {
+  background: rgba(248,81,73,.05);
+  border: 1px solid rgba(248,81,73,.25);
+  border-left: 4px solid var(--red);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 24px;
+}
+.opening p { font-size: 13px; color: var(--text); font-weight: 600; line-height: 1.6; }
+.opening .sub { font-size: 11px; color: var(--muted); margin-top: 6px; font-weight: 400; }
 
-  .rule-spec {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 10px;
-    margin-bottom: 8px;
-  }
-  .rule-spec-label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 3px;
-  }
-  .rule-spec-value {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--amber);
-    font-family: 'Consolas', 'Courier New', monospace;
-  }
+/* ── Rule cards ── */
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
 
-  .rule-desc {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 8px;
-    line-height: 1.5;
-  }
+.rule-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med);
+  cursor: pointer;
+  user-select: none;
+}
+.rule-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(248,81,73,.35);
+  box-shadow: 0 6px 22px var(--red-glow), 0 3px 10px rgba(0,0,0,.3);
+}
+.rule-card.open {
+  border-color: rgba(248,81,73,.4);
+  box-shadow: 0 4px 20px var(--red-glow);
+}
 
-  .rule-why {
-    font-size: 10px;
-    color: var(--text);
-    border-top: 1px solid var(--border);
-    padding-top: 6px;
-    display: flex;
-    gap: 5px;
-    align-items: flex-start;
-  }
-  .why-label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--green);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
+.card-accent {
+  height: 3px;
+  background: linear-gradient(90deg, var(--red), rgba(210,153,34,.6));
+}
 
-  /* What breaks each rule */
-  .breaks-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .breaks-table th {
-    background: var(--bg); color: var(--muted); font-size: 10px; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase; padding: 8px 12px;
-    text-align: left; border-bottom: 1px solid var(--border);
-  }
-  .breaks-table td {
-    padding: 8px 12px; font-size: 11px; border-bottom: 1px solid var(--border); vertical-align: top;
-  }
-  .breaks-table tr:last-child td { border-bottom: none; }
-  .breaks-table tr:hover td { background: rgba(248,81,73,.04); }
+.rule-top {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.rule-num-badge {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 2px solid var(--red);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--red);
+  flex-shrink: 0;
+  background: rgba(248,81,73,.08);
+  transition: background var(--dur-med), box-shadow var(--dur-med);
+}
+.rule-card.open .rule-num-badge,
+.rule-card:hover .rule-num-badge {
+  background: rgba(248,81,73,.18);
+  box-shadow: 0 0 0 3px rgba(248,81,73,.15);
+}
+.rule-title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.rule-short { font-size: 10px; color: var(--muted); margin-top: 2px; font-style: italic; }
 
-  .rule-ref { font-weight: 700; color: var(--red); }
-  .break-what { color: var(--text); }
-  .break-consequence { color: var(--muted); }
+.rule-body { padding: 10px 14px 12px; }
 
-  /* Kill switch box */
-  .kill-switch {
-    background: rgba(248,81,73,0.07);
-    border: 1px solid var(--red);
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-  }
-  .kill-icon { font-size: 24px; flex-shrink: 0; line-height: 1; color: var(--red); }
-  .kill-text {}
-  .kill-title { font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 5px; }
-  .kill-conditions { list-style: none; padding: 0; }
-  .kill-conditions li {
-    font-size: 11px;
-    color: var(--text);
-    padding: 3px 0;
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    border-bottom: 1px solid rgba(248,81,73,0.2);
-  }
-  .kill-conditions li:last-child { border-bottom: none; }
-  .kill-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+.rule-spec {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 5px; padding: 8px 10px; margin-bottom: 8px;
+}
+.rule-spec-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 3px;
+}
+.rule-spec-value {
+  font-size: 14px; font-weight: 700; color: var(--amber);
+  font-family: 'Consolas','Courier New',monospace; font-variant-numeric: tabular-nums;
+}
 
-  .finn-voice {
-    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--amber);
-    border-radius: 6px; padding: 12px 16px; margin-top: 20px;
-  }
-  .finn-voice-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
-  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; }
+.rule-desc {
+  font-size: 11px; color: var(--muted); margin-bottom: 8px; line-height: 1.55;
+}
 
-  @media print {
-    body { background: white; color: black; padding: 12px; }
-    .rule-card, .breaks-table, .kill-switch, .opening, .finn-voice { border-color: #ccc !important; }
-    .rule-spec { background: #f6f8fa; }
-  }
+/* Expand toggle */
+.rule-expand-btn {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; color: var(--red);
+  letter-spacing: .5px; margin-top: 4px;
+  padding: 4px 0; border-top: 1px solid var(--border);
+  transition: color var(--dur-fast);
+}
+.expand-chevron {
+  display: inline-block;
+  transition: transform var(--dur-med) var(--ease-out);
+  font-size: 9px;
+}
+.rule-card.open .expand-chevron { transform: rotate(180deg); }
+
+/* Expanded detail */
+.rule-detail {
+  display: none;
+  padding: 10px 14px 14px;
+  border-top: 1px solid var(--border);
+  background: rgba(248,81,73,.03);
+  animation: slide-down var(--dur-med) var(--ease-out);
+}
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rule-card.open .rule-detail { display: block; }
+
+.detail-why {
+  margin-bottom: 10px;
+}
+.detail-why-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--green); margin-bottom: 4px;
+}
+.detail-why-text { font-size: 11px; color: var(--text); line-height: 1.6; }
+
+.detail-violation {
+  background: rgba(248,81,73,.06);
+  border: 1px solid rgba(248,81,73,.2);
+  border-radius: 5px; padding: 8px 10px;
+}
+.detail-violation-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--red); margin-bottom: 5px;
+}
+.detail-violation-what {
+  font-size: 11px; color: var(--muted); margin-bottom: 4px;
+  font-style: italic; line-height: 1.55;
+}
+.detail-violation-end {
+  font-size: 11px; color: var(--text); font-weight: 600; line-height: 1.5;
+}
+
+/* ── Kill switch ── */
+.kill-switch {
+  background: rgba(248,81,73,.06);
+  border: 1px solid rgba(248,81,73,.3);
+  border-radius: 10px; padding: 16px 18px;
+  margin-bottom: 20px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.kill-icon { font-size: 26px; flex-shrink: 0; line-height: 1; color: var(--red); padding-top: 2px; }
+.kill-title {
+  font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.kill-title-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  background: rgba(248,81,73,.15); border: 1px solid rgba(248,81,73,.25);
+  color: var(--red); padding: 2px 7px; border-radius: 4px;
+}
+.kill-conditions { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.kill-conditions li {
+  font-size: 11px; color: var(--text); padding: 5px 8px; border-radius: 4px;
+  display: flex; gap: 8px; align-items: flex-start;
+  transition: background var(--dur-fast);
+}
+.kill-conditions li:hover { background: rgba(248,81,73,.07); }
+.kill-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+
+/* ── FINN voice ── */
+.finn-voice {
+  background: rgba(210,153,34,.05); border: 1px solid rgba(210,153,34,.25);
+  border-left: 4px solid var(--amber); border-radius: 8px;
+  padding: 14px 18px; backdrop-filter: blur(12px); margin-top: 8px;
+}
+.finn-voice-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--amber); margin-bottom: 7px;
+}
+.finn-voice p { font-size: 12px; color: var(--text); font-style: italic; line-height: 1.7; }
+
+/* ── Footer ── */
+.footer {
+  margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-left { font-size: 11px; color: var(--muted); }
+.footer-right { display: flex; gap: 10px; align-items: center; }
+.footer-tag {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 700; color: var(--blue);
+}
+.footer-date { font-size: 10px; color: var(--muted); }
+
+.color-great { color: var(--green); }
+.color-good  { color: var(--blue); }
+.color-ok    { color: var(--amber); }
+.color-bad   { color: var(--red); }
+
+@media print {
+  body { background: white; color: black; padding: 12px; }
+  .rule-card, .kill-switch, .opening, .finn-voice { border-color: #ccc !important; }
+  .card-accent { display: none; }
+  .rule-detail { display: block !important; }
+  .rule-expand-btn { display: none; }
+  .reveal { opacity: 1; transform: none; }
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-top">
+<div class="header reveal">
+  <div class="header-inner">
     <div>
-      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <div class="finn-tag">
+        <span class="alert-dot"></span>
+        FINN — Risk Management
+      </div>
       <h1>6 Non-Negotiable Risk Rules</h1>
-      <div class="subtitle">These rules are not suggestions — breaking any one of them can end a trading career</div>
+      <div class="subtitle">These rules are not suggestions — breaking any one of them can end a trading career. Click any rule to see the rationale and the violation pattern.</div>
     </div>
-    <div class="badge">Tier 2 · FINN-Specific</div>
+    <div class="header-badge">T1 · FINN-Specific</div>
+  </div>
+  <div class="metric-strip">
+    <div class="strip-item">
+      <div class="strip-label">Rule 1</div>
+      <div class="strip-value color-bad">≤ 2%</div>
+      <div class="strip-sub">risk per trade</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Rule 2</div>
+      <div class="strip-value color-bad">6% DD</div>
+      <div class="strip-sub">daily kill switch</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Rule 3</div>
+      <div class="strip-value color-ok">1.5× ATR</div>
+      <div class="strip-sub">stop distance</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Rule 4</div>
+      <div class="strip-value color-good">2:1 R:R</div>
+      <div class="strip-sub">minimum entry gate</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Rule 5</div>
+      <div class="strip-value color-ok">≤ 20%</div>
+      <div class="strip-sub">sector concentration</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Rule 6</div>
+      <div class="strip-value color-great">Log All</div>
+      <div class="strip-sub">every trade documented</div>
+    </div>
   </div>
 </div>
 
-<div class="opening">
+<div class="opening reveal">
   <p>Risk management is not what you do after a trade goes wrong. It is what determines your position size, your stop placement, and your daily exposure limit <em>before</em> you enter a single trade.</p>
-  <div class="sub">All 6 rules below apply on every trade, every day, without exception. There is no "this setup is so good I'll skip rule 3." That thinking is how accounts are blown.</div>
+  <div class="sub">All 6 rules apply on every trade, every day, without exception. There is no "this setup is so good I'll skip rule 3." That thinking is how accounts are blown.</div>
 </div>
 
-<div class="section-label">The 6 Rules</div>
+<div class="section-label">The 6 Rules — click any card to expand the rationale</div>
 <div class="rules-grid">
 
   <!-- Rule 1 -->
-  <div class="rule-card">
+  <div class="rule-card reveal" onclick="toggleRule(this)">
+    <div class="card-accent"></div>
     <div class="rule-top">
       <div class="rule-num-badge">1</div>
-      <div class="rule-title-wrap">
+      <div>
         <div class="rule-title">2% Max Risk Per Trade</div>
         <div class="rule-short">Never risk more than 2% of total account on any single position</div>
       </div>
@@ -261,15 +384,30 @@
         <div class="rule-spec-value">Risk ≤ 2% of account/trade</div>
       </div>
       <div class="rule-desc">Position size = (Account × 0.02) ÷ (Entry − Stop). This calculation is non-negotiable. A conviction narrative is not a risk override.</div>
-      <div class="rule-why"><span class="why-label">Why:</span> At 2% risk, you can lose 50 consecutive trades and still have 36% of your capital. At 10%, 10 consecutive losses = 65% loss. Recovery from 65% down requires +186% return.</div>
+      <div class="rule-expand-btn">
+        <span class="expand-chevron">▼</span>
+        See rationale + violation
+      </div>
+    </div>
+    <div class="rule-detail">
+      <div class="detail-why">
+        <div class="detail-why-label">Why This Rule Exists</div>
+        <div class="detail-why-text">At 2% risk, you can lose 50 consecutive trades and still have 36% of your capital. At 10% risk, 10 consecutive losses = 65% loss. Recovery from −65% requires a +186% return. The math is asymmetric and unforgiving. Ruin is permanent; edge is not.</div>
+      </div>
+      <div class="detail-violation">
+        <div class="detail-violation-label">Violation Pattern</div>
+        <div class="detail-violation-what">"This setup is different" → sizing up to 5–10% of account on a strong conviction trade.</div>
+        <div class="detail-violation-end">How it ends: one gap-down wipes out 20+ winning trades. Account permanently impaired.</div>
+      </div>
     </div>
   </div>
 
   <!-- Rule 2 -->
-  <div class="rule-card">
+  <div class="rule-card reveal" onclick="toggleRule(this)">
+    <div class="card-accent"></div>
     <div class="rule-top">
       <div class="rule-num-badge">2</div>
-      <div class="rule-title-wrap">
+      <div>
         <div class="rule-title">6% Daily Drawdown Limit</div>
         <div class="rule-short">Stop trading for the day if total losses reach 6% of account</div>
       </div>
@@ -280,17 +418,32 @@
         <div class="rule-spec-value">Stop if daily P&amp;L ≤ −6%</div>
       </div>
       <div class="rule-desc">When you hit −6% on the day, close all positions and stop trading. No revenge trades. The market will be open tomorrow; your capital may not be.</div>
-      <div class="rule-why"><span class="why-label">Why:</span> Bad days cluster. Continuing to trade after 3 consecutive losses compounds emotional decision-making. A forced break protects capital from revenge trading.</div>
+      <div class="rule-expand-btn">
+        <span class="expand-chevron">▼</span>
+        See rationale + violation
+      </div>
+    </div>
+    <div class="rule-detail">
+      <div class="detail-why">
+        <div class="detail-why-label">Why This Rule Exists</div>
+        <div class="detail-why-text">Bad days cluster. When you've lost three times in a row, your emotional state is impaired — fear and anger degrade decision quality. Continuing to trade after hitting the limit compounds emotional decision-making with financial damage. A forced break protects capital from revenge trading when you're most vulnerable to it.</div>
+      </div>
+      <div class="detail-violation">
+        <div class="detail-violation-label">Violation Pattern</div>
+        <div class="detail-violation-what">After 3 losing trades: "I need to make it back today" → taking a 4th, 5th, 6th trade.</div>
+        <div class="detail-violation-end">How it ends: emotional state compounds losses. −6% becomes −15% in a single session.</div>
+      </div>
     </div>
   </div>
 
   <!-- Rule 3 -->
-  <div class="rule-card">
+  <div class="rule-card reveal" onclick="toggleRule(this)">
+    <div class="card-accent"></div>
     <div class="rule-top">
       <div class="rule-num-badge">3</div>
-      <div class="rule-title-wrap">
+      <div>
         <div class="rule-title">ATR-Based Stop Placement</div>
-        <div class="rule-short">Stops are set using ATR — not round numbers, not support lines alone</div>
+        <div class="rule-short">Stops set using ATR — not round numbers, not support lines alone</div>
       </div>
     </div>
     <div class="rule-body">
@@ -298,18 +451,33 @@
         <div class="rule-spec-label">Stop Formula</div>
         <div class="rule-spec-value">Stop = Entry − (1.5 × ATR14)</div>
       </div>
-      <div class="rule-desc">Place stops 1.5–2× ATR beyond the entry. This accounts for normal price noise without giving up too much per trade. Never use round numbers as stop levels.</div>
-      <div class="rule-why"><span class="why-label">Why:</span> Round-number stops get hunted. ATR-based stops are calibrated to actual price volatility, reducing the probability of stop-hunt wipeouts before the trade has time to work.</div>
+      <div class="rule-desc">Place stops 1.5–2× ATR beyond the entry. Accounts for normal price noise without giving up too much per trade. Never use round numbers as stop levels.</div>
+      <div class="rule-expand-btn">
+        <span class="expand-chevron">▼</span>
+        See rationale + violation
+      </div>
+    </div>
+    <div class="rule-detail">
+      <div class="detail-why">
+        <div class="detail-why-label">Why This Rule Exists</div>
+        <div class="detail-why-text">Round-number stops are visible to everyone and get hunted deliberately by market makers and algorithmic traders. ATR-based stops are calibrated to actual price volatility, not arbitrary chart levels — this reduces the probability of stop-hunt wipeouts before a trade has time to develop.</div>
+      </div>
+      <div class="detail-violation">
+        <div class="detail-violation-label">Violation Pattern</div>
+        <div class="detail-violation-what">Placing a stop at the obvious swing low or at a round number like $50.00 or $100.00.</div>
+        <div class="detail-violation-end">How it ends: stop hunted. Price dips to $49.95, fills the stop, then reverses to the original target.</div>
+      </div>
     </div>
   </div>
 
   <!-- Rule 4 -->
-  <div class="rule-card">
+  <div class="rule-card reveal" onclick="toggleRule(this)">
+    <div class="card-accent"></div>
     <div class="rule-top">
       <div class="rule-num-badge">4</div>
-      <div class="rule-title-wrap">
+      <div>
         <div class="rule-title">Minimum 2:1 R:R Required</div>
-        <div class="rule-short">Do not enter any trade with a risk-to-reward ratio below 2:1</div>
+        <div class="rule-short">Do not enter any trade with risk-to-reward ratio below 2:1</div>
       </div>
     </div>
     <div class="rule-body">
@@ -317,16 +485,31 @@
         <div class="rule-spec-label">Entry Gate</div>
         <div class="rule-spec-value">Target ≥ Entry + (2 × Risk)</div>
       </div>
-      <div class="rule-desc">Calculate target and stop before entering. If Target / Risk &lt; 2.0, skip the trade. A setup with a great narrative and a 1:1 R:R is still a bad trade.</div>
-      <div class="rule-why"><span class="why-label">Why:</span> With a 50% win rate and 2:1 R:R, you have positive expectancy. At 1:1, you need &gt;50% win rate just to break even after commissions. Do the math before every trade.</div>
+      <div class="rule-desc">Calculate target and stop before entering. If Target / Risk &lt; 2.0, skip the trade. A great setup with a 1:1 R:R is still a bad trade.</div>
+      <div class="rule-expand-btn">
+        <span class="expand-chevron">▼</span>
+        See rationale + violation
+      </div>
+    </div>
+    <div class="rule-detail">
+      <div class="detail-why">
+        <div class="detail-why-label">Why This Rule Exists</div>
+        <div class="detail-why-text">With a 50% win rate and 2:1 R:R, you have positive expectancy. At 1:1, you need &gt;50% win rate just to break even after commissions — and most strategies don't sustain &gt;50% win rates. The 2:1 minimum creates a structural edge that survives mediocre win rates. Do the math before every trade, every time.</div>
+      </div>
+      <div class="detail-violation">
+        <div class="detail-violation-label">Violation Pattern</div>
+        <div class="detail-violation-what">Entering a 1:1 trade because "it's a sure thing" or "the setup looks perfect."</div>
+        <div class="detail-violation-end">How it ends: even a 60% win rate at 1:1 R:R barely covers commissions. Slow, invisible account bleed.</div>
+      </div>
     </div>
   </div>
 
   <!-- Rule 5 -->
-  <div class="rule-card">
+  <div class="rule-card reveal" onclick="toggleRule(this)">
+    <div class="card-accent"></div>
     <div class="rule-top">
       <div class="rule-num-badge">5</div>
-      <div class="rule-title-wrap">
+      <div>
         <div class="rule-title">Max 20% Sector Concentration</div>
         <div class="rule-short">No more than 20% of capital in any single sector at any time</div>
       </div>
@@ -337,17 +520,32 @@
         <div class="rule-spec-value">Sector exposure ≤ 20%</div>
       </div>
       <div class="rule-desc">Track sector allocation across all open positions. Technology, healthcare, energy — no single sector should represent more than 20% of total deployed capital.</div>
-      <div class="rule-why"><span class="why-label">Why:</span> Sector shocks (earnings, regulation, macro) hit correlated stocks simultaneously. If 60% of your capital is in tech and NVDA gaps down 15%, the correlation damage is catastrophic.</div>
+      <div class="rule-expand-btn">
+        <span class="expand-chevron">▼</span>
+        See rationale + violation
+      </div>
+    </div>
+    <div class="rule-detail">
+      <div class="detail-why">
+        <div class="detail-why-label">Why This Rule Exists</div>
+        <div class="detail-why-text">Sector shocks — earnings surprises, regulatory announcements, macro data — hit correlated stocks simultaneously. Within a sector, correlations spike to 0.8–0.95 during stress events. Your diversification between tickers in the same sector is essentially zero when it matters most.</div>
+      </div>
+      <div class="detail-violation">
+        <div class="detail-violation-label">Violation Pattern</div>
+        <div class="detail-violation-what">Running 4 tech trades simultaneously during earnings season.</div>
+        <div class="detail-violation-end">How it ends: one sector rotation or macro event hits all 4 at once. Correlation = full loss on the entire position block.</div>
+      </div>
     </div>
   </div>
 
   <!-- Rule 6 -->
-  <div class="rule-card">
+  <div class="rule-card reveal" onclick="toggleRule(this)">
+    <div class="card-accent"></div>
     <div class="rule-top">
       <div class="rule-num-badge">6</div>
-      <div class="rule-title-wrap">
+      <div>
         <div class="rule-title">Document Every Trade</div>
-        <div class="rule-short">No trade exists if it is not logged in all_trades.csv before and after execution</div>
+        <div class="rule-short">No trade exists if it is not logged before and after execution</div>
       </div>
     </div>
     <div class="rule-body">
@@ -356,71 +554,77 @@
         <div class="rule-spec-value">Log entry + exit + rationale</div>
       </div>
       <div class="rule-desc">Before entry: record thesis, entry, stop, target, position size. After exit: record outcome, what was right, what was wrong, what to do differently.</div>
-      <div class="rule-why"><span class="why-label">Why:</span> Undocumented trades produce no learning. The log is not paperwork — it is the feedback loop that separates a trader who improves from one who repeats the same mistake with different tickers.</div>
+      <div class="rule-expand-btn">
+        <span class="expand-chevron">▼</span>
+        See rationale + violation
+      </div>
+    </div>
+    <div class="rule-detail">
+      <div class="detail-why">
+        <div class="detail-why-label">Why This Rule Exists</div>
+        <div class="detail-why-text">Undocumented trades produce no learning. The log is not paperwork — it is the feedback loop that separates a trader who improves from one who repeats the same mistake with different tickers. Without pre-trade documentation, you cannot distinguish skill from luck when the trade closes.</div>
+      </div>
+      <div class="detail-violation">
+        <div class="detail-violation-label">Violation Pattern</div>
+        <div class="detail-violation-what">"I'll log it later" → never logging it → repeating the same mistake next week.</div>
+        <div class="detail-violation-end">How it ends: no feedback loop. Same biases, same mistakes, indefinitely. Improvement is impossible without data.</div>
+      </div>
     </div>
   </div>
 
 </div><!-- end rules-grid -->
 
-<!-- What breaks the rules -->
-<div class="section-label">Common Rule Violations — What They Look Like</div>
-<table class="breaks-table">
-  <thead>
-    <tr><th>Rule</th><th>Violation Pattern</th><th>How It Ends</th></tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="rule-ref">Rule 1</td>
-      <td class="break-what">"This setup is different" → sizing up to 5–10% of account on a strong conviction trade</td>
-      <td class="break-consequence">One gap-down wipes out 20+ winning trades. Account permanently impaired.</td>
-    </tr>
-    <tr>
-      <td class="rule-ref">Rule 2</td>
-      <td class="break-what">After 3 losing trades: "I need to make it back today" → taking 4th, 5th, 6th trade</td>
-      <td class="break-consequence">Emotional state compounds losses. −6% becomes −15% in one session.</td>
-    </tr>
-    <tr>
-      <td class="rule-ref">Rule 3</td>
-      <td class="break-what">Placing stop at the obvious swing low or round number ($50.00, $100.00)</td>
-      <td class="break-consequence">Stop hunted. Price dips to $49.95, fills the stop, then reverses to the original target.</td>
-    </tr>
-    <tr>
-      <td class="rule-ref">Rule 4</td>
-      <td class="break-what">Entering a 1:1 trade because "it's a sure thing" or "the setup looks perfect"</td>
-      <td class="break-consequence">Even a 60% win rate at 1:1 R:R barely covers commissions. Slow account bleed.</td>
-    </tr>
-    <tr>
-      <td class="rule-ref">Rule 5</td>
-      <td class="break-what">Running 4 tech trades simultaneously during an earnings season</td>
-      <td class="break-consequence">One sector rotation or macro event hits all 4 at once. Correlation = full loss on entire position block.</td>
-    </tr>
-    <tr>
-      <td class="rule-ref">Rule 6</td>
-      <td class="break-what">"I'll log it later" → never logging it → repeating the same mistake next week</td>
-      <td class="break-consequence">No feedback loop. Same biases, same mistakes, indefinitely. Improvement is impossible without data.</td>
-    </tr>
-  </tbody>
-</table>
-
 <!-- Kill switch -->
-<div class="kill-switch">
+<div class="section-label">Account-Level Kill Switch</div>
+<div class="kill-switch reveal">
   <div class="kill-icon">⏹</div>
-  <div class="kill-text">
-    <div class="kill-title">Account-Level Kill Switch — Stop Trading Immediately If:</div>
+  <div>
+    <div class="kill-title">
+      Stop Trading Immediately If Any Condition Is Met
+      <span class="kill-title-tag">No exceptions</span>
+    </div>
     <ul class="kill-conditions">
-      <li><span class="kill-dot"></span>Daily loss exceeds 6% of account (Rule 2 trigger)</li>
-      <li><span class="kill-dot"></span>Monthly drawdown exceeds 15% of account start value</li>
-      <li><span class="kill-dot"></span>Live IC drops below 0.03 for 2 consecutive months (signal decay — return to backtesting)</li>
+      <li><span class="kill-dot"></span>Daily loss exceeds 6% of account (Rule 2 trigger — stop for the day)</li>
+      <li><span class="kill-dot"></span>Monthly drawdown exceeds 15% of account start value (stop for the month — return to backtesting)</li>
+      <li><span class="kill-dot"></span>Live IC drops below 0.03 for 2 consecutive months (signal decay — rebuild the signal)</li>
       <li><span class="kill-dot"></span>You take a trade without calculating position size first</li>
-      <li><span class="kill-dot"></span>You deviate from the system during an emotional state (angry, scared, euphoric)</li>
+      <li><span class="kill-dot"></span>You deviate from your entry rules during an emotional state (angry, scared, euphoric)</li>
     </ul>
   </div>
 </div>
 
-<div class="finn-voice">
-  <div class="finn-voice-label">FINN</div>
+<div class="finn-voice reveal">
+  <div class="finn-voice-label">▸ FINN</div>
   <p>"Risk management is not about preventing losses — you will have losses. It is about making sure that a string of losses cannot end your ability to trade. Every rule above exists because someone, at some point, broke it and paid with their account. The rules are not constraints on your edge. They are what keeps you in the game long enough for your edge to compound."</p>
 </div>
+
+<div class="footer reveal">
+  <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network · 6 Non-Negotiable Risk Rules</div>
+  <div class="footer-right">
+    <span class="footer-tag">v2</span>
+    <span class="footer-date">May 2026</span>
+  </div>
+</div>
+
+<script>
+// Scroll reveal with stagger
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Rule card click-to-expand
+function toggleRule(card) {
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.rule-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+</script>
 
 </body>
 </html>

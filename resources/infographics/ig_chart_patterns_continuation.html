@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,346 +10,439 @@
     --bg: #0d1117; --card: #161b22; --border: #30363d;
     --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
     --red: #f85149; --amber: #d29922; --muted: #8b949e;
+    --card-elevated: #1c2128;
+    --blue-glow: rgba(88,166,255,0.12);
+    --green-glow: rgba(63,185,80,0.12);
+    --red-glow: rgba(248,81,73,0.12);
+    --amber-glow: rgba(210,153,34,0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
-  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; line-height: 1.5; padding: 24px 16px; }
+  .page-wrap { max-width: 1160px; margin: 0 auto; }
 
-  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
-  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+  body.social { width: 1200px; min-height: 675px; overflow: hidden; padding: 20px 24px; }
+  body.social.square { width: 1080px; min-height: 1080px; }
 
-  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  /* ── Header ── */
+  .page-header { text-align: center; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+  .page-header h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.5px; }
+  .page-header .subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .finn-tag { display: inline-block; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); color: var(--blue); font-size: 10px; padding: 2px 10px; border-radius: 20px; margin-top: 8px; letter-spacing: 0.5px; text-transform: uppercase; }
 
-  /* Pattern cards */
-  .pattern-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
-  .pattern-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .pattern-header { padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-  .pattern-name { font-weight: 700; font-size: 14px; color: var(--text); }
-  .pattern-signal { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 8px; }
-  .sig-bull { background: rgba(63,185,80,0.15); color: var(--green); }
-  .sig-bear { background: rgba(248,81,73,0.15); color: var(--red); }
-  .sig-both { background: rgba(88,166,255,0.15); color: var(--blue); }
-  .pattern-body { display: grid; grid-template-columns: 180px 1fr; gap: 0; }
-  .pattern-diagram { background: #0d1117; padding: 12px; font-family: 'Courier New', monospace; font-size: 11px; border-right: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; }
-  .d-g { color: var(--green); }
-  .d-r { color: var(--red); }
-  .d-b { color: var(--blue); }
-  .d-a { color: var(--amber); }
-  .d-m { color: var(--muted); }
-  .pattern-info { padding: 12px 14px; }
-  .info-row { display: flex; gap: 6px; margin-bottom: 6px; font-size: 12px; }
-  .info-label { color: var(--muted); flex-shrink: 0; width: 80px; }
-  .info-value { color: var(--text); }
-  .info-value.green { color: var(--green); }
-  .info-value.red { color: var(--red); }
-  .info-value.amber { color: var(--amber); }
+  /* ── Metric strip ── */
+  .metric-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 22px; }
+  .ms-item { background: var(--card-elevated); padding: 10px 14px; text-align: center; }
+  .ms-val { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 3px; }
+  .ms-val.blue { color: var(--blue); } .ms-val.green { color: var(--green); }
+  .ms-val.red { color: var(--red); } .ms-val.amber { color: var(--amber); }
+  .ms-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
 
-  /* Comparison table */
-  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  thead tr { background: #1c2128; }
-  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #1c2128; }
+  /* ── Intro box ── */
+  .intro-box { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 22px; font-size: 12px; color: var(--muted); line-height: 1.65; }
+  .intro-box strong { color: var(--blue); }
 
-  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
-  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
+  /* ── Filter bar ── */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+  .filter-btn { background: var(--card-elevated); border: 1px solid var(--border); color: var(--muted); font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all var(--dur-fast); }
+  .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-btn.active { background: var(--blue-glow); border-color: rgba(88,166,255,0.4); color: var(--blue); }
+  .filter-btn.active.bull { background: var(--green-glow); border-color: rgba(63,185,80,0.4); color: var(--green); }
+  .filter-btn.active.bear { background: var(--red-glow); border-color: rgba(248,81,73,0.4); color: var(--red); }
+  .filter-btn.active.neutral { background: var(--amber-glow); border-color: rgba(210,153,34,0.4); color: var(--amber); }
+
+  /* ── Section title ── */
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin: 22px 0 12px; padding-left: 10px; border-left: 3px solid var(--blue); }
+
+  /* ── Pattern grid ── */
+  .pattern-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 8px; }
+
+  /* ── Pattern cards ── */
+  .pattern-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; cursor: pointer; transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+  .pattern-card:hover { transform: translateY(-2px); }
+  .pattern-card[data-direction="bull"] { border-top: 3px solid var(--green); }
+  .pattern-card[data-direction="bull"]:hover { box-shadow: 0 6px 20px var(--green-glow); }
+  .pattern-card[data-direction="bear"] { border-top: 3px solid var(--red); }
+  .pattern-card[data-direction="bear"]:hover { box-shadow: 0 6px 20px var(--red-glow); }
+  .pattern-card[data-direction="neutral"] { border-top: 3px solid var(--amber); }
+  .pattern-card[data-direction="neutral"]:hover { box-shadow: 0 6px 20px var(--amber-glow); }
+  .pattern-card.hidden-filter { display: none; }
+
+  /* Diagram area */
+  .pc-diagram { background: #0d1117; border-bottom: 1px solid var(--border); padding: 12px 16px; }
+  .pc-diagram pre { font-family: 'Courier New', 'Consolas', monospace; font-size: 10px; line-height: 1.4; color: var(--muted); }
+  .d-g { color: var(--green); } .d-r { color: var(--red); }
+  .d-b { color: var(--blue); } .d-a { color: var(--amber); }
+
+  /* Card info */
+  .pc-info { padding: 10px 14px 8px; }
+  .pc-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .pc-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+  .sig-badge { font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sig-badge.bull { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+  .sig-badge.bear { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.25); }
+  .sig-badge.neutral { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(210,153,34,0.25); }
+
+  .pc-hint { padding: 0 14px 8px; font-size: 9px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+  .hint-arrow { transition: transform var(--dur-fast); }
+  .pattern-card.open .hint-arrow { transform: rotate(180deg); }
+
+  /* Expand panel */
+  .pc-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-out); border-top: 0px solid var(--border); }
+  .pattern-card.open .pc-detail { max-height: 500px; border-top-width: 1px; }
+  .pd-inner { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .pd-row { font-size: 11px; line-height: 1.5; }
+  .pd-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); margin-bottom: 2px; }
+  .pd-text { color: var(--muted); }
+  .pd-text strong { color: var(--text); }
+  .pd-text.green { color: var(--green); }
+  .pd-text.red { color: var(--red); }
+  .pd-text.amber { color: var(--amber); }
+  .pd-finn { background: var(--green-glow); border-radius: 4px; padding: 7px 10px; }
+  .pd-finn .pd-text { color: var(--green); font-style: italic; }
+  .pd-fail { background: var(--red-glow); border-radius: 4px; padding: 7px 10px; }
+  .pd-fail .pd-text { color: var(--red); }
+
+  /* ── Reveal ── */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Quick ref table ── */
+  .ref-table { width: 100%; border-collapse: collapse; margin-bottom: 22px; }
+  .ref-table thead tr { background: var(--card-elevated); }
+  .ref-table th { padding: 9px 12px; text-align: left; color: var(--blue); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .ref-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 11px; color: var(--muted); vertical-align: top; }
+  .ref-table td:first-child { color: var(--text); font-weight: 600; }
+  .ref-table tr:last-child td { border-bottom: none; }
+  .ref-table tr:hover td { background: var(--card-elevated); }
+  .tc-g { color: var(--green); } .tc-r { color: var(--red); } .tc-a { color: var(--amber); }
+
+  /* ── Rule box ── */
+  .rule-box { background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.2); border-radius: 10px; padding: 16px 20px; margin: 22px 0; }
+  .rule-box p { font-size: 12px; color: var(--muted); margin-bottom: 8px; line-height: 1.6; }
   .rule-box p:last-child { margin-bottom: 0; }
   .rule-box strong { color: var(--blue); }
 
-  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+  /* ── FINN voice box ── */
+  .finn-voice { background: rgba(210,153,34,0.05); border: 1px solid rgba(210,153,34,0.25); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; backdrop-filter: blur(12px); position: relative; }
+  .finn-voice::before { content: 'FINN'; position: absolute; top: -10px; left: 20px; background: var(--bg); padding: 0 8px; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--amber); }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; line-height: 1.65; }
 
-  @media print {
-    body { background: #fff; color: #111; }
-    .pattern-card, .rule-box { border-color: #ccc; }
-    .pattern-diagram { background: #f5f5f5; }
-    .pattern-info { background: #fff; }
-    .header { border-color: #333; }
-    .logo, .section-label { color: #1a56db; }
-    .sig-bull { color: #16a34a; } .sig-bear { color: #dc2626; } .sig-both { color: #1a56db; }
-    .d-g { color: #16a34a; } .d-r { color: #dc2626; } .d-b { color: #1a56db; } .d-a { color: #b45309; }
-    th { color: #1a56db; background: #f0f4ff; }
-    td { border-color: #ddd; }
-    tr:hover td { background: transparent; }
-    .info-value.green { color: #16a34a; } .info-value.red { color: #dc2626; } .info-value.amber { color: #b45309; }
-  }
+  /* ── Footer ── */
+  .page-footer { margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 10px; }
+  .footer-right { display: flex; align-items: center; gap: 8px; }
+  .footer-v-badge { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.3); color: var(--green); font-size: 9px; padding: 1px 7px; border-radius: 4px; font-weight: 700; }
 </style>
 </head>
 <body>
-<div class="page">
+<div class="page-wrap">
 
-  <div class="header">
-    <div>
-      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
-      <div class="title">Continuation Patterns Reference</div>
-      <div class="subtitle">Flags · pennants · triangles · wedges · rectangles — formation, breakout signal, volume requirement · Handbook §2.4</div>
-    </div>
-    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C4</div>
+  <div class="page-header">
+    <h1>Continuation Patterns Reference</h1>
+    <div class="subtitle">Flags · Pennants · Wedges · Triangles · Rectangle — Formation, Breakout, Target, Failure Mode</div>
+    <div class="finn-tag">FINN Knowledge Base · HB P2 §2.4</div>
   </div>
 
-  <div class="section-label">What Continuation Patterns Are</div>
-  <div class="rule-box" style="margin-top:0">
-    <p>Continuation patterns form when a strong trend pauses to consolidate before resuming. The consolidation represents a temporary equilibrium — traders taking profits, late buyers hesitating — before the dominant force (buyers in an uptrend, sellers in a downtrend) reasserts control. The pattern identifies the pause; the breakout confirms the continuation.</p>
-    <p><strong>Key rule:</strong> All continuation patterns require a strong prior trend to be valid. A flag forming in the middle of a sideways range is not a flag — it is just chop. Confirm the prior trend before naming the pattern.</p>
+  <div class="metric-strip">
+    <div class="ms-item"><div class="ms-val blue">9</div><div class="ms-label">Total Patterns</div></div>
+    <div class="ms-item"><div class="ms-val blue">2</div><div class="ms-label">Flags</div></div>
+    <div class="ms-item"><div class="ms-val blue">3</div><div class="ms-label">Triangles</div></div>
+    <div class="ms-item"><div class="ms-val amber">1.5×</div><div class="ms-label">Vol on Breakout</div></div>
+    <div class="ms-item"><div class="ms-val amber">2+</div><div class="ms-label">Line Touches Min</div></div>
+    <div class="ms-item"><div class="ms-val green">Prior</div><div class="ms-label">Trend Required</div></div>
   </div>
 
-  <!-- Flags -->
-  <div class="section-label">Flags</div>
-  <div class="pattern-grid">
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Bull Flag</div>
-        <span class="pattern-signal sig-bull">Bullish Continuation</span>
-      </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-g">      *
-     *
-    *         ← Flagpole (sharp
-   *             upward move)</span>
-<span class="d-g">  *</span>
-<span class="d-a">  ╲____
-   ╲____   ← Flag: slight
-    ╲____    downward drift,
-     ╲       parallel lines</span>
-<span class="d-b">      ↑ BREAKOUT above
-        upper flag line</span></pre>
-        </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">Prior trend:</span><span class="info-value green">Strong uptrend (flagpole)</span></div>
-          <div class="info-row"><span class="info-label">Formation:</span><span class="info-value">Slight downward drift on declining volume; parallel upper and lower boundaries</span></div>
-          <div class="info-row"><span class="info-label">Duration:</span><span class="info-value">5–20 candles (days); longer = weaker</span></div>
-          <div class="info-row"><span class="info-label">Breakout:</span><span class="info-value green">Close above upper flag boundary on above-average volume</span></div>
-          <div class="info-row"><span class="info-label">Target:</span><span class="info-value">Flagpole height added to breakout point</span></div>
-          <div class="info-row"><span class="info-label">Invalidation:</span><span class="info-value red">Close below the lower flag boundary</span></div>
-        </div>
-      </div>
-    </div>
+  <div class="intro-box reveal">
+    Continuation patterns form when a strong trend <strong>pauses to consolidate</strong> before resuming. The consolidation is a temporary equilibrium — traders taking profits, late buyers hesitating — before the dominant force reasserts. <strong>A strong prior trend is mandatory context.</strong> A flag forming in a sideways range is not a flag — it is chop. Confirm the prior trend before naming the pattern. Click any card to expand breakout conditions, target calculation, and failure mode.
+  </div>
 
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Bear Flag</div>
-        <span class="pattern-signal sig-bear">Bearish Continuation</span>
-      </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-a">  ╱____
-   ╱____   ← Flag: slight
-    ╱____    upward drift,
-     ╱       parallel lines</span>
-<span class="d-r">  *</span>
-<span class="d-r">   *          ← Flagpole (sharp
-    *            downward move)
-     *
-      *</span>
-<span class="d-b">  ↓ BREAKOUT below
-    lower flag line</span></pre>
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all" onclick="filterPatterns('all','all')">All (9)</button>
+    <button class="filter-btn" data-filter="bull" onclick="filterPatterns('bull','bull')">Bullish (3)</button>
+    <button class="filter-btn" data-filter="bear" onclick="filterPatterns('bear','bear')">Bearish (3)</button>
+    <button class="filter-btn" data-filter="neutral" onclick="filterPatterns('neutral','neutral')">Neutral (3)</button>
+  </div>
+
+  <!-- ── Flags ── -->
+  <div class="pattern-section" id="sec-flags">
+    <div class="section-title">Flags</div>
+    <div class="pattern-grid reveal">
+
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-diagram"><pre><span class="d-g">      ▲
+     ●
+    ●         ← Flagpole</span>
+<span class="d-g">   ●</span>
+<span class="d-a">   ╲────
+    ╲────  ← Flag: slight
+     ╲────   downward drift
+      ╲      parallel lines</span>
+<span class="d-b">       ↑ BREAK above upper line</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Bull Flag</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Cont.</span></div>
         </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">Prior trend:</span><span class="info-value red">Strong downtrend (flagpole)</span></div>
-          <div class="info-row"><span class="info-value">Mirror image of bull flag. Consolidation drifts slightly upward before the downtrend resumes.</span></div>
-          <div class="info-row"><span class="info-label">Duration:</span><span class="info-value">5–20 candles; declining volume into the flag</span></div>
-          <div class="info-row"><span class="info-label">Breakout:</span><span class="info-value red">Close below lower flag boundary on above-average volume</span></div>
-          <div class="info-row"><span class="info-label">Target:</span><span class="info-value">Flagpole height subtracted from breakout point</span></div>
-          <div class="info-row"><span class="info-label">Invalidation:</span><span class="info-value green">Close above the upper flag boundary</span></div>
-        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Prior Trend Required</div><div class="pd-text">Strong uptrend (the flagpole). Sharp, near-vertical move before the consolidation.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text class-green"><strong>Close above upper flag boundary on above-average volume.</strong> Ideal: volume ≥ 1.5× the 20-period average on the breakout candle.</div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Flagpole height added to the breakout point. Duration: 5–20 candles — longer = weaker.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Close below the lower flag boundary — especially on expanding volume. The pattern has failed; the prior trend may be over.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Declining volume into the flag is a feature, not a bug. Breakout volume is the confirmation."</div></div>
+        </div></div>
       </div>
+
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-diagram"><pre><span class="d-a">  ╱────
+   ╱────  ← Flag: slight
+    ╱────   upward drift
+     ╱      parallel lines</span>
+<span class="d-r">  ●</span>
+<span class="d-r">   ●          ← Flagpole</span>
+<span class="d-r">    ●
+     ●
+      ▼</span>
+<span class="d-b">  ↓ BREAK below lower line</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Bear Flag</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Cont.</span></div>
+        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Prior Trend Required</div><div class="pd-text">Strong downtrend (the flagpole). Sharp, near-vertical move down before consolidation drifts slightly upward.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text"><strong>Close below lower flag boundary on above-average volume.</strong> Mirror image of bull flag logic.</div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Flagpole height subtracted from the breakout point. Same 5–20 candle duration rule.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Close above the upper flag boundary on volume — sellers have lost control. The downtrend may be reversing.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Upward drift on low volume inside a downtrend = short-side setup building, not reversal."</div></div>
+        </div></div>
+      </div>
+
     </div>
   </div>
 
-  <!-- Pennants and Wedges -->
-  <div class="section-label">Pennants &amp; Wedges</div>
-  <div class="pattern-grid">
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Pennant (Bull or Bear)</div>
-        <span class="pattern-signal sig-both">Direction of Prior Trend</span>
-      </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-g">   *
-  * *</span>
-<span class="d-g"> *   ← Flagpole</span>
-<span class="d-a">*╲  ╱ ← Converging lines
-  ╲╱    (symmetrical triangle
-  ╱╲     on lower timeframe)
- ╱  ╲</span>
-<span class="d-b"> ↑ BREAKOUT
-   in trend direction</span></pre>
-        </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">vs. Flag:</span><span class="info-value">Pennant has converging lines (triangle shape) while a flag has parallel lines. Both follow a sharp flagpole move.</span></div>
-          <div class="info-row"><span class="info-label">Duration:</span><span class="info-value">Shorter than flags — 5–15 candles; tighter consolidation</span></div>
-          <div class="info-row"><span class="info-label">Volume:</span><span class="info-value amber">Declining into the pennant body; expands on breakout</span></div>
-          <div class="info-row"><span class="info-label">Breakout:</span><span class="info-value green">In the direction of the prior trend — same rules as flag</span></div>
-          <div class="info-row"><span class="info-label">Target:</span><span class="info-value">Flagpole height added to (or subtracted from) breakout point</span></div>
-        </div>
-      </div>
-    </div>
+  <!-- ── Pennants & Wedges ── -->
+  <div class="pattern-section" id="sec-wedges">
+    <div class="section-title">Pennants &amp; Wedges</div>
+    <div class="pattern-grid reveal">
 
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Rising Wedge / Falling Wedge</div>
-        <span class="pattern-signal sig-both">Context-Dependent</span>
+      <div class="pattern-card" data-direction="neutral" onclick="toggleCard(this)">
+        <div class="pc-diagram"><pre><span class="d-g">   ●
+  ● ●</span>
+<span class="d-g"> ●   ← Flagpole</span>
+<span class="d-a"> ╲  ╱ ← Converging lines
+   ╲╱    (symmetrical triangle
+   ╱╲     over 5-15 candles)
+  ╱  ╲</span>
+<span class="d-b">  ↕ BREAK in trend direction</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Pennant</div>
+          <div class="pc-badges"><span class="sig-badge neutral">Prior Trend Dir.</span></div>
+        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">vs. Flag</div><div class="pd-text">Pennant has <strong>converging lines</strong> (mini-triangle shape) while a flag has parallel lines. Both follow a sharp flagpole move.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text">In the direction of the prior trend. Volume declines sharply into the apex; <strong>must expand on the breakout candle.</strong></div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Flagpole height added to (bull) or subtracted from (bear) the breakout point. Duration: 5–15 candles.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Price reaches the apex without breaking — the pattern has dissolved. Also: breakout in the opposite direction of the prior trend.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Tighter consolidation than a flag. Breakout volume is even more critical here."</div></div>
+        </div></div>
       </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-r"> Rising Wedge (bearish):</span>
+
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-diagram"><pre><span class="d-r"> Rising Wedge (bearish):</span>
 <span class="d-a"> ╱══╗  ← Highs rising
-╱═══╝     Lows rising faster
-           Converging upward</span>
-<span class="d-r"> ↓ Breaks DOWN (bearish)</span>
+╱═══╝    Lows rising faster
+          Both lines converge</span>
+<span class="d-r"> ↓ Breaks DOWN (bearish signal)</span>
 
 <span class="d-g"> Falling Wedge (bullish):</span>
 <span class="d-a"> ╲═══╗  ← Highs falling faster
-  ╲══╝    Lows falling
-            Converging downward</span>
-<span class="d-g"> ↑ Breaks UP (bullish)</span></pre>
+  ╲══╝    Lows falling slower
+           Converging downward</span>
+<span class="d-g"> ↑ Breaks UP (bullish signal)</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Rising / Falling Wedge</div>
+          <div class="pc-badges"><span class="sig-badge bear">Rising = Bearish</span><span class="sig-badge bull">Falling = Bullish</span></div>
         </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">Rising wedge:</span><span class="info-value red">Both highs and lows rising BUT converging. Buyers losing strength. Breaks bearish.</span></div>
-          <div class="info-row"><span class="info-label">Falling wedge:</span><span class="info-value green">Both highs and lows falling BUT converging. Sellers losing strength. Breaks bullish.</span></div>
-          <div class="info-row"><span class="info-label">Key tell:</span><span class="info-value">Lines must converge. Parallel lines = channel, not wedge.</span></div>
-          <div class="info-row"><span class="info-label">Duration:</span><span class="info-value">Typically 10–40 candles — longer than flags/pennants</span></div>
-          <div class="info-row"><span class="info-label">Volume:</span><span class="info-value amber">Declining throughout; expands significantly on breakout</span></div>
-        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Key Tell</div><div class="pd-text"><strong>Lines must converge</strong> — parallel lines = channel, not wedge. Rising wedge: buyers losing momentum as lines squeeze upward. Falling wedge: sellers losing momentum as lines squeeze downward.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text">Rising wedge breaks down; falling wedge breaks up. <strong>Volume declining throughout, then spiking on breakout</strong> — this confirmation is critical.</div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Height of the wedge at its widest point applied to the breakout level. Duration: 10–40 candles.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Rising wedge breaks up (rare, aggressive bullish continuation). Falling wedge breaks down. In both cases, the measured move from the wedge height becomes the failure target in the opposite direction.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Counter-intuitive: rising wedge = bearish. Falling wedge = bullish. The convergence is the tell, not the direction."</div></div>
+        </div></div>
       </div>
+
     </div>
   </div>
 
-  <!-- Triangles -->
-  <div class="section-label">Triangles</div>
-  <div class="pattern-grid">
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Ascending Triangle</div>
-        <span class="pattern-signal sig-bull">Bullish Continuation</span>
-      </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-a">━━━━━━━━━━━━━━</span> <span class="d-m">← Flat resistance</span>
-<span class="d-m"> *   *   *</span>
-<span class="d-m">  \ / \ / \</span>
-<span class="d-a">   ╱     ╱  ← Rising lows</span>
+  <!-- ── Triangles ── -->
+  <div class="pattern-section" id="sec-triangles">
+    <div class="section-title">Triangles &amp; Rectangle</div>
+    <div class="pattern-grid reveal">
+
+      <div class="pattern-card" data-direction="bull" onclick="toggleCard(this)">
+        <div class="pc-diagram"><pre><span class="d-a">━━━━━━━━━━━━━━</span> <span class="d-m">← Flat resistance</span>
+<span class="d-m"> ●   ●   ●</span>
+<span class="d-m">  ╲ ╱ ╲ ╱ ╲</span>
+<span class="d-a">   ╱     ╱   ← Rising lows</span>
 <span class="d-a"> ╱     ╱</span>
-<span class="d-b">↑ BREAKOUT above flat resistance</span></pre>
+<span class="d-b">↑ BREAK above flat resistance</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Ascending Triangle</div>
+          <div class="pc-badges"><span class="sig-badge bull">Bullish Cont.</span></div>
         </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">Structure:</span><span class="info-value">Flat resistance line (same high tested multiple times) + rising lower trendline</span></div>
-          <div class="info-row"><span class="info-label">Meaning:</span><span class="info-value green">Buyers are increasingly aggressive (higher lows) but sellers defend the same level — until they're exhausted</span></div>
-          <div class="info-row"><span class="info-label">Breakout:</span><span class="info-value green">Close above flat resistance on volume. Each test of resistance depletes sell orders.</span></div>
-          <div class="info-row"><span class="info-label">Target:</span><span class="info-value">Height of triangle at its widest point added to breakout level</span></div>
-          <div class="info-row"><span class="info-label">Touches:</span><span class="info-value">Minimum 2 on each line before valid</span></div>
-        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Structure</div><div class="pd-text"><strong>Flat resistance line</strong> (same high tested multiple times) + rising lower trendline. Buyers increasingly aggressive, sellers defend the same level — until exhausted.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text">Close above flat resistance on above-average volume. Each test depletes sell orders at the level — eventually the bids overwhelm.</div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Height of triangle at its widest point added to the breakout level. Minimum 2 touches on each line.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Close below the rising lower trendline — buyers are no longer defending higher lows. Pattern invalidated; can reverse sharply.</div></div>
+          <div class="pd-finn"><div class="pd-text">"The higher lows are buyers getting more aggressive. The flat resistance is sellers running out of ammunition."</div></div>
+        </div></div>
       </div>
-    </div>
 
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Descending Triangle</div>
-        <span class="pattern-signal sig-bear">Bearish Continuation</span>
-      </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-a">╲     ╲   ← Falling highs</span>
+      <div class="pattern-card" data-direction="bear" onclick="toggleCard(this)">
+        <div class="pc-diagram"><pre><span class="d-a">╲     ╲   ← Falling highs</span>
 <span class="d-a"> ╲     ╲</span>
-<span class="d-m"> * \ * \ *</span>
-<span class="d-m">    *   *</span>
+<span class="d-m"> ● ╲ ● ╲ ●</span>
+<span class="d-m">    ●   ●</span>
 <span class="d-a">━━━━━━━━━━━━━━</span> <span class="d-m">← Flat support</span>
-<span class="d-b">↓ BREAKOUT below flat support</span></pre>
+<span class="d-b">↓ BREAK below flat support</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Descending Triangle</div>
+          <div class="pc-badges"><span class="sig-badge bear">Bearish Cont.</span></div>
         </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">Structure:</span><span class="info-value">Flat support line + falling upper trendline (lower highs)</span></div>
-          <div class="info-row"><span class="info-label">Meaning:</span><span class="info-value red">Sellers are increasingly aggressive (lower highs) while buyers defend the same floor — until they're exhausted</span></div>
-          <div class="info-row"><span class="info-label">Breakout:</span><span class="info-value red">Close below flat support on volume. Each test depletes buy orders at the level.</span></div>
-          <div class="info-row"><span class="info-label">Target:</span><span class="info-value">Height of triangle at its widest point subtracted from breakout level</span></div>
-          <div class="info-row"><span class="info-label">Touches:</span><span class="info-value">Minimum 2 on each line before valid</span></div>
-        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Structure</div><div class="pd-text"><strong>Flat support line</strong> + falling upper trendline (lower highs). Sellers increasingly aggressive, buyers defend same floor — until exhausted.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text">Close below flat support on above-average volume. Each test depletes buy orders — eventually sellers overwhelm.</div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Height of triangle at widest point subtracted from breakout level. Minimum 2 touches on each line.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Close above the falling upper trendline — sellers are no longer making lower highs. Pattern fails; potential sharp reversal upward.</div></div>
+          <div class="pd-finn"><div class="pd-text">"Mirror of the ascending. Lower highs = sellers tightening. Each support test depletes the buy-side."</div></div>
+        </div></div>
       </div>
-    </div>
-  </div>
 
-  <!-- Symmetrical triangle and rectangle -->
-  <div class="pattern-grid">
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Symmetrical Triangle</div>
-        <span class="pattern-signal sig-both">Direction of Prior Trend</span>
-      </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-a">╲           ╱</span>
+      <div class="pattern-card" data-direction="neutral" onclick="toggleCard(this)">
+        <div class="pc-diagram"><pre><span class="d-a">╲           ╱</span>
 <span class="d-a"> ╲         ╱  ← Both lines converge</span>
 <span class="d-a">  ╲       ╱     Lower highs</span>
 <span class="d-a">   ╲     ╱      Higher lows</span>
 <span class="d-a">    ╲   ╱</span>
-<span class="d-a">     ╲ ╱</span>
-<span class="d-b">      ↕ Breakout in trend direction</span></pre>
+<span class="d-a">     ╲ ╱  ← Apex (60–75% point)</span>
+<span class="d-b">      ↕ Break in prior trend direction</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Symmetrical Triangle</div>
+          <div class="pc-badges"><span class="sig-badge neutral">Prior Trend Dir.</span></div>
         </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">Structure:</span><span class="info-value">Lower highs + higher lows — both lines converge to an apex</span></div>
-          <div class="info-row"><span class="info-label">Neutral:</span><span class="info-value amber">Neither side is winning. Direction of prior trend usually predicts breakout direction — but not always.</span></div>
-          <div class="info-row"><span class="info-label">Breakout timing:</span><span class="info-value">Typically occurs at 60–75% of the way to the apex. Past the apex = pattern failure.</span></div>
-          <div class="info-row"><span class="info-label">Volume:</span><span class="info-value">Must expand significantly on the breakout — more critical here than with directional triangles</span></div>
-        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Structure</div><div class="pd-text">Lower highs + higher lows — both lines converge. <strong>Neither side is winning.</strong> Direction of prior trend usually predicts breakout direction — but not always.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text">Typically at 60–75% of the way to apex. <strong>Volume expansion is more critical here than with directional triangles</strong> — the neutral structure means volume must confirm direction.</div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Height at widest point applied to breakout level. Past the apex = pattern failure.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Breakout in the wrong direction (against prior trend) on high volume. Or: price reaches the apex without breaking (indecision pattern dissolution).</div></div>
+          <div class="pd-finn"><div class="pd-text">"Breakout volume is everything here. Low volume break from a symmetrical triangle is a trap."</div></div>
+        </div></div>
       </div>
-    </div>
 
-    <div class="pattern-card">
-      <div class="pattern-header">
-        <div class="pattern-name">Rectangle (Trading Range)</div>
-        <span class="pattern-signal sig-both">Direction of Prior Trend</span>
-      </div>
-      <div class="pattern-body">
-        <div class="pattern-diagram">
-<pre><span class="d-a">━━━━━━━━━━━━━━</span> <span class="d-m">← Flat resistance</span>
-<span class="d-m"> *   *   *   *</span>
-<span class="d-m">* * * * * * * *</span>
-<span class="d-m"> *   *   *   *</span>
+      <div class="pattern-card" data-direction="neutral" onclick="toggleCard(this)" style="grid-column: 2;">
+        <div class="pc-diagram"><pre><span class="d-a">━━━━━━━━━━━━━━</span> <span class="d-m">← Flat resistance</span>
+<span class="d-m"> ●   ●   ●   ●</span>
+<span class="d-m">● ● ● ● ● ● ● ●</span>
+<span class="d-m"> ●   ●   ●   ●</span>
 <span class="d-a">━━━━━━━━━━━━━━</span> <span class="d-m">← Flat support</span>
-<span class="d-b">↑ or ↓ Breakout in trend direction</span></pre>
+<span class="d-b">↑ or ↓ in prior trend direction</span></pre></div>
+        <div class="pc-info">
+          <div class="pc-name">Rectangle (Trading Range)</div>
+          <div class="pc-badges"><span class="sig-badge neutral">Prior Trend Dir.</span></div>
         </div>
-        <div class="pattern-info">
-          <div class="info-row"><span class="info-label">Structure:</span><span class="info-value">Price oscillates between flat resistance and flat support — a defined horizontal channel</span></div>
-          <div class="info-row"><span class="info-label">Meaning:</span><span class="info-value">Supply and demand are in temporary equilibrium. The prior trend determines which side eventually wins.</span></div>
-          <div class="info-row"><span class="info-label">Duration:</span><span class="info-value">Can last weeks to months. More touches = stronger the eventual breakout.</span></div>
-          <div class="info-row"><span class="info-label">Breakout:</span><span class="info-value">Close through either boundary on above-average volume. False breaks are common — wait for close confirmation.</span></div>
-        </div>
+        <div class="pc-hint">Breakout · Target · Failure Mode <span class="hint-arrow">▾</span></div>
+        <div class="pc-detail"><div class="pd-inner">
+          <div class="pd-row"><div class="pd-label">Structure</div><div class="pd-text">Price oscillates between flat resistance and flat support — a defined horizontal channel. Supply and demand in temporary equilibrium.</div></div>
+          <div class="pd-row"><div class="pd-label">Breakout Signal</div><div class="pd-text"><strong>Close through either boundary on above-average volume.</strong> False breaks are common — always wait for a full candle close outside the boundary.</div></div>
+          <div class="pd-row"><div class="pd-label">Target Calculation</div><div class="pd-text">Height of the rectangle applied to the breakout level. More touches = stronger the eventual breakout. Duration: weeks to months.</div></div>
+          <div class="pd-fail"><div class="pd-label" style="color:var(--red)">Failure Mode</div><div class="pd-text">Multiple false breaks in both directions — the rectangle is dissolving rather than resolving. Step aside and wait for a clear directional close with volume.</div></div>
+          <div class="pd-finn"><div class="pd-text">"False breaks from rectangles are common. The rule: close confirmation only. A wick through the boundary is not a breakout."</div></div>
+        </div></div>
       </div>
+
     </div>
   </div>
 
-  <!-- Quick reference table -->
-  <div class="section-label">Quick Reference — All Continuation Patterns</div>
-  <table>
-    <thead><tr><th>Pattern</th><th>Direction Signal</th><th>Key Structure</th><th>Volume Profile</th><th>Minimum Duration</th></tr></thead>
+  <!-- ── Quick ref table ── -->
+  <div class="section-title reveal">Quick Reference — All 9 Continuation Patterns</div>
+  <table class="ref-table reveal">
+    <thead>
+      <tr>
+        <th>Pattern</th><th>Signal Direction</th><th>Key Structure</th><th>Volume Profile</th><th>Min Duration</th>
+      </tr>
+    </thead>
     <tbody>
-      <tr><td><strong>Bull Flag</strong></td><td style="color:var(--green)">Bullish</td><td>Slight downward drift after sharp rally; parallel lines</td><td>Declines into flag; spikes on breakout</td><td>5 candles</td></tr>
-      <tr><td><strong>Bear Flag</strong></td><td style="color:var(--red)">Bearish</td><td>Slight upward drift after sharp drop; parallel lines</td><td>Declines into flag; spikes on breakdown</td><td>5 candles</td></tr>
-      <tr><td><strong>Bull/Bear Pennant</strong></td><td style="color:var(--amber)">Prior trend direction</td><td>Converging lines (mini-triangle) after flagpole</td><td>Declines sharply into apex; spikes at break</td><td>5 candles</td></tr>
-      <tr><td><strong>Rising Wedge</strong></td><td style="color:var(--red)">Bearish</td><td>Both highs and lows rising but converging</td><td>Declining throughout; spikes on breakdown</td><td>10 candles</td></tr>
-      <tr><td><strong>Falling Wedge</strong></td><td style="color:var(--green)">Bullish</td><td>Both highs and lows falling but converging</td><td>Declining throughout; spikes on breakout</td><td>10 candles</td></tr>
-      <tr><td><strong>Ascending Triangle</strong></td><td style="color:var(--green)">Bullish</td><td>Flat resistance + rising lows</td><td>Typically declines; spikes at resistance break</td><td>15 candles</td></tr>
-      <tr><td><strong>Descending Triangle</strong></td><td style="color:var(--red)">Bearish</td><td>Flat support + falling highs</td><td>Typically declines; spikes at support break</td><td>15 candles</td></tr>
-      <tr><td><strong>Symmetrical Triangle</strong></td><td style="color:var(--amber)">Prior trend direction</td><td>Lower highs + higher lows, converging</td><td>Must spike at breakout — critical confirmation</td><td>15 candles</td></tr>
-      <tr><td><strong>Rectangle</strong></td><td style="color:var(--amber)">Prior trend direction</td><td>Flat resistance + flat support; horizontal channel</td><td>Irregular inside; spikes on breakout</td><td>10 candles</td></tr>
+      <tr><td>Bull Flag</td><td class="tc-g">Bullish</td><td>Slight downward drift after sharp rally; parallel lines</td><td>Declines into flag; spikes on breakout</td><td>5 candles</td></tr>
+      <tr><td>Bear Flag</td><td class="tc-r">Bearish</td><td>Slight upward drift after sharp drop; parallel lines</td><td>Declines into flag; spikes on breakdown</td><td>5 candles</td></tr>
+      <tr><td>Pennant</td><td class="tc-a">Prior trend direction</td><td>Converging lines (mini-triangle) after flagpole move</td><td>Declines to apex; spikes at break</td><td>5 candles</td></tr>
+      <tr><td>Rising Wedge</td><td class="tc-r">Bearish</td><td>Both highs and lows rising but converging</td><td>Declining throughout; spikes on breakdown</td><td>10 candles</td></tr>
+      <tr><td>Falling Wedge</td><td class="tc-g">Bullish</td><td>Both highs and lows falling but converging</td><td>Declining throughout; spikes on breakout</td><td>10 candles</td></tr>
+      <tr><td>Ascending Triangle</td><td class="tc-g">Bullish</td><td>Flat resistance + rising lows (2+ touches each)</td><td>Typically declines; spikes at resistance break</td><td>15 candles</td></tr>
+      <tr><td>Descending Triangle</td><td class="tc-r">Bearish</td><td>Flat support + falling highs (2+ touches each)</td><td>Typically declines; spikes at support break</td><td>15 candles</td></tr>
+      <tr><td>Symmetrical Triangle</td><td class="tc-a">Prior trend direction</td><td>Lower highs + higher lows, both converging</td><td>Must spike at breakout — critical here</td><td>15 candles</td></tr>
+      <tr><td>Rectangle</td><td class="tc-a">Prior trend direction</td><td>Flat resistance + flat support; horizontal channel</td><td>Irregular inside; spikes on breakout</td><td>10 candles</td></tr>
     </tbody>
   </table>
 
-  <div class="rule-box">
-    <p><strong>Volume is the critical confirming variable for every continuation pattern.</strong> A breakout on below-average volume is a warning sign, not a signal. The ideal breakout candle has volume at least 1.5× the 20-period average. Without it, treat the breakout as suspect until volume confirms.</p>
-    <p><strong>The target is a starting point, not a guarantee.</strong> The measured-move target (flagpole height, triangle height) tells you where price would reach if the pattern plays out perfectly. It does not tell you it will get there. Manage the trade dynamically — tighten stops as price approaches the target, do not count on hitting it exactly.</p>
-    <p><strong>Prior trend is mandatory context.</strong> A bullish continuation pattern without a prior uptrend is not a bullish pattern. Always confirm what came before before naming the pattern.</p>
+  <!-- Rule box -->
+  <div class="rule-box reveal">
+    <p><strong>Volume is the critical confirming variable.</strong> A breakout on below-average volume is a warning sign, not a signal. The ideal breakout candle has volume at least 1.5× the 20-period average. Without it, treat the breakout as suspect until a second close confirms.</p>
+    <p><strong>The target is a starting point, not a guarantee.</strong> The measured-move target (flagpole height, triangle height) tells you where price would reach if the pattern plays out fully. Manage the trade dynamically — tighten stops as price approaches target. Do not count on hitting it exactly.</p>
+    <p><strong>Prior trend is mandatory context.</strong> A bullish continuation pattern without a prior uptrend is not a bullish pattern. Confirm what came before before naming the pattern.</p>
   </div>
 
-  <div class="footer">
-    <span>FINN Reference Library · ig_chart_patterns_continuation.html · Built May 2026</span>
-    <span>Handbook §2.4 · See also: ig_chart_patterns_reversal.html · ig_support_resistance.html</span>
+  <!-- FINN voice -->
+  <div class="finn-voice reveal">
+    <p>"The pattern tells you what the market is doing. The volume tells you if it means it. A breakout with volume is a hypothesis worth testing. A breakout without volume is a trap worth avoiding. Run the IC before you systematize any of these — what looks obvious on a chart may have an IC of 0.01."</p>
+  </div>
+
+  <div class="page-footer">
+    <span>FINN Knowledge Base · ig_chart_patterns_continuation.html · HB P2 §2.4</span>
+    <div class="footer-right">
+      <span class="footer-v-badge">v2</span>
+      <span>May 2026</span>
+    </div>
   </div>
 
 </div>
+
+<script>
+  // Reveal
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+  }), { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Card toggle (accordion)
+  function toggleCard(card) {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.pattern-card.open').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+
+  // Tab filter
+  function filterPatterns(dir, btnClass) {
+    document.querySelectorAll('.pattern-card').forEach(c => {
+      c.classList.toggle('hidden-filter', dir !== 'all' && c.dataset.direction !== dir);
+      if (c.classList.contains('hidden-filter')) c.classList.remove('open');
+    });
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('active', 'bull', 'bear', 'neutral');
+      if (b.dataset.filter === dir) { b.classList.add('active'); if (btnClass !== 'all') b.classList.add(btnClass); }
+    });
+    document.querySelectorAll('.pattern-section').forEach(section => {
+      const visible = section.querySelectorAll('.pattern-card:not(.hidden-filter)').length > 0;
+      section.style.display = visible ? '' : 'none';
+    });
+  }
+</script>
 </body>
 </html>

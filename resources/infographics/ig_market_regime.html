@@ -1,0 +1,384 @@
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN — Market Regime Framework</title>
+<style>
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+  --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+body.social.square { width: 1080px; min-height: 1080px; }
+
+.page { max-width: 1000px; margin: 0 auto; padding: 24px 20px 48px; }
+
+/* HEADER */
+.header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.finn-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); text-transform: uppercase; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); padding: 3px 8px; border-radius: 4px; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); animation: pulse-amber 2s ease-in-out infinite; }
+@keyframes pulse-amber { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+h1 { font-size: 22px; font-weight: 700; }
+.header-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+/* METRIC STRIP */
+.metric-strip { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 28px; }
+.metric-item { background: var(--card); padding: 10px 14px; }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
+.metric-value { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--blue); }
+
+/* REGIME GRID */
+.regime-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px; }
+@media (max-width: 700px) { .regime-grid { grid-template-columns: 1fr; } }
+
+.regime-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out); }
+.regime-card:hover { transform: translateY(-2px); }
+.regime-card.bull { border-top: 3px solid var(--green); }
+.regime-card.bull:hover { box-shadow: 0 4px 20px rgba(63,185,80,0.15); }
+.regime-card.bear { border-top: 3px solid var(--red); }
+.regime-card.bear:hover { box-shadow: 0 4px 20px rgba(248,81,73,0.15); }
+.regime-card.chop { border-top: 3px solid var(--amber); }
+.regime-card.chop:hover { box-shadow: 0 4px 20px rgba(210,153,34,0.15); }
+
+.rc-header { padding: 16px 18px 0; }
+.rc-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+.regime-card.bull .rc-title { color: var(--green); }
+.regime-card.bear .rc-title { color: var(--red); }
+.regime-card.chop .rc-title { color: var(--amber); }
+.rc-sub { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+
+.price-path { padding: 0 18px 12px; }
+
+.rc-body { padding: 0 18px 18px; }
+
+/* DETECTION LIST */
+.detect-list { margin-bottom: 14px; }
+.detect-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+.detect-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text); margin-bottom: 6px; line-height: 1.4; }
+.detect-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.bull .detect-dot { background: var(--green); }
+.bear .detect-dot { background: var(--red); }
+.chop .detect-dot { background: var(--amber); }
+.detect-key { color: var(--muted); font-size: 11px; }
+
+/* STRATEGY BOX */
+.strat-box { background: var(--card-elevated); border-radius: 5px; padding: 12px 14px; }
+.strat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; margin-bottom: 8px; }
+.strat-item { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.strat-item:last-child { border-bottom: none; }
+.strat-k { color: var(--muted); }
+.strat-v { font-weight: 600; font-variant-numeric: tabular-nums; }
+.bull .strat-v { color: var(--green); }
+.bear .strat-v { color: var(--red); }
+.chop .strat-v { color: var(--amber); }
+
+/* DIVIDER */
+.rc-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+/* SIGNAL BADGE */
+.signal-badge { display: inline-block; padding: 3px 9px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 10px; }
+.sb-bull { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.sb-bear { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+.sb-wait { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(210,153,34,0.3); }
+
+/* DECISION TABLE */
+.dt-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+.dt-header { padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--card-elevated); border-bottom: 1px solid var(--border); }
+.dt-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.dt-table th { padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--card-elevated); }
+.dt-table th.bull { color: var(--green); }
+.dt-table th.bear { color: var(--red); }
+.dt-table th.chop { color: var(--amber); }
+.dt-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.4; }
+.dt-table tr:last-child td { border-bottom: none; }
+.dt-table tr:hover td { background: rgba(255,255,255,0.02); }
+.dt-table td:first-child { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+.td-g { color: var(--green); font-weight: 600; }
+.td-r { color: var(--red); font-weight: 600; }
+.td-a { color: var(--amber); font-weight: 600; }
+
+/* REGIME SHIFT PANEL */
+.shift-panel { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+.shift-body { padding: 18px 20px; }
+.shift-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+.shift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 600px) { .shift-grid { grid-template-columns: 1fr; } }
+.shift-item { background: var(--card-elevated); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; }
+.shift-from { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.shift-signal { font-size: 12px; line-height: 1.5; }
+.shift-warn { font-size: 11px; color: var(--amber); margin-top: 5px; }
+
+/* FINN VOICE */
+.finn-voice { position: relative; background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.3); border-radius: 8px; padding: 18px 20px 18px 28px; margin-bottom: 0; font-size: 13px; line-height: 1.7; backdrop-filter: blur(12px); }
+.finn-voice::before { content: 'FINN'; position: absolute; top: -1px; left: 16px; transform: translateY(-50%); background: var(--amber); color: #0d1117; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 3px; }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 12px; color: var(--muted); }
+.footer-right { font-size: 11px; color: var(--border); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header reveal">
+    <div class="header-top">
+      <span class="finn-logo">FINN</span>
+      <div class="live-dot"></div>
+    </div>
+    <h1>Market Regime Framework</h1>
+    <div class="header-sub">Identify the regime before selecting the strategy — wrong regime, wrong signals</div>
+  </div>
+
+  <div class="metric-strip reveal">
+    <div class="metric-item"><div class="metric-label">Regimes</div><div class="metric-value">3</div></div>
+    <div class="metric-item"><div class="metric-label">Bull Signal</div><div class="metric-value" style="color:var(--green)">Momentum</div></div>
+    <div class="metric-item"><div class="metric-label">Bear Signal</div><div class="metric-value" style="color:var(--red)">Short / Cash</div></div>
+    <div class="metric-item"><div class="metric-label">Chop Signal</div><div class="metric-value" style="color:var(--amber)">Mean Rev</div></div>
+    <div class="metric-item"><div class="metric-label">Bull VIX</div><div class="metric-value" style="font-size:13px;">&lt; 20</div></div>
+    <div class="metric-item"><div class="metric-label">Bear VIX</div><div class="metric-value" style="color:var(--red);font-size:13px;">&gt; 25</div></div>
+  </div>
+
+  <!-- 3 REGIME CARDS -->
+  <div class="regime-grid reveal">
+
+    <!-- BULL -->
+    <div class="regime-card bull">
+      <div class="rc-header">
+        <div class="rc-title">Bull Market</div>
+        <div class="rc-sub">Trend-following regime · Long-dominant</div>
+        <span class="signal-badge sb-bull">▲ LONG BIAS</span>
+      </div>
+      <div class="price-path">
+        <svg viewBox="0 0 160 56" width="100%" height="56">
+          <polyline points="4,50 22,38 36,43 56,26 70,32 90,16 108,22 128,10 148,4"
+            fill="none" stroke="#3fb950" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="88" y="13" font-size="8" fill="#3fb950" font-family="monospace">HH</text>
+          <text x="128" y="9" font-size="8" fill="#3fb950" font-family="monospace">HH</text>
+          <text x="50" y="24" font-size="8" fill="#8b949e" font-family="monospace">HL</text>
+          <text x="106" y="20" font-size="8" fill="#8b949e" font-family="monospace">HL</text>
+          <circle cx="90" cy="16" r="2.5" fill="#3fb950"/>
+          <circle cx="128" cy="10" r="2.5" fill="#3fb950"/>
+        </svg>
+      </div>
+      <div class="rc-body">
+        <div class="detect-list">
+          <div class="detect-label">Detection Signals</div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Structure: </span>Higher Highs + Higher Lows on daily chart</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">MAs: </span>Price above 200-day SMA; 50d above 200d</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">VIX: </span>Below 20 — complacency, not fear</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Breadth: </span>&gt;70% of S&amp;P 500 above their 50d SMA</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Rotation: </span>Money flowing into XLK, XLY, XLF</div></div>
+        </div>
+        <hr class="rc-divider">
+        <div class="strat-box">
+          <div class="strat-label">Strategy Adjustments</div>
+          <div class="strat-item"><span class="strat-k">Signal type</span><span class="strat-v">Momentum longs</span></div>
+          <div class="strat-item"><span class="strat-k">Position size</span><span class="strat-v">Standard–1.25×</span></div>
+          <div class="strat-item"><span class="strat-k">Stop width</span><span class="strat-v">1.5–2.0× ATR</span></div>
+          <div class="strat-item"><span class="strat-k">Profit target</span><span class="strat-v">Run with trail</span></div>
+          <div class="strat-item"><span class="strat-k">IC expectation</span><span class="strat-v">&gt; 0.05 on momentum</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEAR -->
+    <div class="regime-card bear">
+      <div class="rc-header">
+        <div class="rc-title">Bear Market</div>
+        <div class="rc-sub">Counter-trend regime · Short or cash</div>
+        <span class="signal-badge sb-bear">▼ SHORT / CASH</span>
+      </div>
+      <div class="price-path">
+        <svg viewBox="0 0 160 56" width="100%" height="56">
+          <polyline points="4,6 22,18 36,12 56,30 70,22 90,40 108,32 128,46 148,52"
+            fill="none" stroke="#f85149" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="16" y="16" font-size="8" fill="#f85149" font-family="monospace">LH</text>
+          <text x="104" y="30" font-size="8" fill="#f85149" font-family="monospace">LH</text>
+          <text x="52" y="44" font-size="8" fill="#8b949e" font-family="monospace">LL</text>
+          <text x="124" y="60" font-size="8" fill="#8b949e" font-family="monospace">LL</text>
+          <circle cx="90" cy="40" r="2.5" fill="#f85149"/>
+          <circle cx="128" cy="46" r="2.5" fill="#f85149"/>
+        </svg>
+      </div>
+      <div class="rc-body">
+        <div class="detect-list">
+          <div class="detect-label">Detection Signals</div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Structure: </span>Lower Highs + Lower Lows on daily chart</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">MAs: </span>Price below 200-day SMA; 50d below 200d</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">VIX: </span>Above 25 — fear is elevated</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Breadth: </span>&gt;70% of S&amp;P 500 below their 50d SMA</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Rotation: </span>Money fleeing into XLU, XLP, GLD, bonds</div></div>
+        </div>
+        <hr class="rc-divider">
+        <div class="strat-box">
+          <div class="strat-label">Strategy Adjustments</div>
+          <div class="strat-item"><span class="strat-k">Signal type</span><span class="strat-v">Short momentum</span></div>
+          <div class="strat-item"><span class="strat-k">Position size</span><span class="strat-v">Reduce to 0.5–0.75×</span></div>
+          <div class="strat-item"><span class="strat-k">Stop width</span><span class="strat-v">Tighter — rallies are sharp</span></div>
+          <div class="strat-item"><span class="strat-k">Profit target</span><span class="strat-v">Take faster, don't run</span></div>
+          <div class="strat-item"><span class="strat-k">IC expectation</span><span class="strat-v">Degrades on longs</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHOPPY -->
+    <div class="regime-card chop">
+      <div class="rc-header">
+        <div class="rc-title">Choppy / Sideways</div>
+        <div class="rc-sub">Range-bound regime · Reduce size or wait</div>
+        <span class="signal-badge sb-wait">↔ MEAN REVERSION</span>
+      </div>
+      <div class="price-path">
+        <svg viewBox="0 0 160 56" width="100%" height="56">
+          <line x1="0" y1="14" x2="160" y2="14" stroke="#30363d" stroke-width="1" stroke-dasharray="5,4"/>
+          <line x1="0" y1="44" x2="160" y2="44" stroke="#30363d" stroke-width="1" stroke-dasharray="5,4"/>
+          <polyline points="4,30 22,12 40,46 60,14 80,46 100,16 120,44 140,18 156,30"
+            fill="none" stroke="#d29922" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="2" y="11" font-size="8" fill="#8b949e" font-family="monospace">R</text>
+          <text x="2" y="53" font-size="8" fill="#8b949e" font-family="monospace">S</text>
+        </svg>
+      </div>
+      <div class="rc-body">
+        <div class="detect-list">
+          <div class="detect-label">Detection Signals</div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Structure: </span>No clear HH/HL or LH/LL — oscillating range</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">MAs: </span>Price crossing back and forth over 200d SMA</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">VIX: </span>18–25 — uncertain, no conviction</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Breadth: </span>Mixed — 40–60% above 50d SMA</div></div>
+          <div class="detect-item"><span class="detect-dot"></span><div><span class="detect-key">Volume: </span>Below average — neither side committed</div></div>
+        </div>
+        <hr class="rc-divider">
+        <div class="strat-box">
+          <div class="strat-label">Strategy Adjustments</div>
+          <div class="strat-item"><span class="strat-k">Signal type</span><span class="strat-v">Fade extremes</span></div>
+          <div class="strat-item"><span class="strat-k">Position size</span><span class="strat-v">Reduce to 0.5×</span></div>
+          <div class="strat-item"><span class="strat-k">Stop width</span><span class="strat-v">Just outside range</span></div>
+          <div class="strat-item"><span class="strat-k">Profit target</span><span class="strat-v">Other side of range</span></div>
+          <div class="strat-item"><span class="strat-k">IC expectation</span><span class="strat-v">Lower across all types</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- QUICK REFERENCE TABLE -->
+  <div class="dt-wrap reveal">
+    <div class="dt-header">Quick Reference — Regime Comparison</div>
+    <table class="dt-table">
+      <thead>
+        <tr>
+          <th>Indicator</th>
+          <th class="bull">Bull Market</th>
+          <th class="bear">Bear Market</th>
+          <th class="chop">Choppy / Sideways</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Price Structure</td>
+          <td class="td-g">HH / HL</td>
+          <td class="td-r">LH / LL</td>
+          <td class="td-a">No clear pattern</td>
+        </tr>
+        <tr>
+          <td>200-Day SMA</td>
+          <td class="td-g">Price above; 50d &gt; 200d</td>
+          <td class="td-r">Price below; 50d &lt; 200d</td>
+          <td class="td-a">Price crossing 200d</td>
+        </tr>
+        <tr>
+          <td>VIX Level</td>
+          <td class="td-g">&lt; 20</td>
+          <td class="td-r">&gt; 25</td>
+          <td class="td-a">18–25</td>
+        </tr>
+        <tr>
+          <td>Breadth (% above 50d SMA)</td>
+          <td class="td-g">&gt; 70%</td>
+          <td class="td-r">&lt; 30%</td>
+          <td class="td-a">40–60%</td>
+        </tr>
+        <tr>
+          <td>Best Signal Type</td>
+          <td class="td-g">Momentum longs</td>
+          <td class="td-r">Short momentum</td>
+          <td class="td-a">Mean reversion</td>
+        </tr>
+        <tr>
+          <td>Position Sizing</td>
+          <td class="td-g">Standard – 1.25×</td>
+          <td class="td-r">0.5 – 0.75×</td>
+          <td class="td-a">0.5× or sit out</td>
+        </tr>
+        <tr>
+          <td>Primary Risk</td>
+          <td>Chasing extended moves</td>
+          <td>Short squeeze rallies</td>
+          <td>Whipsaws on breakout fakes</td>
+        </tr>
+        <tr>
+          <td>Sector to Watch</td>
+          <td class="td-g">XLK, XLY, XLF</td>
+          <td class="td-r">XLU, XLP, GLD</td>
+          <td class="td-a">No clear rotation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- REGIME SHIFT SIGNALS -->
+  <div class="shift-panel reveal">
+    <div class="dt-header">Regime Change — What to Watch For</div>
+    <div class="shift-body">
+      <div class="shift-title">The regime doesn't flip overnight — these are the early signals.</div>
+      <div class="shift-grid">
+        <div class="shift-item">
+          <div class="shift-from" style="color:var(--green);">Bull → Choppy / Bear</div>
+          <div class="shift-signal">First LL on daily after HH/HL run · VIX spike above 20 · 50d SMA slope flattening · Breadth dropping below 60% above 50d · Defensive rotation begins (XLU outperforming XLK)</div>
+          <div class="shift-warn">⚠ Don't short the first crack — wait for LH confirmation before regime call.</div>
+        </div>
+        <div class="shift-item">
+          <div class="shift-from" style="color:var(--red);">Bear → Choppy / Bull</div>
+          <div class="shift-signal">First HH on daily after LH/LL run · VIX drops below 25 · Price reclaims 50d SMA on volume · Breadth recovering above 40% · Growth rotation begins (XLK outperforming XLU)</div>
+          <div class="shift-warn">⚠ Don't go long at the first bounce — bear market rallies are violent. Wait for structure confirmation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="finn-voice reveal">
+    The regime is the context that makes every other signal meaningful or meaningless. A breakout signal in a bull market has IC &gt; 0.05. The exact same breakout in a choppy market has IC near 0. Wrong regime, wrong signals, wrong side. Identify the regime first. Every session. No exceptions.
+  </div>
+
+  <div class="footer reveal">
+    <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network</div>
+    <div class="footer-right">v2.0 · May 2026 · ig_market_regime</div>
+  </div>
+
+</div>
+<script>
+const obs = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add('visible');
+}), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

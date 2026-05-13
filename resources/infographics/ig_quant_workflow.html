@@ -1,594 +1,796 @@
 <!DOCTYPE html>
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot | add class="social square" for 1080×1080px -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FINN — Quantitative Workflow</title>
 <style>
-  :root {
-    --bg: #0d1117;
-    --card: #161b22;
-    --border: #30363d;
-    --text: #e6edf3;
-    --blue: #58a6ff;
-    --green: #3fb950;
-    --red: #f85149;
-    --amber: #d29922;
-    --muted: #8b949e;
-    --purple: #bc8cff;
-  }
+:root {
+  --bg: #0d1117;
+  --card: #161b22;
+  --border: #30363d;
+  --text: #e6edf3;
+  --blue: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --amber: #d29922;
+  --muted: #8b949e;
+  --purple: #bc8cff;
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --purple-glow: rgba(188,140,255,0.12);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    font-size: 13px;
-    line-height: 1.5;
-    padding: 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-  .header {
-    border-bottom: 2px solid var(--blue);
-    padding-bottom: 12px;
-    margin-bottom: 20px;
-  }
-  .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  .finn-tag {
-    font-size: 11px;
-    color: var(--blue);
-    letter-spacing: 2px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  h1 { font-size: 22px; font-weight: 700; color: var(--text); }
-  .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .badge {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 4px 10px;
-    font-size: 11px;
-    color: var(--muted);
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 28px 24px;
+  max-width: 1160px;
+  margin: 0 auto;
+}
 
-  .section-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-    margin-top: 20px;
-  }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; padding: 20px 24px; }
+body.social.square { width: 1080px; min-height: 1080px; }
 
-  .framing-box {
-    background: var(--card);
-    border: 1px solid var(--blue);
-    border-left: 4px solid var(--blue);
-    border-radius: 6px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-  }
-  .framing-box p { color: var(--text); font-size: 12px; }
-  .framing-box strong { color: var(--blue); }
+.reveal {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* Workflow flowchart — vertical spine */
-  .flow-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-bottom: 20px;
-  }
+/* ── Header ── */
+.header { margin-bottom: 18px; }
+.header-inner {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 14px; margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.finn-tag {
+  font-size: 10px; color: var(--blue); letter-spacing: 2.5px;
+  font-weight: 700; text-transform: uppercase; margin-bottom: 5px;
+  display: flex; align-items: center; gap: 7px;
+}
+.live-dot {
+  width: 7px; height: 7px; background: var(--blue); border-radius: 50%;
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(88,166,255,0.5); }
+  50%      { opacity:.7; box-shadow:0 0 0 6px rgba(88,166,255,0); }
+}
+h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -.3px; }
+.subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; max-width: 500px; }
+.header-badge { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; font-size: 11px; color: var(--muted); }
 
-  .flow-phase {
-    display: flex;
-    gap: 14px;
-    align-items: stretch;
-  }
+/* Metric strip */
+.metric-strip { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.strip-item { flex: 1; padding: 9px 12px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; }
+.strip-item:last-child { border-right: none; }
+.strip-label { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+.strip-value { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.strip-sub { font-size: 9px; color: var(--muted); }
 
-  /* Phase label on left */
-  .phase-label {
-    width: 80px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-    padding-right: 10px;
-  }
-  .phase-name {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-align: right;
-    line-height: 1.3;
-  }
-  .phase-research .phase-name { color: var(--blue); }
-  .phase-build .phase-name    { color: var(--green); }
-  .phase-test .phase-name     { color: var(--amber); }
-  .phase-trade .phase-name    { color: var(--purple); }
+/* ── Section labels ── */
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px; margin-top: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* Connector spine */
-  .spine-col {
-    width: 32px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .spine-node {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-    flex-shrink: 0;
-    background: var(--bg);
-    z-index: 1;
-  }
-  .phase-research .spine-node { border-color: var(--blue); color: var(--blue); }
-  .phase-build .spine-node    { border-color: var(--green); color: var(--green); }
-  .phase-test .spine-node     { border-color: var(--amber); color: var(--amber); }
-  .phase-trade .spine-node    { border-color: var(--purple); color: var(--purple); }
+/* ── Framing box ── */
+.framing-box {
+  background: var(--card); border: 1px solid var(--border);
+  border-left: 4px solid var(--blue); border-radius: 6px;
+  padding: 12px 16px; margin-bottom: 20px;
+}
+.framing-box p { color: var(--text); font-size: 12px; line-height: 1.7; }
+.framing-box strong { color: var(--blue); }
 
-  .spine-line {
-    width: 2px;
-    flex: 1;
-    min-height: 12px;
-    background: var(--border);
-  }
-  .spine-line-top  { margin-bottom: 0; }
-  .spine-line-bot  { margin-top: 0; }
+/* ── Flow container ── */
+.flow-container { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; }
 
-  /* Step card on right */
-  .step-card {
-    flex: 1;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-  }
-  .step-card:last-child { margin-bottom: 0; }
+.flow-phase { display: flex; gap: 14px; align-items: stretch; }
 
-  .step-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 6px;
-  }
-  .step-name {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .step-tool {
-    font-size: 10px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 2px 7px;
-    color: var(--muted);
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-left: 8px;
-  }
+/* Phase label (left column) */
+.phase-label {
+  width: 76px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: flex-end;
+  padding-right: 10px;
+}
+.phase-name {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; text-align: right; line-height: 1.3;
+}
+.phase-research .phase-name { color: var(--blue); }
+.phase-build    .phase-name { color: var(--green); }
+.phase-test     .phase-name { color: var(--amber); }
+.phase-trade    .phase-name { color: var(--purple); }
 
-  .step-desc {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
+/* Spine column */
+.spine-col {
+  width: 30px; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center;
+}
+.spine-node {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; flex-shrink: 0;
+  background: var(--bg); z-index: 1;
+  transition: box-shadow var(--dur-med), background var(--dur-med);
+}
+.phase-research .spine-node { border-color: var(--blue);   color: var(--blue); }
+.phase-build    .spine-node { border-color: var(--green);  color: var(--green); }
+.phase-test     .spine-node { border-color: var(--amber);  color: var(--amber); }
+.phase-trade    .spine-node { border-color: var(--purple); color: var(--purple); }
 
-  .step-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  .action-chip {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    color: var(--text);
-    background: var(--bg);
-  }
+.step-card:hover ~ .spine-col .spine-node,
+.flow-phase:hover .spine-node {
+  background: var(--card-elevated);
+}
+.phase-research .flow-phase:hover .spine-node { box-shadow: 0 0 0 4px rgba(88,166,255,.15); }
+.phase-build    .flow-phase:hover .spine-node { box-shadow: 0 0 0 4px rgba(63,185,80,.15); }
 
-  .step-output {
-    margin-top: 7px;
-    font-size: 10px;
-    color: var(--green);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .output-label {
-    color: var(--muted);
-    font-weight: 700;
-  }
+.spine-line {
+  width: 2px; flex: 1; min-height: 12px;
+  background: var(--border);
+  transform-origin: top center; transform: scaleY(0);
+  transition: transform 0.5s var(--ease-out);
+}
+.spine-line.drawn { transform: scaleY(1); }
 
-  /* Gate between phases */
-  .phase-gate {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-    margin: 2px 0;
-  }
-  .gate-spacer { width: 80px; flex-shrink: 0; }
-  .gate-spine {
-    width: 32px;
-    flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-  }
-  .gate-spine-inner {
-    width: 2px;
-    height: 24px;
-    background: var(--border);
-  }
-  .gate-box {
-    flex: 1;
-    background: var(--bg);
-    border: 1px dashed var(--border);
-    border-radius: 4px;
-    padding: 5px 10px;
-    font-size: 10px;
-    color: var(--amber);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .gate-icon { font-size: 12px; }
+/* Step card */
+.step-card {
+  flex: 1; background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-bottom: 10px;
+  cursor: pointer; user-select: none;
+  transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med);
+}
+.phase-research .step-card:hover { transform:translateY(-2px); border-color:rgba(88,166,255,.35); box-shadow:0 6px 20px var(--blue-glow); }
+.phase-build    .step-card:hover { transform:translateY(-2px); border-color:rgba(63,185,80,.35);  box-shadow:0 6px 20px var(--green-glow); }
+.phase-test     .step-card:hover { transform:translateY(-2px); border-color:rgba(210,153,34,.35); box-shadow:0 6px 20px var(--amber-glow); }
+.phase-trade    .step-card:hover { transform:translateY(-2px); border-color:rgba(188,140,255,.35);box-shadow:0 6px 20px var(--purple-glow); }
 
-  /* IC table */
-  .ic-table-wrapper {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 20px;
-  }
-  .ic-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .ic-table th {
-    background: var(--bg);
-    color: var(--muted);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 7px 10px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  .ic-table td {
-    padding: 7px 10px;
-    font-size: 11px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  .ic-table tr:last-child td { border-bottom: none; }
-  .ic-table tr:hover td { background: rgba(88, 166, 255, 0.04); }
+.step-card.open { border-color: rgba(88,166,255,.3); }
+.phase-build  .step-card.open { border-color: rgba(63,185,80,.3); }
+.phase-test   .step-card.open { border-color: rgba(210,153,34,.3); }
+.phase-trade  .step-card.open { border-color: rgba(188,140,255,.3); }
 
-  .tag-pass  { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; background:rgba(63,185,80,.15); color:var(--green); }
-  .tag-fail  { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; background:rgba(248,81,73,.15); color:var(--red); }
-  .tag-check { display:inline-block; padding:2px 6px; border-radius:3px; font-size:10px; background:rgba(88,166,255,.12); color:var(--blue); }
+.step-accent { height: 3px; }
+.phase-research .step-accent { background: linear-gradient(90deg,var(--blue),rgba(88,166,255,.3)); }
+.phase-build    .step-accent { background: linear-gradient(90deg,var(--green),rgba(63,185,80,.3)); }
+.phase-test     .step-accent { background: linear-gradient(90deg,var(--amber),rgba(210,153,34,.3)); }
+.phase-trade    .step-accent { background: linear-gradient(90deg,var(--purple),rgba(188,140,255,.3)); }
 
-  /* FINN voice */
-  .finn-voice {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--amber);
-    border-radius: 6px;
-    padding: 12px 16px;
-    margin-top: 20px;
-  }
-  .finn-voice-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 6px;
-  }
-  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; }
+.step-body { padding: 12px 14px; }
 
-  @media print {
-    body { background: white; color: black; padding: 12px; }
-    .step-card, .ic-table-wrapper, .gate-box, .framing-box, .finn-voice { border-color: #ccc !important; }
-  }
+.step-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start; margin-bottom: 6px;
+}
+.step-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.step-tool {
+  font-size: 10px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 3px; padding: 2px 7px; color: var(--muted);
+  white-space: nowrap; flex-shrink: 0; margin-left: 8px;
+}
+
+.step-desc { font-size: 11px; color: var(--muted); margin-bottom: 8px; line-height: 1.6; }
+
+.step-actions { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.action-chip {
+  font-size: 10px; padding: 2px 8px; border-radius: 10px;
+  border: 1px solid var(--border); color: var(--text); background: var(--bg);
+}
+
+.step-output {
+  font-size: 10px; color: var(--green);
+  display: flex; align-items: center; gap: 5px; margin-bottom: 8px;
+}
+.output-label { color: var(--muted); font-weight: 700; }
+
+/* Expand toggle */
+.step-expand-btn {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; color: var(--muted);
+  padding: 4px 0; border-top: 1px solid var(--border);
+  transition: color var(--dur-fast);
+}
+.phase-research .step-expand-btn { color: rgba(88,166,255,.7); }
+.phase-build    .step-expand-btn { color: rgba(63,185,80,.7); }
+.phase-test     .step-expand-btn { color: rgba(210,153,34,.7); }
+.phase-trade    .step-expand-btn { color: rgba(188,140,255,.7); }
+.expand-chev {
+  display: inline-block; transition: transform var(--dur-med) var(--ease-out);
+  font-size: 9px; font-style: normal;
+}
+.step-card.open .expand-chev { transform: rotate(180deg); }
+
+/* Step detail panel */
+.step-detail {
+  display: none;
+  border-top: 1px solid var(--border);
+  background: rgba(88,166,255,.03);
+  animation: slide-detail var(--dur-med) var(--ease-out);
+}
+.phase-build  .step-detail { background: rgba(63,185,80,.03); }
+.phase-test   .step-detail { background: rgba(210,153,34,.03); }
+.phase-trade  .step-detail { background: rgba(188,140,255,.03); }
+.step-card.open .step-detail { display: block; }
+@keyframes slide-detail {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.step-detail-inner { padding: 10px 14px 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.detail-block {}
+.detail-block-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.phase-research .detail-block-label.check { color: var(--blue); }
+.phase-build    .detail-block-label.check { color: var(--green); }
+.phase-test     .detail-block-label.check { color: var(--amber); }
+.phase-trade    .detail-block-label.check { color: var(--purple); }
+.detail-block-label.mistake { color: var(--red); }
+.detail-block-text { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.detail-block-text strong { color: var(--text); }
+
+/* ── Gate boxes ── */
+.phase-gate {
+  display: flex; gap: 14px; align-items: center; margin: 2px 0;
+}
+.gate-spacer { width: 76px; flex-shrink: 0; }
+.gate-spine { width: 30px; flex-shrink: 0; display: flex; justify-content: center; }
+.gate-spine-inner { width: 2px; height: 28px; background: var(--amber); opacity: .5; }
+.gate-box {
+  flex: 1; background: rgba(210,153,34,.05);
+  border: 1px dashed rgba(210,153,34,.4); border-radius: 6px;
+  padding: 7px 12px; font-size: 11px; color: var(--amber);
+  display: flex; align-items: center; gap: 8px; font-weight: 600;
+}
+.gate-icon { font-size: 13px; flex-shrink: 0; }
+.gate-threshold {
+  margin-left: auto; font-size: 10px;
+  background: rgba(210,153,34,.12); border: 1px solid rgba(210,153,34,.25);
+  border-radius: 3px; padding: 2px 7px; font-weight: 700; white-space: nowrap;
+}
+
+/* ── IC table ── */
+.ic-table-wrap {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden; margin-bottom: 24px;
+}
+.ic-table { width: 100%; border-collapse: collapse; }
+.ic-table th {
+  background: var(--bg); color: var(--muted); font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; padding: 9px 12px;
+  text-align: left; border-bottom: 1px solid var(--border);
+}
+.ic-table td {
+  padding: 9px 12px; font-size: 11px; border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.ic-table tr:last-child td { border-bottom: none; }
+.ic-table tbody tr { transition: background var(--dur-fast); }
+.ic-table tbody tr:hover td { background: rgba(88,166,255,.04); }
+
+.tag-pass  { display:inline-block; padding:2px 7px; border-radius:4px; font-size:10px; background:rgba(63,185,80,.15); color:var(--green); font-weight:600; }
+.tag-fail  { display:inline-block; padding:2px 7px; border-radius:4px; font-size:10px; background:rgba(248,81,73,.15); color:var(--red); font-weight:600; }
+.tag-check { display:inline-block; padding:2px 7px; border-radius:4px; font-size:10px; background:rgba(88,166,255,.12); color:var(--blue); font-weight:600; }
+
+/* ── FINN voice ── */
+.finn-voice {
+  background: rgba(210,153,34,.05); border: 1px solid rgba(210,153,34,.25);
+  border-left: 4px solid var(--amber); border-radius: 8px;
+  padding: 14px 18px; backdrop-filter: blur(12px); margin-top: 8px;
+}
+.finn-voice-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--amber); margin-bottom: 7px; }
+.finn-voice p { font-size: 12px; color: var(--text); font-style: italic; line-height: 1.7; }
+
+/* ── Footer ── */
+.footer { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 11px; color: var(--muted); }
+.footer-right { display: flex; gap: 10px; align-items: center; }
+.footer-tag { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: 700; color: var(--blue); }
+.footer-date { font-size: 10px; color: var(--muted); }
+
+.color-blue   { color: var(--blue); }
+.color-green  { color: var(--green); }
+.color-amber  { color: var(--amber); }
+.color-purple { color: var(--purple); }
+.color-muted  { color: var(--muted); }
+
+@media print {
+  body { background: white; color: black; padding: 12px; }
+  .step-card, .ic-table-wrap, .gate-box, .framing-box, .finn-voice { border-color: #ccc !important; }
+  .step-detail { display: block !important; }
+  .step-expand-btn { display: none; }
+  .reveal { opacity: 1; transform: none; }
+  .spine-line { transform: scaleY(1); }
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-top">
+<div class="header reveal">
+  <div class="header-inner">
     <div>
-      <div class="finn-tag">FINN — Quantitative Trading</div>
+      <div class="finn-tag">
+        <span class="live-dot"></span>
+        FINN — Quantitative Trading
+      </div>
       <h1>FINN Quantitative Workflow</h1>
       <div class="subtitle">9-step process from hypothesis to live trade — repeatable, testable, documented</div>
     </div>
-    <div class="badge">Tier 2 · FINN-Specific</div>
+    <div class="header-badge">T1 · FINN-Specific</div>
+  </div>
+  <div class="metric-strip">
+    <div class="strip-item">
+      <div class="strip-label">Steps</div>
+      <div class="strip-value color-blue">9</div>
+      <div class="strip-sub">hypothesis → live</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Phases</div>
+      <div class="strip-value color-muted">4</div>
+      <div class="strip-sub">Research / Build / Test / Trade</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Gates</div>
+      <div class="strip-value color-amber">4</div>
+      <div class="strip-sub">checkpoints you must pass</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">IS IC Gate</div>
+      <div class="strip-value color-blue">&gt; 0.05</div>
+      <div class="strip-sub">after Step 4</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">OOS IC Gate</div>
+      <div class="strip-value color-green">&gt; 0.03</div>
+      <div class="strip-sub">after Step 5</div>
+    </div>
+    <div class="strip-item">
+      <div class="strip-label">Paper Min</div>
+      <div class="strip-value color-amber">20 trades</div>
+      <div class="strip-sub">or 4 weeks</div>
+    </div>
   </div>
 </div>
 
-<div class="framing-box">
-  <p><strong>FINN framing rule:</strong> Every trade starts as a hypothesis. A hypothesis is only as good as the test behind it. FINN's workflow exists so that the process from "I think X works" to "I am trading X" is never skipped, compressed, or guessed. <strong>No IC, no trade. No out-of-sample test, no capital allocation.</strong></p>
+<div class="framing-box reveal">
+  <p><strong>FINN framing rule:</strong> Every trade starts as a hypothesis. A hypothesis is only as good as the test behind it. FINN's workflow exists so that the process from "I think X works" to "I am trading X" is never skipped, compressed, or guessed. <strong>No IC, no trade. No out-of-sample test, no capital allocation.</strong> Click any step to see the FINN check and the most common mistake at that stage.</p>
 </div>
 
-<div class="section-label">The 9-Step Workflow</div>
+<div class="section-label">The 9-Step Workflow — click any step to expand</div>
 
 <div class="flow-container">
 
-  <!-- PHASE: RESEARCH -->
+  <!-- ── RESEARCH PHASE ── -->
   <!-- Step 1 -->
-  <div class="flow-phase phase-research">
+  <div class="flow-phase phase-research reveal">
     <div class="phase-label"><div class="phase-name">Research</div></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-line" style="min-height:6px;"></div>
       <div class="spine-node">1</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Define the Hypothesis</div>
-        <div class="step-tool">Python · Markdown</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Define the Hypothesis</div>
+          <div class="step-tool">Python · Markdown</div>
+        </div>
+        <div class="step-desc">State the edge in one testable sentence: "When X condition is true, Y outcome occurs Z% of the time." If you can't write the null hypothesis, you don't have a hypothesis — you have an observation.</div>
+        <div class="step-actions">
+          <span class="action-chip">Name the signal</span>
+          <span class="action-chip">Define universe</span>
+          <span class="action-chip">Set lookback window</span>
+          <span class="action-chip">Write null hypothesis</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> Hypothesis statement + null in plain English</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">State the edge in one testable sentence: "When X condition is true, Y outcome occurs Z% of the time." If you can't write the null hypothesis, you don't have a hypothesis.</div>
-      <div class="step-actions">
-        <span class="action-chip">Name the signal</span>
-        <span class="action-chip">Define universe</span>
-        <span class="action-chip">Set lookback window</span>
-        <span class="action-chip">Write null hypothesis</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Can you state the null in one sentence? Is the universe, lookback window, and outcome period all defined? Example null: <strong>"RSI &lt; 30 does NOT predict positive 5-day returns with IC &gt; 0.05 in S&amp;P 500 stocks over 2020–2024."</strong> If you can't name the null, stop here.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">"RSI below 30 predicts a reversal" — no universe, no lookback period, no definition of reversal. This is an observation masquerading as a hypothesis. Specificity is not optional: it is what makes the hypothesis <strong>falsifiable.</strong></div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> Hypothesis statement + null in plain English</div>
     </div>
   </div>
 
   <!-- Step 2 -->
-  <div class="flow-phase phase-research">
+  <div class="flow-phase phase-research reveal">
     <div class="phase-label"></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top"></div>
+      <div class="spine-line"></div>
       <div class="spine-node">2</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Pull and Clean the Data</div>
-        <div class="step-tool">yfinance · pandas</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Pull and Clean the Data</div>
+          <div class="step-tool">yfinance · pandas</div>
+        </div>
+        <div class="step-desc">Download OHLCV data for the full lookback period. Flatten columns, handle splits, fill or drop NaNs. Log your data source and date range. Clean data is a prerequisite — not an afterthought.</div>
+        <div class="step-actions">
+          <span class="action-chip">yf.download()</span>
+          <span class="action-chip">Flatten columns</span>
+          <span class="action-chip">Check for gaps</span>
+          <span class="action-chip">Document date range</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> Clean OHLCV DataFrame with verified DatetimeIndex</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Download OHLCV data for the full lookback period. Flatten columns, handle splits/dividends, fill or drop NaNs. Log your data source and date range.</div>
-      <div class="step-actions">
-        <span class="action-chip">yf.download()</span>
-        <span class="action-chip">Flatten columns</span>
-        <span class="action-chip">Check for gaps</span>
-        <span class="action-chip">Document date range</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">After yf.download(), flatten the multi-level column index: <strong>df.columns = [c[0] if isinstance(c, tuple) else c for c in df.columns]</strong>. Verify DatetimeIndex is continuous with no weekend gaps or duplicate rows. Check for split-adjusted close vs. Adj Close — use Adj Close for returns calculation.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Accessing df['Close'] before flattening the multi-level column — produces a KeyError or silently returns the wrong data. The yfinance multi-ticker download wraps all columns in a second level. <strong>Always flatten first, verify second.</strong></div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> Clean OHLCV DataFrame with verified index</div>
     </div>
   </div>
 
   <!-- Gate 1 -->
-  <div class="phase-gate">
+  <div class="phase-gate reveal">
     <div class="gate-spacer"></div>
     <div class="gate-spine"><div class="gate-spine-inner"></div></div>
-    <div class="gate-box"><span class="gate-icon">◆</span> Gate: Data complete and gap-free? If not, fix before continuing.</div>
+    <div class="gate-box">
+      <span class="gate-icon">◆</span>
+      Gate 1 — Data complete, gap-free, and date range verified? Fix before any modeling.
+      <span class="gate-threshold">Pre-Model</span>
+    </div>
   </div>
 
-  <!-- PHASE: BUILD -->
+  <!-- ── BUILD PHASE ── -->
   <!-- Step 3 -->
-  <div class="flow-phase phase-build">
+  <div class="flow-phase phase-build reveal">
     <div class="phase-label"><div class="phase-name">Build</div></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-line" style="min-height:6px;"></div>
       <div class="spine-node">3</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Engineer the Features</div>
-        <div class="step-tool">pandas_ta · pandas</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Engineer the Features</div>
+          <div class="step-tool">pandas_ta · pandas</div>
+        </div>
+        <div class="step-desc">Compute technical indicators and derived features that define your signal. Each feature must have a clear directional role — no kitchen-sink feature dumps. Document why each feature is hypothesized to predict the target.</div>
+        <div class="step-actions">
+          <span class="action-chip">pandas_ta indicators</span>
+          <span class="action-chip">Rolling windows</span>
+          <span class="action-chip">Lag variables (.shift)</span>
+          <span class="action-chip">Target variable</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> Feature DataFrame — each column named and documented</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Compute the technical indicators and derived features that define your signal. Each feature must have a clear role — no kitchen-sink feature dumps.</div>
-      <div class="step-actions">
-        <span class="action-chip">pandas_ta indicators</span>
-        <span class="action-chip">Rolling windows</span>
-        <span class="action-chip">Lag variables</span>
-        <span class="action-chip">Target variable</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Does each feature exist at signal time without look-ahead? <strong>Use .shift(1)</strong> for any feature computed from data that closes on the same bar you're signaling from. The signal fires at close of day T — it cannot use T's close in its calculation.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Computing today's RSI and using it as a signal for today's close — the close is one of the inputs to today's RSI. This is look-ahead bias. <strong>Build all features from prior-bar data.</strong> When in doubt, shift everything by 1.</div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> Feature DataFrame — each column named and documented</div>
     </div>
   </div>
 
   <!-- Step 4 -->
-  <div class="flow-phase phase-build">
+  <div class="flow-phase phase-build reveal">
     <div class="phase-label"></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top"></div>
+      <div class="spine-line"></div>
       <div class="spine-node">4</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Run the In-Sample Backtest</div>
-        <div class="step-tool">xgboost · scikit-learn</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Run the In-Sample Backtest</div>
+          <div class="step-tool">xgboost · scikit-learn</div>
+        </div>
+        <div class="step-desc">Train on the in-sample period (first 70–80% of data). Generate signals. Compute IC, win rate, Sharpe ratio, and max drawdown. This is your baseline performance — not your truth. Do not over-optimize here.</div>
+        <div class="step-actions">
+          <span class="action-chip">Time-based train/test split</span>
+          <span class="action-chip">IC calculation</span>
+          <span class="action-chip">Signal generation</span>
+          <span class="action-chip">Equity curve</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> IS performance — IC, Sharpe, drawdown, win rate</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Train on the in-sample period (first 70–80% of data). Generate signals. Compute IC, win rate, Sharpe ratio, and max drawdown. This is your baseline, not your truth.</div>
-      <div class="step-actions">
-        <span class="action-chip">Train/test split (time-based)</span>
-        <span class="action-chip">IC calculation</span>
-        <span class="action-chip">Signal generation</span>
-        <span class="action-chip">Equity curve</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Split by time — first 70–80% of dates for training, remainder for OOS. <strong>Did you shuffle the data at any point?</strong> If yes, invalidate all results and restart. Never use random train_test_split on time-series data.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Using sklearn's random train_test_split on time-series. Shuffling breaks temporal order and inflates IS IC by allowing future returns to be correlated with past signal values. <strong>The result looks great. It means nothing.</strong></div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> IS performance metrics — IC, Sharpe, drawdown, win rate</div>
     </div>
   </div>
 
   <!-- Gate 2 -->
-  <div class="phase-gate">
+  <div class="phase-gate reveal">
     <div class="gate-spacer"></div>
     <div class="gate-spine"><div class="gate-spine-inner"></div></div>
-    <div class="gate-box"><span class="gate-icon">◆</span> Gate: IC &gt; 0.05 in-sample? If not, revise hypothesis — do not proceed to OOS.</div>
+    <div class="gate-box">
+      <span class="gate-icon">◆</span>
+      Gate 2 — IS IC &gt; 0.05? If not, revise the hypothesis or features. Do not proceed to OOS.
+      <span class="gate-threshold">IC &gt; 0.05</span>
+    </div>
   </div>
 
-  <!-- PHASE: TEST -->
+  <!-- ── TEST PHASE ── -->
   <!-- Step 5 -->
-  <div class="flow-phase phase-test">
+  <div class="flow-phase phase-test reveal">
     <div class="phase-label"><div class="phase-name">Test</div></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-line" style="min-height:6px;"></div>
       <div class="spine-node">5</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Out-of-Sample Validation</div>
-        <div class="step-tool">scikit-learn · pandas</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Out-of-Sample Validation</div>
+          <div class="step-tool">scikit-learn · pandas</div>
+        </div>
+        <div class="step-desc">Evaluate the IS-trained model on the held-out period (last 20–30% of data). No retraining allowed. If IC collapses OOS, the in-sample edge was overfitting — not a real edge. This test is the most important one.</div>
+        <div class="step-actions">
+          <span class="action-chip">Apply IS model to OOS</span>
+          <span class="action-chip">Compute OOS IC</span>
+          <span class="action-chip">Compare IS vs. OOS Sharpe</span>
+          <span class="action-chip">Log IC decay ratio</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> OOS IC, Sharpe, drawdown — compared to IS baseline</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Evaluate the model on the held-out period (last 20–30% of data). No retraining allowed. If IC collapses OOS, the in-sample edge was overfitting, not a real edge.</div>
-      <div class="step-actions">
-        <span class="action-chip">Apply IS model to OOS</span>
-        <span class="action-chip">Compute OOS IC</span>
-        <span class="action-chip">Compare IS vs. OOS Sharpe</span>
-        <span class="action-chip">Log decay rate</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Apply the IS-trained model to OOS data with <strong>zero retraining</strong>. Record: OOS IC, OOS Sharpe, and the IS/OOS IC ratio. A ratio above 0.7 is healthy. Below 0.5 suggests overfitting. Below 0.3 — rebuild.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Tuning any parameter using OOS performance as feedback — this converts OOS data into a second training set and <strong>invalidates the entire test.</strong> The OOS period is sacred. Once you look at it, it is no longer out-of-sample.</div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> OOS performance metrics — IC, Sharpe, drawdown vs. IS</div>
     </div>
   </div>
 
   <!-- Step 6 -->
-  <div class="flow-phase phase-test">
+  <div class="flow-phase phase-test reveal">
     <div class="phase-label"></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top"></div>
+      <div class="spine-line"></div>
       <div class="spine-node">6</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Stress Test the Edge</div>
-        <div class="step-tool">pandas · numpy</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Stress Test the Edge</div>
+          <div class="step-tool">pandas · numpy</div>
+        </div>
+        <div class="step-desc">Test the strategy across different market regimes (trending, choppy, crisis). Vary key parameters ±20% and confirm the edge isn't parameter-sensitive fragility. Robustness is a prerequisite for capital allocation.</div>
+        <div class="step-actions">
+          <span class="action-chip">Regime slicing</span>
+          <span class="action-chip">Parameter sensitivity</span>
+          <span class="action-chip">Drawdown stress test</span>
+          <span class="action-chip">Transaction cost impact</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> Stress report — performance across regimes, parameter stability</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Test the strategy across different market regimes (trending, choppy, crisis), vary key parameters ±20%, and confirm the edge isn't parameter-sensitive fragility.</div>
-      <div class="step-actions">
-        <span class="action-chip">Regime slicing</span>
-        <span class="action-chip">Parameter sensitivity</span>
-        <span class="action-chip">Drawdown stress test</span>
-        <span class="action-chip">Transaction cost impact</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Does the strategy survive regime slicing? Test separately: 2020–2021 bull, 2022 bear, 2024 volatile. <strong>IC must be &gt; 0.03 in at least 2 of 3 regimes.</strong> A strategy that "works" only in one regime isn't an edge — it's beta dressed up as alpha.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Testing only on full-period data that includes a prolonged bull market. The full-period IC looks good because the strategy is long-biased in a bull regime. <strong>Slice by regime first. Full-period results come last.</strong></div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> Stress test report — performance across regimes, parameter stability</div>
     </div>
   </div>
 
   <!-- Gate 3 -->
-  <div class="phase-gate">
+  <div class="phase-gate reveal">
     <div class="gate-spacer"></div>
     <div class="gate-spine"><div class="gate-spine-inner"></div></div>
-    <div class="gate-box"><span class="gate-icon">◆</span> Gate: OOS IC &gt; 0.03 AND stable across ±20% parameter variation? If not, back to Step 3.</div>
+    <div class="gate-box">
+      <span class="gate-icon">◆</span>
+      Gate 3 — OOS IC &gt; 0.03 AND stable across ±20% parameter variation? If not, return to Step 3.
+      <span class="gate-threshold">IC &gt; 0.03</span>
+    </div>
   </div>
 
   <!-- Step 7 -->
-  <div class="flow-phase phase-test">
+  <div class="flow-phase phase-test reveal">
     <div class="phase-label"></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top"></div>
+      <div class="spine-line"></div>
       <div class="spine-node">7</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Paper Trade the Signal</div>
-        <div class="step-tool">Webull · Signal log</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Paper Trade the Signal</div>
+          <div class="step-tool">Webull · Signal log</div>
+        </div>
+        <div class="step-desc">Run the live signal in Webull paper trading for a minimum of 20 trades or 4 weeks, whichever is longer. Record every entry, exit, and reason in the signal log. Compare live IC to backtest IC.</div>
+        <div class="step-actions">
+          <span class="action-chip">Live signal generation</span>
+          <span class="action-chip">Paper orders in Webull</span>
+          <span class="action-chip">Daily log entry</span>
+          <span class="action-chip">Compare to backtest</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> signal_report_YYYYMMDD.csv — live vs. backtest IC</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Run the live signal in Webull paper trading for a minimum of 20 trades or 4 weeks, whichever is longer. Record every entry, exit, and reason in the signal log.</div>
-      <div class="step-actions">
-        <span class="action-chip">Live signal generation</span>
-        <span class="action-chip">Paper orders</span>
-        <span class="action-chip">Daily log entry</span>
-        <span class="action-chip">Compare to backtest</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Signal generation timing audit: are you firing signals using <strong>only data available at entry time?</strong> If the signal fires at market open using prior-day data, you cannot use same-day prices. Simulate exactly how the live trade would execute — no retroactive signal confirmation.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Calculating the signal at 4 PM using the day's close, then entering "at the close." You cannot buy at the same price used in your signal calculation. <strong>This is look-ahead bias in execution disguise.</strong> Signal using prior-day data → enter at next-day open.</div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> signal_report_YYYYMMDD.csv — live vs. backtest IC comparison</div>
     </div>
   </div>
 
   <!-- Gate 4 -->
-  <div class="phase-gate">
+  <div class="phase-gate reveal">
     <div class="gate-spacer"></div>
     <div class="gate-spine"><div class="gate-spine-inner"></div></div>
-    <div class="gate-box"><span class="gate-icon">◆</span> Gate: Paper trade IC within 25% of backtest IC? Live drawdown acceptable? Proceed to capital allocation.</div>
+    <div class="gate-box">
+      <span class="gate-icon">◆</span>
+      Gate 4 — Live IC within 25% of backtest IC? Max DD acceptable? Proceed to capital allocation.
+      <span class="gate-threshold">Live IC ≥ 75% BT</span>
+    </div>
   </div>
 
-  <!-- PHASE: TRADE -->
+  <!-- ── TRADE PHASE ── -->
   <!-- Step 8 -->
-  <div class="flow-phase phase-trade">
+  <div class="flow-phase phase-trade reveal">
     <div class="phase-label"><div class="phase-name">Trade</div></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top" style="min-height:6px;"></div>
+      <div class="spine-line" style="min-height:6px;"></div>
       <div class="spine-node">8</div>
-      <div class="spine-line spine-line-bot"></div>
+      <div class="spine-line"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Size and Risk Allocation</div>
-        <div class="step-tool">Risk rules · Position sizing</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Size and Risk Allocation</div>
+          <div class="step-tool">Risk rules · Position sizing</div>
+        </div>
+        <div class="step-desc">Apply FINN's 6 risk rules to determine position size, max exposure, and stop placement before the first live trade. Capital allocation is a function of IC, not conviction.</div>
+        <div class="step-actions">
+          <span class="action-chip">Max 2% portfolio risk/trade</span>
+          <span class="action-chip">ATR-based stops</span>
+          <span class="action-chip">Sector concentration limit</span>
+          <span class="action-chip">Kelly sizing (if IC validated)</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> Position size per trade, max drawdown threshold for shutdown</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Apply FINN's 6 risk rules to determine position size, max exposure, and stop placement before the first live trade. Capital allocation is a function of IC, not conviction.</div>
-      <div class="step-actions">
-        <span class="action-chip">Max 2% portfolio risk/trade</span>
-        <span class="action-chip">ATR-based stops</span>
-        <span class="action-chip">Sector concentration limit</span>
-        <span class="action-chip">Kelly sizing (if IC validated)</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Calculate before clicking: <strong>Position size = (Account × 0.02) ÷ (Entry − Stop).</strong> If the resulting share count requires more capital than the 2% rule allows at your stop distance — either widen the stop (using ATR) or skip the trade. There is no shortcut.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Calculating position size after deciding "how much you want to make." Backwards math: starting from a profit target and working backward to position size <strong>systematically inflates risk</strong> — especially when conviction is high and the setup "looks certain."</div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> Position size per trade, max drawdown threshold for shutdown</div>
     </div>
   </div>
 
   <!-- Step 9 -->
-  <div class="flow-phase phase-trade">
+  <div class="flow-phase phase-trade reveal">
     <div class="phase-label"></div>
     <div class="spine-col">
-      <div class="spine-line spine-line-top"></div>
+      <div class="spine-line"></div>
       <div class="spine-node">9</div>
-      <div class="spine-line spine-line-bot" style="min-height:6px;"></div>
+      <div class="spine-line" style="min-height:6px;"></div>
     </div>
-    <div class="step-card">
-      <div class="step-top">
-        <div class="step-name">Monitor, Log, and Iterate</div>
-        <div class="step-tool">all_trades.csv · monthly review</div>
+    <div class="step-card" onclick="toggleStep(this)">
+      <div class="step-accent"></div>
+      <div class="step-body">
+        <div class="step-top">
+          <div class="step-name">Monitor, Log, and Iterate</div>
+          <div class="step-tool">all_trades.csv · monthly review</div>
+        </div>
+        <div class="step-desc">Log every live trade in all_trades_[initials].csv. Review IC monthly. If live IC decays below threshold for 2 consecutive months, stop trading and return to Step 5 to re-validate. The loop never ends.</div>
+        <div class="step-actions">
+          <span class="action-chip">Daily P&amp;L log</span>
+          <span class="action-chip">Monthly IC review</span>
+          <span class="action-chip">Sharpe trending?</span>
+          <span class="action-chip">Iteration trigger</span>
+        </div>
+        <div class="step-output"><span class="output-label">Output:</span> Monthly report — live IC, Sharpe, drawdown vs. target</div>
+        <div class="step-expand-btn"><span class="expand-chev">▼</span> FINN check + common mistake</div>
       </div>
-      <div class="step-desc">Log every live trade in all_trades_[initials].csv. Review IC monthly. If live IC decays below threshold for 2 consecutive months, stop trading and return to Step 5 (re-validate).</div>
-      <div class="step-actions">
-        <span class="action-chip">Daily P&amp;L log</span>
-        <span class="action-chip">Monthly IC review</span>
-        <span class="action-chip">Sharpe trending?</span>
-        <span class="action-chip">Iteration trigger</span>
+      <div class="step-detail">
+        <div class="step-detail-inner">
+          <div class="detail-block">
+            <div class="detail-block-label check">FINN Check</div>
+            <div class="detail-block-text">Plot rolling 30-day IC monthly. <strong>Is it trending down?</strong> Signal decay precedes P&L decay by weeks or months. The kill switch triggers when monthly IC &lt; 0.03 for 2 consecutive months — don't wait for P&L to confirm what IC already told you.</div>
+          </div>
+          <div class="detail-block">
+            <div class="detail-block-label mistake">Common Mistake</div>
+            <div class="detail-block-text">Monitoring P&L instead of IC. A strategy can produce positive P&L for months after the edge has decayed — riding existing positions, lucky regime, survivor bias in the sample. <strong>IC leads P&L. Watch the right metric.</strong></div>
+          </div>
+        </div>
       </div>
-      <div class="step-output"><span class="output-label">Output:</span> Monthly performance report — live IC, Sharpe, drawdown vs. target</div>
     </div>
   </div>
 
 </div><!-- end flow-container -->
 
-<!-- IC threshold table -->
+<!-- Gate reference table -->
 <div class="section-label">Gate Thresholds — IC Reference</div>
-<div class="ic-table-wrapper">
+<div class="ic-table-wrap reveal">
   <table class="ic-table">
     <thead>
       <tr>
@@ -603,53 +805,94 @@
       <tr>
         <td>Data Quality</td>
         <td>Step 2</td>
-        <td>No gaps, no duplicates, correct date range</td>
-        <td>Fix data before any modeling</td>
-        <td><span class="tag-check">Pre-model</span></td>
+        <td>No gaps, no duplicates, columns flattened, date range verified</td>
+        <td>Fix data before any modeling — no exceptions</td>
+        <td><span class="tag-check">Pre-Model</span></td>
       </tr>
       <tr>
         <td>In-Sample IC</td>
         <td>Step 4</td>
-        <td>IC &gt; 0.05 on in-sample period</td>
-        <td>Revise hypothesis or features</td>
+        <td>IC &gt; 0.05 on in-sample period (time-based split)</td>
+        <td>Revise hypothesis or features — return to Step 1 or 3</td>
         <td><span class="tag-pass">Required</span></td>
       </tr>
       <tr>
         <td>OOS IC</td>
         <td>Step 5</td>
-        <td>IC &gt; 0.03 on held-out period</td>
-        <td>Return to Step 3 — refeature</td>
+        <td>IC &gt; 0.03 on held-out period, no retraining</td>
+        <td>Return to Step 3 — refeature from scratch</td>
         <td><span class="tag-pass">Required</span></td>
       </tr>
       <tr>
         <td>Parameter Stability</td>
         <td>Step 6</td>
-        <td>Performance stable across ±20% param variation</td>
-        <td>Simplify model or widen parameters</td>
+        <td>Performance stable across ±20% parameter variation</td>
+        <td>Simplify model or widen parameter ranges</td>
         <td><span class="tag-pass">Required</span></td>
       </tr>
       <tr>
         <td>Paper Trade IC</td>
         <td>Step 7</td>
-        <td>Live IC within 25% of backtest IC</td>
-        <td>Investigate slippage, timing, data lag</td>
+        <td>Live IC within 25% of backtest IC over ≥20 trades</td>
+        <td>Investigate slippage, timing drift, data lag</td>
         <td><span class="tag-pass">Required</span></td>
       </tr>
       <tr>
         <td>Live IC Decay</td>
         <td>Step 9 (ongoing)</td>
         <td>Monthly IC &gt; 0.03 for 2+ consecutive months</td>
-        <td>Stop trading; return to Step 5</td>
+        <td>Stop trading — return to Step 5 for re-validation</td>
         <td><span class="tag-fail">Kill switch</span></td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<div class="finn-voice">
-  <div class="finn-voice-label">FINN</div>
-  <p>"The workflow is not bureaucracy — it's the difference between a trader who has a process and one who has luck. Luck runs out. A process that produces a testable IC, survives OOS, holds up in paper trading, and degrades gracefully when market conditions change is the only kind of edge worth allocating capital to. Show me the IC."</p>
+<div class="finn-voice reveal">
+  <div class="finn-voice-label">▸ FINN</div>
+  <p>"The workflow is not bureaucracy — it's the difference between a trader who has a process and one who has luck. Luck runs out. A process that produces a testable IC, survives OOS, holds up in paper trading, and degrades gracefully when conditions change is the only kind of edge worth allocating capital to. Show me the IC."</p>
 </div>
+
+<div class="footer reveal">
+  <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network · Quantitative Workflow</div>
+  <div class="footer-right">
+    <span class="footer-tag">v2</span>
+    <span class="footer-date">May 2026</span>
+  </div>
+</div>
+
+<script>
+// Scroll reveal with stagger
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 55);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// Animate spine lines when flow-phase becomes visible
+const spineObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.spine-line').forEach((line, i) => {
+        setTimeout(() => line.classList.add('drawn'), i * 120);
+      });
+      spineObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.flow-phase').forEach(el => spineObs.observe(el));
+
+// Step card toggle
+function toggleStep(card) {
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.step-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+</script>
 
 </body>
 </html>
