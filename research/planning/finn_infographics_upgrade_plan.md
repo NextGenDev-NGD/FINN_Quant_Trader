@@ -64,6 +64,33 @@ Upgrade 26 static HTML reference files into a polished, interactive visual produ
 
 ---
 
+## Design Aesthetic — TradingView Reference Standard
+
+**Standing requirement from May 12, 2026:** All v2 infographics must feel like a professional trading platform product — not an educational slide deck. The reference standard is TradingView's visual language, which resonates strongly with the target audience (20s through early 40s–50s active traders).
+
+### What this means in practice
+Every infographic must pass this bar before shipping:
+1. Would a serious trader screenshot this and share it without embarrassment?
+2. Do hover states and animations reward attention — does interaction feel satisfying?
+3. Is financial data instantly readable — tabular numerics, visual gauges, color-coded consistently?
+
+### TradingView design traits to model
+
+| Trait | Implementation |
+|-------|---------------|
+| **Glassmorphism panels** | Elevated cards use `backdrop-filter: blur(12px)` + semi-transparent bg — frosted glass feel |
+| **Gradient accent borders** | Top-border gradient strip on chart panels and key section headers |
+| **Tabular numerics** | `font-variant-numeric: tabular-nums` on all financial data — columns align |
+| **Live indicator dot** | Pulsing green/amber circle for "signal active" / "monitoring" status |
+| **Signal strength gauge** | Horizontal fill bar (0–1 scale) for IC, Sharpe, win rate — visual at a glance |
+| **Compact metric strip** | TV-style top data row: key numbers across the header in one scannable line |
+| **Hover crosshair** | JS-driven vertical cursor line on inline SVG charts |
+| **Tooltip panels** | Dark overlay on hover over data points — shows detail without cluttering layout |
+| **Micro-animations everywhere** | Every state change is animated — hover borders, card elevations, value reveals |
+| **Color discipline** | Green = confirmed/positive only · Red = caution/risk only · Blue = neutral info · Amber = warning |
+
+---
+
 ## Target State
 
 ### What v2 looks like
@@ -72,6 +99,7 @@ Upgrade 26 static HTML reference files into a polished, interactive visual produ
 3. **Quiz/drill mode** — pattern recognition exercises, flashcard flips, self-test prompts (T1 files only in Phase C)
 4. **Social media mode** — fixed-dimension layout (`1200×675px`) triggered by body class, optimized for screenshots and screen recordings
 5. **Micro-animations** — counters, progress fills, highlight pulses on key data points
+6. **TradingView aesthetic** — glassmorphism, tabular numerics, signal gauges, live indicators, hover crosshairs — see Design Aesthetic section above
 6. **Polished visual system** — upgraded typography, gradient accents, glassmorphism cards, consistent spacing scale
 
 ### What stays the same
@@ -342,8 +370,8 @@ These must be resolved in Phase A before Phase B begins. Update this section aft
 
 | # | Decision | Options | Resolution |
 |---|----------|---------|------------|
-| 1 | Animation library | CSS-only vs. inline Anime.js (~7KB) | ⬜ Pending Phase A Session A2 (capability audit) |
-| 2 | Chart integration | Chart.js inline vs. pure CSS charts | ⬜ Pending Phase A Session A2 (capability audit) |
+| 1 | Animation library | CSS-only vs. inline Anime.js (~7KB) | ✅ **CSS-only + vanilla JS. No library.** Anime.js v4 is 111KB minified (not 7KB — that figure is outdated). Too heavy for a 500KB file budget. GSAP eliminated due to license ambiguity for offline inlined redistribution. CSS handles 4/5 FINN animation use cases natively; counter animations and stagger sequencing solved with ~30–50 lines of vanilla `requestAnimationFrame`. Source: ig_capability_audit.md |
+| 2 | Chart integration | Chart.js inline vs. pure CSS charts | ✅ **Split approach — no blanket Chart.js inlining.** uPlot (~50KB, MIT) is the default for time-series charts (equity curve, Sharpe, drawdown). Chart.js (~220KB, MIT) used only in files requiring doughnut or histogram types — estimated 2–3 files. Pure inline SVG is the default for all illustrative/static charts. Chart.js at 220KB consumes 44% of the 500KB file budget before any content — only justified where uPlot cannot cover the chart type. Source: ig_capability_audit.md |
 | 3 | Platform priority | Twitter/X vs. LinkedIn vs. Instagram | ✅ **Platform role map (not a ranked list — each has a distinct function):** YouTube = long-term brand equity + AdSense revenue + course funnel anchor. Facebook = paid acquisition engine (Ad → webinar → course, 12× ROAS documented). LinkedIn = organic professional credibility (21.77% carousel engagement). Instagram = visual discovery (Reels reach + carousel engagement). Twitter/X = thought leadership + thread distribution. Source: ig_competitor_audit.md |
 | 4 | Quiz mode scope | T1 only vs. all tiers | ⬜ Pending Phase B validation |
 | 5 | Standalone packaging | ZIP download vs. Gumroad vs. Teachable | ⬜ Pending user decision (Gumroad recommended — established trading education audience, free lead magnet + paid bundle model validated by market) |

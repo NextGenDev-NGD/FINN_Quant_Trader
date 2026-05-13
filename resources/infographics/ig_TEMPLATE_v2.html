@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FINN Design System v2 — Template Reference</title>
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot (Twitter/X, LinkedIn) -->
+<!-- SOCIAL MODE: add class="social square" for 1080×1080px (Instagram, Facebook) -->
+<style>
+/* ============================================================
+   FINN DESIGN SYSTEM v2 — TEMPLATE REFERENCE
+   Development reference only. Not a distributed infographic.
+   Copy patterns from here into production infographic files.
+   Design aesthetic: TradingView-inspired — modern, interactive,
+   captivating for traders aged 20s–50s.
+   ============================================================ */
+
+/* ── 1. CSS VARIABLES ──────────────────────────────────────── */
+:root {
+  /* Existing palette — preserved from v1, never replaced */
+  --bg:     #0d1117;
+  --card:   #161b22;
+  --border: #30363d;
+  --text:   #e6edf3;
+  --blue:   #58a6ff;
+  --green:  #3fb950;
+  --red:    #f85149;
+  --amber:  #d29922;
+  --muted:  #8b949e;
+
+  /* New — v2 additions */
+  --card-elevated: #1c2128;
+  --blue-glow:     rgba(88,166,255,0.12);
+  --green-glow:    rgba(63,185,80,0.12);
+  --red-glow:      rgba(248,81,73,0.12);
+  --amber-glow:    rgba(210,153,34,0.12);
+
+  /* TradingView-inspired additions */
+  --glass-bg:      rgba(22,27,34,0.72);       /* glassmorphism base */
+  --glass-border:  rgba(88,166,255,0.15);      /* glassmorphism border */
+  --accent-top-blue:  linear-gradient(90deg, #58a6ff, #1f6feb);
+  --accent-top-green: linear-gradient(90deg, #3fb950, #196c2e);
+  --accent-top-red:   linear-gradient(90deg, #f85149, #b91c1c);
+  --accent-top-amber: linear-gradient(90deg, #d29922, #92400e);
+  --shadow-card:   0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+  --shadow-hover:  0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(88,166,255,0.1);
+
+  /* Gradients */
+  --gradient-header: linear-gradient(135deg, #161b22 0%, #1c2128 100%);
+  --gradient-blue:   linear-gradient(135deg, rgba(88,166,255,0.15) 0%, rgba(88,166,255,0.03) 100%);
+
+  /* Spacing scale */
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md:  16px;
+  --sp-lg:  24px;
+  --sp-xl:  40px;
+  --sp-2xl: 64px;
+
+  /* Typography scale */
+  --text-xs:   11px;
+  --text-sm:   12px;
+  --text-base: 14px;
+  --text-md:   16px;
+  --text-lg:   20px;
+  --text-xl:   28px;
+  --text-2xl:  40px;
+
+  /* Animation */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-med:  300ms;
+  --dur-slow: 500ms;
+
+  /* Layout */
+  --max-width: 1200px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* ── 2. BASE ────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* ── 3. LAYOUT ──────────────────────────────────────────────── */
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--sp-xl) var(--sp-lg);
+}
+
+.section { margin-bottom: var(--sp-2xl); }
+
+.section-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: var(--sp-xs);
+}
+
+.section-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: var(--sp-md);
+  padding-bottom: var(--sp-sm);
+  border-bottom: 1px solid var(--border);
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--sp-md); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-md); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-md); }
+
+/* ── 4. TYPOGRAPHY UTILITIES ────────────────────────────────── */
+.t-xs   { font-size: var(--text-xs); }
+.t-sm   { font-size: var(--text-sm); }
+.t-base { font-size: var(--text-base); }
+.t-md   { font-size: var(--text-md); }
+.t-lg   { font-size: var(--text-lg); }
+.t-xl   { font-size: var(--text-xl); font-weight: 800; letter-spacing: -0.02em; }
+.t-2xl  { font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+
+.text-muted { color: var(--muted); }
+.text-blue  { color: var(--blue); }
+.text-green { color: var(--green); }
+.text-red   { color: var(--red); }
+.text-amber { color: var(--amber); }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+
+/* ── 5. PAGE HEADER COMPONENT ───────────────────────────────── */
+.page-header {
+  background: var(--gradient-header);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-xl) var(--sp-lg);
+  margin-bottom: var(--sp-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--green), var(--amber));
+}
+
+.finn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-xs);
+  background: var(--blue-glow);
+  border: 1px solid rgba(88,166,255,0.3);
+  border-radius: 100px;
+  padding: var(--sp-xs) var(--sp-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: var(--sp-md);
+}
+
+.page-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: var(--sp-sm);
+}
+
+.page-subtitle {
+  font-size: var(--text-md);
+  color: var(--muted);
+  margin-bottom: var(--sp-lg);
+}
+
+.tag-row { display: flex; flex-wrap: wrap; gap: var(--sp-xs); }
+
+/* ── 6. CARD COMPONENTS ─────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-lg);
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--dur-med) var(--ease-out),
+              box-shadow var(--dur-med) var(--ease-out),
+              transform var(--dur-med) var(--ease-out);
+}
+.card:hover {
+  border-color: rgba(88,166,255,0.35);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.card-elevated {
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-lg);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+}
+.card-elevated:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+
+/* Glow cards — with hover lift */
+.card-glow-blue  { background: var(--blue-glow);  border: 1px solid rgba(88,166,255,0.25); border-radius: var(--radius-md); padding: var(--sp-lg); transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+.card-glow-green { background: var(--green-glow); border: 1px solid rgba(63,185,80,0.25);  border-radius: var(--radius-md); padding: var(--sp-lg); transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+.card-glow-red   { background: var(--red-glow);   border: 1px solid rgba(248,81,73,0.25);  border-radius: var(--radius-md); padding: var(--sp-lg); transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+.card-glow-amber { background: var(--amber-glow); border: 1px solid rgba(210,153,34,0.25); border-radius: var(--radius-md); padding: var(--sp-lg); transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out); }
+.card-glow-blue:hover, .card-glow-green:hover,
+.card-glow-red:hover,  .card-glow-amber:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+
+/* Accent-top cards — TradingView-style top border strip */
+.card-accent {
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-lg);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+}
+.card-accent:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+.card-accent::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.card-accent.accent-blue::before  { background: var(--accent-top-blue); }
+.card-accent.accent-green::before { background: var(--accent-top-green); }
+.card-accent.accent-red::before   { background: var(--accent-top-red); }
+.card-accent.accent-amber::before { background: var(--accent-top-amber); }
+
+/* Glassmorphism card — TradingView panel feel */
+.card-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-hover);
+  transition: border-color var(--dur-med) var(--ease-out);
+}
+.card-glass:hover { border-color: rgba(88,166,255,0.35); }
+
+.card-title { font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: var(--sp-sm); }
+
+/* Tabular numerics — all financial data uses this */
+.card-value {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.card-desc  { font-size: var(--text-xs); color: var(--muted); margin-top: var(--sp-xs); }
+
+/* ── SIGNAL STRENGTH GAUGE ─────────────────────────────────── */
+/* Usage: <div class="signal-gauge" data-value="0.7" data-color="blue"></div>
+   JS reads data-value (0–1) and animates the fill on reveal. */
+.signal-gauge-wrap { margin-top: var(--sp-sm); }
+.signal-gauge-label { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--muted); margin-bottom: 4px; }
+.signal-gauge-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.signal-gauge-fill {
+  height: 100%;
+  border-radius: 100px;
+  width: 0%;
+  transition: width 1s var(--ease-out);
+}
+.signal-gauge-fill.blue  { background: linear-gradient(90deg, #1f6feb, #58a6ff); }
+.signal-gauge-fill.green { background: linear-gradient(90deg, #196c2e, #3fb950); }
+.signal-gauge-fill.red   { background: linear-gradient(90deg, #b91c1c, #f85149); }
+.signal-gauge-fill.amber { background: linear-gradient(90deg, #92400e, #d29922); }
+
+/* ── LIVE INDICATOR DOT ────────────────────────────────────── */
+/* Usage: <span class="live-dot"></span> or <span class="live-dot amber"></span> */
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 0 rgba(63,185,80,0.4);
+  animation: pulse-dot 2s infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.live-dot.amber {
+  background: var(--amber);
+  box-shadow: 0 0 0 0 rgba(210,153,34,0.4);
+  animation: pulse-dot-amber 2s infinite;
+}
+.live-dot.red {
+  background: var(--red);
+  box-shadow: 0 0 0 0 rgba(248,81,73,0.4);
+  animation: pulse-dot-red 2s infinite;
+}
+@keyframes pulse-dot       { 0%,100%{box-shadow:0 0 0 0 rgba(63,185,80,0.4)}  70%{box-shadow:0 0 0 8px rgba(63,185,80,0)} }
+@keyframes pulse-dot-amber { 0%,100%{box-shadow:0 0 0 0 rgba(210,153,34,0.4)} 70%{box-shadow:0 0 0 8px rgba(210,153,34,0)} }
+@keyframes pulse-dot-red   { 0%,100%{box-shadow:0 0 0 0 rgba(248,81,73,0.4)}  70%{box-shadow:0 0 0 8px rgba(248,81,73,0)} }
+
+/* ── METRIC STRIP — TradingView top-bar style ──────────────── */
+.metric-strip {
+  display: flex;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--sp-lg);
+}
+.metric-strip-item {
+  flex: 1;
+  background: var(--card);
+  padding: var(--sp-sm) var(--sp-md);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.metric-strip-item:hover { background: var(--card-elevated); }
+.metric-strip-label { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.metric-strip-value { font-size: var(--text-sm); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ── TOOLTIP COMPONENT ─────────────────────────────────────── */
+.tooltip-host { position: relative; display: inline-block; }
+.tooltip-panel {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-xs) var(--sp-sm);
+  font-size: var(--text-xs);
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.tooltip-panel::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--border);
+}
+.tooltip-host:hover .tooltip-panel {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── 7. BADGE COMPONENTS ────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.badge-blue  { background: var(--blue-glow);  color: var(--blue);  border: 1px solid rgba(88,166,255,0.3); }
+.badge-green { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.badge-red   { background: var(--red-glow);   color: var(--red);   border: 1px solid rgba(248,81,73,0.3); }
+.badge-amber { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(210,153,34,0.3); }
+.badge-muted { background: rgba(139,148,158,0.1); color: var(--muted); border: 1px solid rgba(139,148,158,0.2); }
+
+/* ── 8. TABLE COMPONENT ─────────────────────────────────────── */
+.data-table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+
+.data-table th {
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: var(--sp-sm) var(--sp-md);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: var(--sp-sm) var(--sp-md);
+  border-bottom: 1px solid rgba(48,54,61,0.5);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+
+.data-table tr.expandable {
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.data-table tr.expandable:hover td { background: var(--card-elevated); }
+
+.data-table tr.detail-row td {
+  background: rgba(22,27,34,0.6);
+  color: var(--muted);
+  font-size: var(--text-xs);
+  line-height: 1.7;
+  padding: var(--sp-sm) var(--sp-md) var(--sp-sm) 48px;
+  display: none;
+}
+.data-table tr.detail-row.open td { display: table-cell; }
+
+.expand-icon {
+  display: inline-block;
+  width: 14px;
+  font-size: 10px;
+  color: var(--muted);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.expandable.open .expand-icon { transform: rotate(90deg); }
+
+/* ── 9. TAB COMPONENT ───────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  width: fit-content;
+  margin-bottom: var(--sp-md);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: var(--sp-xs) var(--sp-md);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+  font-family: inherit;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { background: var(--card-elevated); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── 10. FLIP CARD COMPONENT ────────────────────────────────── */
+.flip-scene { perspective: 800px; }
+
+.flip-card {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform var(--dur-slow) var(--ease-out);
+  cursor: pointer;
+  position: relative;
+}
+.flip-card.flipped { transform: rotateY(180deg); }
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-md);
+  text-align: center;
+}
+
+.flip-face--front {
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+}
+.flip-face--back {
+  background: var(--blue-glow);
+  border: 1px solid rgba(88,166,255,0.25);
+  transform: rotateY(180deg);
+}
+
+.flip-hint { font-size: var(--text-xs); color: var(--muted); margin-top: var(--sp-xs); }
+
+/* ── 11. REVEAL ANIMATION ───────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* Staggered children */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+.reveal-stagger.visible > *:nth-child(1) { opacity:1; transform:none; transition-delay:   0ms; }
+.reveal-stagger.visible > *:nth-child(2) { opacity:1; transform:none; transition-delay:  80ms; }
+.reveal-stagger.visible > *:nth-child(3) { opacity:1; transform:none; transition-delay: 160ms; }
+.reveal-stagger.visible > *:nth-child(4) { opacity:1; transform:none; transition-delay: 240ms; }
+.reveal-stagger.visible > *:nth-child(5) { opacity:1; transform:none; transition-delay: 320ms; }
+.reveal-stagger.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay: 400ms; }
+
+/* ── 12. ANIMATED COUNTER ───────────────────────────────────── */
+/* Mark numeric elements with class="counter" data-target="58" data-suffix="%" */
+/* Counter triggered by counterObs when parent enters viewport */
+
+/* ── 13. SVG CANDLESTICK WRAPPERS ───────────────────────────── */
+.candle-row { display: flex; align-items: flex-end; gap: var(--sp-lg); flex-wrap: wrap; padding: var(--sp-md) 0; }
+.candle-group { display: flex; flex-direction: column; align-items: center; gap: var(--sp-xs); }
+.candle-label { font-size: var(--text-xs); color: var(--muted); text-align: center; line-height: 1.4; }
+
+/* ── 14. INLINE SVG CHART WRAPPER ───────────────────────────── */
+.chart-wrapper {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-md);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-card);
+}
+
+/* Accent-top chart panel — TradingView chart panel style */
+.chart-wrapper.chart-accent {
+  border-top: 2px solid transparent;
+  border-image: var(--accent-top-blue) 1;
+  border-radius: var(--radius-md);
+}
+
+.chart-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: var(--sp-sm);
+}
+
+/* SVG chart hover crosshair */
+.chart-svg-wrap {
+  position: relative;
+  cursor: crosshair;
+}
+.chart-crosshair {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(88,166,255,0.4);
+  pointer-events: none;
+  display: none;
+}
+.chart-tooltip-dot {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--blue);
+  border: 2px solid var(--card);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  display: none;
+}
+.chart-svg-wrap:hover .chart-crosshair,
+.chart-svg-wrap:hover .chart-tooltip-dot { display: block; }
+
+/* ── 15. QUIZ COMPONENT ─────────────────────────────────────── */
+.quiz-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-lg);
+  max-width: 640px;
+}
+.quiz-progress { font-size: var(--text-xs); color: var(--muted); margin-bottom: var(--sp-md); }
+.quiz-question { font-size: var(--text-md); font-weight: 600; line-height: 1.4; margin-bottom: var(--sp-lg); }
+.quiz-answer {
+  background: var(--green-glow);
+  border: 1px solid rgba(63,185,80,0.25);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-md);
+  font-size: var(--text-sm);
+  color: var(--green);
+  line-height: 1.7;
+}
+.quiz-answer.hidden { display: none; }
+.quiz-controls { display: flex; gap: var(--sp-sm); margin-top: var(--sp-md); }
+
+/* ── 16. BUTTONS ────────────────────────────────────────────── */
+.btn {
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: var(--sp-xs) var(--sp-md);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.btn:hover { border-color: var(--blue); color: var(--blue); }
+
+.btn-primary {
+  background: var(--blue-glow);
+  border: 1px solid rgba(88,166,255,0.4);
+  color: var(--blue);
+}
+.btn-primary:hover { background: rgba(88,166,255,0.2); }
+
+/* ── 17. SOCIAL MEDIA MODE ──────────────────────────────────── */
+body.social {
+  width: 1200px;
+  min-height: 675px;
+  overflow: hidden;
+  font-size: var(--text-sm);
+}
+body.social .page { padding: var(--sp-lg); }
+
+body.social.square { width: 1080px; min-height: 1080px; }
+body.social.vertical { width: 1080px; min-height: 1920px; }
+
+/* Hide dev-only sections in social screenshots */
+body.social .dev-only { display: none !important; }
+
+/* ── 18. PAGE FOOTER ────────────────────────────────────────── */
+.page-footer {
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-lg);
+  margin-top: var(--sp-2xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+/* ── 19. COLOR SWATCHES (dev reference) ─────────────────────── */
+.swatch { width: 44px; height: 44px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.swatch-item { display: flex; flex-direction: column; align-items: center; gap: var(--sp-xs); font-size: var(--text-xs); color: var(--muted); }
+
+/* ── 20. UPLOT CONTAINER (use when uPlot is inlined) ────────── */
+.uplot-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--sp-md); }
+.u-wrap, .uplot { width: 100% !important; }
+
+/* ── 21. PRINT ──────────────────────────────────────────────── */
+@media print {
+  body { background: #fff; color: #000; }
+  .card, .card-elevated, .card-glow-blue,
+  .card-glow-green, .card-glow-red { border: 1px solid #ccc; background: #fff; }
+  .page-header { background: #f5f5f5; }
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<!-- ── HEADER ─────────────────────────────────────────────── -->
+<header class="page-header">
+  <div class="finn-badge">FINN · Design System v2</div>
+  <h1 class="page-title">Template Reference File</h1>
+  <p class="page-subtitle">Copy-paste source for all v2 component patterns. Development reference — not a distributed infographic.</p>
+  <div class="tag-row">
+    <span class="badge badge-blue">CSS Variables</span>
+    <span class="badge badge-green">Components</span>
+    <span class="badge badge-amber">Patterns</span>
+    <span class="badge badge-muted">Dev Reference · v2.0 · May 2026</span>
+  </div>
+</header>
+
+<!-- ── SECTION: COLOR PALETTE (dev) ────────────────────────── -->
+<section class="section dev-only reveal">
+  <div class="section-label">Design System</div>
+  <h2 class="section-title">Color Palette</h2>
+  <div style="display:grid; grid-template-columns: repeat(9, 1fr); gap: 12px; max-width: 600px;">
+    <div class="swatch-item"><div class="swatch" style="background:#0d1117;"></div>--bg</div>
+    <div class="swatch-item"><div class="swatch" style="background:#161b22;"></div>--card</div>
+    <div class="swatch-item"><div class="swatch" style="background:#1c2128;"></div>--elevated</div>
+    <div class="swatch-item"><div class="swatch" style="background:#30363d;"></div>--border</div>
+    <div class="swatch-item"><div class="swatch" style="background:#8b949e;"></div>--muted</div>
+    <div class="swatch-item"><div class="swatch" style="background:#e6edf3;"></div>--text</div>
+    <div class="swatch-item"><div class="swatch" style="background:#58a6ff;"></div>--blue</div>
+    <div class="swatch-item"><div class="swatch" style="background:#3fb950;"></div>--green</div>
+    <div class="swatch-item"><div class="swatch" style="background:#f85149;"></div>--red</div>
+  </div>
+</section>
+
+<!-- ── SECTION: METRIC CARDS WITH COUNTERS ─────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">Metric Cards + Animated Counters</h2>
+  <div class="grid-4 reveal-stagger">
+    <div class="card">
+      <div class="card-title">Sharpe Ratio</div>
+      <div class="card-value text-blue">1.42</div>
+      <div class="card-desc">vs. SPY 0.91 same period</div>
+    </div>
+    <div class="card-glow-green">
+      <div class="card-title">Win Rate</div>
+      <div class="card-value text-green"><span class="counter" data-target="58" data-suffix="%">0%</span></div>
+      <div class="card-desc">N = 94 trades, M3–M4</div>
+    </div>
+    <div class="card-glow-red">
+      <div class="card-title">Max Drawdown</div>
+      <div class="card-value text-red">-7.3%</div>
+      <div class="card-desc">Rule: halt at -10%</div>
+    </div>
+    <div class="card-glow-amber">
+      <div class="card-title">IC (20-day)</div>
+      <div class="card-value text-amber">0.07</div>
+      <div class="card-desc">p = 0.03 · signal active</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION: METRIC STRIP (TradingView top-bar style) ───── -->
+<section class="section reveal">
+  <div class="section-label">Components — TradingView Aesthetic</div>
+  <h2 class="section-title">Metric Strip — Compact Data Header</h2>
+  <p class="t-sm text-muted" style="margin-bottom:var(--sp-md);">TV-style top data row. One scannable line of key numbers before any content. Use at the top of every infographic.</p>
+  <div class="metric-strip">
+    <div class="metric-strip-item">
+      <span class="metric-strip-label">Sharpe</span>
+      <span class="metric-strip-value text-blue">1.42</span>
+    </div>
+    <div class="metric-strip-item">
+      <span class="metric-strip-label">Win Rate</span>
+      <span class="metric-strip-value text-green">58%</span>
+    </div>
+    <div class="metric-strip-item">
+      <span class="metric-strip-label">IC (20d)</span>
+      <span class="metric-strip-value text-amber">0.07</span>
+    </div>
+    <div class="metric-strip-item">
+      <span class="metric-strip-label">Max DD</span>
+      <span class="metric-strip-value text-red">-7.3%</span>
+    </div>
+    <div class="metric-strip-item">
+      <span class="metric-strip-label">Trades</span>
+      <span class="metric-strip-value">94</span>
+    </div>
+    <div class="metric-strip-item">
+      <span class="metric-strip-label">Signal</span>
+      <span class="metric-strip-value"><span class="live-dot"></span>Active</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION: ACCENT CARDS + GLASS ───────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components — TradingView Aesthetic</div>
+  <h2 class="section-title">Accent-Top Cards + Glassmorphism</h2>
+  <div class="grid-4 reveal-stagger" style="margin-bottom:var(--sp-md);">
+    <div class="card-accent accent-blue">
+      <div class="card-title">Strategy IC</div>
+      <div class="card-value text-blue">0.07</div>
+      <div class="signal-gauge-wrap">
+        <div class="signal-gauge-label"><span>Signal strength</span><span class="text-blue">70%</span></div>
+        <div class="signal-gauge-track"><div class="signal-gauge-fill blue" data-pct="70"></div></div>
+      </div>
+    </div>
+    <div class="card-accent accent-green">
+      <div class="card-title">Win Rate</div>
+      <div class="card-value text-green counter" data-target="58" data-suffix="%">0%</div>
+      <div class="signal-gauge-wrap">
+        <div class="signal-gauge-label"><span>vs. 50% baseline</span><span class="text-green">+8pts</span></div>
+        <div class="signal-gauge-track"><div class="signal-gauge-fill green" data-pct="58"></div></div>
+      </div>
+    </div>
+    <div class="card-accent accent-red">
+      <div class="card-title">Drawdown</div>
+      <div class="card-value text-red">-7.3%</div>
+      <div class="signal-gauge-wrap">
+        <div class="signal-gauge-label"><span>Risk used</span><span class="text-red">73% of -10% limit</span></div>
+        <div class="signal-gauge-track"><div class="signal-gauge-fill red" data-pct="73"></div></div>
+      </div>
+    </div>
+    <div class="card-accent accent-amber">
+      <div class="card-title">Sharpe</div>
+      <div class="card-value text-amber">1.42</div>
+      <div class="signal-gauge-wrap">
+        <div class="signal-gauge-label"><span>vs. 1.0 threshold</span><span class="text-amber">+42%</span></div>
+        <div class="signal-gauge-track"><div class="signal-gauge-fill amber" data-pct="71"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card-glass">
+      <div class="card-title">Glassmorphism Card</div>
+      <div style="font-size:var(--text-sm); color:var(--muted); margin-top:6px;">
+        Uses <code style="color:var(--blue)">backdrop-filter: blur(12px)</code> — frosted glass effect. Best on pages with visual content behind the card. The TradingView panel feel.
+      </div>
+    </div>
+    <div class="card-glass">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+        <span class="live-dot"></span>
+        <span class="fw-600">Signal Active — RSI Divergence</span>
+        <span class="badge badge-green" style="margin-left:auto;">CONFIRMED</span>
+      </div>
+      <div style="font-size:var(--text-xs); color:var(--muted);">IC: 0.07 · p = 0.03 · OOS confirmed · Regime: trending</div>
+      <div class="signal-gauge-wrap" style="margin-top:10px;">
+        <div class="signal-gauge-track"><div class="signal-gauge-fill green" data-pct="85"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION: LIVE DOTS + TOOLTIPS ───────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components — TradingView Aesthetic</div>
+  <h2 class="section-title">Live Indicators + Hover Tooltips</h2>
+  <div style="display:flex; gap:var(--sp-xl); flex-wrap:wrap; align-items:flex-start;">
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">Live Dots</div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; align-items:center; gap:8px;"><span class="live-dot"></span><span class="t-sm">Signal Active (green)</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><span class="live-dot amber"></span><span class="t-sm">Monitoring / Caution (amber)</span></div>
+        <div style="display:flex; align-items:center; gap:8px;"><span class="live-dot red"></span><span class="t-sm">Risk Zone / Halt (red)</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label" style="margin-bottom:8px;">Hover Tooltips — hover the badges</div>
+      <div style="display:flex; gap:var(--sp-sm); flex-wrap:wrap;">
+        <div class="tooltip-host">
+          <span class="badge badge-blue" style="cursor:pointer;">IC: 0.07</span>
+          <div class="tooltip-panel">Information Coefficient · p = 0.03 · N = 220 trades</div>
+        </div>
+        <div class="tooltip-host">
+          <span class="badge badge-green" style="cursor:pointer;">Sharpe: 1.42</span>
+          <div class="tooltip-panel">Risk-adjusted return vs. SPY 0.91 same period</div>
+        </div>
+        <div class="tooltip-host">
+          <span class="badge badge-amber" style="cursor:pointer;">Win Rate: 58%</span>
+          <div class="tooltip-panel">Baseline: 50% · Expectancy: +$0.84 per $1 risked</div>
+        </div>
+        <div class="tooltip-host">
+          <span class="badge badge-red" style="cursor:pointer;">DD: -7.3%</span>
+          <div class="tooltip-panel">Max drawdown · Rule halt at -10% · Currently 73% of limit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION: BADGES ─────────────────────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">Badges</h2>
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+    <span class="badge badge-green">BULLISH</span>
+    <span class="badge badge-red">BEARISH</span>
+    <span class="badge badge-blue">SIGNAL ACTIVE</span>
+    <span class="badge badge-amber">CAUTION</span>
+    <span class="badge badge-muted">NEUTRAL</span>
+    <span class="badge badge-muted">T1 PRIORITY</span>
+    <span class="badge badge-blue">IC: 0.07</span>
+    <span class="badge badge-green">OOS CONFIRMED</span>
+    <span class="badge badge-red">HALT ZONE</span>
+  </div>
+</section>
+
+<!-- ── SECTION: EXPANDABLE TABLE ───────────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">Expandable Table — Click Row to Expand</h2>
+  <div class="card" style="padding:0; overflow:hidden;">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:32px;"></th>
+          <th>Pattern</th>
+          <th>Signal</th>
+          <th>Reliability</th>
+          <th>Timeframe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="expandable" onclick="toggleRow(this)">
+          <td><span class="expand-icon">▶</span></td>
+          <td class="fw-600">Hammer</td>
+          <td><span class="badge badge-green">BULLISH</span></td>
+          <td>High</td>
+          <td>All</td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="5">Small body at top of range, long lower wick (≥2× body). Requires prior downtrend. Confirm with next-candle close above body. FINN backtest IC: 0.06 (p = 0.02, N = 220).</td>
+        </tr>
+        <tr class="expandable" onclick="toggleRow(this)">
+          <td><span class="expand-icon">▶</span></td>
+          <td class="fw-600">Shooting Star</td>
+          <td><span class="badge badge-red">BEARISH</span></td>
+          <td>High</td>
+          <td>All</td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="5">Small body at bottom of range, long upper wick (≥2× body). Requires prior uptrend. Confirmation: next-candle close below body. Mirror of Hammer — same IC profile.</td>
+        </tr>
+        <tr class="expandable" onclick="toggleRow(this)">
+          <td><span class="expand-icon">▶</span></td>
+          <td class="fw-600">Doji</td>
+          <td><span class="badge badge-amber">INDECISION</span></td>
+          <td>Medium</td>
+          <td>Daily+</td>
+        </tr>
+        <tr class="detail-row">
+          <td colspan="5">Open ≈ Close (within 0.05% of range). Signals balance between buyers and sellers. At support = potential reversal; in trending move = continuation pause. Requires confluence — do not trade in isolation.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── SECTION: TAB SWITCHER ───────────────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">Tab Switcher</h2>
+  <div class="tabs" id="tabs-example">
+    <button class="tab-btn active" data-tab="bullish">Bullish</button>
+    <button class="tab-btn" data-tab="bearish">Bearish</button>
+    <button class="tab-btn" data-tab="neutral">Neutral</button>
+  </div>
+  <div class="tab-panel active" id="tab-bullish">
+    <div class="grid-3">
+      <div class="card-glow-green">
+        <div class="card-title">Hammer</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">Long lower wick, small body at top. Prior downtrend required. IC: 0.06.</div>
+      </div>
+      <div class="card-glow-green">
+        <div class="card-title">Bullish Engulfing</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">Large green body fully engulfs prior red body. Strong reversal. IC: 0.08.</div>
+      </div>
+      <div class="card-glow-green">
+        <div class="card-title">Morning Star</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">3-candle: red → small doji → green. Gaps add strength. IC: 0.09.</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-bearish">
+    <div class="grid-3">
+      <div class="card-glow-red">
+        <div class="card-title">Shooting Star</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">Long upper wick, small body at bottom. Prior uptrend required. IC: 0.06.</div>
+      </div>
+      <div class="card-glow-red">
+        <div class="card-title">Bearish Engulfing</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">Large red body fully engulfs prior green body. Strong reversal. IC: 0.08.</div>
+      </div>
+      <div class="card-glow-red">
+        <div class="card-title">Evening Star</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">3-candle: green → small doji → red. Mirror of morning star. IC: 0.09.</div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="tab-neutral">
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-title">Doji</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">Open ≈ Close. Market indecision. Context determines direction.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Spinning Top</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">Small body, equal wicks. Weaker indecision signal than Doji.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Inside Bar</div>
+        <div class="t-sm text-muted" style="margin-top:6px;">Full range inside prior bar. Consolidation — watch for breakout.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION: FLIP CARDS ─────────────────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">Flip Cards — CSS 3D · Click to Reveal</h2>
+  <div style="display:flex; gap:var(--sp-lg); flex-wrap:wrap;">
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+      <div class="flip-scene" style="width:180px; height:110px;">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-face flip-face--front">
+            <div class="t-md fw-700">IC</div>
+            <div class="flip-hint">click to reveal</div>
+          </div>
+          <div class="flip-face flip-face--back">
+            <div class="t-xs text-blue">Information Coefficient. Pearson correlation between predicted and actual forward returns. IC &gt; 0.05 = tradeable signal.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+      <div class="flip-scene" style="width:180px; height:110px;">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-face flip-face--front">
+            <div class="t-md fw-700">Sharpe</div>
+            <div class="flip-hint">click to reveal</div>
+          </div>
+          <div class="flip-face flip-face--back">
+            <div class="t-xs text-blue">(Return − Rf) ÷ StdDev. Risk-adjusted return. &gt;1.0 = acceptable. &gt;2.0 = excellent. Always compare to benchmark.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+      <div class="flip-scene" style="width:180px; height:110px;">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-face flip-face--front">
+            <div class="t-md fw-700">Max Drawdown</div>
+            <div class="flip-hint">click to reveal</div>
+          </div>
+          <div class="flip-face flip-face--back">
+            <div class="t-xs text-blue">Peak-to-trough portfolio decline over a period. FINN rule: halt trading at -10% from peak. Document every drawdown.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:8px;">
+      <div class="flip-scene" style="width:180px; height:110px;">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-face flip-face--front">
+            <div class="t-md fw-700">Expectancy</div>
+            <div class="flip-hint">click to reveal</div>
+          </div>
+          <div class="flip-face flip-face--back">
+            <div class="t-xs text-blue">(Win Rate × Avg Win) − (Loss Rate × Avg Loss). Positive expectancy is the minimum bar. Win rate alone is meaningless without it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION: SVG CANDLESTICK COMPONENTS ─────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">SVG Candlestick Library — Hand-Coded Inline</h2>
+  <p class="t-sm text-muted" style="margin-bottom:var(--sp-md);">Copy viewBox patterns for infographic use. No library required. Scale by adjusting svg width/height — viewBox coordinates remain fixed.</p>
+
+  <div class="candle-row">
+
+    <!-- Bullish — standard -->
+    <div class="candle-group">
+      <svg width="36" height="96" viewBox="0 0 36 96" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="4"  x2="18" y2="22" stroke="#3fb950" stroke-width="2"/>
+        <rect x="9"  y="22" width="18" height="48" fill="#3fb950" rx="1"/>
+        <line x1="18" y1="70" x2="18" y2="92" stroke="#3fb950" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Bullish</span>
+    </div>
+
+    <!-- Bearish — standard -->
+    <div class="candle-group">
+      <svg width="36" height="96" viewBox="0 0 36 96" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="4"  x2="18" y2="22" stroke="#f85149" stroke-width="2"/>
+        <rect x="9"  y="22" width="18" height="48" fill="#f85149" rx="1"/>
+        <line x1="18" y1="70" x2="18" y2="92" stroke="#f85149" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Bearish</span>
+    </div>
+
+    <!-- Hammer -->
+    <div class="candle-group">
+      <svg width="36" height="96" viewBox="0 0 36 96" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="8"  x2="18" y2="18" stroke="#3fb950" stroke-width="2"/>
+        <rect x="9"  y="18" width="18" height="16" fill="#3fb950" rx="1"/>
+        <line x1="18" y1="34" x2="18" y2="92" stroke="#3fb950" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Hammer<br>(Bullish)</span>
+    </div>
+
+    <!-- Shooting Star -->
+    <div class="candle-group">
+      <svg width="36" height="96" viewBox="0 0 36 96" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="4"  x2="18" y2="62" stroke="#f85149" stroke-width="2"/>
+        <rect x="9"  y="62" width="18" height="16" fill="#f85149" rx="1"/>
+        <line x1="18" y1="78" x2="18" y2="88" stroke="#f85149" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Shooting Star<br>(Bearish)</span>
+    </div>
+
+    <!-- Doji -->
+    <div class="candle-group">
+      <svg width="36" height="96" viewBox="0 0 36 96" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="8"  x2="18" y2="46" stroke="#d29922" stroke-width="2"/>
+        <rect x="6"  y="46" width="24" height="4" fill="#d29922" rx="1"/>
+        <line x1="18" y1="50" x2="18" y2="88" stroke="#d29922" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Doji<br>(Indecision)</span>
+    </div>
+
+    <!-- Inverted Hammer -->
+    <div class="candle-group">
+      <svg width="36" height="96" viewBox="0 0 36 96" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="4"  x2="18" y2="62" stroke="#3fb950" stroke-width="2"/>
+        <rect x="9"  y="62" width="18" height="16" fill="#3fb950" rx="1"/>
+        <line x1="18" y1="78" x2="18" y2="88" stroke="#3fb950" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Inv. Hammer<br>(Bullish)</span>
+    </div>
+
+    <!-- Hanging Man -->
+    <div class="candle-group">
+      <svg width="36" height="96" viewBox="0 0 36 96" xmlns="http://www.w3.org/2000/svg">
+        <line x1="18" y1="8"  x2="18" y2="18" stroke="#f85149" stroke-width="2"/>
+        <rect x="9"  y="18" width="18" height="16" fill="#f85149" rx="1"/>
+        <line x1="18" y1="34" x2="18" y2="92" stroke="#f85149" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Hanging Man<br>(Bearish)</span>
+    </div>
+
+    <!-- Bullish Engulfing (two-candle) -->
+    <div class="candle-group">
+      <svg width="72" height="96" viewBox="0 0 72 96" xmlns="http://www.w3.org/2000/svg">
+        <!-- Small bearish -->
+        <line x1="18" y1="18" x2="18" y2="28" stroke="#f85149" stroke-width="2"/>
+        <rect x="9"  y="28" width="18" height="28" fill="#f85149" rx="1"/>
+        <line x1="18" y1="56" x2="18" y2="66" stroke="#f85149" stroke-width="2"/>
+        <!-- Large bullish engulfing -->
+        <line x1="54" y1="12" x2="54" y2="22" stroke="#3fb950" stroke-width="2"/>
+        <rect x="45" y="22" width="18" height="58" fill="#3fb950" rx="1"/>
+        <line x1="54" y1="80" x2="54" y2="88" stroke="#3fb950" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Bullish<br>Engulfing</span>
+    </div>
+
+    <!-- Morning Star (three-candle) -->
+    <div class="candle-group">
+      <svg width="108" height="96" viewBox="0 0 108 96" xmlns="http://www.w3.org/2000/svg">
+        <!-- Large bearish -->
+        <line x1="18" y1="10" x2="18" y2="18" stroke="#f85149" stroke-width="2"/>
+        <rect x="9"  y="18" width="18" height="44" fill="#f85149" rx="1"/>
+        <line x1="18" y1="62" x2="18" y2="70" stroke="#f85149" stroke-width="2"/>
+        <!-- Small doji / indecision (gaps down) -->
+        <line x1="54" y1="66" x2="54" y2="72" stroke="#d29922" stroke-width="2"/>
+        <rect x="47" y="72" width="14" height="8"  fill="#d29922" rx="1"/>
+        <line x1="54" y1="80" x2="54" y2="86" stroke="#d29922" stroke-width="2"/>
+        <!-- Large bullish (gaps up) -->
+        <line x1="90" y1="12" x2="90" y2="22" stroke="#3fb950" stroke-width="2"/>
+        <rect x="81" y="22" width="18" height="40" fill="#3fb950" rx="1"/>
+        <line x1="90" y1="62" x2="90" y2="70" stroke="#3fb950" stroke-width="2"/>
+      </svg>
+      <span class="candle-label">Morning Star<br>(Bullish)</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SECTION: INLINE SVG LINE CHART ──────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">Inline SVG Chart — Equity Curve</h2>
+  <p class="t-sm text-muted" style="margin-bottom:var(--sp-md);">For static illustrative charts. Zero KB overhead. No library. Use for decorative curves, backtest visuals, benchmark comparisons.</p>
+
+  <div class="chart-wrapper" style="border-top: 2px solid; border-image: linear-gradient(90deg,#58a6ff,#1f6feb) 1;">
+    <div class="chart-label">Strategy Equity Curve vs. Benchmark — Illustrative (M1–M4)</div>
+    <div class="chart-svg-wrap" id="chart-main">
+      <div class="chart-crosshair" id="chart-crosshair"></div>
+      <div class="chart-tooltip-dot" id="chart-dot"></div>
+    <svg width="100%" height="180" viewBox="0 0 800 180" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid lines -->
+      <line x1="0" y1="45"  x2="800" y2="45"  stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="0" y1="90"  x2="800" y2="90"  stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
+      <line x1="0" y1="135" x2="800" y2="135" stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
+      <!-- Benchmark (SPY) — muted dashed -->
+      <polyline points="0,135 100,128 200,122 300,118 400,120 500,110 600,102 700,96 800,91"
+        fill="none" stroke="#8b949e" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <!-- Strategy fill -->
+      <polygon points="0,135 100,122 200,108 300,96 400,102 500,82 600,67 700,52 800,38 800,165 0,165"
+        fill="rgba(88,166,255,0.07)"/>
+      <!-- Strategy line -->
+      <polyline points="0,135 100,122 200,108 300,96 400,102 500,82 600,67 700,52 800,38"
+        fill="none" stroke="#58a6ff" stroke-width="2.5"/>
+      <!-- Data point dots -->
+      <circle cx="100" cy="122" r="3" fill="#58a6ff"/>
+      <circle cx="300" cy="96"  r="3" fill="#58a6ff"/>
+      <circle cx="500" cy="82"  r="3" fill="#58a6ff"/>
+      <circle cx="800" cy="38"  r="3" fill="#58a6ff"/>
+      <!-- Labels -->
+      <text x="805" y="42"  fill="#58a6ff" font-size="11" font-family="system-ui" dominant-baseline="middle">Strategy +22%</text>
+      <text x="805" y="95"  fill="#8b949e" font-size="11" font-family="system-ui" dominant-baseline="middle">SPY +9%</text>
+      <!-- Axis ticks -->
+      <text x="0"   y="175" fill="#8b949e" font-size="10" font-family="system-ui">W01</text>
+      <text x="188" y="175" fill="#8b949e" font-size="10" font-family="system-ui">W06</text>
+      <text x="388" y="175" fill="#8b949e" font-size="10" font-family="system-ui">W12</text>
+      <text x="588" y="175" fill="#8b949e" font-size="10" font-family="system-ui">W18</text>
+      <text x="775" y="175" fill="#8b949e" font-size="10" font-family="system-ui">W24</text>
+    </svg>
+    </div><!-- /.chart-svg-wrap -->
+  </div>
+</section>
+
+<!-- ── SECTION: UPLOT INTEGRATION NOTE (dev) ───────────────── -->
+<section class="section dev-only reveal">
+  <div class="section-label">Integration Guide</div>
+  <h2 class="section-title">uPlot — Dark Theme Config Template</h2>
+  <p class="t-sm text-muted" style="margin-bottom:var(--sp-md);">
+    uPlot is ~50KB minified (MIT). Download <code style="color:var(--blue)">dist/uPlot.iife.min.js</code> from
+    <code style="color:var(--blue)">github.com/leeoniya/uPlot</code> and paste into a &lt;script&gt; block.
+    Use for time-series charts: equity curves, rolling IC, drawdown. Not needed for bar/doughnut — use Chart.js there.
+  </p>
+  <div class="card" style="font-family:monospace; font-size:var(--text-xs); line-height:1.9; color:var(--muted); white-space:pre-wrap; overflow-x:auto;">/* ── uPlot DARK THEME CONFIG — copy into production files ──────
+   Step 1: paste uPlot.iife.min.js content into &lt;script&gt; block 1
+   Step 2: paste this config into &lt;script&gt; block 2
+   Step 3: add &lt;div id="uplot-chart"&gt;&lt;/div&gt; in HTML
+   ─────────────────────────────────────────────────────────────── */
+
+const chartData = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],               // x axis (indices or Unix timestamps)
+  [0, 1.2, 0.8, 2.1, 1.8, 3.0, 2.7, 4.1, 3.8, 5.2, 4.9],  // series 1 — strategy
+  [0, 0.4, 0.6, 0.9, 0.7, 1.1, 1.4, 1.6, 1.3, 1.8, 2.0],  // series 2 — benchmark
+];
+
+const chartOpts = {
+  width:   document.getElementById('uplot-chart').offsetWidth || 700,
+  height:  200,
+  padding: [8, 0, 0, 0],
+  series: [
+    {},  // x axis (auto)
+    {
+      label:  "Strategy",
+      stroke: "#58a6ff",
+      width:  2,
+      fill:   "rgba(88,166,255,0.08)",
+    },
+    {
+      label:  "Benchmark",
+      stroke: "#8b949e",
+      width:  1.5,
+      dash:   [6, 3],
+    },
+  ],
+  axes: [
+    {
+      stroke:    "#8b949e",
+      ticks:     { stroke: "#30363d", width: 1 },
+      grid:      { stroke: "#30363d", width: 1, dash: [4, 4] },
+      font:      "11px 'Segoe UI', system-ui",
+      labelFont: "11px 'Segoe UI', system-ui",
+    },
+    {
+      stroke:    "#8b949e",
+      ticks:     { stroke: "#30363d", width: 1 },
+      grid:      { stroke: "#30363d", width: 1, dash: [4, 4] },
+      font:      "11px 'Segoe UI', system-ui",
+      labelFont: "11px 'Segoe UI', system-ui",
+      side: 3,
+    },
+  ],
+  scales: { x: { time: false } },
+  cursor: {
+    stroke: "rgba(88,166,255,0.4)",
+    points: { fill: "#58a6ff", stroke: "#58a6ff", size: 8 },
+  },
+};
+
+const u = new uPlot(chartOpts, chartData, document.getElementById('uplot-chart'));</div>
+  <div class="card-glow-amber" style="margin-top:var(--sp-md);">
+    <div class="card-title">Chart.js — When to Use Instead</div>
+    <div class="t-sm text-muted" style="margin-top:6px;">
+      Chart.js (~220KB) is only justified for doughnut and histogram chart types that uPlot does not support natively.
+      Estimated files: <span class="badge badge-amber">ig_performance_metrics.html</span> <span class="badge badge-amber">ig_quant_workflow.html</span>
+      Do not inline Chart.js as a template default — it is a per-file decision.
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION: QUIZ MODE ──────────────────────────────────── -->
+<section class="section reveal">
+  <div class="section-label">Components</div>
+  <h2 class="section-title">Quiz / Drill Mode</h2>
+  <div class="quiz-card">
+    <div class="quiz-progress" id="quiz-progress">Question 1 of 3</div>
+    <div class="quiz-question" id="quiz-question">Loading…</div>
+    <div class="quiz-answer hidden" id="quiz-answer"></div>
+    <div class="quiz-controls">
+      <button class="btn btn-primary" onclick="quizReveal()">Reveal Answer</button>
+      <button class="btn" onclick="quizNext()">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION: SOCIAL MODE REFERENCE (dev) ────────────────── -->
+<section class="section dev-only reveal">
+  <div class="section-label">Distribution</div>
+  <h2 class="section-title">Social Media Mode — Screenshot Guide</h2>
+  <div class="grid-3" style="margin-bottom:var(--sp-md);">
+    <div class="card">
+      <div class="card-title">Twitter/X · LinkedIn</div>
+      <div class="t-sm" style="margin-top:8px;">
+        <code style="color:var(--blue);">class="social"</code> on &lt;body&gt;<br>
+        <span class="text-muted">1200 × 675px · 16:9</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Instagram · Facebook</div>
+      <div class="t-sm" style="margin-top:8px;">
+        <code style="color:var(--blue);">class="social square"</code><br>
+        <span class="text-muted">1080 × 1080px · 1:1</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Screenshot Method</div>
+      <div class="t-sm text-muted" style="margin-top:8px;">
+        Chrome DevTools →<br>
+        Ctrl+Shift+P → "Capture full size screenshot"
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Per-File Comment Block (add at top of every infographic)</div>
+    <div style="font-family:monospace; font-size:var(--text-xs); color:var(--blue); margin-top:8px; line-height:2;">
+      &lt;!-- SOCIAL MODE: add class="social" to &lt;body&gt; for 1200×675px screenshot (Twitter/X, LinkedIn) --&gt;<br>
+      &lt;!-- SOCIAL MODE: add class="social square" for 1080×1080px (Instagram, Facebook) --&gt;
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ──────────────────────────────────────────────── -->
+<footer class="page-footer">
+  <div>
+    <strong style="color:var(--blue);">FINN</strong>
+    <span class="text-muted"> — Financial Intelligence &amp; Navigation Network</span>
+  </div>
+  <div style="text-align:right;">
+    <span>Design System v2 Template</span>
+    <span style="margin:0 8px; color:var(--border);">|</span>
+    <span>Phase B · May 2026</span>
+  </div>
+</footer>
+
+</div><!-- /.page -->
+
+<script>
+/* ============================================================
+   FINN DESIGN SYSTEM v2 — INLINE JAVASCRIPT
+   No external dependencies. All patterns vanilla JS.
+   ============================================================ */
+
+/* ── 1. SCROLL REVEAL — IntersectionObserver ─────────────── */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => revealObs.observe(el));
+
+
+/* ── 2. ANIMATED COUNTER — requestAnimationFrame ─────────── */
+function animateCounter(el, target, suffix, duration) {
+  duration = duration || 1200;
+  const start = performance.now();
+  const isFloat = String(target).includes('.');
+  (function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = (isFloat ? (eased * target).toFixed(2) : Math.floor(eased * target)) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  })(start);
+}
+
+/* Trigger counters when their stagger parent becomes visible */
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.counter[data-target]').forEach(el => {
+        animateCounter(el, parseFloat(el.dataset.target), el.dataset.suffix || '');
+      });
+      counterObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.2 });
+
+document.querySelectorAll('.reveal-stagger').forEach(el => counterObs.observe(el));
+
+
+/* ── 3. TAB SWITCHER ─────────────────────────────────────── */
+document.querySelectorAll('.tabs').forEach(tabGroup => {
+  tabGroup.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabGroup.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      let sib = tabGroup.nextElementSibling;
+      while (sib && sib.classList.contains('tab-panel')) {
+        sib.classList.remove('active');
+        sib = sib.nextElementSibling;
+      }
+      const panel = document.getElementById('tab-' + btn.dataset.tab);
+      if (panel) panel.classList.add('active');
+    });
+  });
+});
+
+
+/* ── 4. EXPANDABLE TABLE ROWS ────────────────────────────── */
+function toggleRow(row) {
+  row.classList.toggle('open');
+  const detail = row.nextElementSibling;
+  if (detail && detail.classList.contains('detail-row')) {
+    detail.classList.toggle('open');
+  }
+}
+
+
+/* ── 5. SIGNAL STRENGTH GAUGES ───────────────────────────── */
+/* Animate fills when their parent reveal becomes visible */
+const gaugeObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.signal-gauge-fill[data-pct]').forEach(fill => {
+        setTimeout(() => { fill.style.width = fill.dataset.pct + '%'; }, 200);
+      });
+      gaugeObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.section').forEach(s => gaugeObs.observe(s));
+
+
+/* ── 6. SVG CHART CROSSHAIR ──────────────────────────────── */
+/* Attaches to any .chart-svg-wrap — tracks mouse X, moves crosshair line */
+document.querySelectorAll('.chart-svg-wrap').forEach(wrap => {
+  const crosshair = wrap.querySelector('.chart-crosshair');
+  const dot       = wrap.querySelector('.chart-tooltip-dot');
+  if (!crosshair) return;
+
+  wrap.addEventListener('mousemove', (e) => {
+    const rect = wrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    crosshair.style.left = x + 'px';
+    if (dot) { dot.style.left = x + 'px'; dot.style.top = '50%'; }
+  });
+});
+
+
+/* ── 7. QUIZ MODE ────────────────────────────────────────── */
+const quizData = [
+  {
+    q: "What does an IC of 0.07 (p = 0.03) tell you about a trading signal?",
+    a: "The signal has weak but statistically significant predictive power. IC 0.07 clears the 0.05 tradeable threshold. p = 0.03 means a 3% chance of a false positive — below the 5% significance cutoff. Both bars passed. Document it. Run OOS before trading."
+  },
+  {
+    q: "A backtest shows Sharpe of 2.4 on in-sample data. What is the first question to ask?",
+    a: "What is the out-of-sample Sharpe? And how many parameters were optimized on the same data used for evaluation? High in-sample Sharpe with no OOS confirmation is not evidence of edge — it is evidence of curve-fitting. Show me the OOS result."
+  },
+  {
+    q: "Your strategy has a 42% win rate but is still profitable. How?",
+    a: "Because win rate alone is not the right metric. Expectancy = (Win Rate × Avg Win) − (Loss Rate × Avg Loss). If average wins are 2.5× average losses (R > 2.5), a 42% win rate is profitable. This is why FINN requires Expectancy and R-multiple in every strategy summary — not win rate in isolation."
+  }
+];
+
+let quizIdx = 0;
+
+function quizRender() {
+  document.getElementById('quiz-question').textContent = quizData[quizIdx].q;
+  document.getElementById('quiz-answer').textContent   = quizData[quizIdx].a;
+  document.getElementById('quiz-answer').classList.add('hidden');
+  document.getElementById('quiz-progress').textContent = 'Question ' + (quizIdx + 1) + ' of ' + quizData.length;
+}
+
+function quizReveal() {
+  document.getElementById('quiz-answer').classList.remove('hidden');
+}
+
+function quizNext() {
+  quizIdx = (quizIdx + 1) % quizData.length;
+  quizRender();
+}
+
+quizRender();
+
+</script>
+
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot (Twitter/X, LinkedIn) -->
+<!-- SOCIAL MODE: add class="social square" for 1080×1080px (Instagram, Facebook) -->
+
+</body>
+</html>

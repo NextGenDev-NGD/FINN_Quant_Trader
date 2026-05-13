@@ -31,6 +31,103 @@ Picked up next session:
 
 ---
 
+### [2026-05-12] — Infographics Upgrade Session B2 — ig_trade_types.html v2
+
+**Scope:** Phase B Session B2 complete. First T1 infographic fully upgraded from v1 (static, ~250 lines) to v2 (interactive, TradingView-inspired, ~480 lines). Template proven end-to-end.
+
+**Files modified:**
+- `resources/infographics/ig_trade_types.html` — complete v2 rebuild:
+  - 8 trade type cards (Position, Trend Following, Swing, Mean Reversion, Day Trading, Options, Momentum/Event, Scalping)
+  - d1–d5 difficulty color system: gradient accent-top strips + icon tint + hover glow per level
+  - Click-to-expand detail panels (max-height transition) with parameters + FINN notes per card
+  - Tab filter (All / Long-Term / Short-Term / Intraday) with live count update
+  - IntersectionObserver stagger reveal on card grid (70ms per card)
+  - TradingView-style 6-item metric strip header
+  - At-a-glance comparison table with colored difficulty dot columns
+  - Glassmorphism FINN recommendation box (backdrop-filter blur + gradient accent strip)
+  - Pulsing live-dot badge in page header
+  - Social media mode (1200×675 + 1080×1080)
+  - SVG icons per trade type (unique per card)
+  - Footer updated to v2.0, May 2026
+- `FINN_ProjectStatus.md` — B2 marked complete, progress updated to 4/16, C1 scoped as next session
+
+**Status:** B2 complete. Phase C (C1–C4, 2 T1 files per session) begins next.
+
+---
+
+### [2026-05-12] — Design Aesthetic Standard — TradingView Reference Added
+
+**Scope:** Standing design requirement added before any T1 infographic build begins.
+
+**Files modified:**
+- `research/planning/finn_infographics_upgrade_plan.md` — New "Design Aesthetic" section added above Target State: TradingView as the reference standard, 10-trait implementation table (glassmorphism, tabular numerics, signal gauges, live dots, metric strip, crosshair, tooltips, accent borders, micro-animations, color discipline)
+- `resources/infographics/ig_TEMPLATE_v2.html` — Enhanced with TradingView-inspired components:
+  - New CSS variables: `--glass-bg`, `--glass-border`, `--accent-top-*` gradients, `--shadow-card`, `--shadow-hover`
+  - Card hover lift (`transform: translateY(-1px)` + shadow transition) on all card types
+  - `.card-accent` — accent-top gradient border strip (blue/green/red/amber variants)
+  - `.card-glass` — glassmorphism panel (`backdrop-filter: blur(12px)`)
+  - `font-variant-numeric: tabular-nums` on all `.card-value` elements
+  - `.signal-gauge` — horizontal fill bar for IC/Sharpe/win rate visualization, animated via IntersectionObserver
+  - `.live-dot` — pulsing indicator dot (green/amber/red, CSS keyframe animation)
+  - `.metric-strip` — compact TradingView-style data header row
+  - `.tooltip-panel` — CSS hover tooltip on `.tooltip-host` wrapper
+  - `.chart-crosshair` + `.chart-svg-wrap` — JS-driven vertical cursor line on chart hover
+  - New demo sections: Metric Strip, Accent Cards + Signal Gauges, Live Dots + Tooltips
+
+**Memory saved:** `feedback_infographic_design_aesthetic.md`
+
+**Status:** Template fully reflects TradingView aesthetic. All B2+ infographic builds use this standard.
+
+---
+
+### [2026-05-12] — Infographics Upgrade Session B1 — Design System Template
+
+**Files created:**
+- `resources/infographics/ig_TEMPLATE_v2.html` — Complete v2 design system reference file: full CSS variable palette (v1 preserved + v2 additions), all component classes, working vanilla JS patterns (IntersectionObserver reveal, counter RAF, tab switcher, expandable table rows, quiz mode), social media mode CSS (body.social 1200×675px, body.social.square 1080×1080px), SVG candlestick library (9 patterns), inline SVG equity curve example, uPlot dark-theme config template with Chart.js decision note
+
+**Files modified:**
+- `FINN_ProjectStatus.md` — B1 marked complete (3/16), B2 scoped as next
+
+**Components delivered:**
+- Metric cards (standard, elevated, blue/green/red/amber glow variants)
+- Badge system (5 variants: blue, green, red, amber, muted)
+- Expandable table rows (click-to-reveal detail)
+- Tab switcher (zero-dependency, multi-group support)
+- CSS 3D flip cards (perspective + preserve-3d + backface-visibility pattern)
+- Animated counter (RAF ease-out cubic, triggered by IntersectionObserver)
+- Scroll reveal + staggered reveal (8-child stagger)
+- SVG candlestick library: Bullish, Bearish, Hammer, Shooting Star, Doji, Inverted Hammer, Hanging Man, Bullish Engulfing, Morning Star
+- Quiz/drill mode (click-to-reveal + next, multi-question with progress)
+- Social mode CSS + screenshot instructions
+- uPlot dark theme config template (2-series, full axis/cursor styling)
+
+**Status:** Phase B Session B1 complete. Design system template proven. Session B2 next: `ig_trade_types.html` — first T1 upgrade.
+
+---
+
+### [2026-05-12] — Infographics Upgrade Session A2 — Capability Audit
+
+**Files created:**
+- `research/planning/ig_capability_audit.md` — Full Phase A Session A2 output: animation library comparison (CSS-only vs. Anime.js v4 vs. GSAP), Chart.js inline feasibility, lightweight alternatives (uPlot, Frappe Charts), vanilla JS quiz/flashcard code patterns, open-source fintech HTML component survey, file size ceiling analysis with per-platform limits and per-file budget breakdown
+
+**Files modified:**
+- `research/planning/finn_infographics_upgrade_plan.md` — Open Decisions #1 and #2 resolved
+- `FINN_ProjectStatus.md` — A2 marked complete (2/16), Phase B Session B1 scoped as next
+
+**Key findings:**
+- Anime.js v4 is 111KB minified (not ~7KB — that figure is outdated from v2/v3 era). Eliminated. GSAP eliminated on license ambiguity for offline inlined redistribution. CSS + vanilla JS covers all FINN animation needs.
+- Chart.js v4 is 220KB inlined — consumes 44% of the 500KB file budget. Use only where uPlot falls short. uPlot (~50KB, MIT) is the correct default for time-series charts.
+- No production-quality pure CSS/SVG candlestick chart library exists — hand-coded inline SVG is the only viable path for illustrative static candlesticks.
+- File size target ceiling: 500KB per file (1MB stretch). With Chart.js inlined, 290KB remains — sufficient. Without, ~380KB available for all content.
+
+**Open Decisions resolved:**
+- #1 Animation library: CSS-only + vanilla JS. No library.
+- #2 Chart integration: uPlot for time-series, Chart.js only for doughnut/histogram (2–3 files), pure SVG for all illustrative/static charts.
+
+**Status:** Phase A complete (both research sessions done). Phase B Session B1 next: build `ig_TEMPLATE_v2.html`.
+
+---
+
 ### [2026-05-11] — Infographics Upgrade Session A1 — Competitor Audit
 
 **Files created:**

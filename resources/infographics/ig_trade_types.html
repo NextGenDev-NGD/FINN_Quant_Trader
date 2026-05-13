@@ -1,244 +1,1106 @@
 <!DOCTYPE html>
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!-- SOCIAL MODE: add class="social square" to <body> for 1080×1080px screenshot -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FINN — Trade Types Reference</title>
+<title>FINN — Trading Styles &amp; Horizons</title>
 <style>
-  :root {
-    --bg: #0d1117; --card: #161b22; --border: #30363d;
-    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
-    --red: #f85149; --amber: #d29922; --muted: #8b949e;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
-  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
-  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+/* ── v2 Design System Variables ─────────────────────────────── */
+:root {
+  /* Core palette */
+  --bg: #0d1117;
+  --card: #161b22;
+  --card-elevated: #1c2128;
+  --border: #30363d;
+  --text: #e6edf3;
+  --blue: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --amber: #d29922;
+  --muted: #8b949e;
 
-  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  /* Glow layers */
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
 
-  /* Trade type cards */
-  .type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
-  .type-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; position: relative; }
-  .difficulty-bar { position: absolute; top: 0; right: 0; width: 6px; height: 100%; border-radius: 0 8px 8px 0; }
-  .diff-1 { background: var(--green); }
-  .diff-2 { background: #52c41a; }
-  .diff-3 { background: var(--amber); }
-  .diff-4 { background: #fa8c16; }
-  .diff-5 { background: var(--red); }
-  .type-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; padding-right: 12px; }
-  .type-name { font-size: 15px; font-weight: 700; color: var(--text); }
-  .finn-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: rgba(88,166,255,0.15); color: var(--blue); white-space: nowrap; }
-  .type-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
-  .stat { background: #0d1117; border-radius: 4px; padding: 6px 8px; }
-  .stat-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-  .stat-value { font-size: 12px; font-weight: 600; color: var(--text); margin-top: 2px; }
-  .type-desc { font-size: 12px; color: var(--muted); padding-right: 10px; }
-  .type-desc strong { color: var(--text); }
+  /* Glass */
+  --glass-bg: rgba(22,27,34,0.72);
+  --glass-border: rgba(48,54,61,0.6);
 
-  /* Difficulty legend */
-  .legend { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
-  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+  /* Accent-top gradient strips */
+  --accent-top-blue:  linear-gradient(90deg, #58a6ff 0%, #79c0ff 100%);
+  --accent-top-green: linear-gradient(90deg, #3fb950 0%, #56d364 100%);
+  --accent-top-red:   linear-gradient(90deg, #f85149 0%, #ff7b72 100%);
+  --accent-top-amber: linear-gradient(90deg, #d29922 0%, #e3b341 100%);
 
-  /* Comparison table */
-  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  thead tr { background: #1c2128; }
-  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #1c2128; }
-  .good { color: var(--green); } .bad { color: var(--red); } .mid { color: var(--amber); }
+  /* Shadows */
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.55);
 
-  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
-  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
-  .rule-box p:last-child { margin-bottom: 0; }
-  .rule-box strong { color: var(--blue); }
+  /* Difficulty gradients */
+  --d1-grad: linear-gradient(90deg, #3fb950, #56d364);
+  --d2-grad: linear-gradient(90deg, #58a6ff, #79c0ff);
+  --d3-grad: linear-gradient(90deg, #d29922, #e3b341);
+  --d4-grad: linear-gradient(90deg, #f85149, #ff7b72);
+  --d5-grad: linear-gradient(90deg, #bc8cff, #d2a8ff);
 
-  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-med:  300ms;
+  --dur-slow: 500ms;
+}
 
-  @media print {
-    body { background: #fff; color: #111; }
-    .type-card, .stat, .rule-box { border-color: #ccc; background: #f8f8f8; }
-    .stat { background: #eee; }
-    .header { border-color: #333; }
-    .logo, .section-label { color: #1a56db; }
-    .finn-badge { color: #1a56db; background: #e8f0fe; }
-    th { color: #1a56db; background: #f0f4ff; }
-    td { border-color: #ddd; }
-    tr:hover td { background: transparent; }
-    .good { color: #16a34a; } .bad { color: #dc2626; } .mid { color: #b45309; }
-    .diff-1, .diff-2 { background: #16a34a; }
-    .diff-3 { background: #b45309; }
-    .diff-4, .diff-5 { background: #dc2626; }
-  }
+/* ── Base ───────────────────────────────────────────────────── */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+body.social  { width: 1200px; min-height: 675px;  overflow: hidden; }
+body.social.square { width: 1080px; min-height: 1080px; }
+
+/* ── Reveal / Stagger ───────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.stagger-child { opacity: 0; transform: translateY(20px); }
+.stagger-child.visible {
+  opacity: 1; transform: translateY(0);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+
+/* ── Page Header ────────────────────────────────────────────── */
+.page-header {
+  position: relative;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1c2128 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 40px 24px;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #58a6ff 0%, #3fb950 35%, #d29922 65%, #f85149 100%);
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(88,166,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.header-title h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.4px;
+}
+.header-title p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.header-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.75); }
+}
+
+/* ── Metric Strip ───────────────────────────────────────────── */
+.metric-strip {
+  display: flex;
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin: 16px 40px 0;
+  overflow: hidden;
+}
+.metric-item {
+  flex: 1;
+  padding: 12px 16px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.metric-item:last-child { border-right: none; }
+.metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.metric-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.metric-value.blue  { color: var(--blue); }
+.metric-value.green { color: var(--green); }
+.metric-value.amber { color: var(--amber); }
+
+/* ── Tab Filter ─────────────────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  padding: 24px 40px 16px;
+  align-items: center;
+}
+.tab-bar-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-right: 4px;
+}
+.tab-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--dur-fast) var(--ease-out);
+  letter-spacing: 0.02em;
+}
+.tab-btn:hover { border-color: var(--blue); color: var(--blue); }
+.tab-btn.active {
+  background: rgba(88,166,255,0.12);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+/* ── Section Header ─────────────────────────────────────────── */
+.section-header {
+  padding: 28px 40px 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+.section-count {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Card Grid ──────────────────────────────────────────────── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 0 40px;
+}
+
+/* ── Trade Card ─────────────────────────────────────────────── */
+.tc {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: transform var(--dur-med) var(--ease-out),
+              box-shadow var(--dur-med) var(--ease-out),
+              border-color var(--dur-med) var(--ease-out);
+}
+.tc::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+.tc:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.tc.expanded { border-color: rgba(88,166,255,0.3); }
+
+.tc.d1::before { background: var(--d1-grad); }
+.tc.d2::before { background: var(--d2-grad); }
+.tc.d3::before { background: var(--d3-grad); }
+.tc.d4::before { background: var(--d4-grad); }
+.tc.d5::before { background: var(--d5-grad); }
+
+.tc.d1:hover { border-color: rgba(63,185,80,0.3);  box-shadow: var(--shadow-hover), 0 0 20px rgba(63,185,80,0.08); }
+.tc.d2:hover { border-color: rgba(88,166,255,0.3); box-shadow: var(--shadow-hover), 0 0 20px rgba(88,166,255,0.08); }
+.tc.d3:hover { border-color: rgba(210,153,34,0.3); box-shadow: var(--shadow-hover), 0 0 20px rgba(210,153,34,0.08); }
+.tc.d4:hover { border-color: rgba(248,81,73,0.3);  box-shadow: var(--shadow-hover), 0 0 20px rgba(248,81,73,0.08); }
+.tc.d5:hover { border-color: rgba(188,140,255,0.3);box-shadow: var(--shadow-hover), 0 0 20px rgba(188,140,255,0.08); }
+
+.tc-head {
+  padding: 18px 18px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.tc-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.tc-icon svg {
+  width: 22px; height: 22px;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.tc.d1 .tc-icon { background: rgba(63,185,80,0.08);  border-color: rgba(63,185,80,0.2);  }
+.tc.d2 .tc-icon { background: rgba(88,166,255,0.08); border-color: rgba(88,166,255,0.2); }
+.tc.d3 .tc-icon { background: rgba(210,153,34,0.08); border-color: rgba(210,153,34,0.2); }
+.tc.d4 .tc-icon { background: rgba(248,81,73,0.08);  border-color: rgba(248,81,73,0.2);  }
+.tc.d5 .tc-icon { background: rgba(188,140,255,0.08);border-color: rgba(188,140,255,0.2);}
+
+.tc.d1 .tc-icon svg { stroke: var(--green); }
+.tc.d2 .tc-icon svg { stroke: var(--blue); }
+.tc.d3 .tc-icon svg { stroke: var(--amber); }
+.tc.d4 .tc-icon svg { stroke: var(--red); }
+.tc.d5 .tc-icon svg { stroke: #bc8cff; }
+
+.tc-meta { flex: 1; min-width: 0; }
+.tc-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+.tc-horizon { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+
+.tc-body { padding: 0 18px 16px; }
+.tc-desc { font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 14px; }
+.tc-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.pill {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  background: var(--card-elevated);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.pill.blue  { color: var(--blue);  background: var(--blue-glow);  border-color: rgba(88,166,255,0.2); }
+.pill.green { color: var(--green); background: var(--green-glow); border-color: rgba(63,185,80,0.2); }
+.pill.amber { color: var(--amber); background: var(--amber-glow); border-color: rgba(210,153,34,0.2); }
+.pill.red   { color: var(--red);   background: var(--red-glow);   border-color: rgba(248,81,73,0.2); }
+.pill.purple{ color: #bc8cff; background: rgba(188,140,255,0.08); border-color: rgba(188,140,255,0.2); }
+
+.diff-row { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted); }
+.diff-dots { display: flex; gap: 4px; }
+.diff-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+.tc.d1 .diff-dot.on { background: var(--green); }
+.tc.d2 .diff-dot.on { background: var(--blue); }
+.tc.d3 .diff-dot.on { background: var(--amber); }
+.tc.d4 .diff-dot.on { background: var(--red); }
+.tc.d5 .diff-dot.on { background: #bc8cff; }
+
+.tc-hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tc-hint .caret { transition: transform var(--dur-med) var(--ease-out); display: inline-block; }
+.tc.expanded .tc-hint .caret { transform: rotate(180deg); }
+
+/* ── Expanded Detail ────────────────────────────────────────── */
+.tc-detail { max-height: 0; overflow: hidden; transition: max-height var(--dur-slow) var(--ease-out); }
+.tc-detail.open { max-height: 600px; }
+.tc-detail-inner {
+  padding: 14px 18px 18px;
+  border-top: 1px solid var(--border);
+}
+.detail-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 8px;
+  margin-top: 12px;
+}
+.detail-section-title:first-child { margin-top: 0; }
+.detail-kv { display: flex; flex-direction: column; gap: 6px; }
+.detail-row-item { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; }
+.detail-key { color: var(--muted); }
+.detail-val { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+.detail-val.green { color: var(--green); }
+.detail-val.amber { color: var(--amber); }
+.detail-val.red   { color: var(--red); }
+
+/* ── Comparison Table ───────────────────────────────────────── */
+.table-wrap {
+  margin: 0 40px 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.comp-table thead tr { background: var(--card-elevated); border-bottom: 1px solid var(--border); }
+.comp-table th {
+  padding: 11px 14px;
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.comp-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(48,54,61,0.5);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  vertical-align: middle;
+}
+.comp-table tbody tr { background: var(--card); }
+.comp-table tbody tr:hover { background: var(--card-elevated); }
+.comp-table tbody tr:last-child td { border-bottom: none; }
+.comp-table .td-style { font-weight: 600; }
+.comp-dots { display: flex; gap: 3px; }
+.comp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+.comp-dot.on-1 { background: var(--green); }
+.comp-dot.on-2 { background: var(--blue); }
+.comp-dot.on-3 { background: var(--amber); }
+.comp-dot.on-4 { background: var(--red); }
+.comp-dot.on-5 { background: #bc8cff; }
+
+/* ── Glassmorphism Rec Box ──────────────────────────────────── */
+.rec-section { padding: 0 40px 40px; }
+.rec-box {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.rec-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, #58a6ff 0%, #3fb950 50%, #d29922 100%);
+}
+.rec-box::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -60px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(88,166,255,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.rec-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.rec-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--blue-glow);
+  border: 1px solid rgba(88,166,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+}
+.rec-icon svg { width: 16px; height: 16px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rec-title { font-size: 14px; font-weight: 600; color: var(--blue); }
+.rec-body { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.rec-col-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
+.rec-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+.rec-item:last-child { margin-bottom: 0; }
+.rec-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-top: 5px; flex-shrink: 0; }
+.rec-bullet.amber { background: var(--amber); }
+.rec-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.rec-text strong { color: var(--text); font-weight: 500; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.ig-footer {
+  margin: 0 40px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+.finn-tag { color: var(--blue); font-weight: 600; }
+
+/* ── Utilities ───────────────────────────────────────────────── */
+.hidden { display: none !important; }
+@media print { .tab-bar { display: none; } }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <div class="header">
-    <div>
-      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
-      <div class="title">Trade Types Reference</div>
-      <div class="subtitle">8 trading styles ranked by difficulty · time horizon · capital requirements · skill prerequisites · Handbook §1.1</div>
+<!-- ── Page Header ─────────────────────────────────────────── -->
+<div class="page-header reveal">
+  <div class="header-inner">
+    <div class="header-title">
+      <h1>Trading Styles &amp; Horizons</h1>
+      <p>Eight core approaches — mechanisms, capital requirements, and skill demands</p>
     </div>
-    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C2</div>
+    <div class="header-badge">
+      <span class="live-dot"></span>
+      FINN Course Reference
+    </div>
+  </div>
+</div>
+
+<!-- ── Metric Strip ─────────────────────────────────────────── -->
+<div class="metric-strip reveal">
+  <div class="metric-item">
+    <span class="metric-label">Styles Covered</span>
+    <span class="metric-value blue">8</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Difficulty Range</span>
+    <span class="metric-value">L1 – L5</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">FINN Primary</span>
+    <span class="metric-value green">Swing + Quant</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Min Capital</span>
+    <span class="metric-value amber">$1,000</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">PDT Threshold</span>
+    <span class="metric-value">$25K (US)</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Horizon Range</span>
+    <span class="metric-value">Seconds – Years</span>
+  </div>
+</div>
+
+<!-- ── Tab Filter ───────────────────────────────────────────── -->
+<div class="tab-bar reveal">
+  <span class="tab-bar-label">Filter:</span>
+  <button class="tab-btn active" onclick="filterCards('all', this)">All Styles</button>
+  <button class="tab-btn" onclick="filterCards('long', this)">Long-Term</button>
+  <button class="tab-btn" onclick="filterCards('short', this)">Short-Term</button>
+  <button class="tab-btn" onclick="filterCards('intraday', this)">Intraday</button>
+</div>
+
+<!-- ── Cards ─────────────────────────────────────────────────── -->
+<div class="section-header">
+  <span class="section-title">Trading Styles</span>
+  <span class="section-count" id="card-count">8 styles</span>
+</div>
+
+<div class="card-grid" id="card-grid">
+
+  <!-- 1. Position Trading — L1 -->
+  <div class="tc d1 stagger-child" data-horizon="long" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24"><polyline points="2,18 7,13 12,8 17,5 22,3"/><polyline points="17,3 22,3 22,8"/></svg>
+      </div>
+      <div class="tc-meta">
+        <div class="tc-name">Position Trading</div>
+        <div class="tc-horizon">Long-Term · Weeks to Years</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-desc">Hold through macro trends. Fundamental analysis drives entry; patience is the edge. Ideal for low-frequency, high-conviction setups.</div>
+      <div class="tc-pills">
+        <span class="pill green">Weeks – Years</span>
+        <span class="pill">Fundamentals</span>
+        <span class="pill">Low frequency</span>
+      </div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div><div class="diff-dot"></div><div class="diff-dot"></div>
+        </div>
+      </div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click for parameters &amp; FINN notes</div>
+    </div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Hold period</span><span class="detail-val">Weeks → years</span></div>
+          <div class="detail-row-item"><span class="detail-key">Trade frequency</span><span class="detail-val">1–4 / month</span></div>
+          <div class="detail-row-item"><span class="detail-key">Min capital</span><span class="detail-val green">~$5,000</span></div>
+          <div class="detail-row-item"><span class="detail-key">PDT concern</span><span class="detail-val green">None</span></div>
+        </div>
+        <div class="detail-section-title">FINN Note</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Primary analysis</span><span class="detail-val">Macro + fundamentals</span></div>
+          <div class="detail-row-item"><span class="detail-key">Edge source</span><span class="detail-val">Conviction + patience</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val amber">Context only</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="section-label">Difficulty Scale</div>
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Level 1 — Beginner-accessible</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#52c41a"></div> Level 2 — Some experience needed</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Level 3 — Intermediate</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#fa8c16"></div> Level 4 — Advanced</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Level 5 — Expert only</div>
-    <p style="color:var(--muted);font-size:12px;margin-left:auto">Colored bar on right side of each card indicates difficulty</p>
+  <!-- 2. Trend Following — L2 -->
+  <div class="tc d2 stagger-child" data-horizon="long" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24"><line x1="2" y1="20" x2="22" y2="4"/><polyline points="16,4 22,4 22,10"/></svg>
+      </div>
+      <div class="tc-meta">
+        <div class="tc-name">Trend Following</div>
+        <div class="tc-horizon">Long-Term · Weeks to Months</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-desc">Systematic capture of sustained directional moves. Rule-based entries on momentum signals. Drawdown tolerance is non-negotiable.</div>
+      <div class="tc-pills">
+        <span class="pill blue">Weeks – Months</span>
+        <span class="pill">Momentum</span>
+        <span class="pill">Systematic</span>
+      </div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div><div class="diff-dot"></div>
+        </div>
+      </div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click to expand</div>
+    </div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Hold period</span><span class="detail-val">Weeks → months</span></div>
+          <div class="detail-row-item"><span class="detail-key">Trade frequency</span><span class="detail-val">2–8 / month</span></div>
+          <div class="detail-row-item"><span class="detail-key">Min capital</span><span class="detail-val green">~$3,000</span></div>
+          <div class="detail-row-item"><span class="detail-key">PDT concern</span><span class="detail-val green">None</span></div>
+        </div>
+        <div class="detail-section-title">FINN Note</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Primary signal</span><span class="detail-val">MA crossover</span></div>
+          <div class="detail-row-item"><span class="detail-key">Key risk</span><span class="detail-val amber">Whipsaw in choppy markets</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val green">Week 6 — signal coding</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Trade type cards -->
-  <div class="section-label">The 8 Trade Types</div>
-  <div class="type-grid">
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-1"></div>
-      <div class="type-header">
-        <div class="type-name">Position Trading</div>
-        <span class="finn-badge">FINN Starting Point</span>
+  <!-- 3. Swing Trading — L2 -->
+  <div class="tc d2 stagger-child" data-horizon="short" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24"><polyline points="2,16 6,8 10,16 14,8 18,16 22,8"/></svg>
       </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">Weeks–Months</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$1,000+</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value good">Level 1</div></div>
+      <div class="tc-meta">
+        <div class="tc-name">Swing Trading</div>
+        <div class="tc-horizon">Short-Term · 2 Days – 2 Weeks</div>
       </div>
-      <div class="type-desc"><strong>What it is:</strong> Holding positions for weeks to months based on fundamental or macro thesis. The slowest style — decisions happen weekly or monthly, not daily.<br><br><strong>Edge source:</strong> Trend identification, fundamental valuation, macro regime analysis.<br><strong>Risk:</strong> Overnight and weekend exposure; large drawdowns possible in adverse regimes. Requires patience to hold through noise.</div>
     </div>
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-2"></div>
-      <div class="type-header">
-        <div class="type-name">Swing Trading</div>
-        <span class="finn-badge">FINN Primary Style</span>
+    <div class="tc-body">
+      <div class="tc-desc">Capture multi-day price swings using technical patterns and momentum signals. The primary FINN course focus — quantifiable, backtestable, and capital-efficient.</div>
+      <div class="tc-pills">
+        <span class="pill blue">2 Days – 2 Weeks</span>
+        <span class="pill green">FINN Primary</span>
+        <span class="pill">Backtestable</span>
       </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">2–10 Days</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$2,000+</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value good">Level 2</div></div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div><div class="diff-dot"></div>
+        </div>
       </div>
-      <div class="type-desc"><strong>What it is:</strong> Capturing price moves over 2–10 days. Uses technical setups (S&R, patterns, signals) on daily/4H charts. The dominant style in FINN's systematic approach.<br><br><strong>Edge source:</strong> Technical signal IC, multi-signal composite scoring, backtested entry/exit rules.<br><strong>Risk:</strong> Overnight gaps; news events during hold period. Position sizing and stop discipline are critical.</div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click to expand</div>
     </div>
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-2"></div>
-      <div class="type-header">
-        <div class="type-name">Trend Following</div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Hold period</span><span class="detail-val">2 days – 2 weeks</span></div>
+          <div class="detail-row-item"><span class="detail-key">Trade frequency</span><span class="detail-val">4–12 / month</span></div>
+          <div class="detail-row-item"><span class="detail-key">Min capital</span><span class="detail-val green">~$2,000</span></div>
+          <div class="detail-row-item"><span class="detail-key">PDT concern</span><span class="detail-val green">Low (&lt;3 day-trades/wk)</span></div>
+        </div>
+        <div class="detail-section-title">FINN Focus</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Primary signal</span><span class="detail-val">RSI + MACD composite</span></div>
+          <div class="detail-row-item"><span class="detail-key">IC target</span><span class="detail-val green">0.10 – 0.20</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val green">Weeks 3–18 (core arc)</span></div>
+        </div>
       </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">Weeks–Months</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$5,000+</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value good">Level 2</div></div>
-      </div>
-      <div class="type-desc"><strong>What it is:</strong> Systematic approach that buys strength and sells weakness across asset classes. No prediction — follows momentum until it ends. Classic quant strategy.<br><br><strong>Edge source:</strong> Momentum factor (documented across 200+ years). Works best on diversified portfolios.<br><strong>Risk:</strong> Long drawdown periods during choppy/mean-reverting markets. Requires rules-based discipline — no discretion.</div>
     </div>
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-3"></div>
-      <div class="type-header">
-        <div class="type-name">Mean Reversion</div>
-      </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">1–5 Days</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$3,000+</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value mid">Level 3</div></div>
-      </div>
-      <div class="type-desc"><strong>What it is:</strong> Betting that price reverts to a mean after an extreme move. Buy oversold; sell overbought. Counter-trend by nature — trades against short-term momentum.<br><br><strong>Edge source:</strong> Statistical reversion of extreme readings (RSI, Bollinger Band z-score). Works best in range-bound markets.<br><strong>Risk:</strong> Trend continuation destroys mean-reversion positions. Requires tight stops and regime filtering.</div>
-    </div>
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-3"></div>
-      <div class="type-header">
-        <div class="type-name">Day Trading</div>
-      </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">Minutes–Hours</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$25,000 (PDT)</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value mid">Level 3</div></div>
-      </div>
-      <div class="type-desc"><strong>What it is:</strong> All positions opened and closed within the same trading day. No overnight exposure. Requires full-time attention during market hours.<br><br><strong>PDT Rule:</strong> In the US, more than 3 day trades in a 5-session rolling window requires $25,000 in a margin account.<br><strong>Risk:</strong> High transaction costs, spread costs, and emotional load. Most retail day traders underperform. Not the FINN starting point.</div>
-    </div>
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-4"></div>
-      <div class="type-header">
-        <div class="type-name">Options Trading</div>
-      </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">Days–Weeks</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$2,000+</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value bad">Level 4</div></div>
-      </div>
-      <div class="type-desc"><strong>What it is:</strong> Trading contracts that give the right (not obligation) to buy/sell at a specified price by a specified date. Requires understanding of direction, timing, AND volatility.<br><br><strong>Edge source:</strong> Defined risk (long options), leverage (limited capital at risk), volatility edge if implied vol is mispriced.<br><strong>Risk:</strong> Time decay (theta) erodes value daily. Three variables must align: direction, magnitude, and timing. Most retail options traders lose. Covered in FINN Month 4+.</div>
-    </div>
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-4"></div>
-      <div class="type-header">
-        <div class="type-name">Momentum / Event-Driven</div>
-      </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">1–5 Days</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$5,000+</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value bad">Level 4</div></div>
-      </div>
-      <div class="type-desc"><strong>What it is:</strong> Trading around specific catalysts — earnings, FDA decisions, macro data releases. Enter before or immediately after the event; exit once the move resolves.<br><br><strong>Edge source:</strong> Post-earnings drift (documented anomaly), volatility compression before events, gap-and-go setups.<br><strong>Risk:</strong> Binary outcomes. Wrong-direction gap can be 10–20%+ against you overnight. Requires precise sizing — treat every event trade as if it could go to zero.</div>
-    </div>
-
-    <div class="type-card">
-      <div class="difficulty-bar diff-5"></div>
-      <div class="type-header">
-        <div class="type-name">Scalping / HFT-Adjacent</div>
-      </div>
-      <div class="type-stats">
-        <div class="stat"><div class="stat-label">Horizon</div><div class="stat-value">Seconds–Minutes</div></div>
-        <div class="stat"><div class="stat-label">Min Capital</div><div class="stat-value">$25,000+</div></div>
-        <div class="stat"><div class="stat-label">Difficulty</div><div class="stat-value bad">Level 5</div></div>
-      </div>
-      <div class="type-desc"><strong>What it is:</strong> Capturing tiny price moves (cents to fractions of a percent) across dozens or hundreds of trades per day. Depends on ultra-fast execution and minimal spread.<br><br><strong>Edge source:</strong> Order flow reading, Level 2 tape reading, market microstructure. Increasingly dominated by algorithms.<br><strong>Risk:</strong> Spread and commission costs can erase the entire edge. Emotionally exhausting. Not viable as a retail strategy against HFT competition. Informational only in FINN.</div>
-    </div>
-
   </div>
 
-  <!-- Comparison table -->
-  <div class="section-label">Quick Comparison Matrix</div>
-  <table>
-    <thead><tr><th>Style</th><th>Screen Time</th><th>Overnight Risk</th><th>Transaction Costs</th><th>Emotional Load</th><th>FINN Coverage</th></tr></thead>
+  <!-- 4. Mean Reversion — L3 -->
+  <div class="tc d3 stagger-child" data-horizon="short" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M2,12 C5,5 7,5 10,12 C13,19 15,19 18,12 C21,5 22,6 23,10"/>
+          <line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="2,3" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="tc-meta">
+        <div class="tc-name">Mean Reversion</div>
+        <div class="tc-horizon">Short-Term · Hours to Days</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-desc">Fade extreme deviations from statistical equilibrium. Z-score and Bollinger Band signals trigger entry. Requires robust risk management — losing trades fight the position.</div>
+      <div class="tc-pills">
+        <span class="pill amber">Hours – Days</span>
+        <span class="pill">Z-score</span>
+        <span class="pill">Statistical</span>
+      </div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div>
+        </div>
+      </div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click to expand</div>
+    </div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Hold period</span><span class="detail-val">Hours – days</span></div>
+          <div class="detail-row-item"><span class="detail-key">Trade frequency</span><span class="detail-val">8–20 / month</span></div>
+          <div class="detail-row-item"><span class="detail-key">Min capital</span><span class="detail-val amber">~$5,000</span></div>
+          <div class="detail-row-item"><span class="detail-key">PDT concern</span><span class="detail-val amber">Moderate</span></div>
+        </div>
+        <div class="detail-section-title">Key Metrics</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Entry signal</span><span class="detail-val">Z-score &gt; 2.0</span></div>
+          <div class="detail-row-item"><span class="detail-key">Exit target</span><span class="detail-val">Z-score → 0</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val green">Week 10 — pairs + reversion</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Day Trading — L3 -->
+  <div class="tc d3 stagger-child" data-horizon="intraday" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24"><path d="M13,2 L4.5,13 H11 L11,22 L19.5,11 H13 Z"/></svg>
+      </div>
+      <div class="tc-meta">
+        <div class="tc-name">Day Trading</div>
+        <div class="tc-horizon">Intraday · Minutes to Hours</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-desc">All positions opened and closed within a single session. Requires PDT compliance or offshore broker. Execution speed and cost management are the primary edges.</div>
+      <div class="tc-pills">
+        <span class="pill amber">Same-day close</span>
+        <span class="pill red">PDT: $25K US</span>
+        <span class="pill">Level 2 data</span>
+      </div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div><div class="diff-dot"></div>
+        </div>
+      </div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click to expand</div>
+    </div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Hold period</span><span class="detail-val">Minutes – hours</span></div>
+          <div class="detail-row-item"><span class="detail-key">Trade frequency</span><span class="detail-val">5–20+ / day</span></div>
+          <div class="detail-row-item"><span class="detail-key">Min capital (US)</span><span class="detail-val red">$25,000 (PDT rule)</span></div>
+          <div class="detail-row-item"><span class="detail-key">Data needs</span><span class="detail-val amber">Level 2 + T&amp;S feed</span></div>
+        </div>
+        <div class="detail-section-title">FINN Note</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Primary edge</span><span class="detail-val">Execution + commission</span></div>
+          <div class="detail-row-item"><span class="detail-key">Psychology demand</span><span class="detail-val red">Very high</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val amber">Context — not primary focus</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Options Strategies — L4 -->
+  <div class="tc d4 stagger-child" data-horizon="short" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="3"/>
+          <line x1="12" y1="11" x2="12" y2="16"/>
+          <line x1="8" y1="16" x2="16" y2="16"/>
+          <line x1="8" y1="20" x2="12" y2="16"/>
+          <line x1="16" y1="20" x2="12" y2="16"/>
+        </svg>
+      </div>
+      <div class="tc-meta">
+        <div class="tc-name">Options Strategies</div>
+        <div class="tc-horizon">Short-Term · Days to Weeks</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-desc">Derivative-based hedging, income generation, and leveraged directional plays. Greeks govern risk. Complexity grows fast with multi-leg structures.</div>
+      <div class="tc-pills">
+        <span class="pill red">Greeks required</span>
+        <span class="pill">Days – Weeks</span>
+        <span class="pill">Leverage</span>
+      </div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div>
+        </div>
+      </div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click to expand</div>
+    </div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Contract size</span><span class="detail-val">100 shares / contract</span></div>
+          <div class="detail-row-item"><span class="detail-key">Min capital</span><span class="detail-val red">$2,000 – $10,000</span></div>
+          <div class="detail-row-item"><span class="detail-key">Key Greeks</span><span class="detail-val">Δ, Θ, Vega, Gamma</span></div>
+          <div class="detail-row-item"><span class="detail-key">Max loss risk</span><span class="detail-val red">Can exceed premium paid</span></div>
+        </div>
+        <div class="detail-section-title">FINN Note</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Primary use in course</span><span class="detail-val">Portfolio hedge overlay</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val amber">Month 5 — optional module</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Momentum / Event-Driven — L4 -->
+  <div class="tc d4 stagger-child" data-horizon="short" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="12" cy="12" r="2"/>
+        </svg>
+      </div>
+      <div class="tc-meta">
+        <div class="tc-name">Momentum / Event-Driven</div>
+        <div class="tc-horizon">Short-Term · Hours to Days</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-desc">Exploit catalysts — earnings, macro announcements, news events. Entry precision around known event windows. High variance; sizing discipline determines survival.</div>
+      <div class="tc-pills">
+        <span class="pill red">Catalyst-driven</span>
+        <span class="pill">Hours – Days</span>
+        <span class="pill">NLP signals</span>
+      </div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot"></div>
+        </div>
+      </div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click to expand</div>
+    </div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Catalyst types</span><span class="detail-val">Earnings, FOMC, CPI</span></div>
+          <div class="detail-row-item"><span class="detail-key">Hold period</span><span class="detail-val">Hours – days post-event</span></div>
+          <div class="detail-row-item"><span class="detail-key">Edge source</span><span class="detail-val">Sentiment + surprise</span></div>
+          <div class="detail-row-item"><span class="detail-key">Data need</span><span class="detail-val amber">News API + FinBERT</span></div>
+        </div>
+        <div class="detail-section-title">FINN Focus</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">NLP model</span><span class="detail-val">ProsusAI/FinBERT</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val green">Week 14 — sentiment signals</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Scalping — L5 -->
+  <div class="tc d5 stagger-child" data-horizon="intraday" onclick="expandCard(this)">
+    <div class="tc-head">
+      <div class="tc-icon">
+        <svg viewBox="0 0 24 24"><polyline points="2,12 5,6 8,17 11,7 14,17 17,6 20,12 22,12"/></svg>
+      </div>
+      <div class="tc-meta">
+        <div class="tc-name">Scalping</div>
+        <div class="tc-horizon">Intraday · Seconds to Minutes</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-desc">Dozens to hundreds of trades per session. Profit per trade is tiny; edge comes from volume and execution precision. Highest psychological and infrastructure demands of any style.</div>
+      <div class="tc-pills">
+        <span class="pill purple">Seconds – Minutes</span>
+        <span class="pill red">HFT adjacent</span>
+        <span class="pill red">PDT critical</span>
+      </div>
+      <div class="diff-row">
+        <span>Difficulty</span>
+        <div class="diff-dots">
+          <div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div><div class="diff-dot on"></div>
+        </div>
+      </div>
+      <div class="tc-hint"><span class="caret">▾</span>&nbsp;Click to expand</div>
+    </div>
+    <div class="tc-detail">
+      <div class="tc-detail-inner">
+        <div class="detail-section-title">Parameters</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Hold period</span><span class="detail-val">Seconds – 2 minutes</span></div>
+          <div class="detail-row-item"><span class="detail-key">Daily trades</span><span class="detail-val">50 – 500+</span></div>
+          <div class="detail-row-item"><span class="detail-key">Min capital (US)</span><span class="detail-val red">$25,000+ (PDT)</span></div>
+          <div class="detail-row-item"><span class="detail-key">Infra needed</span><span class="detail-val red">Co-located / DMA feed</span></div>
+        </div>
+        <div class="detail-section-title">FINN Note</div>
+        <div class="detail-kv">
+          <div class="detail-row-item"><span class="detail-key">Commission impact</span><span class="detail-val red">Kills edge at retail rates</span></div>
+          <div class="detail-row-item"><span class="detail-key">Burnout risk</span><span class="detail-val red">Extreme</span></div>
+          <div class="detail-row-item"><span class="detail-key">FINN teaches</span><span class="detail-val amber">Not recommended for course</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /.card-grid -->
+
+<!-- ── Comparison Table ──────────────────────────────────────── -->
+<div class="section-header reveal">
+  <span class="section-title">At-a-Glance Comparison</span>
+</div>
+
+<div class="table-wrap reveal">
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Style</th>
+        <th>Horizon</th>
+        <th>Freq / Month</th>
+        <th>Min Capital</th>
+        <th>PDT Risk</th>
+        <th>Difficulty</th>
+      </tr>
+    </thead>
     <tbody>
-      <tr><td><strong>Position Trading</strong></td><td class="good">Low (weekly review)</td><td class="bad">High</td><td class="good">Very low</td><td class="good">Low</td><td>Context / background</td></tr>
-      <tr><td><strong>Swing Trading</strong></td><td class="good">Low–Medium (daily review)</td><td class="mid">Moderate</td><td class="good">Low</td><td class="good">Low–Medium</td><td class="good"><strong>Primary — all months</strong></td></tr>
-      <tr><td><strong>Trend Following</strong></td><td class="good">Low (systematic)</td><td class="bad">High</td><td class="good">Low</td><td class="good">Low (rules-based)</td><td>Month 3–5</td></tr>
-      <tr><td><strong>Mean Reversion</strong></td><td class="mid">Medium</td><td class="mid">Moderate</td><td class="mid">Low–Medium</td><td class="mid">Medium</td><td>Month 2–3</td></tr>
-      <tr><td><strong>Day Trading</strong></td><td class="bad">Full-time</td><td class="good">None</td><td class="bad">High</td><td class="bad">Very high</td><td>Awareness only</td></tr>
-      <tr><td><strong>Options Trading</strong></td><td class="mid">Medium</td><td class="mid">Moderate</td><td class="mid">Medium</td><td class="bad">High</td><td>Month 4+</td></tr>
-      <tr><td><strong>Momentum / Event</strong></td><td class="mid">Medium</td><td class="bad">High (binary)</td><td class="mid">Medium</td><td class="bad">High</td><td>Month 3–4</td></tr>
-      <tr><td><strong>Scalping</strong></td><td class="bad">Full-time + focus</td><td class="good">None</td><td class="bad">Very high</td><td class="bad">Extreme</td><td>Informational only</td></tr>
+      <tr>
+        <td class="td-style">Position Trading</td>
+        <td>Weeks – Years</td>
+        <td>1–4</td>
+        <td>$5,000</td>
+        <td><span class="pill green">None</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-1"></div><div class="comp-dot"></div><div class="comp-dot"></div><div class="comp-dot"></div><div class="comp-dot"></div></div></td>
+      </tr>
+      <tr>
+        <td class="td-style">Trend Following</td>
+        <td>Weeks – Months</td>
+        <td>2–8</td>
+        <td>$3,000</td>
+        <td><span class="pill green">None</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-2"></div><div class="comp-dot on-2"></div><div class="comp-dot"></div><div class="comp-dot"></div><div class="comp-dot"></div></div></td>
+      </tr>
+      <tr>
+        <td class="td-style">Swing Trading</td>
+        <td>2 Days – 2 Wks</td>
+        <td>4–12</td>
+        <td>$2,000</td>
+        <td><span class="pill green">Low</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-2"></div><div class="comp-dot on-2"></div><div class="comp-dot"></div><div class="comp-dot"></div><div class="comp-dot"></div></div></td>
+      </tr>
+      <tr>
+        <td class="td-style">Mean Reversion</td>
+        <td>Hours – Days</td>
+        <td>8–20</td>
+        <td>$5,000</td>
+        <td><span class="pill amber">Moderate</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-3"></div><div class="comp-dot on-3"></div><div class="comp-dot on-3"></div><div class="comp-dot"></div><div class="comp-dot"></div></div></td>
+      </tr>
+      <tr>
+        <td class="td-style">Day Trading</td>
+        <td>Same-day close</td>
+        <td>100–400</td>
+        <td>$25,000</td>
+        <td><span class="pill red">PDT applies</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-3"></div><div class="comp-dot on-3"></div><div class="comp-dot on-3"></div><div class="comp-dot"></div><div class="comp-dot"></div></div></td>
+      </tr>
+      <tr>
+        <td class="td-style">Options</td>
+        <td>Days – Weeks</td>
+        <td>4–16</td>
+        <td>$10,000</td>
+        <td><span class="pill amber">Varies</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-4"></div><div class="comp-dot on-4"></div><div class="comp-dot on-4"></div><div class="comp-dot on-4"></div><div class="comp-dot"></div></div></td>
+      </tr>
+      <tr>
+        <td class="td-style">Momentum / Event</td>
+        <td>Hours – Days</td>
+        <td>8–30</td>
+        <td>$5,000</td>
+        <td><span class="pill amber">Moderate</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-4"></div><div class="comp-dot on-4"></div><div class="comp-dot on-4"></div><div class="comp-dot on-4"></div><div class="comp-dot"></div></div></td>
+      </tr>
+      <tr>
+        <td class="td-style">Scalping</td>
+        <td>Seconds – Mins</td>
+        <td>1,000–10,000</td>
+        <td>$25,000</td>
+        <td><span class="pill red">PDT critical</span></td>
+        <td><div class="comp-dots"><div class="comp-dot on-5"></div><div class="comp-dot on-5"></div><div class="comp-dot on-5"></div><div class="comp-dot on-5"></div><div class="comp-dot on-5"></div></div></td>
+      </tr>
     </tbody>
   </table>
-
-  <div class="rule-box">
-    <p><strong>FINN recommendation:</strong> Start with swing trading. It has the best ratio of screen time to learning value, allows proper backtesting, and is compatible with a day job and family. The systematic skills you build in swing trading transfer directly to every other style — the process is identical, only the timeframe changes.</p>
-    <p><strong>The style determines the tools, not the edge.</strong> A 0.55 win rate with 2:1 reward-to-risk is a valid edge in any timeframe. The question is not "which style is best" but "which style fits my life, capital, and the signal I have tested." Answer those three questions before choosing.</p>
-  </div>
-
-  <div class="footer">
-    <span>FINN Reference Library · ig_trade_types.html · Built May 2026</span>
-    <span>Handbook §1.1 · See also: ig_broker_comparison.html · ig_order_types.html</span>
-  </div>
-
 </div>
+
+<!-- ── FINN Recommendation Box ───────────────────────────────── -->
+<div class="rec-section reveal">
+  <div class="rec-box">
+    <div class="rec-header">
+      <div class="rec-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="rec-title">FINN Course Position</span>
+    </div>
+    <div class="rec-body">
+      <div>
+        <div class="rec-col-title">Why Swing + Quant</div>
+        <div class="rec-item">
+          <span class="rec-bullet"></span>
+          <span class="rec-text"><strong>Capital-accessible.</strong> $1K–$5K generates real signal while avoiding the PDT rule.</span>
+        </div>
+        <div class="rec-item">
+          <span class="rec-bullet"></span>
+          <span class="rec-text"><strong>Backtestable.</strong> Multi-day holds give statistically valid IC measurement — enough data points to trust the output.</span>
+        </div>
+        <div class="rec-item">
+          <span class="rec-bullet"></span>
+          <span class="rec-text"><strong>Automation-ready.</strong> Webull paper API + Python signals close the loop without HFT infrastructure.</span>
+        </div>
+      </div>
+      <div>
+        <div class="rec-col-title">What FINN Does Not Teach</div>
+        <div class="rec-item">
+          <span class="rec-bullet amber"></span>
+          <span class="rec-text"><strong>Scalping.</strong> Commission drag makes retail scalping a losing game. Burnout risk is extreme.</span>
+        </div>
+        <div class="rec-item">
+          <span class="rec-bullet amber"></span>
+          <span class="rec-text"><strong>Pure day trading.</strong> PDT rule blocks retail below $25K. Focus shifts to swing horizon.</span>
+        </div>
+        <div class="rec-item">
+          <span class="rec-bullet amber"></span>
+          <span class="rec-text"><strong>Discretionary only.</strong> Every entry must be codeable. Gut-feel trades are noise until quantified.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ────────────────────────────────────────────────── -->
+<div class="ig-footer">
+  <span><span class="finn-tag">FINN</span> — Quantitative Trading Course &nbsp;·&nbsp; <span class="finn-tag">v2.0</span></span>
+  <span>ig_trade_types &nbsp;·&nbsp; May 2026</span>
+</div>
+
+<script>
+// ── Reveal observer
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── Stagger card grid
+const grid = document.getElementById('card-grid');
+const staggerObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.stagger-child').forEach((c, i) => {
+        setTimeout(() => c.classList.add('visible'), i * 70);
+      });
+      staggerObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+staggerObs.observe(grid);
+
+// ── Tab filter
+function filterCards(horizon, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cards = document.querySelectorAll('.tc');
+  let visible = 0;
+  cards.forEach(c => {
+    const match = horizon === 'all' || c.dataset.horizon === horizon;
+    c.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  document.getElementById('card-count').textContent = visible + (visible === 1 ? ' style' : ' styles');
+}
+
+// ── Expand card
+function expandCard(card) {
+  const detail = card.querySelector('.tc-detail');
+  const hint   = card.querySelector('.tc-hint');
+  const isOpen = card.classList.contains('expanded');
+
+  document.querySelectorAll('.tc.expanded').forEach(c => {
+    if (c !== card) {
+      c.classList.remove('expanded');
+      c.querySelector('.tc-detail').classList.remove('open');
+      const h = c.querySelector('.tc-hint');
+      if (h) h.innerHTML = '<span class="caret">▾</span>&nbsp;Click to expand';
+    }
+  });
+
+  card.classList.toggle('expanded', !isOpen);
+  detail.classList.toggle('open', !isOpen);
+  if (hint) hint.innerHTML = isOpen
+    ? '<span class="caret">▾</span>&nbsp;Click to expand'
+    : '<span class="caret">▾</span>&nbsp;Click to collapse';
+}
+</script>
 </body>
 </html>
