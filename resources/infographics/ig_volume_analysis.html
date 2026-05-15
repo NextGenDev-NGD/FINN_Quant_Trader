@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!-- SOCIAL MODE: add class="social square" to <body> for 1080×1080px screenshot -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +11,22 @@
     --bg: #0d1117;
     --card: #161b22;
     --border: #30363d;
+    --text: #e6edf3;
     --blue: #58a6ff;
     --green: #3fb950;
     --red: #f85149;
     --amber: #d29922;
     --purple: #bc8cff;
     --muted: #8b949e;
-    --text: #e6edf3;
-    --subtext: #c9d1d9;
+    --card-elevated: #1c2128;
+    --blue-glow: rgba(88,166,255,0.12);
+    --green-glow: rgba(63,185,80,0.12);
+    --red-glow: rgba(248,81,73,0.12);
+    --amber-glow: rgba(210,153,34,0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 150ms;
+    --dur-med: 300ms;
+    --dur-slow: 500ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -27,162 +37,209 @@
     line-height: 1.5;
     padding: 24px 16px;
   }
+  body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+  body.social.square { width: 1080px; min-height: 1080px; }
   .page-wrap { max-width: 1200px; margin: 0 auto; }
 
-  .page-header {
-    text-align: center;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
+  /* ── HEADER ── */
+  .finn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 20px;
     border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
   }
-  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--blue); }
-  .page-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
-  .finn-tag {
-    display: inline-block;
-    background: #1f2937;
-    border: 1px solid var(--blue);
-    color: var(--blue);
-    font-size: 11px;
-    padding: 2px 8px;
+  .finn-logo { display: flex; align-items: center; gap: 10px; }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px; color: #fff; letter-spacing: -1px;
+  }
+  .logo-text { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .logo-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .header-right { text-align: right; }
+  .live-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(88,166,255,0.08);
+    border: 1px solid rgba(88,166,255,0.2);
     border-radius: 20px;
-    margin-top: 8px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+    padding: 3px 10px;
+    font-size: 11px; color: var(--blue); font-weight: 600;
   }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: var(--blue);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+  .header-ref { font-size: 11px; color: var(--muted); margin-top: 5px; }
 
+  /* ── METRIC STRIP ── */
+  .metric-strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .metric-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .metric-val { font-size: 18px; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; }
+  .metric-label { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ── SECTION TITLE ── */
   .section-title {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: var(--muted);
-    margin: 28px 0 14px;
+    margin: 32px 0 14px;
     padding-left: 10px;
     border-left: 3px solid var(--blue);
   }
 
-  /* Principle cards */
+  /* ── PRINCIPLE CARDS ── */
   .principle-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 14px;
-    margin-bottom: 24px;
   }
   .principle-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 14px 16px;
+    padding: 16px;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med) ease;
   }
-  .p-num {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--blue);
-    opacity: 0.25;
-    line-height: 1;
-    margin-bottom: 4px;
+  .principle-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--blue-glow);
+    border-color: rgba(88,166,255,0.3);
   }
-  .p-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-  .p-body { font-size: 12px; color: var(--subtext); line-height: 1.5; }
+  .p-num { font-size: 32px; font-weight: 800; color: var(--blue); opacity: 0.2; line-height: 1; margin-bottom: 4px; }
+  .p-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .p-body { font-size: 12px; color: var(--muted); line-height: 1.55; }
   .p-tag {
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 12px;
     border: 1px solid;
     font-weight: 700;
   }
-  .tag-bull { color: var(--green); border-color: var(--green); background: rgba(63,185,80,0.08); }
-  .tag-bear { color: var(--red); border-color: var(--red); background: rgba(248,81,73,0.08); }
-  .tag-warn { color: var(--amber); border-color: var(--amber); background: rgba(210,153,34,0.08); }
-  .tag-info { color: var(--blue); border-color: var(--blue); background: rgba(88,166,255,0.08); }
+  .tag-bull { color: var(--green); border-color: var(--green); background: var(--green-glow); }
+  .tag-bear { color: var(--red); border-color: var(--red); background: var(--red-glow); }
+  .tag-warn { color: var(--amber); border-color: var(--amber); background: var(--amber-glow); }
+  .tag-info { color: var(--blue); border-color: var(--blue); background: var(--blue-glow); }
 
-  /* Pattern cards */
+  /* ── PATTERN CARDS ── */
   .pattern-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 18px;
-    margin-bottom: 24px;
   }
   .pattern-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
+  .pattern-card:hover { transform: translateY(-2px); }
   .pattern-card.bull-pat { border-top: 3px solid var(--green); }
+  .pattern-card.bull-pat:hover { box-shadow: 0 6px 24px var(--green-glow); }
   .pattern-card.bear-pat { border-top: 3px solid var(--red); }
+  .pattern-card.bear-pat:hover { box-shadow: 0 6px 24px var(--red-glow); }
   .pattern-card.warn-pat { border-top: 3px solid var(--amber); }
+  .pattern-card.warn-pat:hover { box-shadow: 0 6px 24px var(--amber-glow); }
 
   .pc-header {
-    padding: 11px 16px;
+    padding: 12px 16px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   .pc-header h3 { font-size: 14px; font-weight: 700; color: var(--text); }
-  .pc-badge {
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 12px;
-    border: 1px solid;
-    font-weight: 700;
-  }
-
+  .pc-badge { font-size: 10px; padding: 2px 8px; border-radius: 12px; border: 1px solid; font-weight: 700; }
   .pc-diagram {
     font-family: 'Courier New', monospace;
     font-size: 11px;
-    line-height: 1.45;
+    line-height: 1.5;
     padding: 12px 16px;
-    background: #0d1117;
+    background: #0a0e14;
     border-bottom: 1px solid var(--border);
     white-space: pre;
-    color: #adb5bd;
+    color: var(--muted);
     overflow-x: auto;
   }
   .pc-body { padding: 12px 16px; }
-  .pc-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 6px;
-    align-items: flex-start;
-  }
-  .pc-label {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--muted);
-    min-width: 68px;
-    padding-top: 1px;
-  }
-  .pc-val { font-size: 12px; color: var(--subtext); flex: 1; line-height: 1.4; }
+  .pc-row { display: flex; gap: 8px; margin-bottom: 7px; align-items: flex-start; }
+  .pc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--muted); min-width: 68px; padding-top: 1px; }
+  .pc-val { font-size: 12px; color: var(--muted); flex: 1; line-height: 1.4; }
   .pc-val.grn { color: var(--green); }
   .pc-val.red { color: var(--red); }
   .pc-val.amb { color: var(--amber); }
 
-  /* Volume bar visual */
-  .vbar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+  /* ── VOLUME BARS (animated) ── */
+  .vbar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
   .vbar-label { font-size: 10px; color: var(--muted); min-width: 80px; }
-  .vbar-track {
-    flex: 1;
-    height: 8px;
-    background: var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .vbar-fill { height: 100%; border-radius: 4px; }
-  .vbar-num { font-size: 10px; color: var(--muted); min-width: 30px; text-align: right; }
+  .vbar-track { flex: 1; height: 8px; background: rgba(48,54,61,0.6); border-radius: 4px; overflow: hidden; }
+  .vbar-fill { height: 100%; border-radius: 4px; width: 0; transition: width 0.8s var(--ease-out); }
+  .vbar-num { font-size: 10px; color: var(--muted); min-width: 34px; text-align: right; }
 
-  /* OBV section */
+  /* ── CLICK-TO-EXPAND ACCORDION ── */
+  .finn-accordion { border-top: 1px solid var(--border); margin-top: 8px; }
+  .accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    user-select: none;
+  }
+  .accordion-trigger .chevron { font-size: 10px; transition: transform var(--dur-fast) ease; }
+  .accordion-trigger.open .chevron { transform: rotate(180deg); }
+  .accordion-body { display: none; padding: 0 0 8px; }
+  .accordion-body.open { display: block; }
+  .finn-analysis-box {
+    background: rgba(88,166,255,0.05);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .finn-analysis-box .fa-title {
+    font-size: 11px; font-weight: 700; color: var(--blue);
+    margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* ── OBV SECTION ── */
   .obv-wrap {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 24px;
+    transition: box-shadow var(--dur-med) var(--ease-out);
   }
+  .obv-wrap:hover { box-shadow: 0 4px 20px var(--blue-glow); }
   .obv-header {
     padding: 12px 16px;
     border-bottom: 1px solid var(--border);
@@ -191,119 +248,133 @@
     align-items: center;
   }
   .obv-header h3 { font-size: 14px; font-weight: 700; color: var(--blue); }
-  .obv-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-  }
-  .obv-col {
-    padding: 14px 16px;
-    border-right: 1px solid var(--border);
-  }
-  .obv-col:last-child { border-right: none; }
-  .obv-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; letter-spacing: 0.5px; }
-  .obv-item { margin-bottom: 10px; }
+  .obv-formula { font-size: 11px; color: var(--muted); font-family: 'Courier New', monospace; }
+  .obv-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .obv-col { padding: 14px 16px; }
+  .obv-col:first-child { border-right: 1px solid var(--border); }
+  .obv-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; letter-spacing: 0.5px; }
+  .obv-item { margin-bottom: 12px; }
   .obv-item-label { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-  .obv-item-val { font-size: 12px; color: var(--subtext); }
+  .obv-item-val { font-size: 12px; color: var(--muted); }
   .obv-diagram {
     font-family: 'Courier New', monospace;
     font-size: 11px;
-    line-height: 1.5;
-    padding: 12px 16px;
-    background: #0d1117;
+    line-height: 1.55;
+    padding: 14px 16px;
+    background: #0a0e14;
     white-space: pre;
-    color: #adb5bd;
+    color: var(--muted);
     grid-column: 1 / -1;
     border-top: 1px solid var(--border);
     overflow-x: auto;
   }
 
-  /* Climax section */
-  .climax-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 24px;
-  }
+  /* ── CLIMAX CARDS ── */
+  .climax-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .climax-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
   .climax-card.buy { border-top: 3px solid var(--green); }
+  .climax-card.buy:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--green-glow); }
   .climax-card.sell { border-top: 3px solid var(--red); }
-  .climax-header {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    font-weight: 700;
-  }
+  .climax-card.sell:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--red-glow); }
+  .climax-header { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 700; }
   .climax-card.buy .climax-header { color: var(--green); }
   .climax-card.sell .climax-header { color: var(--red); }
-  .climax-body { padding: 12px 16px; }
-  .climax-row { margin-bottom: 7px; font-size: 12px; color: var(--subtext); }
+  .climax-body { padding: 14px 16px; }
+  .climax-row { margin-bottom: 8px; font-size: 12px; color: var(--muted); line-height: 1.5; }
   .climax-row strong { color: var(--text); }
+  .climax-caution { color: var(--amber); font-size: 12px; margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px; }
 
-  /* Quick reference */
-  .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  /* ── QUICK REFERENCE TABLE ── */
+  .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   thead th {
-    background: #1c2128;
+    background: var(--card-elevated);
     color: var(--muted);
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.6px;
     padding: 9px 12px;
     border-bottom: 2px solid var(--border);
-    text-align: left;
-    white-space: nowrap;
+    text-align: left; white-space: nowrap;
   }
-  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background var(--dur-fast) ease; }
   tbody tr:hover { background: rgba(88,166,255,0.04); }
-  tbody td { padding: 8px 12px; color: var(--subtext); }
+  tbody td { padding: 9px 12px; color: var(--muted); }
   tbody td:first-child { color: var(--text); font-weight: 600; }
   .bull-t { color: var(--green); font-weight: 700; }
   .bear-t { color: var(--red); font-weight: 700; }
   .warn-t { color: var(--amber); font-weight: 700; }
 
-  /* Code block */
+  /* ── CODE BLOCK ── */
   .code-block {
-    background: #0d1117;
+    background: #0a0e14;
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 16px;
+    padding: 16px 18px;
     font-family: 'Courier New', monospace;
     font-size: 12px;
-    line-height: 1.6;
-    color: var(--subtext);
+    line-height: 1.65;
+    color: var(--muted);
     overflow-x: auto;
-    margin-bottom: 20px;
   }
   .code-block .kw { color: #ff7b72; }
   .code-block .fn { color: #d2a8ff; }
   .code-block .str { color: #a5d6ff; }
-  .code-block .cm { color: #8b949e; font-style: italic; }
+  .code-block .cm { color: #6e7681; font-style: italic; }
   .code-block .num { color: #79c0ff; }
   .code-block .var { color: var(--text); }
 
+  /* ── FINN VOICE CALLOUT ── */
+  .finn-callout {
+    background: rgba(210,153,34,0.06);
+    border: 1px solid rgba(210,153,34,0.25);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .finn-callout-head {
+    font-size: 11px; font-weight: 700; color: var(--amber);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .finn-callout-body { font-size: 13px; color: var(--text); line-height: 1.65; font-style: italic; }
+  .finn-callout-sig { font-size: 11px; color: var(--amber); margin-top: 8px; font-weight: 600; }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── FOOTER ── */
   .page-footer {
-    margin-top: 32px;
+    margin-top: 40px;
     padding-top: 16px;
     border-top: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
+    align-items: center;
     color: var(--muted);
     font-size: 11px;
   }
-
-  @media print {
-    body { background: #fff; color: #000; }
-    .pattern-card, .climax-card, .obv-wrap { break-inside: avoid; }
-    .pc-diagram, .obv-diagram, .code-block { background: #f5f5f5; color: #333; }
+  .footer-left { display: flex; align-items: center; gap: 8px; }
+  .footer-logo {
+    width: 18px; height: 18px;
+    background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 9px; color: #fff;
   }
+  .footer-version { color: var(--blue); font-weight: 600; }
+
   @media (max-width: 700px) {
+    .metric-strip { grid-template-columns: repeat(3, 1fr); }
     .pattern-grid, .climax-grid, .obv-body { grid-template-columns: 1fr; }
     .principle-grid { grid-template-columns: 1fr; }
   }
@@ -313,50 +384,85 @@
 <div class="page-wrap">
 
   <!-- Header -->
-  <div class="page-header">
-    <h1>Volume Analysis</h1>
-    <div class="subtitle">Core principles · Breakout · Reversal · OBV · Climactic volume · FINN rules</div>
-    <div class="finn-tag">FINN Knowledge Base · HB P6 §6.2</div>
+  <div class="finn-header">
+    <div class="finn-logo">
+      <div class="logo-mark">F</div>
+      <div>
+        <div class="logo-text">Volume Analysis</div>
+        <div class="logo-sub">Confirmation · Divergence · OBV · Climactic Volume</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="live-pill"><div class="live-dot"></div>Knowledge Base</div>
+      <div class="header-ref">HB P6 §6.2 · ig_volume_analysis</div>
+    </div>
+  </div>
+
+  <!-- Metric Strip -->
+  <div class="metric-strip reveal">
+    <div class="metric-item">
+      <div class="metric-val">9</div>
+      <div class="metric-label">Patterns</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">20D</div>
+      <div class="metric-label">Baseline Avg</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">≥1.5×</div>
+      <div class="metric-label">High Volume</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">≥3.0×</div>
+      <div class="metric-label">Climax Signal</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">OBV</div>
+      <div class="metric-label">Flow Indicator</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">≤0.5×</div>
+      <div class="metric-label">Dry-Up Level</div>
+    </div>
   </div>
 
   <!-- Core Principles -->
-  <div class="section-title">Core Principles — Volume as a Confirmation Tool</div>
+  <div class="section-title reveal">Core Principles — Volume as a Confirmation Tool</div>
   <div class="principle-grid">
-    <div class="principle-card">
+    <div class="principle-card reveal">
       <div class="p-num">01</div>
       <div class="p-title">Volume confirms price</div>
       <div class="p-body">Price moves on high volume are more likely to sustain than moves on low volume. Volume is the fuel — price is the vehicle. No fuel = the move stalls.</div>
       <span class="p-tag tag-info">Foundational</span>
     </div>
-    <div class="principle-card">
+    <div class="principle-card reveal" style="transition-delay:60ms">
       <div class="p-num">02</div>
       <div class="p-title">Divergence warns of reversal</div>
-      <div class="p-body">When price makes a new high but volume is declining, the move is losing conviction. This divergence often precedes a reversal — traders are running out of buyers willing to push further.</div>
+      <div class="p-body">When price makes a new high but volume is declining, the move is losing conviction. Traders are running out of buyers willing to push further — divergence often precedes a reversal.</div>
       <span class="p-tag tag-warn">Warning signal</span>
     </div>
-    <div class="principle-card">
+    <div class="principle-card reveal" style="transition-delay:120ms">
       <div class="p-num">03</div>
       <div class="p-title">Volume dries up = accumulation or exhaustion</div>
-      <div class="p-body">Very low volume after a decline often signals that selling has exhausted itself — a base is forming. Very low volume after a rally signals complacency — potential top.</div>
+      <div class="p-body">Very low volume after a decline signals selling has exhausted itself — a base is forming. Very low volume after a rally signals complacency — potential top.</div>
       <span class="p-tag tag-info">Context-dependent</span>
     </div>
-    <div class="principle-card">
+    <div class="principle-card reveal" style="transition-delay:180ms">
       <div class="p-num">04</div>
       <div class="p-title">Compare to the 20-day average</div>
-      <div class="p-body">Volume only has meaning relative to its baseline. Always compare today's volume to the 20-day average volume. "High" and "low" volume are meaningless without this benchmark.</div>
+      <div class="p-body">Volume only has meaning relative to its baseline. Always compare today's volume to the 20-day average. "High" and "low" volume are meaningless without this benchmark.</div>
       <span class="p-tag tag-info">Measurement rule</span>
     </div>
   </div>
 
   <!-- Breakout Patterns -->
-  <div class="section-title">Breakout Volume Patterns</div>
+  <div class="section-title reveal">Breakout Volume Patterns</div>
   <div class="pattern-grid">
 
-    <!-- High-Volume Breakout -->
-    <div class="pattern-card bull-pat">
+    <div class="pattern-card bull-pat reveal">
       <div class="pc-header">
         <h3>High-Volume Breakout</h3>
-        <span class="pc-badge" style="color:var(--green); border-color:var(--green); background:rgba(63,185,80,0.08);">Bullish confirmation</span>
+        <span class="pc-badge" style="color:var(--green); border-color:var(--green); background:var(--green-glow);">Bullish confirmation</span>
       </div>
       <div class="pc-diagram"><span style="color:var(--muted);">Price:  ─────────────────────────
                               /  ← Breakout</span>
@@ -369,28 +475,36 @@
           <span class="pc-label">What it is</span>
           <span class="pc-val">Price breaks through a key resistance level with volume ≥ 150% of the 20-day average.</span>
         </div>
-        <div class="vbar-row"><span class="vbar-label">Avg volume</span><div class="vbar-track"><div class="vbar-fill" style="width:50%; background:var(--muted);"></div></div><span class="vbar-num">1x</span></div>
-        <div class="vbar-row"><span class="vbar-label">Breakout vol</span><div class="vbar-track"><div class="vbar-fill" style="width:90%; background:var(--green);"></div></div><span class="vbar-num">≥1.5x</span></div>
+        <div class="vbar-row"><span class="vbar-label">Avg volume</span><div class="vbar-track"><div class="vbar-fill" data-w="50" style="background:var(--muted);"></div></div><span class="vbar-num">1×</span></div>
+        <div class="vbar-row"><span class="vbar-label">Breakout vol</span><div class="vbar-track"><div class="vbar-fill" data-w="90" style="background:var(--green);"></div></div><span class="vbar-num">≥1.5×</span></div>
         <div class="pc-row">
           <span class="pc-label">Signal</span>
           <span class="pc-val grn">Strong. Institutional participation confirmed. Breakout likely to follow through.</span>
         </div>
         <div class="pc-row">
           <span class="pc-label">Action</span>
-          <span class="pc-val">Enter on breakout bar or first retest of broken resistance. Set stop below the breakout level.</span>
+          <span class="pc-val">Enter on breakout bar or first retest of broken resistance. Stop below the breakout level.</span>
         </div>
         <div class="pc-row">
           <span class="pc-label">Invalidate</span>
           <span class="pc-val red">Price closes back below the breakout level — exit immediately.</span>
         </div>
+        <div class="finn-accordion">
+          <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+          <div class="accordion-body">
+            <div class="finn-analysis-box">
+              <div class="fa-title">FINN Check</div>
+              The volume IS the signal. A breakout at ≥1.5× average means institutional capital moved — they don't move small. That participation is your edge; it's why the level is likely to hold. Log the volume ratio on every breakout trade you take. What's the number?
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Low-Volume Breakout -->
-    <div class="pattern-card warn-pat">
+    <div class="pattern-card warn-pat reveal" style="transition-delay:60ms">
       <div class="pc-header">
         <h3>Low-Volume Breakout</h3>
-        <span class="pc-badge" style="color:var(--amber); border-color:var(--amber); background:rgba(210,153,34,0.08);">Suspect — wait</span>
+        <span class="pc-badge" style="color:var(--amber); border-color:var(--amber); background:var(--amber-glow);">Suspect — wait</span>
       </div>
       <div class="pc-diagram"><span style="color:var(--muted);">Price:  ─────────────────────────
                               /  ← Breakout</span>
@@ -401,21 +515,30 @@
       <div class="pc-body">
         <div class="pc-row">
           <span class="pc-label">What it is</span>
-          <span class="pc-val">Price breaks a resistance level but volume is below average or only average — no conviction.</span>
+          <span class="pc-val">Price breaks a resistance level but volume is below or only at average — no conviction behind the move.</span>
         </div>
-        <div class="vbar-row"><span class="vbar-label">Avg volume</span><div class="vbar-track"><div class="vbar-fill" style="width:50%; background:var(--muted);"></div></div><span class="vbar-num">1x</span></div>
-        <div class="vbar-row"><span class="vbar-label">Breakout vol</span><div class="vbar-track"><div class="vbar-fill" style="width:40%; background:var(--amber);"></div></div><span class="vbar-num">&lt;1x</span></div>
+        <div class="vbar-row"><span class="vbar-label">Avg volume</span><div class="vbar-track"><div class="vbar-fill" data-w="50" style="background:var(--muted);"></div></div><span class="vbar-num">1×</span></div>
+        <div class="vbar-row"><span class="vbar-label">Breakout vol</span><div class="vbar-track"><div class="vbar-fill" data-w="38" style="background:var(--amber);"></div></div><span class="vbar-num">&lt;1×</span></div>
         <div class="pc-row">
           <span class="pc-label">Signal</span>
           <span class="pc-val amb">Weak. High failure rate. Without volume, there are not enough buyers to sustain the move.</span>
         </div>
         <div class="pc-row">
           <span class="pc-label">Action</span>
-          <span class="pc-val">Wait for a volume-confirmed follow-through day before entering. Do not chase the initial move.</span>
+          <span class="pc-val">Wait for a volume-confirmed follow-through day. Do not chase the initial move.</span>
         </div>
         <div class="pc-row">
           <span class="pc-label">Risk</span>
-          <span class="pc-val red">These often resolve as bull traps. Price fades back below the breakout level.</span>
+          <span class="pc-val red">Often resolves as a bull trap — price fades back below the breakout level.</span>
+        </div>
+        <div class="finn-accordion">
+          <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+          <div class="accordion-body">
+            <div class="finn-analysis-box">
+              <div class="fa-title">FINN Check</div>
+              You didn't miss it. A low-volume breakout is an invitation, not a signal. The market is asking if anyone else wants to follow — and nobody answered. Wait for the answer. Your job is to wait for confirmation, not to be early.
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -423,26 +546,24 @@
   </div>
 
   <!-- Reversal Patterns -->
-  <div class="section-title">Reversal Volume Patterns</div>
+  <div class="section-title reveal">Reversal Volume Patterns</div>
   <div class="pattern-grid">
 
-    <!-- Volume Divergence (bearish) -->
-    <div class="pattern-card bear-pat">
+    <div class="pattern-card bear-pat reveal">
       <div class="pc-header">
         <h3>Bearish Volume Divergence</h3>
-        <span class="pc-badge" style="color:var(--red); border-color:var(--red); background:rgba(248,81,73,0.08);">Top warning</span>
+        <span class="pc-badge" style="color:var(--red); border-color:var(--red); background:var(--red-glow);">Top warning</span>
       </div>
       <div class="pc-diagram"><span style="color:var(--green);">Price:       /\/\
-            /    \    /
-           /      \/</span>       <span style="color:var(--red);">← New high, lower volume</span>
+            /    \    /</span>
+<span style="color:var(--red);">           /      \/      ← New high, lower volume</span>
 <span style="color:var(--muted);">Vol:   ████ █████ ▃▂▃▂▂
-              ↑         ↑
-          Peak 1      Peak 2</span>
-<span style="color:var(--red);">       Volume declining = fewer buyers</span></div>
+              ↑         ↑</span>
+<span style="color:var(--red);">          Peak 1      Peak 2 — fewer buyers</span></div>
       <div class="pc-body">
         <div class="pc-row">
           <span class="pc-label">What it is</span>
-          <span class="pc-val">Price makes a higher high but volume is lower than on the prior high. Buyers losing conviction.</span>
+          <span class="pc-val">Price makes a higher high but volume is lower than on the prior high — buyers losing conviction.</span>
         </div>
         <div class="pc-row">
           <span class="pc-label">Signal</span>
@@ -450,24 +571,32 @@
         </div>
         <div class="pc-row">
           <span class="pc-label">Action</span>
-          <span class="pc-val">Tighten stops on existing longs. Do not add new positions. Watch for candlestick reversal confirmation.</span>
+          <span class="pc-val">Tighten stops on existing longs. No new positions. Watch for candlestick reversal confirmation.</span>
         </div>
         <div class="pc-row">
           <span class="pc-label">Combined</span>
           <span class="pc-val amb">Strongest when paired with H&S or double-top pattern forming simultaneously.</span>
         </div>
+        <div class="finn-accordion">
+          <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+          <div class="accordion-body">
+            <div class="finn-analysis-box">
+              <div class="fa-title">FINN Check</div>
+              Price is technically still making higher highs — so nothing is "wrong" yet. But volume is telling you the story before price does. Fewer participants are willing to buy at these levels. Document the divergence, mark it on your chart, and start tightening. Don't wait for confirmation to act — by then it's late.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Bullish Volume Divergence -->
-    <div class="pattern-card bull-pat">
+    <div class="pattern-card bull-pat reveal" style="transition-delay:60ms">
       <div class="pc-header">
         <h3>Bullish Volume Divergence</h3>
-        <span class="pc-badge" style="color:var(--green); border-color:var(--green); background:rgba(63,185,80,0.08);">Bottom warning</span>
+        <span class="pc-badge" style="color:var(--green); border-color:var(--green); background:var(--green-glow);">Bottom warning</span>
       </div>
       <div class="pc-diagram"><span style="color:var(--red);">Price:  \/\/
-        \    /\    \</span>     <span style="color:var(--green);">← New low, lower volume</span>
-<span style="color:var(--muted);">       \        \/</span>
+        \    /\    \</span>
+<span style="color:var(--green);">         \        \/     ← New low, lower volume</span>
 <span style="color:var(--muted);">Vol:   ████ █████ ▃▂▃▂▂
               ↑         ↑</span>
 <span style="color:var(--green);">       Sellers losing strength = bottom near</span></div>
@@ -488,17 +617,26 @@
           <span class="pc-label">Combined</span>
           <span class="pc-val grn">Strongest at Fibonacci support + double bottom + IH&S pattern forming.</span>
         </div>
+        <div class="finn-accordion">
+          <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+          <div class="accordion-body">
+            <div class="finn-analysis-box">
+              <div class="fa-title">FINN Check</div>
+              New lows with fewer sellers means the market is running out of people willing to sell at these prices. That's the setup — not the signal. The signal is the first green reversal candle on decent volume after the divergence forms. Mark your level. Set your alert. Wait.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
   </div>
 
   <!-- OBV -->
-  <div class="section-title">On-Balance Volume (OBV)</div>
-  <div class="obv-wrap">
+  <div class="section-title reveal">On-Balance Volume (OBV)</div>
+  <div class="obv-wrap reveal">
     <div class="obv-header">
-      <h3>On-Balance Volume — Accumulation / Distribution Indicator</h3>
-      <span style="font-size:11px; color:var(--muted);">Formula: OBV += Volume (up days) or −= Volume (down days)</span>
+      <h3>OBV — Accumulation / Distribution Indicator</h3>
+      <span class="obv-formula">OBV += Volume (up days) · −= Volume (down days)</span>
     </div>
     <div class="obv-body">
       <div class="obv-col">
@@ -528,7 +666,7 @@
         </div>
         <div class="obv-item">
           <div class="obv-item-label" style="color:var(--red);">OBV falling + Price rising</div>
-          <div class="obv-item-val">Bearish divergence — distribution is occurring, reversal risk high</div>
+          <div class="obv-item-val">Bearish divergence — distribution occurring, reversal risk high</div>
         </div>
         <div class="obv-item">
           <div class="obv-item-label" style="color:var(--green);">OBV rising + Price flat/falling</div>
@@ -536,51 +674,58 @@
         </div>
         <div class="obv-item">
           <div class="obv-item-label" style="color:var(--amber);">OBV flat + Price moving</div>
-          <div class="obv-item-val">Unclear — price move is not supported by volume flow</div>
+          <div class="obv-item-val">Unclear — price move not supported by volume flow</div>
         </div>
       </div>
     </div>
     <div class="obv-diagram"><span style="color:var(--green);">BULLISH DIVERGENCE:                       BEARISH DIVERGENCE:</span>
 
 <span style="color:var(--text);">Price:  ─────────────────────              Price: ─────────────────────────</span>
-<span style="color:var(--red);">             /\      /\    ← lower lows</span>      <span style="color:var(--green);">         /\              /\ ← higher highs</span>
-<span style="color:var(--red);">            /  \    /  \</span>                       <span style="color:var(--green);">        /  \            /</span>
+<span style="color:var(--red);">             /\      /\    ← lower lows       </span><span style="color:var(--green);">        /\              /\ ← higher highs</span>
+<span style="color:var(--red);">            /  \    /  \                   </span><span style="color:var(--green);">       /  \            /</span>
 <span style="color:var(--text);">OBV:    ─────────────────────              OBV: ─────────────────────────</span>
-<span style="color:var(--green);">              /\      /\ ← rising OBV       </span>    <span style="color:var(--red);">          /\           /\ ← falling OBV</span>
-<span style="color:var(--green);">             /  \    /  \                  </span>         <span style="color:var(--red);">        /  \         /</span>
+<span style="color:var(--green);">              /\      /\ ← rising OBV       </span><span style="color:var(--red);">          /\           /\ ← falling OBV</span>
+<span style="color:var(--green);">             /  \    /  \                  </span><span style="color:var(--red);">        /  \         /</span>
 
 <span style="color:var(--green);">→ OBV rising while price falls = accumulation (bullish)</span>
 <span style="color:var(--red);">→ OBV falling while price rises = distribution (bearish)</span></div>
   </div>
 
   <!-- Climactic Volume -->
-  <div class="section-title">Climactic Volume — Exhaustion Signals</div>
+  <div class="section-title reveal">Climactic Volume — Exhaustion Signals</div>
   <div class="climax-grid">
-    <div class="climax-card sell">
+    <div class="climax-card sell reveal">
       <div class="climax-header">Selling Climax (Capitulation)</div>
       <div class="climax-body">
-        <div class="climax-row"><strong>What it looks like:</strong> An extremely large red candle on massive volume — typically 3x–5x average — often with a long lower wick. Price gapped down or broke a major support level.</div>
+        <div class="climax-row"><strong>What it looks like:</strong> An extremely large red candle on massive volume — typically 3×–5× average — often with a long lower wick. Price gapped down or broke a major support level.</div>
         <div class="climax-row"><strong>What it means:</strong> Every remaining seller has sold at once. There is no one left to sell — the selling is exhausted. This is capitulation.</div>
         <div class="climax-row"><strong>What happens next:</strong> Price often reverses sharply or bases immediately after. The volume spike IS the bottom signal (not before it).</div>
         <div class="climax-row"><strong>Action:</strong> Watch for the first green day following a selling climax. Volume should begin to normalize. Do not short into a selling climax — the risk/reward is extremely poor.</div>
-        <div class="climax-row" style="color:var(--amber);"><strong>Caution:</strong> Climax does not guarantee instant reversal — price may retest the low (lower volume) before recovering.</div>
+        <div class="climax-caution"><strong>Caution:</strong> Climax does not guarantee instant reversal — price may retest the low on lower volume before recovering.</div>
       </div>
     </div>
-    <div class="climax-card buy">
+    <div class="climax-card buy reveal" style="transition-delay:60ms">
       <div class="climax-header">Buying Climax (Blow-Off Top)</div>
       <div class="climax-body">
         <div class="climax-row"><strong>What it looks like:</strong> Extreme spike in volume on a massive green candle — everyone is rushing to buy at the top. Price accelerates above all moving averages with huge volume bars.</div>
-        <div class="climax-row"><strong>What it means:</strong> Every willing buyer has bought. Retail FOMO has been exhausted. There is no one left to push price higher — smart money is distributing into the buying frenzy.</div>
+        <div class="climax-row"><strong>What it means:</strong> Every willing buyer has bought. Retail FOMO is exhausted. There is no one left to push price higher — smart money is distributing into the buying frenzy.</div>
         <div class="climax-row"><strong>What happens next:</strong> Price often reverses or stalls sharply. The blow-off top is a top-forming signal, not a continuation signal.</div>
-        <div class="climax-row"><strong>Action:</strong> If long, tighten stops significantly or take profits. Do not chase buy climax candles — you are buying at the top of a distribution. Watch for the first red reversal candle.</div>
-        <div class="climax-row" style="color:var(--amber);"><strong>Caution:</strong> In very strong markets (earnings, news catalyst), climax volume can precede a brief pause, not a reversal. Context matters.</div>
+        <div class="climax-row"><strong>Action:</strong> If long, tighten stops significantly or take profits. Do not chase buy climax candles — you are buying at the top of a distribution.</div>
+        <div class="climax-caution"><strong>Caution:</strong> In very strong markets (earnings, news catalyst), climax volume can precede a brief pause, not a reversal. Context matters.</div>
       </div>
     </div>
   </div>
 
+  <!-- FINN Voice -->
+  <div class="finn-callout reveal" style="margin-top:28px">
+    <div class="finn-callout-head">⬡ FINN</div>
+    <div class="finn-callout-body">"Volume is the one variable the market cannot fake. Price can be moved by a single large order. Volume requires participation — it takes hundreds or thousands of orders moving in the same direction to register as truly high volume. When price moves without volume, you're watching someone set a trap. Ask yourself: who has the conviction here, and who is just along for the ride?"</div>
+    <div class="finn-callout-sig">— FINN: What does the volume say?</div>
+  </div>
+
   <!-- Quick Reference Table -->
-  <div class="section-title">Quick Reference — Volume Pattern Summary</div>
-  <div class="table-wrap">
+  <div class="section-title reveal">Quick Reference — Volume Pattern Summary</div>
+  <div class="table-wrap reveal">
     <table>
       <thead>
         <tr>
@@ -637,14 +782,14 @@
         <tr>
           <td>Selling Climax</td>
           <td>Crash candle, large wick</td>
-          <td>3x–5x average volume</td>
+          <td>3×–5× average volume</td>
           <td><span class="bull-t">Exhaustion bottom</span></td>
           <td>Watch for base; don't short</td>
         </tr>
         <tr>
           <td>Buying Climax</td>
           <td>Blow-off green surge</td>
-          <td>3x–5x average volume</td>
+          <td>3×–5× average volume</td>
           <td><span class="bear-t">Exhaustion top</span></td>
           <td>Take profits; don't chase</td>
         </tr>
@@ -659,9 +804,9 @@
     </table>
   </div>
 
-  <!-- Python code -->
-  <div class="section-title">Python — Volume Analysis + OBV</div>
-  <div class="code-block"><span class="kw">import</span> <span class="var">yfinance</span> <span class="kw">as</span> <span class="var">yf</span>
+  <!-- Python Code -->
+  <div class="section-title reveal">Python — Volume Analysis + OBV</div>
+  <div class="code-block reveal"><span class="kw">import</span> <span class="var">yfinance</span> <span class="kw">as</span> <span class="var">yf</span>
 <span class="kw">import</span> <span class="var">pandas</span> <span class="kw">as</span> <span class="var">pd</span>
 
 <span class="kw">def</span> <span class="fn">volume_analysis</span>(<span class="var">ticker</span>, <span class="var">period</span>=<span class="str">"6mo"</span>):
@@ -682,21 +827,17 @@
     <span class="var">df</span>[<span class="str">'Direction'</span>] = <span class="var">df</span>[<span class="str">'Close'</span>].<span class="fn">diff</span>().<span class="fn">apply</span>(<span class="kw">lambda</span> <span class="var">x</span>: <span class="num">1</span> <span class="kw">if</span> <span class="var">x</span> > <span class="num">0</span> <span class="kw">else</span> (-<span class="num">1</span> <span class="kw">if</span> <span class="var">x</span> < <span class="num">0</span> <span class="kw">else</span> <span class="num">0</span>))
     <span class="var">df</span>[<span class="str">'OBV'</span>] = (<span class="var">df</span>[<span class="str">'Volume'</span>] * <span class="var">df</span>[<span class="str">'Direction'</span>]).<span class="fn">cumsum</span>()
 
-    <span class="cm"># Price vs OBV divergence</span>
+    <span class="cm"># Price vs OBV divergence (20-day lookback)</span>
     <span class="var">price_trend</span> = <span class="var">df</span>[<span class="str">'Close'</span>].<span class="fn">iloc</span>[-<span class="num">1</span>] > <span class="var">df</span>[<span class="str">'Close'</span>].<span class="fn">iloc</span>[-<span class="num">20</span>]
     <span class="var">obv_trend</span>   = <span class="var">df</span>[<span class="str">'OBV'</span>].<span class="fn">iloc</span>[-<span class="num">1</span>]  > <span class="var">df</span>[<span class="str">'OBV'</span>].<span class="fn">iloc</span>[-<span class="num">20</span>]
 
-    <span class="kw">if</span> <span class="var">price_trend</span> <span class="kw">and</span> <span class="var">obv_trend</span>:
-        <span class="var">divergence</span> = <span class="str">"CONFIRMED — Price and OBV both rising"</span>
-    <span class="kw">elif</span> <span class="var">price_trend</span> <span class="kw">and</span> <span class="kw">not</span> <span class="var">obv_trend</span>:
-        <span class="var">divergence</span> = <span class="str">"BEARISH DIVERGENCE — Price up, OBV down (distribution)"</span>
-    <span class="kw">elif</span> <span class="kw">not</span> <span class="var">price_trend</span> <span class="kw">and</span> <span class="var">obv_trend</span>:
-        <span class="var">divergence</span> = <span class="str">"BULLISH DIVERGENCE — Price down, OBV up (accumulation)"</span>
-    <span class="kw">else</span>:
-        <span class="var">divergence</span> = <span class="str">"Both declining — confirmed downtrend"</span>
+    <span class="kw">if</span>   <span class="var">price_trend</span> <span class="kw">and</span>     <span class="var">obv_trend</span>: <span class="var">div</span> = <span class="str">"CONFIRMED — Price and OBV both rising"</span>
+    <span class="kw">elif</span> <span class="var">price_trend</span> <span class="kw">and</span> <span class="kw">not</span> <span class="var">obv_trend</span>: <span class="var">div</span> = <span class="str">"BEARISH DIVERGENCE — Price up, OBV down"</span>
+    <span class="kw">elif</span> <span class="kw">not</span> <span class="var">price_trend</span> <span class="kw">and</span> <span class="var">obv_trend</span>: <span class="var">div</span> = <span class="str">"BULLISH DIVERGENCE — Price down, OBV up"</span>
+    <span class="kw">else</span>:                                  <span class="var">div</span> = <span class="str">"Both declining — confirmed downtrend"</span>
 
     <span class="fn">print</span>(<span class="fn">f</span><span class="str">"\n=== Volume Analysis: {ticker} ==="</span>)
-    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"OBV Divergence: {divergence}\n"</span>)
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"OBV Divergence: {div}\n"</span>)
     <span class="fn">print</span>(<span class="var">df</span>[[<span class="str">'Close'</span>, <span class="str">'Volume'</span>, <span class="str">'Vol_Ratio'</span>, <span class="str">'Vol_Signal'</span>, <span class="str">'OBV'</span>]].<span class="fn">tail</span>(<span class="num">10</span>).<span class="fn">round</span>(<span class="num">2</span>))
     <span class="kw">return</span> <span class="var">df</span>
 
@@ -705,10 +846,47 @@
 
   <!-- Footer -->
   <div class="page-footer">
-    <span>FINN Knowledge Base · Volume Analysis · HB P6 §6.2</span>
-    <span>Session C4.c · Built May 2026</span>
+    <div class="footer-left">
+      <div class="footer-logo">F</div>
+      <span>FINN Knowledge Base · Volume Analysis · HB P6 §6.2</span>
+    </div>
+    <span><span class="footer-version">v2.0</span> · May 2026 · ig_volume_analysis</span>
   </div>
 
 </div>
+
+<script>
+  // Scroll-triggered reveal + bar animation trigger
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.vbar-fill[data-w]').forEach(animateBar);
+    }
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  function animateBar(bar) {
+    if (bar.dataset.animated) return;
+    bar.dataset.animated = '1';
+    requestAnimationFrame(() => { bar.style.width = bar.dataset.w + '%'; });
+  }
+
+  // Click-to-expand accordion
+  function toggleAccordion(trigger) {
+    const body = trigger.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    const card = trigger.closest('.pattern-card, .principle-card');
+    if (card) {
+      card.querySelectorAll('.accordion-trigger').forEach(t => {
+        t.classList.remove('open');
+        t.nextElementSibling.classList.remove('open');
+      });
+    }
+    if (!isOpen) {
+      trigger.classList.add('open');
+      body.classList.add('open');
+    }
+  }
+</script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,246 +6,490 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FINN — Gap Types Reference</title>
 <style>
-  :root {
-    --bg: #0d1117; --card: #161b22; --border: #30363d;
-    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
-    --red: #f85149; --amber: #d29922; --muted: #8b949e;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
-  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+:root {
+  --bg: #0d1117; --card: #161b22; --border: #30363d;
+  --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
+  --red: #f85149; --amber: #d29922; --muted: #8b949e;
+  --card-elevated: #1c2128;
+  --blue-glow: rgba(88,166,255,0.12);
+  --green-glow: rgba(63,185,80,0.12);
+  --red-glow: rgba(248,81,73,0.12);
+  --amber-glow: rgba(210,153,34,0.12);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+  --dur-fast: 150ms; --dur-med: 300ms; --dur-slow: 500ms;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.6; min-height: 100vh; }
+body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+body.social.square { width: 1080px; min-height: 1080px; }
 
-  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
-  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+.page { max-width: 960px; margin: 0 auto; padding: 24px 20px 48px; }
 
-  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+/* HEADER */
+.header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+.header-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.finn-logo { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue); text-transform: uppercase; background: var(--blue-glow); border: 1px solid rgba(88,166,255,0.3); padding: 3px 8px; border-radius: 4px; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); animation: pulse-b 2s ease-in-out infinite; }
+@keyframes pulse-b { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+h1 { font-size: 22px; font-weight: 700; }
+.header-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
 
-  /* Gap type cards — prominent */
-  .gap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
-  .gap-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 18px; }
-  .gap-card.common { border-left: 3px solid var(--muted); }
-  .gap-card.breakaway { border-left: 3px solid var(--blue); }
-  .gap-card.runaway { border-left: 3px solid var(--green); }
-  .gap-card.exhaustion { border-left: 3px solid var(--red); }
-  .gap-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
-  .gap-name { font-size: 16px; font-weight: 700; }
-  .gap-name.common { color: var(--muted); }
-  .gap-name.breakaway { color: var(--blue); }
-  .gap-name.runaway { color: var(--green); }
-  .gap-name.exhaustion { color: var(--red); }
-  .gap-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
-  .badge-neutral { background: rgba(139,148,158,0.2); color: var(--muted); }
-  .badge-bull { background: rgba(63,185,80,0.15); color: var(--green); }
-  .badge-bear { background: rgba(248,81,73,0.15); color: var(--red); }
-  .badge-blue { background: rgba(88,166,255,0.15); color: var(--blue); }
-  .gap-desc { color: var(--muted); font-size: 13px; margin-bottom: 10px; }
-  .gap-desc strong { color: var(--text); }
-  .gap-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-  .gap-stat { background: #0d1117; border-radius: 5px; padding: 8px 10px; font-size: 12px; }
-  .stat-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .stat-value { color: var(--text); font-weight: 600; margin-top: 2px; }
+/* METRIC STRIP */
+.metric-strip { display: grid; grid-template-columns: repeat(5,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 24px; }
+.metric-item { background: var(--card); padding: 10px 14px; }
+.metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
+.metric-value { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
 
-  /* Diagram */
-  .diagram { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 12px; }
-  .diagram-title { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 12px; font-family: system-ui; }
-  .diag-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .d-green { color: var(--green); }
-  .d-red { color: var(--red); }
-  .d-blue { color: var(--blue); }
-  .d-amber { color: var(--amber); }
-  .d-muted { color: var(--muted); }
+/* SVG DIAGRAM */
+.diagram-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+.diagram-header { padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--card-elevated); border-bottom: 1px solid var(--border); }
+.diagram-body { padding: 20px; display: flex; justify-content: center; }
 
-  /* Table */
-  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  thead tr { background: #1c2128; }
-  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #1c2128; }
+/* GAP CARDS */
+.gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+@media (max-width: 640px) { .gap-grid { grid-template-columns: 1fr; } }
 
-  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
-  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
-  .rule-box p:last-child { margin-bottom: 0; }
-  .rule-box strong { color: var(--blue); }
+.gap-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out); }
+.gap-card:hover { transform: translateY(-2px); }
+.gap-card.common { border-top: 3px solid var(--muted); }
+.gap-card.common:hover { box-shadow: 0 4px 20px rgba(139,148,158,0.15); }
+.gap-card.breakaway { border-top: 3px solid var(--blue); }
+.gap-card.breakaway:hover { box-shadow: 0 4px 20px rgba(88,166,255,0.15); }
+.gap-card.runaway { border-top: 3px solid var(--green); }
+.gap-card.runaway:hover { box-shadow: 0 4px 20px rgba(63,185,80,0.15); }
+.gap-card.exhaustion { border-top: 3px solid var(--red); }
+.gap-card.exhaustion:hover { box-shadow: 0 4px 20px rgba(248,81,73,0.15); }
 
-  .code-block { background: #0d1117; border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 12px; color: var(--green); overflow-x: auto; }
-  .code-comment { color: var(--muted); }
+.gc-header { padding: 14px 16px 12px; border-bottom: 1px solid var(--border); }
+.gc-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.gc-name { font-size: 16px; font-weight: 800; }
+.gc-name.common { color: var(--muted); }
+.gc-name.breakaway { color: var(--blue); }
+.gc-name.runaway { color: var(--green); }
+.gc-name.exhaustion { color: var(--red); }
+.gc-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 3px; }
+.badge-neutral { background: rgba(139,148,158,0.12); color: var(--muted); border: 1px solid var(--border); }
+.badge-blue { background: var(--blue-glow); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+.badge-green { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.badge-red { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+.gc-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.gc-desc strong { color: var(--text); }
 
-  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+.gc-stats { padding: 14px 16px; }
+.stat-row { margin-bottom: 11px; }
+.stat-row:last-child { margin-bottom: 0; }
+.stat-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.stat-name { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.stat-val { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.stat-fill { height: 100%; border-radius: 2px; transition: width 0.7s var(--ease-out); }
 
-  @media print {
-    body { background: #fff; color: #111; }
-    .gap-card, .diagram, .rule-box, .code-block { border-color: #ccc; background: #f8f8f8; }
-    .header { border-color: #333; }
-    .logo, .section-label { color: #1a56db; }
-    .gap-name.breakaway, .badge-blue { color: #1a56db; }
-    .gap-name.runaway, .badge-bull, .d-green { color: #16a34a; }
-    .gap-name.exhaustion, .badge-bear, .d-red { color: #dc2626; }
-    .gap-name.common, .badge-neutral { color: #555; }
-    .d-amber { color: #b45309; }
-    th { color: #1a56db; background: #f0f4ff; }
-    td { border-color: #ddd; }
-    tr:hover td { background: transparent; }
-    .code-block { color: #1a1a1a; background: #f5f5f5; }
-    .code-comment { color: #666; }
-    .gap-stat { background: #eee; }
-    .gap-card.common { border-left-color: #888; }
-    .gap-card.breakaway { border-left-color: #1a56db; }
-    .gap-card.runaway { border-left-color: #16a34a; }
-    .gap-card.exhaustion { border-left-color: #dc2626; }
-  }
+/* click-to-expand FINN note */
+.gc-expand-btn { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; background: var(--card-elevated); border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); cursor: pointer; user-select: none; transition: color var(--dur-fast); }
+.gc-expand-btn:hover { color: var(--text); }
+.expand-chevron { font-size: 10px; transition: transform var(--dur-med) var(--ease-out); }
+.gap-card.open .expand-chevron { transform: rotate(180deg); }
+.gc-detail { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-out); }
+.gap-card.open .gc-detail { max-height: 200px; }
+.gc-detail-body { padding: 12px 16px 14px; font-size: 12px; line-height: 1.6; color: var(--muted); border-top: 1px solid var(--border); }
+.gc-detail-body strong { color: var(--text); }
+
+/* IDENTIFICATION TABLE */
+.table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+.table-header { padding: 9px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--card-elevated); border-bottom: 1px solid var(--border); }
+.id-table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.id-table th { padding: 9px 12px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--card-elevated); }
+.id-table th.col-common { color: var(--muted); }
+.id-table th.col-breakaway { color: var(--blue); }
+.id-table th.col-runaway { color: var(--green); }
+.id-table th.col-exhaustion { color: var(--red); }
+.id-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--muted); vertical-align: top; line-height: 1.4; }
+.id-table tr:last-child td { border-bottom: none; }
+.id-table tr:hover td { background: rgba(255,255,255,0.02); }
+.id-table td:first-child { color: var(--text); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.td-c { color: var(--muted); }
+.td-b { color: var(--blue); font-weight: 600; }
+.td-g { color: var(--green); font-weight: 600; }
+.td-r { color: var(--red); font-weight: 600; }
+
+/* CODE BLOCK */
+.code-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+.code-inner { padding: 16px 18px; font-family: 'SF Mono','Fira Code',monospace; font-size: 12px; line-height: 1.7; color: var(--muted); overflow-x: auto; }
+.code-inner .kw { color: #ff7b72; }
+.code-inner .cm { color: var(--muted); font-style: italic; }
+.code-inner .str { color: #a5d6ff; }
+.code-inner .num { color: #79c0ff; }
+
+/* FINN VOICE */
+.finn-voice { position: relative; background: var(--amber-glow); border: 1px solid rgba(210,153,34,0.3); border-radius: 8px; padding: 18px 20px 18px 28px; font-size: 13px; line-height: 1.7; backdrop-filter: blur(12px); margin-bottom: 0; }
+.finn-voice::before { content: 'FINN'; position: absolute; top: -1px; left: 16px; transform: translateY(-50%); background: var(--amber); color: #0d1117; font-size: 9px; font-weight: 800; letter-spacing: 0.1em; padding: 2px 7px; border-radius: 3px; }
+
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-size: 12px; color: var(--muted); }
+.footer-right { font-size: 11px; color: var(--border); }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media print { body { background:#fff; color:#111; } }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <div class="header">
-    <div>
-      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
-      <div class="title">Gap Types Reference</div>
-      <div class="subtitle">Common · Breakaway · Runaway · Exhaustion — identification, signal, and FINN code reference · Handbook §2.6</div>
+  <div class="header reveal">
+    <div class="header-top">
+      <span class="finn-logo">FINN</span>
+      <div class="live-dot"></div>
     </div>
-    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C1</div>
+    <h1>Gap Types Reference</h1>
+    <div class="header-sub">Common · Breakaway · Runaway · Exhaustion — identification, signal value, and FINN code · HB §2.6</div>
   </div>
 
-  <!-- What is a gap -->
-  <div class="section-label">What Is a Gap</div>
-  <div class="diagram">
-    <div class="diagram-title">Gap-Up and Gap-Down — Price Discontinuity</div>
-    <div class="diag-row">
-      <div>
-        <div class="d-green">Gap-Up Example</div>
-<pre><span class="d-muted">Day 2 open: $52.00  ┌──┐</span>
-                    <span class="d-green">│  │ ← Day 2 candle opens above</span>
-<span class="d-green">════════════════════════ GAP (empty price range: $49–$52)</span>
-<span class="d-muted">Day 1 close: $49.00</span> <span class="d-muted">┌──┐</span>
-                    <span class="d-muted">│  │ ← Day 1 candle closed here</span>
-<span class="d-amber">Gap size = ($52 - $49) / $49 = 6.1%</span></pre>
-      </div>
-      <div>
-        <div class="d-red">Gap-Down Example</div>
-<pre><span class="d-muted">Day 1 close: $49.00</span> <span class="d-muted">┌──┐</span>
-                    <span class="d-muted">│  │ ← Day 1 candle closed here</span>
-<span class="d-red">════════════════════════ GAP (empty price range: $44–$49)</span>
-<span class="d-muted">Day 2 open: $44.00  ┌──┐</span>
-                    <span class="d-red">│  │ ← Day 2 candle opens below</span>
-<span class="d-amber">Gap size = ($49 - $44) / $49 = 10.2%</span></pre>
-      </div>
+  <div class="metric-strip reveal">
+    <div class="metric-item">
+      <div class="metric-label">Gap Types</div>
+      <div class="metric-value" style="color:var(--blue)">4</div>
     </div>
-    <p style="color:var(--muted);font-size:12px;margin-top:10px">A gap is a zone of price where no trading occurred. The prior close and next open do not connect. Gaps can fill later (price returns to the gap zone) or remain open indefinitely.</p>
+    <div class="metric-item">
+      <div class="metric-label">Common Size</div>
+      <div class="metric-value" style="color:var(--muted)">&lt; 0.5%</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Breakaway Vol</div>
+      <div class="metric-value" style="color:var(--blue)">3–5×</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Primary Classifier</div>
+      <div class="metric-value" style="font-size:12px;color:var(--muted)">Volume</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-label">Classify On</div>
+      <div class="metric-value" style="font-size:12px;color:var(--amber)">Day +2–5</div>
+    </div>
   </div>
 
-  <!-- The 4 types -->
-  <div class="section-label">The Four Gap Types</div>
-  <div class="gap-grid">
+  <!-- GAP ANATOMY SVG -->
+  <div class="diagram-wrap reveal">
+    <div class="diagram-header">Gap Anatomy — Price Discontinuity</div>
+    <div class="diagram-body">
+      <svg viewBox="0 0 700 160" width="100%" style="max-width:700px;" height="160">
+        <!-- GAP UP -->
+        <text x="80" y="18" font-size="11" fill="#3fb950" font-family="monospace" font-weight="bold">GAP-UP</text>
+        <!-- Day 1 candle -->
+        <line x1="110" y1="70" x2="110" y2="120" stroke="#8b949e" stroke-width="1.5"/>
+        <rect x="104" y="80" width="12" height="30" fill="#f85149" rx="1"/>
+        <text x="90" y="78" font-size="9" fill="#8b949e" font-family="monospace">Close $49</text>
+        <!-- Gap zone -->
+        <rect x="80" y="50" width="130" height="30" fill="rgba(63,185,80,0.06)" stroke="rgba(63,185,80,0.3)" stroke-width="1" stroke-dasharray="4,3" rx="2"/>
+        <text x="102" y="69" font-size="9" fill="#3fb950" font-family="monospace">GAP $49→$52 (+6.1%)</text>
+        <!-- Day 2 candle -->
+        <line x1="160" y1="30" x2="160" y2="55" stroke="#8b949e" stroke-width="1.5"/>
+        <rect x="154" y="35" width="12" height="18" fill="#3fb950" rx="1"/>
+        <text x="176" y="38" font-size="9" fill="#8b949e" font-family="monospace">Open $52</text>
+        <!-- Price path before -->
+        <polyline points="40,130 60,122 80,118 100,126 110,120" fill="none" stroke="#8b949e" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Price path after -->
+        <polyline points="160,44 185,38 205,30 225,22" fill="none" stroke="#3fb950" stroke-width="1.5" stroke-linecap="round"/>
 
-    <div class="gap-card common">
-      <div class="gap-header">
-        <div class="gap-name common">Common Gap</div>
-        <span class="gap-badge badge-neutral">Fills Quickly</span>
+        <!-- SEPARATOR -->
+        <line x1="340" y1="10" x2="340" y2="150" stroke="#30363d" stroke-width="1" stroke-dasharray="4,4"/>
+
+        <!-- GAP DOWN -->
+        <text x="420" y="18" font-size="11" fill="#f85149" font-family="monospace" font-weight="bold">GAP-DOWN</text>
+        <!-- Day 1 candle -->
+        <line x1="450" y1="30" x2="450" y2="80" stroke="#8b949e" stroke-width="1.5"/>
+        <rect x="444" y="35" width="12" height="30" fill="#3fb950" rx="1"/>
+        <text x="466" y="40" font-size="9" fill="#8b949e" font-family="monospace">Close $49</text>
+        <!-- Gap zone -->
+        <rect x="420" y="80" width="130" height="35" fill="rgba(248,81,73,0.06)" stroke="rgba(248,81,73,0.3)" stroke-width="1" stroke-dasharray="4,3" rx="2"/>
+        <text x="430" y="102" font-size="9" fill="#f85149" font-family="monospace">GAP $49→$44 (−10.2%)</text>
+        <!-- Day 2 candle -->
+        <line x1="500" y1="115" x2="500" y2="148" stroke="#8b949e" stroke-width="1.5"/>
+        <rect x="494" y="118" width="12" height="22" fill="#f85149" rx="1"/>
+        <text x="516" y="122" font-size="9" fill="#8b949e" font-family="monospace">Open $44</text>
+        <!-- Price path before -->
+        <polyline points="380,50 395,42 410,48 430,38 450,35" fill="none" stroke="#8b949e" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Price path after -->
+        <polyline points="500,129 520,135 545,142 565,148" fill="none" stroke="#f85149" stroke-width="1.5" stroke-linecap="round"/>
+
+        <!-- Bottom note -->
+        <text x="100" y="158" font-size="9" fill="#8b949e" font-family="sans-serif">A gap is a zone of price where no trading occurred. Candle body classification: wicks through gap ≠ fill. Close through gap = fill.</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 4 GAP TYPE CARDS -->
+  <div class="gap-grid reveal">
+
+    <!-- COMMON -->
+    <div class="gap-card common" id="card-common">
+      <div class="gc-header">
+        <div class="gc-title-row">
+          <span class="gc-name common">Common Gap</span>
+          <span class="gc-badge badge-neutral">Fills Quickly</span>
+        </div>
+        <div class="gc-desc"><strong>What it is:</strong> A small gap in normal price action. No significant catalyst. Most common in consolidation ranges and low-volatility periods.</div>
       </div>
-      <div class="gap-desc"><strong>What it is:</strong> A small gap that occurs in the middle of normal price action with no significant catalyst. Most often seen in consolidation ranges or low-volatility periods.</div>
-      <div class="gap-desc"><strong>Why it happens:</strong> Overnight futures drift, thin pre-market order books, minor overnight news.</div>
-      <div class="gap-stats">
-        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">&lt; 0.5%</div></div>
-        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Normal or below</div></div>
-        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">High — often same day</div></div>
-        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">Low — ignore</div></div>
+      <div class="gc-stats">
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Typical Size</span><span class="stat-val" style="color:var(--muted)">&lt; 0.5%</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="10" style="width:0%;background:var(--muted)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Fill Probability</span><span class="stat-val" style="color:var(--green)">HIGH — 90%</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="90" style="width:0%;background:var(--green)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Signal Value</span><span class="stat-val" style="color:var(--muted)">LOW — Ignore</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="10" style="width:0%;background:var(--muted)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Volume on Gap Day</span><span class="stat-val">Normal or Below</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="40" style="width:0%;background:var(--muted)"></div></div>
+        </div>
+      </div>
+      <div class="gc-expand-btn" onclick="toggleGap('common')">
+        <span>FINN Analysis</span>
+        <span class="expand-chevron">▼</span>
+      </div>
+      <div class="gc-detail">
+        <div class="gc-detail-body">
+          <strong>Don't trade it.</strong> Common gaps occur because of overnight futures drift or thin pre-market liquidity — they have no predictive value for the next move. They fill quickly because the gap had no institutional driver behind it. Filter these out of your gap detection script by requiring &gt;0.5% gap and above-average volume.
+        </div>
       </div>
     </div>
 
-    <div class="gap-card breakaway">
-      <div class="gap-header">
-        <div class="gap-name breakaway">Breakaway Gap</div>
-        <span class="gap-badge badge-blue">Trend Signal</span>
+    <!-- BREAKAWAY -->
+    <div class="gap-card breakaway" id="card-breakaway">
+      <div class="gc-header">
+        <div class="gc-title-row">
+          <span class="gc-name breakaway">Breakaway Gap</span>
+          <span class="gc-badge badge-blue">Trend Signal</span>
+        </div>
+        <div class="gc-desc"><strong>What it is:</strong> Launches price out of a consolidation or base. Marks the start of a new trend. High-conviction signal — new institutional money entering.</div>
       </div>
-      <div class="gap-desc"><strong>What it is:</strong> A gap that launches price out of a consolidation or base pattern, marking the beginning of a new trend. This is a high-conviction signal that new institutional money is entering.</div>
-      <div class="gap-desc"><strong>Why it happens:</strong> Earnings surprise, major news catalyst, breakout from a long-consolidation base on high volume.</div>
-      <div class="gap-stats">
-        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">2–8%+</div></div>
-        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Significantly above avg</div></div>
-        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">Low — gap often holds</div></div>
-        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">High — trend starting</div></div>
+      <div class="gc-stats">
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Typical Size</span><span class="stat-val" style="color:var(--blue)">2–8%+</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="65" style="width:0%;background:var(--blue)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Fill Probability</span><span class="stat-val" style="color:var(--green)">LOW — 15%</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="15" style="width:0%;background:var(--red)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Signal Value</span><span class="stat-val" style="color:var(--blue)">HIGH — Trend Start</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="90" style="width:0%;background:var(--blue)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Volume on Gap Day</span><span class="stat-val" style="color:var(--blue)">3–5× Average</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="85" style="width:0%;background:var(--blue)"></div></div>
+        </div>
+      </div>
+      <div class="gc-expand-btn" onclick="toggleGap('breakaway')">
+        <span>FINN Analysis</span>
+        <span class="expand-chevron">▼</span>
+      </div>
+      <div class="gc-detail">
+        <div class="gc-detail-body">
+          <strong>High-priority signal.</strong> The gap zone acts as support after the breakout — it's the new floor. Best entry: buy the gap or buy the first retest of the gap zone. Stop: below the bottom of the gap zone (a close below = thesis broken). Volume is the validator — if volume is not 2× average or above, treat it with skepticism. Catalysts: earnings surprise, major news, sector leadership change.
+        </div>
       </div>
     </div>
 
-    <div class="gap-card runaway">
-      <div class="gap-header">
-        <div class="gap-name runaway">Runaway Gap</div>
-        <span class="gap-badge badge-bull">Continuation</span>
+    <!-- RUNAWAY -->
+    <div class="gap-card runaway" id="card-runaway">
+      <div class="gc-header">
+        <div class="gc-title-row">
+          <span class="gc-name runaway">Runaway Gap</span>
+          <span class="gc-badge badge-green">Continuation</span>
+        </div>
+        <div class="gc-desc"><strong>What it is:</strong> Occurs mid-trend — price already moving, gap marks acceleration. Also called a "measuring gap" — often appears near the midpoint of the total move.</div>
       </div>
-      <div class="gap-desc"><strong>What it is:</strong> A gap that occurs in the middle of an established trend — price has already been moving in one direction, and this gap marks an acceleration. Also called a "measuring gap" because it often occurs near the midpoint of the total move.</div>
-      <div class="gap-desc"><strong>Why it happens:</strong> Momentum is strong; late-entering institutional players adding to positions.</div>
-      <div class="gap-stats">
-        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">1–4%</div></div>
-        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Above average</div></div>
-        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">Moderate — fills eventually</div></div>
-        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">Confirms trend strength</div></div>
+      <div class="gc-stats">
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Typical Size</span><span class="stat-val" style="color:var(--green)">1–4%</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="40" style="width:0%;background:var(--green)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Fill Probability</span><span class="stat-val" style="color:var(--amber)">MODERATE — 45%</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="45" style="width:0%;background:var(--amber)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Signal Value</span><span class="stat-val" style="color:var(--green)">MEDIUM — Trend Confirms</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="70" style="width:0%;background:var(--green)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Volume on Gap Day</span><span class="stat-val" style="color:var(--green)">2–3× Average</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="65" style="width:0%;background:var(--green)"></div></div>
+        </div>
+      </div>
+      <div class="gc-expand-btn" onclick="toggleGap('runaway')">
+        <span>FINN Analysis</span>
+        <span class="expand-chevron">▼</span>
+      </div>
+      <div class="gc-detail">
+        <div class="gc-detail-body">
+          <strong>Confirms the trend, estimates the target.</strong> The "measuring" property: if the trend began at $40 and the runaway gap is at $50, expect the total move to end around $60 (the gap is near the midpoint). Hold existing positions. Entering new positions is riskier — you are mid-trend, not at the start. Watch for the exhaustion gap to follow in the same direction. That's the exit signal.
+        </div>
       </div>
     </div>
 
-    <div class="gap-card exhaustion">
-      <div class="gap-header">
-        <div class="gap-name exhaustion">Exhaustion Gap</div>
-        <span class="gap-badge badge-bear">Reversal Warning</span>
+    <!-- EXHAUSTION -->
+    <div class="gap-card exhaustion" id="card-exhaustion">
+      <div class="gc-header">
+        <div class="gc-title-row">
+          <span class="gc-name exhaustion">Exhaustion Gap</span>
+          <span class="gc-badge badge-red">Reversal Warning</span>
+        </div>
+        <div class="gc-desc"><strong>What it is:</strong> Final burst of momentum near trend end. Looks like a runaway gap — confirmed only by failed continuation and high-volume reversal that follows.</div>
       </div>
-      <div class="gap-desc"><strong>What it is:</strong> A gap that occurs near the end of a trend, representing the final burst of momentum before the trend reverses. Looks similar to a runaway gap but is followed by a failed continuation and high-volume reversal.</div>
-      <div class="gap-desc"><strong>Why it happens:</strong> The last retail buyers pile in after a long trend. Smart money is distributing into this buying pressure.</div>
-      <div class="gap-stats">
-        <div class="gap-stat"><div class="stat-label">Typical Size</div><div class="stat-value">2–5%+</div></div>
-        <div class="gap-stat"><div class="stat-label">Volume</div><div class="stat-value">Very high — climactic</div></div>
-        <div class="gap-stat"><div class="stat-label">Fill Probability</div><div class="stat-value">High — fills as trend ends</div></div>
-        <div class="gap-stat"><div class="stat-label">Signal Value</div><div class="stat-value">Reversal warning signal</div></div>
+      <div class="gc-stats">
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Typical Size</span><span class="stat-val" style="color:var(--red)">2–5%+</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="55" style="width:0%;background:var(--red)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Fill Probability</span><span class="stat-val" style="color:var(--red)">HIGH — 80%</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="80" style="width:0%;background:var(--red)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Signal Value</span><span class="stat-val" style="color:var(--red)">HIGH — Reversal</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="85" style="width:0%;background:var(--red)"></div></div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-meta"><span class="stat-name">Volume on Gap Day</span><span class="stat-val" style="color:var(--red)">4–6× Average (Climax)</span></div>
+          <div class="stat-bar"><div class="stat-fill" data-w="95" style="width:0%;background:var(--red)"></div></div>
+        </div>
+      </div>
+      <div class="gc-expand-btn" onclick="toggleGap('exhaustion')">
+        <span>FINN Analysis</span>
+        <span class="expand-chevron">▼</span>
+      </div>
+      <div class="gc-detail">
+        <div class="gc-detail-body">
+          <strong>You cannot identify it on day 1.</strong> An exhaustion gap and a runaway gap look identical on the gap day. Classification requires 2–5 sessions of follow-through (or lack of it). Signal: price fills back into the gap zone within 1–3 days on volume. Action: if long — tighten stops aggressively or close position. Do not short into the gap on day 1 — the risk/reward is poor before confirmation.
+        </div>
       </div>
     </div>
 
   </div>
 
-  <!-- Identification table -->
-  <div class="section-label">Gap Identification Matrix</div>
-  <table>
-    <thead><tr><th>Question</th><th style="color:var(--muted)">Common</th><th style="color:var(--blue)">Breakaway</th><th style="color:var(--green)">Runaway</th><th style="color:var(--red)">Exhaustion</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Prior price structure?</strong></td><td>Consolidation / random</td><td>Long base / consolidation</td><td>Middle of active trend</td><td>Late in extended trend</td></tr>
-      <tr><td><strong>Volume on gap day?</strong></td><td>Normal or below</td><td>3–5× average</td><td>2–3× average</td><td>4–6× average (climactic)</td></tr>
-      <tr><td><strong>News catalyst?</strong></td><td>None or minor</td><td>Major earnings / news</td><td>Momentum continuation</td><td>Late-stage hype</td></tr>
-      <tr><td><strong>Does price hold the gap?</strong></td><td>Rarely — fills quickly</td><td>Yes — gap acts as support</td><td>Usually — confirms trend</td><td>No — price reverses back through</td></tr>
-      <tr><td><strong>What happens next?</strong></td><td>Returns to prior range</td><td>Trend begins / accelerates</td><td>Trend continues</td><td>Reversal and gap fill</td></tr>
-    </tbody>
-  </table>
-
-  <!-- FINN code -->
-  <div class="section-label">FINN Code Reference — Gap Detection</div>
-  <div class="code-block"><span class="code-comment"># Gap detection in FINN backtests</span>
-df['gap_pct'] = (df['Open'] - df['Close'].shift(1)) / df['Close'].shift(1) * 100
-
-<span class="code-comment"># Gap-up and gap-down flags</span>
-df['gap_up']   = (df['gap_pct'] &gt;  0.5).astype(int)
-df['gap_down'] = (df['gap_pct'] &lt; -0.5).astype(int)
-
-<span class="code-comment"># Large gap flag (breakaway / exhaustion candidates)</span>
-df['large_gap_up']   = (df['gap_pct'] &gt;  2.0).astype(int)
-df['large_gap_down'] = (df['gap_pct'] &lt; -2.0).astype(int)
-
-<span class="code-comment"># Gap fill detection (did price return to the gap zone during the day?)</span>
-df['gap_filled'] = (
-    (df['gap_up'] == 1) &amp; (df['Low'] &lt;= df['Close'].shift(1))
-).astype(int)</div>
-
-  <div class="rule-box">
-    <p><strong>You cannot identify gap type until after the gap.</strong> A breakaway and exhaustion gap look identical on the day they occur. The difference is confirmed by what happens over the next 2–5 sessions. Treat all large gaps as unclassified on day 1 — classify after observing the follow-through.</p>
-    <p><strong>Volume is the primary classifier.</strong> A large gap on 3× average volume is a real signal. A large gap on below-average volume in a low-liquidity pre-market session is noise.</p>
-    <p><strong>Gaps fill — eventually.</strong> A commonly cited market observation is that most gaps eventually fill. In practice: common gaps fill quickly, breakaway gaps may take months or years to fill, and exhaustion gaps fill as part of the reversal. Do not trade "gap fill" as a stand-alone strategy without IC validation.</p>
+  <!-- IDENTIFICATION TABLE -->
+  <div class="table-wrap reveal">
+    <div class="table-header">Gap Identification Matrix</div>
+    <table class="id-table">
+      <thead>
+        <tr>
+          <th>Question</th>
+          <th class="col-common">Common</th>
+          <th class="col-breakaway">Breakaway</th>
+          <th class="col-runaway">Runaway</th>
+          <th class="col-exhaustion">Exhaustion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Prior structure</td>
+          <td class="td-c">Consolidation / random</td>
+          <td class="td-b">Long base / range</td>
+          <td class="td-g">Middle of active trend</td>
+          <td class="td-r">Late extended trend</td>
+        </tr>
+        <tr>
+          <td>Volume on gap day</td>
+          <td class="td-c">Normal or below</td>
+          <td class="td-b">3–5× average</td>
+          <td class="td-g">2–3× average</td>
+          <td class="td-r">4–6× (climactic)</td>
+        </tr>
+        <tr>
+          <td>News catalyst</td>
+          <td class="td-c">None or minor</td>
+          <td class="td-b">Major earnings / news</td>
+          <td class="td-g">Momentum continuation</td>
+          <td class="td-r">Late-stage FOMO</td>
+        </tr>
+        <tr>
+          <td>Does price hold the gap?</td>
+          <td class="td-c">Rarely — fills same day</td>
+          <td class="td-b">Yes — gap = support</td>
+          <td class="td-g">Usually — trend continues</td>
+          <td class="td-r">No — reverses back through</td>
+        </tr>
+        <tr>
+          <td>What happens next</td>
+          <td class="td-c">Returns to prior range</td>
+          <td class="td-b">New trend begins</td>
+          <td class="td-g">Trend accelerates</td>
+          <td class="td-r">Reversal and gap fill</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <div class="footer">
-    <span>FINN Reference Library · ig_gap_types.html · Built May 2026</span>
-    <span>Handbook §2.6 · See also: ig_candlestick_patterns.html · ig_support_resistance.html</span>
+  <!-- CODE BLOCK -->
+  <div class="code-wrap reveal">
+    <div class="table-header">FINN Code Reference — Gap Detection</div>
+    <div class="code-inner"><span class="cm"># Gap detection in FINN backtests</span>
+df[<span class="str">'gap_pct'</span>] = (df[<span class="str">'Open'</span>] - df[<span class="str">'Close'</span>].shift(1)) / df[<span class="str">'Close'</span>].shift(1) * <span class="num">100</span>
+
+<span class="cm"># Gap-up and gap-down flags (filter noise with 0.5% threshold)</span>
+df[<span class="str">'gap_up'</span>]   = (df[<span class="str">'gap_pct'</span>] &gt;  <span class="num">0.5</span>).astype(<span class="num">int</span>)
+df[<span class="str">'gap_down'</span>] = (df[<span class="str">'gap_pct'</span>] &lt; -<span class="num">0.5</span>).astype(<span class="num">int</span>)
+
+<span class="cm"># Large gap flag (breakaway / exhaustion candidates)</span>
+df[<span class="str">'large_gap_up'</span>]   = (df[<span class="str">'gap_pct'</span>] &gt;  <span class="num">2.0</span>).astype(<span class="num">int</span>)
+df[<span class="str">'large_gap_down'</span>] = (df[<span class="str">'gap_pct'</span>] &lt; -<span class="num">2.0</span>).astype(<span class="num">int</span>)
+
+<span class="cm"># Volume classification (add after Vol_Avg20 is calculated)</span>
+df[<span class="str">'gap_high_vol'</span>] = (
+    ((df[<span class="str">'gap_up'</span>] == <span class="num">1</span>) | (df[<span class="str">'gap_down'</span>] == <span class="num">1</span>)) &amp;
+    (df[<span class="str">'Volume'</span>] &gt;= df[<span class="str">'Vol_Avg20'</span>] * <span class="num">2.0</span>)
+).astype(<span class="num">int</span>)
+
+<span class="cm"># Gap fill detection (did price return to the gap zone during the day?)</span>
+df[<span class="str">'gap_filled'</span>] = (
+    (df[<span class="str">'gap_up'</span>] == <span class="num">1</span>) &amp; (df[<span class="str">'Low'</span>] &lt;= df[<span class="str">'Close'</span>].shift(1))
+).astype(<span class="num">int</span>)</div>
+  </div>
+
+  <div class="finn-voice reveal">
+    You cannot classify a gap on the day it occurs. A breakaway and an exhaustion gap are identical on day 1 — large size, high volume, strong directional move. The difference is the follow-through. Wait 2–5 sessions. If price holds above the gap zone — breakaway. If price fills back through it — exhaustion. Volume is the primary classifier; story and catalyst are secondary. What does the data say at day 5?
+  </div>
+
+  <div class="footer reveal">
+    <div class="footer-left">FINN — Financial Intelligence &amp; Navigation Network</div>
+    <div class="footer-right">v2.0 · May 2026 · ig_gap_types</div>
   </div>
 
 </div>
+<script>
+function toggleGap(name) {
+  const card = document.getElementById('card-' + name);
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.gap-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+// Animate stat bars when card becomes visible
+function animateBars(container) {
+  container.querySelectorAll('.stat-fill[data-w]').forEach(bar => {
+    const target = parseInt(bar.dataset.w);
+    setTimeout(() => { bar.style.width = target + '%'; }, 100);
+  });
+}
+
+const obs = new IntersectionObserver(entries => entries.forEach(e => {
+  if (e.isIntersecting) {
+    e.target.classList.add('visible');
+    animateBars(e.target);
+  }
+}), { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
 </body>
 </html>

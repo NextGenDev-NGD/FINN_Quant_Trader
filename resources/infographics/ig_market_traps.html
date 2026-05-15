@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!-- SOCIAL MODE: add class="social square" to <body> for 1080×1080px square -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,6 +10,7 @@
   :root {
     --bg: #0d1117;
     --card: #161b22;
+    --card-elevated: #1c2128;
     --border: #30363d;
     --text: #e6edf3;
     --blue: #58a6ff;
@@ -16,6 +19,15 @@
     --amber: #d29922;
     --muted: #8b949e;
     --purple: #bc8cff;
+    --blue-glow: rgba(88,166,255,0.12);
+    --green-glow: rgba(63,185,80,0.12);
+    --red-glow: rgba(248,81,73,0.12);
+    --amber-glow: rgba(210,153,34,0.12);
+    --purple-glow: rgba(188,140,255,0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 150ms;
+    --dur-med: 300ms;
+    --dur-slow: 500ms;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,42 +43,138 @@
     margin: 0 auto;
   }
 
-  /* Header */
-  .header {
-    border-bottom: 2px solid var(--blue);
-    padding-bottom: 12px;
+  body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+  body.social.square { width: 1080px; min-height: 1080px; }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* FINN logo header */
+  .finn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
     margin-bottom: 20px;
   }
-  .header-top {
+  .finn-logo-block {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    gap: 10px;
   }
-  .finn-tag {
-    font-size: 11px;
-    color: var(--blue);
-    letter-spacing: 2px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-bottom: 4px;
+  .finn-logo-mark {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--blue), #1f6feb);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -1px;
   }
-  h1 {
-    font-size: 22px;
+  .finn-logo-text {
+    display: flex;
+    flex-direction: column;
+  }
+  .finn-logo-name {
+    font-size: 13px;
     font-weight: 700;
     color: var(--text);
+    letter-spacing: 0.5px;
   }
-  .subtitle {
-    font-size: 12px;
+  .finn-logo-sub {
+    font-size: 10px;
     color: var(--muted);
-    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
   }
-  .badge {
+  .finn-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--blue);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .header-badge {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 4px 10px;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* Title block */
+  .title-block {
+    margin-bottom: 16px;
+  }
+  .title-block h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .title-block .subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Metric strip */
+  .metric-strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .metric-cell {
+    background: var(--card);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .metric-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .metric-val.red { color: var(--red); }
+  .metric-val.green { color: var(--green); }
+  .metric-val.blue { color: var(--blue); }
+  .metric-val.amber { color: var(--amber); }
+  .metric-val.purple { color: var(--purple); }
+  .metric-lbl {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.3;
   }
 
   /* Section label */
@@ -80,42 +188,29 @@
     margin-top: 20px;
   }
 
-  /* Framing box */
-  .framing-box {
-    background: var(--card);
-    border: 1px solid var(--blue);
-    border-left: 4px solid var(--blue);
-    border-radius: 6px;
-    padding: 12px 16px;
-    margin-bottom: 20px;
-  }
-  .framing-box p {
-    color: var(--text);
-    font-size: 12px;
-  }
-  .framing-box strong {
-    color: var(--blue);
-  }
-
-  /* Trap cards — main layout */
+  /* Trap cards */
   .traps-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
     margin-bottom: 20px;
   }
-
   .trap-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 8px;
     overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
-
-  .trap-card.bull-trap { border-top: 3px solid var(--red); }
-  .trap-card.bear-trap { border-top: 3px solid var(--green); }
-  .trap-card.stop-hunt { border-top: 3px solid var(--purple); }
+  .trap-card:hover { transform: translateY(-2px); }
+  .trap-card.bull-trap  { border-top: 3px solid var(--red);    }
+  .trap-card.bear-trap  { border-top: 3px solid var(--green);  }
+  .trap-card.stop-hunt  { border-top: 3px solid var(--purple); }
   .trap-card.false-breakout { border-top: 3px solid var(--amber); }
+  .trap-card.bull-trap:hover  { box-shadow: 0 6px 24px var(--red-glow);    }
+  .trap-card.bear-trap:hover  { box-shadow: 0 6px 24px var(--green-glow);  }
+  .trap-card.stop-hunt:hover  { box-shadow: 0 6px 24px var(--purple-glow); }
+  .trap-card.false-breakout:hover { box-shadow: 0 6px 24px var(--amber-glow); }
 
   .trap-header {
     padding: 10px 14px 8px;
@@ -128,21 +223,13 @@
     text-transform: uppercase;
     margin-bottom: 2px;
   }
-  .bull-trap .trap-type { color: var(--red); }
-  .bear-trap .trap-type { color: var(--green); }
-  .stop-hunt .trap-type { color: var(--purple); }
+  .bull-trap .trap-type    { color: var(--red); }
+  .bear-trap .trap-type    { color: var(--green); }
+  .stop-hunt .trap-type    { color: var(--purple); }
   .false-breakout .trap-type { color: var(--amber); }
 
-  .trap-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .trap-definition {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 3px;
-  }
+  .trap-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .trap-definition { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
   .trap-body {
     padding: 12px 14px;
@@ -150,7 +237,6 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
   }
-
   .trap-section-title {
     font-size: 10px;
     font-weight: 700;
@@ -159,14 +245,12 @@
     color: var(--muted);
     margin-bottom: 6px;
   }
-
   .trap-diagram {
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 8px;
   }
-
   pre.diagram {
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 10px;
@@ -174,11 +258,7 @@
     color: var(--text);
     white-space: pre;
   }
-
-  .signal-list, .protect-list {
-    list-style: none;
-    padding: 0;
-  }
+  .signal-list, .protect-list { list-style: none; padding: 0; }
   .signal-list li, .protect-list li {
     font-size: 11px;
     color: var(--text);
@@ -188,31 +268,66 @@
     gap: 6px;
     align-items: flex-start;
   }
-  .signal-list li:last-child, .protect-list li:last-child {
-    border-bottom: none;
-  }
+  .signal-list li:last-child, .protect-list li:last-child { border-bottom: none; }
   .signal-dot {
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: 5px;
+    flex-shrink: 0; margin-top: 5px;
   }
-  .bull-trap .signal-dot { background: var(--red); }
-  .bear-trap .signal-dot { background: var(--green); }
-  .stop-hunt .signal-dot { background: var(--purple); }
+  .bull-trap .signal-dot    { background: var(--red); }
+  .bear-trap .signal-dot    { background: var(--green); }
+  .stop-hunt .signal-dot    { background: var(--purple); }
   .false-breakout .signal-dot { background: var(--amber); }
-
   .protect-dot {
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: 5px;
+    flex-shrink: 0; margin-top: 5px;
     background: var(--blue);
   }
 
-  /* Trap comparison table */
+  /* FINN accordion per trap card */
+  .trap-accordion-row {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+  .accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 6px 0;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    user-select: none;
+    transition: opacity var(--dur-fast);
+  }
+  .accordion-trigger:hover { opacity: 0.8; }
+  .accordion-chevron {
+    font-size: 10px;
+    transition: transform var(--dur-med) var(--ease-out);
+  }
+  .accordion-trigger.open .accordion-chevron { transform: rotate(180deg); }
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--dur-slow) var(--ease-out);
+  }
+  .accordion-body.open { max-height: 200px; }
+  .accordion-content {
+    font-size: 11px;
+    color: var(--text);
+    font-style: italic;
+    line-height: 1.6;
+    padding: 6px 0 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Comparison table */
   .comparison-table {
     width: 100%;
     border-collapse: collapse;
@@ -239,33 +354,18 @@
     border-bottom: 1px solid var(--border);
     vertical-align: top;
   }
-  .comparison-table tr:last-child td {
-    border-bottom: none;
-  }
-  .comparison-table tr:hover td {
-    background: rgba(88, 166, 255, 0.04);
-  }
-  .trap-label-cell {
-    font-weight: 700;
-    white-space: nowrap;
-  }
-  .bull-trap-label { color: var(--red); }
-  .bear-trap-label { color: var(--green); }
-  .stop-hunt-label { color: var(--purple); }
+  .comparison-table tr:last-child td { border-bottom: none; }
+  .comparison-table tr:hover td { background: var(--blue-glow); }
+  .trap-label-cell { font-weight: 700; white-space: nowrap; }
+  .bull-trap-label    { color: var(--red); }
+  .bear-trap-label    { color: var(--green); }
+  .stop-hunt-label    { color: var(--purple); }
   .false-breakout-label { color: var(--amber); }
+  .tag { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; }
+  .tag-high   { background: rgba(248,81,73,0.15);   color: var(--red); }
+  .tag-medium { background: rgba(210,153,34,0.15);  color: var(--amber); }
 
-  .tag {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 10px;
-    font-weight: 600;
-  }
-  .tag-high { background: rgba(248, 81, 73, 0.15); color: var(--red); }
-  .tag-medium { background: rgba(210, 153, 34, 0.15); color: var(--amber); }
-  .tag-low { background: rgba(63, 185, 80, 0.15); color: var(--green); }
-
-  /* Universal protection rules */
+  /* Protection rules */
   .protection-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -277,6 +377,11 @@
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 12px;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+  }
+  .protection-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--blue-glow);
   }
   .protection-number {
     font-size: 22px;
@@ -284,26 +389,17 @@
     color: var(--blue);
     line-height: 1;
     margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
   }
-  .protection-rule {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .protection-detail {
-    font-size: 10px;
-    color: var(--muted);
-    line-height: 1.4;
-  }
+  .protection-rule { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .protection-detail { font-size: 10px; color: var(--muted); line-height: 1.4; }
 
   /* FINN voice */
   .finn-voice {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--amber);
-    border-radius: 6px;
-    padding: 12px 16px;
+    background: linear-gradient(135deg, rgba(210,153,34,0.08), rgba(210,153,34,0.03));
+    border: 1px solid rgba(210,153,34,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
     margin-top: 20px;
   }
   .finn-voice-label {
@@ -312,47 +408,80 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color: var(--amber);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
-  .finn-voice p {
-    font-size: 12px;
-    color: var(--text);
-    font-style: italic;
-  }
+  .finn-voice p { font-size: 12px; color: var(--text); font-style: italic; line-height: 1.7; }
 
-  @media print {
-    body { background: white; color: black; padding: 12px; }
-    .trap-card, .comparison-table, .protection-card, .framing-box, .finn-voice {
-      border-color: #ccc !important;
-    }
-    pre.diagram { color: black; background: #f6f8fa; }
+  /* Footer */
+  .finn-footer {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
+  .footer-left { font-size: 10px; color: var(--muted); }
+  .footer-right { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-top">
-    <div>
-      <div class="finn-tag">FINN — Quantitative Trading</div>
-      <h1>Market Traps</h1>
-      <div class="subtitle">Bull traps, bear traps, stop hunts, and false breakouts — identify them before they cost you</div>
+<!-- FINN logo header -->
+<div class="finn-header">
+  <div class="finn-logo-block">
+    <div class="finn-logo-mark">F</div>
+    <div class="finn-logo-text">
+      <span class="finn-logo-name">FINN</span>
+      <span class="finn-logo-sub">Quantitative Trading</span>
     </div>
-    <div class="badge">Tier 2 · Price Action</div>
+  </div>
+  <div class="finn-header-right">
+    <div class="live-dot"></div>
+    <div class="header-badge">Tier 2 · Price Action</div>
   </div>
 </div>
 
-<!-- Framing -->
-<div class="framing-box">
-  <p><strong>FINN framing rule:</strong> A trap is not bad luck. It is a predictable pattern that exploits where retail traders cluster their entries and stops. The edge is in knowing <em>where</em> those clusters form and what price action looks like <em>before</em> the reversal confirms. Volume and candlestick behavior at the level are the data. Read them, don't guess them.</p>
+<!-- Title -->
+<div class="title-block reveal">
+  <h1>Market Traps</h1>
+  <div class="subtitle">Bull traps, bear traps, stop hunts, and false breakouts — identify them before they cost you</div>
+</div>
+
+<!-- Metric strip -->
+<div class="metric-strip reveal">
+  <div class="metric-cell">
+    <div class="metric-val red">4</div>
+    <div class="metric-lbl">Trap Types</div>
+  </div>
+  <div class="metric-cell">
+    <div class="metric-val blue">≥1.5×</div>
+    <div class="metric-lbl">Volume Lie Detector</div>
+  </div>
+  <div class="metric-cell">
+    <div class="metric-val amber">Close</div>
+    <div class="metric-lbl">Not Wick Rule</div>
+  </div>
+  <div class="metric-cell">
+    <div class="metric-val purple">1.5× ATR</div>
+    <div class="metric-lbl">Stop Offset</div>
+  </div>
+  <div class="metric-cell">
+    <div class="metric-val green">Flip It</div>
+    <div class="metric-lbl">Trap → Edge</div>
+  </div>
+  <div class="metric-cell">
+    <div class="metric-val red">All</div>
+    <div class="metric-lbl">Levels Risk</div>
+  </div>
 </div>
 
 <!-- Four trap cards -->
-<div class="section-label">The Four Traps</div>
+<div class="section-label reveal">The Four Traps</div>
 <div class="traps-grid">
 
   <!-- Bull Trap -->
-  <div class="trap-card bull-trap">
+  <div class="trap-card bull-trap reveal">
     <div class="trap-header">
       <div class="trap-type">Bull Trap</div>
       <div class="trap-name">False Breakout Above Resistance</div>
@@ -387,11 +516,19 @@
           <li><span class="protect-dot"></span>Stop below the reclaimed level, not the breakout candle low</li>
         </ul>
       </div>
+      <div class="trap-accordion-row">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          FINN Analysis <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">"The most dangerous bull trap is the one that closes above resistance. The wick test is obvious — everyone expects it. What catches traders is when price closes above and prints one or two continuation candles before reversing. By then, volume confirmation rules feel satisfied. Check OBV: if OBV didn't make a new high on the close above resistance, the institutions aren't buying it."</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Bear Trap -->
-  <div class="trap-card bear-trap">
+  <div class="trap-card bear-trap reveal">
     <div class="trap-header">
       <div class="trap-type">Bear Trap</div>
       <div class="trap-name">False Breakdown Below Support</div>
@@ -426,11 +563,19 @@
           <li><span class="protect-dot"></span>Stop above reclaimed level; size for the R, not the fear</li>
         </ul>
       </div>
+      <div class="trap-accordion-row">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          FINN Analysis <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">"Bear traps are most effective at well-publicized support levels — the ones every retail outlet is watching. The mechanism: enough sell pressure to clear obvious support triggers a cascade of stop-loss sells, which large buyers absorb. The tell is the recovery speed. A real breakdown takes time. A bear trap snaps back within 1–3 candles. If you're short and price reclaims the level that fast, cover first, ask questions second."</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- Stop Hunt -->
-  <div class="trap-card stop-hunt">
+  <div class="trap-card stop-hunt reveal">
     <div class="trap-header">
       <div class="trap-type">Stop Hunt</div>
       <div class="trap-name">Deliberate Spike to Trigger Clustered Stops</div>
@@ -465,11 +610,19 @@
           <li><span class="protect-dot"></span>The spike itself can be a signal: trade the reversal, not the spike</li>
         </ul>
       </div>
+      <div class="trap-accordion-row">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          FINN Analysis <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">"Stop hunts are most common in the 30 minutes before and after the US market open. Round numbers and prior day highs/lows are the primary hunting grounds. If you see a long wick to a prior high with high volume and fast rejection, the correct trade is not to chase the spike — it's to wait for the rejection candle to close and enter in the reversal direction. The spike is your signal. The reversal is your trade."</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- False Breakout -->
-  <div class="trap-card false-breakout">
+  <div class="trap-card false-breakout reveal">
     <div class="trap-header">
       <div class="trap-type">False Breakout</div>
       <div class="trap-name">Breakout That Fails to Sustain</div>
@@ -504,14 +657,22 @@
           <li><span class="protect-dot"></span>When a false breakout confirms, the opposite trade is the edge</li>
         </ul>
       </div>
+      <div class="trap-accordion-row">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          FINN Analysis <span class="accordion-chevron">▼</span>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">"False breakouts generate the highest-quality reversal trades in this playbook. The confirming entry: price breaks a level, stalls, reclaims the level with a close on the original side, you enter on the reclaim. Stop goes above/below the failed breakout. The move back through the level is your target. This works because trapped breakout traders must exit — their stops fuel the reversal. The trap becomes your entry signal."</div>
+        </div>
+      </div>
     </div>
   </div>
 
-</div><!-- end traps-grid -->
+</div>
 
 <!-- Comparison Table -->
-<div class="section-label">Quick Reference — Trap Comparison</div>
-<table class="comparison-table">
+<div class="section-label reveal">Quick Reference — Trap Comparison</div>
+<table class="comparison-table reveal">
   <thead>
     <tr>
       <th>Trap</th>
@@ -559,24 +720,24 @@
 </table>
 
 <!-- Universal Protection Rules -->
-<div class="section-label">Universal Protection Rules</div>
+<div class="section-label reveal">Universal Protection Rules</div>
 <div class="protection-grid">
-  <div class="protection-card">
+  <div class="protection-card reveal">
     <div class="protection-number">01</div>
     <div class="protection-rule">Volume is the lie detector</div>
     <div class="protection-detail">Legitimate breakouts expand volume. Traps either use thin volume or spike briefly then collapse. No volume confirmation = no entry.</div>
   </div>
-  <div class="protection-card">
+  <div class="protection-card reveal">
     <div class="protection-number">02</div>
     <div class="protection-rule">Wait for the close</div>
     <div class="protection-detail">Wicks are noise. The candle <em>close</em> above or below a level is the data point. Entering on a wick that hasn't closed is guessing, not trading.</div>
   </div>
-  <div class="protection-card">
+  <div class="protection-card reveal">
     <div class="protection-number">03</div>
     <div class="protection-rule">Offset your stops</div>
     <div class="protection-detail">Stops at obvious swing points are inventory for stop hunts. Use ATR × 1.5 beyond the level. Make your stop structurally logical, not round-number obvious.</div>
   </div>
-  <div class="protection-card">
+  <div class="protection-card reveal">
     <div class="protection-number">04</div>
     <div class="protection-rule">The failed trap is a trade</div>
     <div class="protection-detail">When a bull trap confirms (price reclaims resistance-turned-support), that's a long setup. When a bear trap confirms, that's a short. Traps signal trapped traders who must cover.</div>
@@ -584,10 +745,41 @@
 </div>
 
 <!-- FINN Voice -->
-<div class="finn-voice">
+<div class="finn-voice reveal">
   <div class="finn-voice-label">FINN</div>
   <p>"Markets don't move to where price <em>should</em> go next — they move to where the most stops are. Learn the obvious levels before you trade them, because someone else already has. The protection rules aren't defensive — they're how you flip the trap into your edge."</p>
 </div>
 
+<!-- Footer -->
+<div class="finn-footer">
+  <div class="footer-left">FINN — Quantitative Trading · ig_market_traps</div>
+  <div class="footer-right">v2.0 · May 2026 · ig_market_traps</div>
+</div>
+
+<script>
+  function toggleAccordion(trigger) {
+    const body = trigger.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    const card = trigger.closest('.trap-card');
+    if (card) {
+      card.querySelectorAll('.accordion-trigger').forEach(t => {
+        t.classList.remove('open');
+        t.nextElementSibling.classList.remove('open');
+      });
+    }
+    if (!isOpen) {
+      trigger.classList.add('open');
+      body.classList.add('open');
+    }
+  }
+
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i * 40) + 'ms';
+    obs.observe(el);
+  });
+</script>
 </body>
 </html>

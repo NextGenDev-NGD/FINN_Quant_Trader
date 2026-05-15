@@ -31,6 +31,118 @@ Picked up next session:
 
 ---
 
+### [2026-05-14] — Infographics Upgrade Session E2 — ig_trendlines.html + ig_fibonacci.html + ig_market_traps.html (T2 v2 upgrade)
+
+**Scope:** Phase E Session E2 complete. 3 T2 infographics fully upgraded from v1 (static) to v2 (interactive, TradingView-style). Progress: 15 / 16 sessions.
+
+**Files modified:**
+- `resources/infographics/ig_trendlines.html` — complete v2 rebuild (was 240 lines v1):
+  - FINN logo header with pulsing blue live-dot, 6-item metric strip (3 Line Types / 2+ Min Touches / 3rd Confirms / 25–45° Ideal Angle / Close Break Rule / +Conf Multiplier)
+  - 3 definition cards (Uptrend/Downtrend/Channel): blue border-top accent, hover lift + blue glow
+  - Split 2-pane diagram panel (uptrend left / downtrend right via `.diagram-split` / `.diagram-pane`), separate channel diagram panel
+  - 4-step drawing table (Step / Uptrend Line / Downtrend Line columns)
+  - 4 break cards (2×2: Confirmed Break amber / False Break red / Bullish Break green / Bearish Break red) each with click-to-expand FINN Analysis accordion (one open at a time)
+  - Angle validity table with sig-badge on Ideal row, FINN voice callout (amber glassmorphism): "The angle adjustment problem..."
+  - 4 FINN rule chips (2×2 grid): Context Not Signal / Three Touches / Confluence / Don't Redraw
+  - Social mode, stagger reveal, v2 footer: `v2.0 · May 2026 · ig_trendlines`
+- `resources/infographics/ig_fibonacci.html` — complete v2 rebuild (was 582 lines v1):
+  - FINN logo header with pulsing blue live-dot, 6-item metric strip (6 Fib Levels / 61.8% Golden Ratio / 5 Extension Levels / 161.8% Primary Target / +Conf Entry Rule / 100% Invalidation)
+  - 6 level cards in 6-column grid with left-bar accents and animated strength bars (data-w attribute per level: 23.6%=20, 38.2%=42, 50%=60, 61.8%=90, 78.6%=72, 100%=10)
+  - Chart diagram panel (monospace `.chart-wrap`), extensions table (5 rows: 127.2%–261.8%)
+  - 4 drawing step cards, 6 FINN rule cards (3×2 grid: blue default / `.warn` amber / `.danger` red variants)
+  - 4 confluence combo cards (2×2) each with click-to-expand FINN Analysis accordion
+  - FINN voice callout (amber glassmorphism): "Fibonacci is not magic. It is the documentation of where enough institutional participants agree to act..."
+  - Python `fib_levels()` function preserved from v1, social mode, stagger reveal, v2 footer: `v2.0 · May 2026 · ig_fibonacci`
+- `resources/infographics/ig_market_traps.html` — complete v2 rebuild (was 594 lines v1):
+  - FINN logo header with pulsing blue live-dot, 6-item metric strip (4 Trap Types / ≥1.5× Volume Lie Detector / Close Not Wick / 1.5× ATR Stop Offset / Flip the Trap / All Levels Risk)
+  - 4 trap cards (Bull Trap/Bear Trap/Stop Hunt/False Breakout) in 2×2 grid: border-top accent (red/green/purple/amber), hover lift + color glow (per-trap glow variable)
+  - 3-column trap body per card (ASCII diagram panel + Identify signal list + Protect list) preserved from v1
+  - Click-to-expand FINN Analysis accordion at the bottom of each trap body — practitioner-voiced insight per trap type
+  - Comparison table (6 cols × 4 trap rows) upgraded to v2 styling (hover row = blue-glow background)
+  - 4 protection rule cards (hover lift + blue glow), FINN voice callout upgraded from left-border box to amber glassmorphism
+  - Social mode, stagger reveal (40ms stagger per element), v2 footer: `v2.0 · May 2026 · ig_market_traps`
+- `FINN_ProjectStatus.md` — E2 marked complete; progress updated to 15/16; E3 scoped (ig_order_types + ig_market_open + ig_trading_day_types)
+
+**Status:** Phase E Session E2 complete. 5 T2 files upgraded (ig_gap_types, ig_volume_analysis, ig_support_resistance, ig_trendlines, ig_fibonacci, ig_market_traps). 5 remaining T2 files to upgrade in sessions E3–E4.
+
+---
+
+### [2026-05-14] — Infographics Upgrade Session E1 — ig_gap_types.html + ig_volume_analysis.html + ig_support_resistance.html (T2 v2 upgrade)
+
+**Scope:** Phase E Session E1 complete. 3 T2 infographics fully upgraded from v1 (static) to v2 (interactive, TradingView-style). Progress: 14 / 16 sessions.
+
+**Files modified:**
+- `resources/infographics/ig_gap_types.html` — complete v2 rebuild:
+  - FINN logo header with pulsing blue live-dot, 5-item metric strip (4 Types / Common Size <0.5% / Breakaway Vol 3-5× / Primary Classifier: Volume / Classify On: Day +2–5)
+  - Inline SVG gap anatomy diagram (gap-up left / gap-down right / labeled price discontinuity zones)
+  - 4 gap type cards (Common/Breakaway/Runaway/Exhaustion): border-top accent colors (muted/blue/green/red), hover lift + glow, 4 animated stat fill bars per card (Typical Size / Fill Probability / Signal Value / Volume — animate from 0% on scroll), click-to-expand FINN Analysis accordion (one open at a time)
+  - Gap identification matrix table (5 rows × 4 gap types), Python code block with syntax highlighting (.kw/.cm/.str/.num classes)
+  - FINN voice callout (amber glassmorphism): "You cannot classify a gap on the day it occurs..."
+  - Social mode, stagger reveal (IntersectionObserver), v2 footer
+- `resources/infographics/ig_volume_analysis.html` — complete v2 rebuild:
+  - FINN logo header with pulsing blue live-dot, 6-item metric strip (9 Patterns / 20D Baseline / ≥1.5× High Vol / ≥3.0× Climax / OBV Flow Indicator / ≤0.5× Dry-Up)
+  - 4 principle cards with hover lift + blue glow
+  - 4 pattern cards (High-Vol Breakout / Low-Vol Breakout / Bearish Divergence / Bullish Divergence): border-top accent (green/amber/red/green), animated volume fill bars (data-w attribute, animate on card scroll-reveal), click-to-expand FINN Analysis accordion with practitioner-voiced check per pattern
+  - OBV two-column panel (how it works / signals to watch) + ASCII divergence diagram panel (bullish left / bearish right)
+  - 2 climactic volume cards (Selling Climax / Buying Climax) with hover lift + color glow
+  - FINN voice callout (amber): "Volume is the one variable the market cannot fake..."
+  - Quick reference table (9 rows), Python code block (volume_analysis() function with OBV + divergence detection)
+  - Social mode, stagger reveal, v2 footer
+- `resources/infographics/ig_support_resistance.html` — complete v2 rebuild:
+  - FINN logo header with pulsing blue live-dot, 6-item metric strip (3 Core Concepts / 2+ Min Touches / 6 Strength Factors / Zone Not Line / Close Invalidation Rule / S↔R Role Reversal)
+  - 3 definition cards (Support/Resistance/Zone Not Line): green/red/amber border-top accents, hover lift + color glow
+  - Lifecycle diagram panel: styled monospace pre block with color-coded price action (red resistance / green support / blue breakout / amber role reversal label)
+  - 3 step cards (Daily Chart / Find Touches / Draw Zones): numbered circle badges, hover lift + blue glow
+  - Zone strength table (6 rows: touches / volume / time / recency / timeframe / round numbers): color-coded bull-t/bear-t cells
+  - 3 test/retest/invalidation cards: green/amber/red border-top, click-to-expand FINN Analysis accordion (anchoring bias callout on Invalidation card)
+  - 2 role reversal cards (Resistance→Support / Support→Resistance): left-border accent, color signal chips
+  - FINN voice callout (amber): "The most common S&R mistake..."
+  - 4 FINN application rule chips in 2×2 grid (Context Not Signal / Confluence Multiplier / Close Confirmation Only / More Tests = Weaker Zone)
+  - Social mode, stagger reveal, v2 footer
+- `FINN_ProjectStatus.md` — E1 marked complete; progress updated to 14/16; E2 scoped (ig_trendlines + ig_fibonacci + ig_market_traps)
+
+**Status:** Phase E Session E1 complete. 8 remaining T2 files to upgrade across sessions E2–E4.
+
+---
+
+### [2026-05-14] — Infographics Upgrade Session D2 — ig_market_regime.html + ig_trade_anatomy.html + ig_bias_cards.html (net-new)
+
+**Scope:** Phase D Session D2 complete. Phase D fully complete (2/2 sessions). 3 net-new social-first tools built. Progress: 13 / 16 sessions.
+
+**Files created:**
+- `resources/infographics/ig_market_regime.html` — Bull/Bear/Choppy regime identification framework:
+  - 3-column regime card grid (bull/bear/choppy), each with color-matched gradient accent-top (green/red/amber), hover lift + glow
+  - Inline SVG price path diagrams: HH/HL uptrend (bull), LH/LL downtrend (bear), oscillating support/resistance range (choppy)
+  - Detection signal lists per regime: price structure, 200-day SMA relationship, VIX level, A/D ratio, volume trend
+  - Strategy adjustment boxes per regime: signal type, position sizing multiplier, stop width, profit target approach, IC expectation
+  - Quick reference comparison table (8 rows × 3 regimes): structure, 200d SMA, VIX, breadth %, best signal type, position size, primary risk, sector rotation
+  - Regime shift warning signals panel — early detection signals for Bull→Bear, Bear→Bull transitions
+  - 5-item metric strip (3 Regimes, Bull VIX, Bear VIX, 200 SMA key filter, weekly reassess cadence)
+  - FINN voice, social mode 1200×675, stagger reveal, hover-lift cards, v2 footer
+- `resources/infographics/ig_trade_anatomy.html` — 7-step trade entry-to-exit walkthrough:
+  - Annotated SVG trade diagram: entry/stop/target price lines with risk ($2) and reward ($4) bracket annotations, step callout labels (Step 1–3 pre-trade / Step 4 entry / Step 5–6 management / Step 7 journal), entry and exit point markers
+  - 7 click-to-expand step cards with phase rail labels on left (PRE-TRADE / EXECUTION / MANAGEMENT / POST-TRADE): Signal Identified, Context Check, Size Calculated, Order Placed, Trade Managed, Exit Executed, Trade Logged
+  - Each step: 2-panel detail (What to do / FINN Check) + Full-width Common Mistake panel where applicable
+  - Step 3 includes monospace formula box (Dollar Risk, Stop Distance, Shares, Position Value cap)
+  - Step 4 includes order sequence checklist (entry → stop → target, all three live before walking away)
+  - 3-outcome grid: Target Hit (green) / Stop Hit (red) / Rule-Based Exit (amber) with exit logic explanation per outcome
+  - 6-item metric strip (7 Steps, 3 Pre-Trade, 1 Execution, 2 Management, 1 Post-Trade, Log Every Trade)
+  - FINN voice, social mode 1200×675, stagger reveal, step toggle JS (one open at a time), v2 footer
+- `resources/infographics/ig_bias_cards.html` — 9 cognitive biases as CSS 3D flip card deck:
+  - 3×3 grid: Confirmation Bias, Recency Bias, Loss Aversion, Sunk Cost Fallacy, Anchoring Bias, Overconfidence Bias, Hindsight Bias, Disposition Effect, Gambler's Fallacy
+  - Each card: CSS 3D perspective flip on click (rotateY 180°, preserve-3d, backface-visibility hidden), 550ms ease-out transition
+  - Front face: bias name (16px bold), one-sentence definition, HIGH/MEDIUM risk badge (6 high / 3 medium)
+  - Back face: "In Trading" (specific behavioral manifestation with dollar consequence) + "FINN Countermeasure" (systematic antidote) + FINN quote in blue italic
+  - Monthly bias audit strip: 9 self-audit questions in 3×3 grid (one per bias)
+  - 6-item metric strip (9 Biases, 6 High Risk, 3 Medium Risk, Tap to Flip, Monthly Audit, Rules + Log)
+  - Alert-dot (red pulsing) in header — thematically distinct from live-dot (green) used in calculators
+  - FINN voice, social mode 1200×675, stagger reveal, v2 footer
+- `FINN_ProjectStatus.md` — D2 marked complete; Phase D fully done; progress updated to 13/16; Phase E Session E1 scoped (ig_gap_types + ig_volume_analysis + ig_support_resistance)
+
+**Status:** Phase D complete. All 5 net-new social-first files built (ig_pattern_quiz, ig_risk_calculator, ig_market_regime, ig_trade_anatomy, ig_bias_cards). Phase E next: T2 infographic upgrades (11 files, 4 sessions).
+
+---
+
 ### [2026-05-13] — Infographics Upgrade Session D1 — ig_pattern_quiz.html + ig_risk_calculator.html (net-new)
 
 **Scope:** Phase D Session D1 complete. 2 net-new social-first interactive tools built from scratch. Progress: 12 / 16 sessions.

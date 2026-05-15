@@ -1,234 +1,679 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!-- SOCIAL MODE: add class="social square" to <body> for 1080×1080px screenshot -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FINN — Support &amp; Resistance Reference</title>
+<title>FINN — Support &amp; Resistance</title>
 <style>
   :root {
-    --bg: #0d1117; --card: #161b22; --border: #30363d;
-    --text: #e6edf3; --blue: #58a6ff; --green: #3fb950;
-    --red: #f85149; --amber: #d29922; --muted: #8b949e;
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --red: #f85149;
+    --amber: #d29922;
+    --muted: #8b949e;
+    --card-elevated: #1c2128;
+    --blue-glow: rgba(88,166,255,0.12);
+    --green-glow: rgba(63,185,80,0.12);
+    --red-glow: rgba(248,81,73,0.12);
+    --amber-glow: rgba(210,153,34,0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 150ms;
+    --dur-med: 300ms;
+    --dur-slow: 500ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.5; }
-  .page { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 24px 16px;
+  }
+  body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+  body.social.square { width: 1080px; min-height: 1080px; }
+  .page-wrap { max-width: 1200px; margin: 0 auto; }
 
-  .header { border-bottom: 2px solid var(--blue); padding-bottom: 16px; margin-bottom: 28px; display: flex; justify-content: space-between; align-items: flex-end; }
-  .logo { color: var(--blue); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-  .title { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 4px; }
-  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
-  .meta { text-align: right; color: var(--muted); font-size: 11px; }
+  /* ── HEADER ── */
+  .finn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .finn-logo { display: flex; align-items: center; gap: 10px; }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px; color: #fff; letter-spacing: -1px;
+  }
+  .logo-text { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .logo-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .header-right { text-align: right; }
+  .live-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(88,166,255,0.08);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px; color: var(--blue); font-weight: 600;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: var(--blue);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+  .header-ref { font-size: 11px; color: var(--muted); margin-top: 5px; }
 
-  .section-label { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 28px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  /* ── METRIC STRIP ── */
+  .metric-strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .metric-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .metric-val { font-size: 18px; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; }
+  .metric-label { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  /* Card grid */
-  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
-  .card-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
-  .card-title { font-weight: 700; color: var(--text); font-size: 14px; margin-bottom: 8px; }
-  .card-title.blue { color: var(--blue); }
-  .card-title.green { color: var(--green); }
-  .card-title.red { color: var(--red); }
-  .card-title.amber { color: var(--amber); }
-  .card p { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
-  .card p:last-child { margin-bottom: 0; }
-  .card p strong { color: var(--text); }
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 32px 0 14px;
+    padding-left: 10px;
+    border-left: 3px solid var(--blue);
+  }
 
-  /* Price diagram */
-  .diagram { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; font-family: 'Courier New', monospace; font-size: 12px; color: var(--muted); }
-  .diagram .resistance-line { color: var(--red); font-weight: 700; }
-  .diagram .support-line { color: var(--green); font-weight: 700; }
-  .diagram .price-action { color: var(--text); }
-  .diagram .label { color: var(--amber); }
-  .diagram-title { color: var(--blue); font-size: 12px; font-weight: 700; margin-bottom: 10px; font-family: system-ui; }
+  /* ── DEFINITION CARDS ── */
+  .def-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .def-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+  }
+  .def-card.c-green { border-top: 3px solid var(--green); }
+  .def-card.c-green:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--green-glow); }
+  .def-card.c-red { border-top: 3px solid var(--red); }
+  .def-card.c-red:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--red-glow); }
+  .def-card.c-amber { border-top: 3px solid var(--amber); }
+  .def-card.c-amber:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--amber-glow); }
+  .def-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .def-title.green { color: var(--green); }
+  .def-title.red { color: var(--red); }
+  .def-title.amber { color: var(--amber); }
+  .def-body { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 7px; }
+  .def-body strong { color: var(--text); }
+  .def-body:last-child { margin-bottom: 0; }
 
-  /* Table */
-  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-  thead tr { background: #1c2128; }
-  th { padding: 10px 12px; text-align: left; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-  td { padding: 9px 12px; border-bottom: 1px solid var(--border); font-size: 13px; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #1c2128; }
-  .bull { color: var(--green); } .bear { color: var(--red); }
-  .sig-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
-  .sig-bull { background: rgba(63,185,80,0.15); color: var(--green); }
-  .sig-bear { background: rgba(248,81,73,0.15); color: var(--red); }
-  .sig-neu { background: rgba(210,153,34,0.15); color: var(--amber); }
+  /* ── LIFECYCLE DIAGRAM ── */
+  .lifecycle-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: box-shadow var(--dur-med) var(--ease-out);
+  }
+  .lifecycle-wrap:hover { box-shadow: 0 4px 20px var(--blue-glow); }
+  .lifecycle-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .lifecycle-diagram {
+    font-family: 'Courier New', monospace;
+    font-size: 11.5px;
+    line-height: 1.55;
+    padding: 16px 20px;
+    background: #0a0e14;
+    white-space: pre;
+    color: var(--muted);
+    overflow-x: auto;
+  }
 
-  /* Rule box */
-  .rule-box { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
-  .rule-box p { font-size: 13px; color: var(--text); margin-bottom: 6px; }
-  .rule-box p:last-child { margin-bottom: 0; }
-  .rule-box strong { color: var(--blue); }
+  /* ── STEP CARDS ── */
+  .step-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med) ease;
+  }
+  .step-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--blue-glow);
+    border-color: rgba(88,166,255,0.3);
+  }
+  .step-num {
+    width: 24px; height: 24px;
+    background: rgba(88,166,255,0.12);
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .step-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
+  .step-body { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 7px; }
+  .step-body strong { color: var(--text); }
+  .step-body:last-child { margin-bottom: 0; }
 
-  .warn-box { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); border-radius: 6px; padding: 14px 16px; margin: 20px 0; }
-  .warn-box p { font-size: 13px; color: var(--text); margin-bottom: 4px; }
-  .warn-box p:last-child { margin-bottom: 0; }
-  .warn-box strong { color: var(--red); }
+  /* ── ZONE STRENGTH TABLE ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  thead th {
+    background: var(--card-elevated);
+    color: var(--muted);
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.6px;
+    padding: 9px 12px;
+    border-bottom: 2px solid var(--border);
+    text-align: left;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background var(--dur-fast) ease; cursor: default; }
+  tbody tr:hover { background: rgba(88,166,255,0.04); }
+  tbody td { padding: 9px 12px; color: var(--muted); vertical-align: top; }
+  tbody td:first-child { color: var(--text); font-weight: 600; }
+  .bull-t { color: var(--green); }
+  .bear-t { color: var(--red); }
 
-  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; }
+  /* ── TEST / RETEST / INVALIDATION CARDS ── */
+  .tri-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .tri-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+  }
+  .tri-card:hover { transform: translateY(-2px); }
+  .tri-card.c-green { border-top: 3px solid var(--green); }
+  .tri-card.c-green:hover { box-shadow: 0 6px 24px var(--green-glow); }
+  .tri-card.c-amber { border-top: 3px solid var(--amber); }
+  .tri-card.c-amber:hover { box-shadow: 0 6px 24px var(--amber-glow); }
+  .tri-card.c-red { border-top: 3px solid var(--red); }
+  .tri-card.c-red:hover { box-shadow: 0 6px 24px var(--red-glow); }
+  .tri-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tri-card.c-green .tri-header { color: var(--green); }
+  .tri-card.c-amber .tri-header { color: var(--amber); }
+  .tri-card.c-red .tri-header { color: var(--red); }
+  .tri-body { padding: 12px 16px; }
+  .tri-p { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 7px; }
+  .tri-p strong { color: var(--text); }
+  .tri-p:last-child { margin-bottom: 0; }
 
-  @media print {
-    body { background: #fff; color: #111; }
-    .card, .diagram, .rule-box, .warn-box { border-color: #ccc; background: #f8f8f8; }
-    .header { border-color: #333; }
-    .logo, .blue, .card-title.blue { color: #1a56db; }
-    .bull, .card-title.green { color: #16a34a; }
-    .bear, .card-title.red { color: #dc2626; }
-    .card-title.amber { color: #b45309; }
-    th { color: #1a56db; background: #f0f4ff; }
-    td { border-color: #ddd; }
-    tr:hover td { background: transparent; }
-    .diagram .resistance-line { color: #dc2626; }
-    .diagram .support-line { color: #16a34a; }
-    .diagram .label { color: #b45309; }
+  /* ── CLICK-TO-EXPAND ACCORDION ── */
+  .finn-accordion { border-top: 1px solid var(--border); margin-top: 8px; }
+  .accordion-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    user-select: none;
+  }
+  .accordion-trigger .chevron { font-size: 10px; transition: transform var(--dur-fast) ease; }
+  .accordion-trigger.open .chevron { transform: rotate(180deg); }
+  .accordion-body { display: none; padding: 0 0 8px; }
+  .accordion-body.open { display: block; }
+  .finn-analysis-box {
+    background: rgba(88,166,255,0.05);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .finn-analysis-box .fa-title {
+    font-size: 11px; font-weight: 700; color: var(--blue);
+    margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* ── ROLE REVERSAL CARDS ── */
+  .rev-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .rev-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
+  }
+  .rev-card.c-green { border-left: 3px solid var(--green); }
+  .rev-card.c-green:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--green-glow); }
+  .rev-card.c-red { border-left: 3px solid var(--red); }
+  .rev-card.c-red:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--red-glow); }
+  .rev-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .rev-title.green { color: var(--green); }
+  .rev-title.red { color: var(--red); }
+  .rev-body { font-size: 12px; color: var(--muted); line-height: 1.55; margin-bottom: 8px; }
+  .rev-body strong { color: var(--text); }
+  .rev-signal {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-top: 4px;
+  }
+  .rev-signal.bull { background: var(--green-glow); color: var(--green); border: 1px solid rgba(63,185,80,0.2); }
+  .rev-signal.bear { background: var(--red-glow); color: var(--red); border: 1px solid rgba(248,81,73,0.2); }
+
+  /* ── FINN RULES PANEL ── */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .rule-chip {
+    background: rgba(88,166,255,0.05);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .rule-chip-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+  }
+  .rule-chip-body { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .rule-chip-body strong { color: var(--text); }
+
+  /* ── FINN VOICE CALLOUT ── */
+  .finn-callout {
+    background: rgba(210,153,34,0.06);
+    border: 1px solid rgba(210,153,34,0.25);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .finn-callout-head {
+    font-size: 11px; font-weight: 700; color: var(--amber);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+  .finn-callout-body { font-size: 13px; color: var(--text); line-height: 1.65; font-style: italic; }
+  .finn-callout-sig { font-size: 11px; color: var(--amber); margin-top: 8px; font-weight: 600; }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .footer-left { display: flex; align-items: center; gap: 8px; }
+  .footer-logo {
+    width: 18px; height: 18px;
+    background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 9px; color: #fff;
+  }
+  .footer-version { color: var(--blue); font-weight: 600; }
+
+  @media (max-width: 700px) {
+    .metric-strip { grid-template-columns: repeat(3, 1fr); }
+    .def-grid, .step-grid, .tri-grid { grid-template-columns: 1fr; }
+    .rev-grid, .rules-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
-<div class="page">
+<div class="page-wrap">
 
-  <div class="header">
-    <div>
-      <div class="logo">FINN — Financial Intelligence &amp; Navigation Network</div>
-      <div class="title">Support &amp; Resistance Reference</div>
-      <div class="subtitle">Zone identification, testing, retesting, invalidation, and role reversal · Handbook §2.2</div>
+  <!-- Header -->
+  <div class="finn-header">
+    <div class="finn-logo">
+      <div class="logo-mark">F</div>
+      <div>
+        <div class="logo-text">Support &amp; Resistance</div>
+        <div class="logo-sub">Zones · Identification · Testing · Invalidation · Role Reversal</div>
+      </div>
     </div>
-    <div class="meta">Built: May 2026<br>Version 1.0<br>Phase C1</div>
-  </div>
-
-  <!-- Core concepts -->
-  <div class="section-label">Core Definitions</div>
-  <div class="card-grid">
-    <div class="card">
-      <div class="card-title green">Support</div>
-      <p>A price level where buying interest is strong enough to halt or reverse a decline. <strong>Why it works:</strong> traders remember prior lows and place buy orders there. The level holds because enough participants act on it simultaneously.</p>
-      <p>Think of it as a floor the market has tested and respected. The more times it has been tested and held, the stronger the floor.</p>
-    </div>
-    <div class="card">
-      <div class="card-title red">Resistance</div>
-      <p>A price level where selling pressure is strong enough to halt or reverse an advance. <strong>Why it works:</strong> traders who bought below and are sitting on gains sell at prior highs. Traders who bought at the prior high and held through a loss sell to break even.</p>
-      <p>Think of it as a ceiling. Each test that fails reinforces it.</p>
-    </div>
-    <div class="card">
-      <div class="card-title amber">Zone, Not Line</div>
-      <p>Support and resistance are <strong>zones, not precise lines</strong>. Price rarely turns at exactly $47.50 — it turns somewhere between $47.00 and $48.00.</p>
-      <p>Draw your levels as rectangles 0.5–1% wide. A wick through the zone that recovers is not an invalidation. A candle <em>close</em> through the zone is.</p>
+    <div class="header-right">
+      <div class="live-pill"><div class="live-dot"></div>Knowledge Base</div>
+      <div class="header-ref">HB §2.2 · ig_support_resistance</div>
     </div>
   </div>
 
-  <!-- Price diagram -->
-  <div class="section-label">S&amp;R Lifecycle — Visual Reference</div>
-  <div class="diagram">
-    <div class="diagram-title">Price Action Through Support and Resistance Zones</div>
-<pre><span class="resistance-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ RESISTANCE ZONE ($52–$53)</span>
-    <span class="price-action">   /\        /\</span>
-    <span class="price-action">  /  \      /  \        ← Price tests resistance twice, fails both times</span>
-    <span class="price-action"> /    \    /    \</span>
-    <span class="price-action">/      \  /      \___/\_______________________________________________</span>
-<span class="support-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ SUPPORT ZONE ($47–$48)</span>
-    <span class="price-action">           \  /      ← Price tests support, bounces</span>
-    <span class="price-action">            \/</span>
-
-    <span class="label">  [1] First test    [2] Second test   [3] Support test   [4] Consolidation</span>
-    <span class="label">      of resistance     of resistance      and bounce</span>
-
-<span class="resistance-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ BREAKOUT through resistance</span>
-    <span class="price-action">                                         /</span>
-    <span class="price-action">                                        / ← Breakout: resistance becomes support</span>
-    <span class="price-action">     ___________________________________/</span>
-<span class="support-line">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FORMER RESISTANCE = NEW SUPPORT</span>
-    <span class="label">  [5] Breakout on volume    [6] Retest of former resistance as support (role reversal)</span></pre>
-  </div>
-
-  <!-- How to draw -->
-  <div class="section-label">How to Identify and Draw S&amp;R Zones</div>
-  <div class="card-grid">
-    <div class="card">
-      <div class="card-title blue">Step 1 — Start on the Daily Chart</div>
-      <p>Always identify major S&amp;R on the <strong>daily timeframe first</strong>. Daily levels are where institutional players make decisions. Intraday levels exist within the context of daily levels.</p>
-      <p>Look for: price highs and lows that were tested multiple times, areas where price consolidated for multiple sessions, prior breakout levels.</p>
+  <!-- Metric Strip -->
+  <div class="metric-strip reveal">
+    <div class="metric-item">
+      <div class="metric-val">3</div>
+      <div class="metric-label">Core Concepts</div>
     </div>
-    <div class="card">
-      <div class="card-title blue">Step 2 — Find the Touches</div>
-      <p>A level requires <strong>at least 2 touches</strong> to be meaningful. A single high or low is a data point. Two or more touches at approximately the same price is a zone.</p>
-      <p>More touches = stronger zone. But: after 4–5 tests, a zone often breaks. Each test depletes the orders waiting at that level.</p>
+    <div class="metric-item">
+      <div class="metric-val">2+</div>
+      <div class="metric-label">Min Touches</div>
     </div>
-    <div class="card">
-      <div class="card-title blue">Step 3 — Draw Zones, Not Lines</div>
-      <p>Place the zone to capture the <strong>bodies</strong> of the candles, not the wicks. Wicks represent temporary excursions. Bodies represent where price settled — where buyers and sellers agreed.</p>
-      <p>Zone width: typically the range of the bodies across all touches at that level. Usually 0.5–1.5% wide on liquid equities.</p>
+    <div class="metric-item">
+      <div class="metric-val">6</div>
+      <div class="metric-label">Strength Factors</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">Zone</div>
+      <div class="metric-label">Not a Line</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">Close</div>
+      <div class="metric-label">Invalidation Rule</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">S↔R</div>
+      <div class="metric-label">Role Reversal</div>
     </div>
   </div>
 
-  <!-- Zone strength table -->
-  <div class="section-label">Zone Strength Factors</div>
-  <table>
-    <thead><tr><th>Factor</th><th>Strengthens the Zone</th><th>Weakens the Zone</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Number of touches</strong></td><td>3+ touches with clean bounces</td><td>1 touch; untested level</td></tr>
-      <tr><td><strong>Volume at the touches</strong></td><td>Above-average volume at each bounce — institutional activity</td><td>Low-volume tests — thin order book</td></tr>
-      <tr><td><strong>Time spent at the level</strong></td><td>Extended consolidation near the zone — multiple sessions</td><td>Brief, fast touches — price moved through quickly</td></tr>
-      <tr><td><strong>Recency</strong></td><td>Tested within the last 20–40 trading days</td><td>Level from 6+ months ago — order book has changed</td></tr>
-      <tr><td><strong>Timeframe of origin</strong></td><td>Weekly or daily chart level</td><td>Only visible on a 5-minute chart</td></tr>
-      <tr><td><strong>Round numbers</strong></td><td>$50, $100, $200 levels attract more orders by default</td><td>Arbitrary prices ($47.23) — no psychological anchor</td></tr>
-    </tbody>
-  </table>
+  <!-- Core Definitions -->
+  <div class="section-title reveal">Core Definitions</div>
+  <div class="def-grid">
+    <div class="def-card c-green reveal">
+      <div class="def-title green">Support</div>
+      <div class="def-body">A price level where buying interest is strong enough to halt or reverse a decline. <strong>Why it works:</strong> traders remember prior lows and place buy orders there. The level holds because enough participants act on it simultaneously.</div>
+      <div class="def-body">Think of it as a floor the market has tested and respected. The more times it has been tested and held, the stronger the floor.</div>
+    </div>
+    <div class="def-card c-red reveal" style="transition-delay:60ms">
+      <div class="def-title red">Resistance</div>
+      <div class="def-body">A price level where selling pressure is strong enough to halt or reverse an advance. <strong>Why it works:</strong> traders who bought below and are sitting on gains sell at prior highs. Traders who bought at the prior high and held through a loss sell to break even.</div>
+      <div class="def-body">Think of it as a ceiling. Each test that fails reinforces it.</div>
+    </div>
+    <div class="def-card c-amber reveal" style="transition-delay:120ms">
+      <div class="def-title amber">Zone, Not Line</div>
+      <div class="def-body">Support and resistance are <strong>zones, not precise lines</strong>. Price rarely turns at exactly $47.50 — it turns somewhere between $47.00 and $48.00.</div>
+      <div class="def-body">Draw your levels as rectangles 0.5–1% wide. A wick through the zone that recovers is <em>not</em> an invalidation. A candle <strong>close</strong> through the zone on volume is.</div>
+    </div>
+  </div>
+
+  <!-- Lifecycle Diagram -->
+  <div class="section-title reveal">S&amp;R Lifecycle — Visual Reference</div>
+  <div class="lifecycle-wrap reveal">
+    <div class="lifecycle-header">Price Action Through Support and Resistance Zones</div>
+    <div class="lifecycle-diagram"><span style="color:var(--red);">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ RESISTANCE ZONE ($52–$53)</span>
+<span style="color:var(--text);">    /\        /\</span>
+<span style="color:var(--text);">   /  \      /  \       ← Price tests resistance twice, fails both times</span>
+<span style="color:var(--text);">  /    \    /    \</span>
+<span style="color:var(--text);"> /      \  /      \___/\________________________________________________</span>
+<span style="color:var(--green);">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ SUPPORT ZONE ($47–$48)</span>
+<span style="color:var(--text);">            \  /       ← Price tests support, bounces</span>
+<span style="color:var(--text);">             \/</span>
+<span style="color:var(--muted);">  [1] First resistance  [2] Second resistance  [3] Support test     [4] Consolidation
+      test                   test                   and bounce</span>
+
+<span style="color:var(--blue);">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ BREAKOUT through resistance</span>
+<span style="color:var(--text);">                                                      /</span>
+<span style="color:var(--text);">                                                     /  ← Volume-confirmed breakout</span>
+<span style="color:var(--text);">     _______________________________________________/</span>
+<span style="color:var(--green);">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FORMER RESISTANCE = NEW SUPPORT</span>
+<span style="color:var(--muted);">  [5] Breakout on volume                          [6] Retest of former resistance as support</span>
+<span style="color:var(--amber);">                                                      → Role Reversal (Polarity Flip)</span></div>
+  </div>
+
+  <!-- How to Identify -->
+  <div class="section-title reveal">How to Identify and Draw S&amp;R Zones</div>
+  <div class="step-grid">
+    <div class="step-card reveal">
+      <div class="step-num">1</div>
+      <div class="step-title">Start on the Daily Chart</div>
+      <div class="step-body">Always identify major S&amp;R on the <strong>daily timeframe first</strong>. Daily levels are where institutional players make decisions. Intraday levels exist within the context of daily levels.</div>
+      <div class="step-body">Look for: price highs and lows tested multiple times, areas where price consolidated for multiple sessions, prior breakout levels.</div>
+    </div>
+    <div class="step-card reveal" style="transition-delay:60ms">
+      <div class="step-num">2</div>
+      <div class="step-title">Find the Touches</div>
+      <div class="step-body">A level requires <strong>at least 2 touches</strong> to be meaningful. A single high or low is a data point. Two or more touches at approximately the same price is a zone.</div>
+      <div class="step-body">More touches = stronger zone — but after 4–5 tests, a zone often breaks. Each test depletes the limit orders waiting at that level.</div>
+    </div>
+    <div class="step-card reveal" style="transition-delay:120ms">
+      <div class="step-num">3</div>
+      <div class="step-title">Draw Zones, Not Lines</div>
+      <div class="step-body">Place the zone to capture the <strong>bodies</strong> of the candles, not the wicks. Wicks represent temporary excursions. Bodies represent where price settled — where buyers and sellers agreed.</div>
+      <div class="step-body">Zone width: typically the range of the bodies across all touches. Usually <strong>0.5–1.5%</strong> wide on liquid equities.</div>
+    </div>
+  </div>
+
+  <!-- Zone Strength Table -->
+  <div class="section-title reveal">Zone Strength Factors</div>
+  <div class="table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Factor</th>
+          <th>Strengthens the Zone</th>
+          <th>Weakens the Zone</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Number of touches</td>
+          <td><span class="bull-t">3+ touches with clean bounces</span></td>
+          <td><span class="bear-t">1 touch; untested level</span></td>
+        </tr>
+        <tr>
+          <td>Volume at the touches</td>
+          <td><span class="bull-t">Above-average volume at each bounce — institutional activity</span></td>
+          <td><span class="bear-t">Low-volume tests — thin order book</span></td>
+        </tr>
+        <tr>
+          <td>Time spent at the level</td>
+          <td><span class="bull-t">Extended consolidation near the zone — multiple sessions</span></td>
+          <td><span class="bear-t">Brief, fast touches — price moved through quickly</span></td>
+        </tr>
+        <tr>
+          <td>Recency</td>
+          <td><span class="bull-t">Tested within the last 20–40 trading days</span></td>
+          <td><span class="bear-t">Level from 6+ months ago — order book has changed</span></td>
+        </tr>
+        <tr>
+          <td>Timeframe of origin</td>
+          <td><span class="bull-t">Weekly or daily chart level</span></td>
+          <td><span class="bear-t">Only visible on a 5-minute chart</span></td>
+        </tr>
+        <tr>
+          <td>Round numbers</td>
+          <td><span class="bull-t">$50, $100, $200 — attract more orders by default</span></td>
+          <td><span class="bear-t">Arbitrary prices ($47.23) — no psychological anchor</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Test / Retest / Invalidation -->
-  <div class="section-label">Test · Retest · Invalidation · Role Reversal</div>
-  <div class="card-grid">
-    <div class="card">
-      <div class="card-title green">Test</div>
-      <p>Price approaches a known level. A <strong>successful test</strong>: price touches the zone and reverses — the zone holds. Buying/selling pressure at the level was sufficient.</p>
-      <p>Watch for: a reversal candle (hammer, engulfing) forming at the zone with above-average volume.</p>
+  <div class="section-title reveal">Test · Retest · Invalidation</div>
+  <div class="tri-grid">
+    <div class="tri-card c-green reveal">
+      <div class="tri-header">Test</div>
+      <div class="tri-body">
+        <div class="tri-p">Price approaches a known level. A <strong>successful test</strong>: price touches the zone and reverses — the zone holds. Buying or selling pressure at the level was sufficient.</div>
+        <div class="tri-p">Watch for: a reversal candle (hammer, engulfing) forming at the zone with <strong>above-average volume</strong>.</div>
+        <div class="finn-accordion">
+          <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+          <div class="accordion-body">
+            <div class="finn-analysis-box">
+              <div class="fa-title">FINN Check</div>
+              A test is not an entry — it is the beginning of the question. Price touched the zone. Now: what is the candle doing? Is volume confirming? Are you above or below a key moving average? The zone told you where to look. The candle and volume tell you whether to act.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-title amber">Retest</div>
-      <p>After a breakout above resistance, price pulls back to the <strong>former resistance zone</strong> and holds — the broken resistance now acts as support (role reversal). This retest is often the best entry point for breakout traders.</p>
-      <p>Why it works: traders who missed the breakout buy the retest. Former sellers at resistance are now buyers at support.</p>
+    <div class="tri-card c-amber reveal" style="transition-delay:60ms">
+      <div class="tri-header">Retest</div>
+      <div class="tri-body">
+        <div class="tri-p">After a breakout above resistance, price pulls back to the <strong>former resistance zone</strong> and holds. The broken resistance now acts as support — this is the polarity flip in action.</div>
+        <div class="tri-p">This retest is often the best entry point for breakout traders. Why: traders who missed the breakout buy the retest. Former sellers are now buyers.</div>
+        <div class="finn-accordion">
+          <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+          <div class="accordion-body">
+            <div class="finn-analysis-box">
+              <div class="fa-title">FINN Check</div>
+              The retest is where breakout traders get their second chance — and often the cleaner entry. The breakout candle was high-risk (spread wide, stops unclear). The retest candle is low-risk: defined entry, tight stop below the zone, measured target. If the retest fails on high volume, the breakout was a fake. Document it.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-title red">Invalidation</div>
-      <p>A support zone is <strong>invalidated</strong> when price closes — not just wicks — decisively below it on above-average volume. A candle close through the zone on high volume means the orders at that level have been exhausted.</p>
-      <p>One wick through a zone is not invalidation. A closing candle body through the zone on volume is.</p>
+    <div class="tri-card c-red reveal" style="transition-delay:120ms">
+      <div class="tri-header">Invalidation</div>
+      <div class="tri-body">
+        <div class="tri-p">A support zone is <strong>invalidated</strong> when price <em>closes</em> — not just wicks — decisively below it on above-average volume. The orders at that level have been exhausted.</div>
+        <div class="tri-p">One wick through a zone is not invalidation. A <strong>closing candle body through the zone on volume</strong> is.</div>
+        <div class="finn-accordion">
+          <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+          <div class="accordion-body">
+            <div class="finn-analysis-box">
+              <div class="fa-title">FINN Check</div>
+              The most expensive word in trading is "but." "It broke support, but it was so strong before." Once a support zone closes below on high volume — the market has spoken. Update your levels. The anchoring bias of a "strong" prior level is how traders hold losers too long. The market does not care what the level was. Only where it is now.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Role reversal -->
-  <div class="section-label">Role Reversal (Polarity Flip)</div>
-  <div class="card-grid-2">
-    <div class="card">
-      <div class="card-title green">Resistance → Support</div>
-      <p>When price breaks <strong>above</strong> a resistance zone and then pulls back, the former resistance zone becomes a support zone. The logic: traders who sold at resistance and were wrong are now buyers at the same level, hoping to cut losses. Traders who missed the breakout buy the dip to the former resistance.</p>
-      <p><strong>Entry signal:</strong> Wait for price to pull back to the former resistance zone and form a bullish reversal candle with volume confirmation.</p>
+  <!-- Role Reversal -->
+  <div class="section-title reveal">Role Reversal (Polarity Flip)</div>
+  <div class="rev-grid">
+    <div class="rev-card c-green reveal">
+      <div class="rev-title green">Resistance → Support</div>
+      <div class="rev-body">When price breaks <strong>above</strong> a resistance zone and pulls back, the former resistance becomes support. The logic: traders who sold at resistance and were wrong are now buyers at the same level. Traders who missed the breakout buy the dip to the former resistance.</div>
+      <div class="rev-signal bull">Entry: Pull back to former resistance + bullish reversal candle + volume confirmation</div>
     </div>
-    <div class="card">
-      <div class="card-title red">Support → Resistance</div>
-      <p>When price breaks <strong>below</strong> a support zone, the former support becomes resistance. Traders who bought at support and held through the breakdown will sell to break even when price returns to their entry level.</p>
-      <p><strong>Entry signal:</strong> Wait for price to bounce up to the former support zone and form a bearish reversal candle with volume confirmation.</p>
+    <div class="rev-card c-red reveal" style="transition-delay:60ms">
+      <div class="rev-title red">Support → Resistance</div>
+      <div class="rev-body">When price breaks <strong>below</strong> a support zone, the former support becomes resistance. Traders who bought at support and held through the breakdown will sell to break even when price returns to their entry level.</div>
+      <div class="rev-signal bear">Entry: Bounce to former support zone + bearish reversal candle + volume confirmation</div>
     </div>
   </div>
 
-  <div class="warn-box">
-    <p><strong>The most common S&amp;R mistake:</strong> Treating a level as still valid after it has been cleanly broken. Once a support zone closes below on high volume — it is no longer support. Relabeling it as support because "it was strong before" is anchoring bias. The market has spoken; update your levels.</p>
+  <!-- FINN Voice -->
+  <div class="finn-callout reveal" style="margin-top:28px">
+    <div class="finn-callout-head">⬡ FINN</div>
+    <div class="finn-callout-body">"The most common S&R mistake is treating a level as valid after it has been cleanly broken. Once a support zone closes below on high volume — it is no longer support. Relabeling it as support because 'it was strong before' is anchoring bias. The market has spoken. Update your levels. What you believed about a level last week has no bearing on what the market is doing with it today."</div>
+    <div class="finn-callout-sig">— FINN: S&R is context, not signal.</div>
   </div>
 
-  <!-- FINN rules -->
-  <div class="section-label">FINN Application Rules</div>
-  <div class="rule-box">
-    <p><strong>S&amp;R is context, not signal.</strong> A support zone tells you where a reaction may occur. Your candlestick pattern and volume tell you whether to act.</p>
-    <p><strong>Confluence is the multiplier.</strong> A Fibonacci 61.8% level + a prior daily high + a 50-day moving average in the same area = a high-confluence zone. One S&amp;R line in isolation = one data point.</p>
-    <p><strong>Only close confirmation counts for invalidation.</strong> Wicks through levels are not breaks. Candle closes through levels on volume are breaks.</p>
-    <p><strong>More tests = weaker zone ahead.</strong> Each test depletes limit orders sitting at the level. A zone tested 5+ times is close to breaking.</p>
+  <!-- FINN Application Rules -->
+  <div class="section-title reveal">FINN Application Rules</div>
+  <div class="rules-grid reveal">
+    <div class="rule-chip">
+      <div class="rule-chip-label">Context, Not Signal</div>
+      <div class="rule-chip-body">A support zone tells you <strong>where</strong> a reaction may occur. Your candlestick pattern and volume tell you <strong>whether</strong> to act. S&R alone is never an entry — it is the starting point for the question.</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rule-chip-label">Confluence Is the Multiplier</div>
+      <div class="rule-chip-body">A Fibonacci 61.8% level + a prior daily high + a 50-day moving average in the same area = a high-confluence zone. One S&R line in isolation = one data point. Stack the evidence.</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rule-chip-label">Close Confirmation Only</div>
+      <div class="rule-chip-body">Wicks through levels are not breaks. A closing candle body through the zone on volume is a break. Do not react to intrabar movement — wait for the close before updating your levels.</div>
+    </div>
+    <div class="rule-chip">
+      <div class="rule-chip-label">More Tests = Weaker Zone Ahead</div>
+      <div class="rule-chip-body">Each test depletes limit orders sitting at the level. A zone tested 5+ times is close to breaking — the order book has been absorbed. High test count is not strength; it is depletion.</div>
+    </div>
   </div>
 
-  <div class="footer">
-    <span>FINN Reference Library · ig_support_resistance.html · Built May 2026</span>
-    <span>Handbook §2.2 · See also: ig_trendlines.html · ig_candlestick_patterns.html</span>
+  <!-- Footer -->
+  <div class="page-footer">
+    <div class="footer-left">
+      <div class="footer-logo">F</div>
+      <span>FINN Knowledge Base · Support &amp; Resistance · HB §2.2</span>
+    </div>
+    <span><span class="footer-version">v2.0</span> · May 2026 · ig_support_resistance</span>
   </div>
 
 </div>
+
+<script>
+  // Scroll-triggered reveal
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Click-to-expand accordion
+  function toggleAccordion(trigger) {
+    const body = trigger.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    const card = trigger.closest('.tri-card, .step-card');
+    if (card) {
+      card.querySelectorAll('.accordion-trigger').forEach(t => {
+        t.classList.remove('open');
+        t.nextElementSibling.classList.remove('open');
+      });
+    }
+    if (!isOpen) {
+      trigger.classList.add('open');
+      body.classList.add('open');
+    }
+  }
+</script>
 </body>
 </html>

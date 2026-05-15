@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- SOCIAL MODE: add class="social" to <body> for 1200×675px screenshot -->
+<!-- SOCIAL MODE: add class="social square" to <body> for 1080×1080px screenshot -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +11,23 @@
     --bg: #0d1117;
     --card: #161b22;
     --border: #30363d;
+    --text: #e6edf3;
     --blue: #58a6ff;
     --green: #3fb950;
     --red: #f85149;
     --amber: #d29922;
     --purple: #bc8cff;
     --muted: #8b949e;
-    --text: #e6edf3;
-    --subtext: #c9d1d9;
+    --card-elevated: #1c2128;
+    --blue-glow: rgba(88,166,255,0.12);
+    --green-glow: rgba(63,185,80,0.12);
+    --red-glow: rgba(248,81,73,0.12);
+    --amber-glow: rgba(210,153,34,0.12);
+    --purple-glow: rgba(188,140,255,0.12);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-fast: 150ms;
+    --dur-med: 300ms;
+    --dur-slow: 500ms;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -27,283 +38,246 @@
     line-height: 1.5;
     padding: 24px 16px;
   }
+  body.social { width: 1200px; min-height: 675px; overflow: hidden; }
+  body.social.square { width: 1080px; min-height: 1080px; }
   .page-wrap { max-width: 1200px; margin: 0 auto; }
 
-  .page-header {
-    text-align: center;
-    margin-bottom: 32px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
+  /* ── HEADER ── */
+  .finn-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 0 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
   }
-  .page-header h1 { font-size: 26px; font-weight: 700; color: var(--blue); }
-  .page-header .subtitle { color: var(--muted); font-size: 13px; margin-top: 4px; }
-  .finn-tag {
-    display: inline-block;
-    background: #1f2937;
-    border: 1px solid var(--blue);
-    color: var(--blue);
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-top: 8px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
+  .finn-logo { display: flex; align-items: center; gap: 10px; }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px; color: #fff;
   }
+  .logo-text { font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .logo-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .header-right { text-align: right; }
+  .live-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 20px; padding: 3px 10px; font-size: 11px; color: var(--blue); font-weight: 600;
+  }
+  .live-dot {
+    width: 6px; height: 6px; background: var(--blue); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+  .header-ref { font-size: 11px; color: var(--muted); margin-top: 5px; }
 
+  /* ── METRIC STRIP ── */
+  .metric-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 28px; }
+  .metric-item {
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; text-align: center;
+  }
+  .metric-val { font-size: 18px; font-weight: 800; color: var(--blue); font-variant-numeric: tabular-nums; }
+  .metric-label { font-size: 10px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ── SECTION TITLE ── */
   .section-title {
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin: 28px 0 14px;
-    padding-left: 10px;
-    border-left: 3px solid var(--blue);
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--muted); margin: 32px 0 14px; padding-left: 10px; border-left: 3px solid var(--blue);
   }
 
-  /* Level cards grid */
+  /* ── LEVEL CARDS ── */
   .level-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-    gap: 12px;
-    margin-bottom: 24px;
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px;
   }
   .level-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    position: relative;
-    overflow: hidden;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; position: relative; overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
   .level-card::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
     border-radius: 10px 0 0 10px;
   }
   .level-card.key::before { background: var(--blue); }
   .level-card.strong::before { background: var(--green); }
   .level-card.moderate::before { background: var(--amber); }
-  .level-card.extension::before { background: var(--purple); }
-
-  .level-pct {
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
+  .level-card.ext::before { background: var(--purple); }
+  .level-card.key:hover { transform: translateY(-2px); box-shadow: 0 4px 20px var(--blue-glow); }
+  .level-card.strong:hover { transform: translateY(-2px); box-shadow: 0 4px 20px var(--green-glow); }
+  .level-card.moderate:hover { transform: translateY(-2px); box-shadow: 0 4px 20px var(--amber-glow); }
+  .level-card.ext:hover { transform: translateY(-2px); box-shadow: 0 4px 20px var(--purple-glow); }
+  .level-pct { font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
   .level-card.key .level-pct { color: var(--blue); }
   .level-card.strong .level-pct { color: var(--green); }
   .level-card.moderate .level-pct { color: var(--amber); }
-  .level-card.extension .level-pct { color: var(--purple); }
-
+  .level-card.ext .level-pct { color: var(--purple); }
   .level-name {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--muted);
-    margin-bottom: 6px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px;
   }
-  .level-desc { font-size: 12px; color: var(--subtext); line-height: 1.4; }
+  .level-desc { font-size: 11px; color: var(--muted); line-height: 1.45; }
   .level-tag {
-    display: inline-block;
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 10px;
-    margin-top: 6px;
-    border: 1px solid;
+    display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 10px;
+    margin-top: 6px; border: 1px solid;
   }
-  .tag-key { color: var(--blue); border-color: var(--blue); background: rgba(88,166,255,0.08); }
-  .tag-strong { color: var(--green); border-color: var(--green); background: rgba(63,185,80,0.08); }
-  .tag-moderate { color: var(--amber); border-color: var(--amber); background: rgba(210,153,34,0.08); }
-  .tag-ext { color: var(--purple); border-color: var(--purple); background: rgba(188,140,255,0.08); }
+  .tag-key { color: var(--blue); border-color: var(--blue); background: var(--blue-glow); }
+  .tag-strong { color: var(--green); border-color: var(--green); background: var(--green-glow); }
+  .tag-moderate { color: var(--amber); border-color: var(--amber); background: var(--amber-glow); }
+  .tag-ext { color: var(--purple); border-color: var(--purple); background: var(--purple-glow); }
 
-  /* Chart diagram */
+  /* ── STRENGTH BAR ── */
+  .level-bar-wrap { margin-top: 8px; }
+  .level-bar-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px; }
+  .level-bar-track { height: 4px; background: rgba(48,54,61,0.6); border-radius: 2px; overflow: hidden; }
+  .level-bar-fill { height: 100%; border-radius: 2px; width: 0; transition: width 0.8s var(--ease-out); }
+
+  /* ── CHART DIAGRAM ── */
   .chart-wrap {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 24px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden; transition: box-shadow var(--dur-med) var(--ease-out);
   }
+  .chart-wrap:hover { box-shadow: 0 4px 20px var(--blue-glow); }
   .chart-header {
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 16px;
-    align-items: center;
+    padding: 11px 16px; border-bottom: 1px solid var(--border);
+    display: flex; gap: 16px; align-items: center;
   }
   .chart-header span {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
   }
   .chart-body {
-    padding: 16px;
-    font-family: 'Courier New', monospace;
-    font-size: 11.5px;
-    line-height: 1.45;
-    color: #adb5bd;
-    white-space: pre;
-    overflow-x: auto;
-    background: #0d1117;
+    padding: 16px 20px; font-family: 'Courier New', monospace; font-size: 11.5px;
+    line-height: 1.5; color: var(--muted); white-space: pre; overflow-x: auto; background: #0a0e14;
   }
 
-  /* Drawing steps */
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
-  }
+  /* ── STEP CARDS ── */
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
   .step-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out), border-color var(--dur-med) ease;
   }
-  .step-number {
-    font-size: 32px;
-    font-weight: 800;
-    color: var(--blue);
-    opacity: 0.3;
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .step-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .step-body { font-size: 12px; color: var(--subtext); line-height: 1.5; }
-  .step-body code {
-    background: #0d1117;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1px 5px;
-    font-size: 11px;
-    color: var(--amber);
-  }
+  .step-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px var(--blue-glow); border-color: rgba(88,166,255,0.3); }
+  .step-number { font-size: 32px; font-weight: 800; color: var(--blue); opacity: 0.25; line-height: 1; margin-bottom: 6px; }
+  .step-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .step-body { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .step-body strong { color: var(--text); }
 
-  /* Rules grid */
-  .rules-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
-  }
+  /* ── RULE CARDS ── */
+  .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
   .rule-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--blue);
-    border-radius: 0 10px 10px 0;
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 3px solid var(--blue); border-radius: 0 10px 10px 0;
     padding: 12px 16px;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
+  .rule-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px var(--blue-glow); }
   .rule-card.warn { border-left-color: var(--amber); }
+  .rule-card.warn:hover { box-shadow: 0 4px 20px var(--amber-glow); }
   .rule-card.danger { border-left-color: var(--red); }
-  .rule-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .rule-body { font-size: 12px; color: var(--subtext); line-height: 1.5; }
+  .rule-card.danger:hover { box-shadow: 0 4px 20px var(--red-glow); }
+  .rule-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .rule-body { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-  /* Extensions table */
-  .table-wrap { overflow-x: auto; margin-bottom: 20px; }
+  /* ── EXTENSION TABLE ── */
+  .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   thead th {
-    background: #1c2128;
-    color: var(--muted);
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    padding: 9px 12px;
-    border-bottom: 2px solid var(--border);
-    text-align: left;
+    background: var(--card-elevated); color: var(--muted); font-size: 10px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+    padding: 9px 12px; border-bottom: 2px solid var(--border); text-align: left;
   }
-  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background var(--dur-fast) ease; }
   tbody tr:hover { background: rgba(88,166,255,0.04); }
-  tbody td { padding: 8px 12px; color: var(--subtext); }
-  tbody td:first-child { color: var(--text); font-weight: 700; }
+  tbody td { padding: 9px 12px; color: var(--muted); }
+  tbody td:first-child { color: var(--text); font-weight: 700; font-variant-numeric: tabular-nums; }
 
-  /* Combo section */
-  .combo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 14px;
-    margin-bottom: 24px;
-  }
+  /* ── COMBO CARDS ── */
+  .combo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
   .combo-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; overflow: hidden;
+    transition: transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out);
   }
+  .combo-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px var(--blue-glow); border-color: rgba(88,166,255,0.25); }
   .combo-card h4 { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 8px; }
-  .combo-card p { font-size: 12px; color: var(--subtext); line-height: 1.5; }
-  .combo-card .combo-signals {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
-  }
+  .combo-body { font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .combo-signals { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .signal-pill {
-    font-size: 10px;
-    padding: 3px 8px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    color: var(--muted);
+    font-size: 10px; padding: 3px 8px; border-radius: 12px; border: 1px solid var(--border); color: var(--muted);
   }
-  .signal-pill.yes { color: var(--green); border-color: var(--green); background: rgba(63,185,80,0.08); }
-  .signal-pill.plus { color: var(--blue); border-color: var(--blue); background: rgba(88,166,255,0.08); }
+  .signal-pill.yes { color: var(--green); border-color: var(--green); background: var(--green-glow); }
+  .signal-pill.plus { color: var(--blue); border-color: var(--blue); background: var(--blue-glow); }
 
-  /* Python code block */
+  /* ── ACCORDION (on combo cards) ── */
+  .finn-accordion { border-top: 1px solid var(--border); margin-top: 10px; }
+  .accordion-trigger {
+    display: flex; align-items: center; justify-content: space-between; padding: 8px 0;
+    cursor: pointer; font-size: 11px; font-weight: 700; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.5px; user-select: none;
+  }
+  .accordion-trigger .chevron { font-size: 10px; transition: transform var(--dur-fast) ease; }
+  .accordion-trigger.open .chevron { transform: rotate(180deg); }
+  .accordion-body { display: none; padding: 0 0 4px; }
+  .accordion-body.open { display: block; }
+  .finn-analysis-box {
+    background: rgba(88,166,255,0.05); border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 6px; padding: 10px 12px; font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+  .finn-analysis-box .fa-title {
+    font-size: 11px; font-weight: 700; color: var(--blue); margin-bottom: 5px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* ── CODE BLOCK ── */
   .code-block {
-    background: #0d1117;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    line-height: 1.6;
-    color: var(--subtext);
-    overflow-x: auto;
-    margin-bottom: 20px;
+    background: #0a0e14; border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px 18px; font-family: 'Courier New', monospace;
+    font-size: 12px; line-height: 1.65; color: var(--muted); overflow-x: auto;
   }
   .code-block .kw { color: #ff7b72; }
   .code-block .fn { color: #d2a8ff; }
   .code-block .str { color: #a5d6ff; }
-  .code-block .cm { color: #8b949e; font-style: italic; }
+  .code-block .cm { color: #6e7681; font-style: italic; }
   .code-block .num { color: #79c0ff; }
   .code-block .var { color: var(--text); }
 
-  .page-footer {
-    margin-top: 32px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    color: var(--muted);
-    font-size: 11px;
+  /* ── FINN VOICE ── */
+  .finn-callout {
+    background: rgba(210,153,34,0.06); border: 1px solid rgba(210,153,34,0.25);
+    border-radius: 10px; padding: 16px 18px;
   }
+  .finn-callout-head { font-size: 11px; font-weight: 700; color: var(--amber); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+  .finn-callout-body { font-size: 13px; color: var(--text); line-height: 1.65; font-style: italic; }
+  .finn-callout-sig { font-size: 11px; color: var(--amber); margin-top: 8px; font-weight: 600; }
 
-  @media print {
-    body { background: #fff; color: #000; }
-    .level-card, .step-card, .rule-card, .combo-card { border: 1px solid #ccc; break-inside: avoid; }
-    .chart-body, .code-block { background: #f5f5f5; color: #333; }
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 11px;
+  }
+  .footer-left { display: flex; align-items: center; gap: 8px; }
+  .footer-logo {
+    width: 18px; height: 18px; background: linear-gradient(135deg, #1f6feb 0%, #58a6ff 100%);
+    border-radius: 4px; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 9px; color: #fff;
+  }
+  .footer-version { color: var(--blue); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .level-grid { grid-template-columns: repeat(3, 1fr); }
+    .steps-grid, .rules-grid { grid-template-columns: repeat(2, 1fr); }
   }
   @media (max-width: 700px) {
-    .level-grid, .steps-grid, .rules-grid, .combo-grid { grid-template-columns: 1fr; }
+    .metric-strip { grid-template-columns: repeat(3, 1fr); }
+    .level-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid, .combo-grid, .rules-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -311,75 +285,135 @@
 <div class="page-wrap">
 
   <!-- Header -->
-  <div class="page-header">
-    <h1>Fibonacci Retracements</h1>
-    <div class="subtitle">Key levels · Drawing rules · Confluence confirmation · FINN application</div>
-    <div class="finn-tag">FINN Knowledge Base · HB P6 §6.1</div>
+  <div class="finn-header">
+    <div class="finn-logo">
+      <div class="logo-mark">F</div>
+      <div>
+        <div class="logo-text">Fibonacci Retracements</div>
+        <div class="logo-sub">Key Levels · Drawing Rules · Confluence · Extensions · FINN Application</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="live-pill"><div class="live-dot"></div>Knowledge Base</div>
+      <div class="header-ref">HB P6 §6.1 · ig_fibonacci</div>
+    </div>
   </div>
 
-  <!-- Level cards -->
-  <div class="section-title">The Six Core Levels</div>
-  <div class="level-grid">
+  <!-- Metric Strip -->
+  <div class="metric-strip reveal">
+    <div class="metric-item">
+      <div class="metric-val">6</div>
+      <div class="metric-label">Fib Levels</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">61.8%</div>
+      <div class="metric-label">Golden Ratio</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">5</div>
+      <div class="metric-label">Extension Levels</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">161.8%</div>
+      <div class="metric-label">Primary Target</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">+Conf</div>
+      <div class="metric-label">Entry Rule</div>
+    </div>
+    <div class="metric-item">
+      <div class="metric-val">100%</div>
+      <div class="metric-label">Invalidation</div>
+    </div>
+  </div>
 
-    <div class="level-card key">
+  <!-- Level Cards -->
+  <div class="section-title reveal">The Six Core Retracement Levels</div>
+  <div class="level-grid reveal">
+
+    <div class="level-card moderate">
       <div class="level-pct">23.6%</div>
       <div class="level-name">Shallow</div>
-      <div class="level-desc">Weak pullback level. Common in strong trending moves where momentum barely pauses. Rarely a standalone entry.</div>
+      <div class="level-desc">Weak pullback. Common in strong momentum. Rarely a standalone entry.</div>
       <span class="level-tag tag-moderate">Weak support</span>
+      <div class="level-bar-wrap">
+        <div class="level-bar-label">Signal strength</div>
+        <div class="level-bar-track"><div class="level-bar-fill" data-w="20" style="background:var(--amber);"></div></div>
+      </div>
     </div>
 
     <div class="level-card moderate">
       <div class="level-pct">38.2%</div>
       <div class="level-name">Moderate</div>
-      <div class="level-desc">Valid retracement in strong trends. Shallow enough to indicate trend health. Break below signals trend is weakening.</div>
-      <span class="level-tag tag-moderate">Trend-following entry</span>
+      <div class="level-desc">Valid retracement in strong trends. Break below signals trend weakening.</div>
+      <span class="level-tag tag-moderate">Trend-following</span>
+      <div class="level-bar-wrap">
+        <div class="level-bar-label">Signal strength</div>
+        <div class="level-bar-track"><div class="level-bar-fill" data-w="42" style="background:var(--amber);"></div></div>
+      </div>
     </div>
 
     <div class="level-card key">
       <div class="level-pct">50.0%</div>
       <div class="level-name">Midpoint</div>
-      <div class="level-desc">Not a true Fibonacci ratio (it's from Dow Theory) but widely watched. Psychological round number — heavily traded.</div>
+      <div class="level-desc">Dow Theory, not pure Fibonacci. Psychological round number — heavily watched and traded.</div>
       <span class="level-tag tag-key">Key psychological</span>
+      <div class="level-bar-wrap">
+        <div class="level-bar-label">Signal strength</div>
+        <div class="level-bar-track"><div class="level-bar-fill" data-w="60" style="background:var(--blue);"></div></div>
+      </div>
     </div>
 
     <div class="level-card strong">
       <div class="level-pct">61.8%</div>
       <div class="level-name">Golden Ratio</div>
-      <div class="level-desc">The most powerful Fibonacci level — derived directly from the golden ratio (1/1.618). Most common institutional reversal zone.</div>
+      <div class="level-desc">Most powerful level — derived from 1/1.618. Primary institutional reversal zone.</div>
       <span class="level-tag tag-strong">Highest probability</span>
+      <div class="level-bar-wrap">
+        <div class="level-bar-label">Signal strength</div>
+        <div class="level-bar-track"><div class="level-bar-fill" data-w="90" style="background:var(--green);"></div></div>
+      </div>
     </div>
 
     <div class="level-card strong">
       <div class="level-pct">78.6%</div>
       <div class="level-name">Deep</div>
-      <div class="level-desc">Deep retracement (√0.618). Last line of defense before trend invalidation. Holds in volatile or choppy markets.</div>
-      <span class="level-tag tag-strong">Deep pullback zone</span>
+      <div class="level-desc">Last defense before invalidation. Holds in volatile or choppy markets (√0.618).</div>
+      <span class="level-tag tag-strong">Deep pullback</span>
+      <div class="level-bar-wrap">
+        <div class="level-bar-label">Signal strength</div>
+        <div class="level-bar-track"><div class="level-bar-fill" data-w="72" style="background:var(--green);"></div></div>
+      </div>
     </div>
 
-    <div class="level-card extension">
+    <div class="level-card ext">
       <div class="level-pct">100%</div>
       <div class="level-name">Full Retracement</div>
-      <div class="level-desc">Full return to the swing origin. Trend invalidation line. If price closes beyond 100%, the measured move is over.</div>
+      <div class="level-desc">Full return to swing origin. Close beyond = trend invalidated. Hard stop.</div>
       <span class="level-tag tag-ext">Invalidation</span>
+      <div class="level-bar-wrap">
+        <div class="level-bar-label">Signal strength</div>
+        <div class="level-bar-track"><div class="level-bar-fill" data-w="10" style="background:var(--purple);"></div></div>
+      </div>
     </div>
 
   </div>
 
-  <!-- Chart diagram -->
-  <div class="section-title">Visual — Fibonacci on an Uptrend Retracement</div>
-  <div class="chart-wrap">
+  <!-- Chart Diagram -->
+  <div class="section-title reveal">Visual — Fibonacci on an Uptrend Retracement</div>
+  <div class="chart-wrap reveal">
     <div class="chart-header">
       <span>Drawing: Low → High (uptrend retracement)</span>
     </div>
     <div class="chart-body"><span style="color:var(--green);">    HIGH ──────────────────────────────────── 0%   (Swing High — anchor point)</span>
          |
-<span style="color:var(--muted);">         |   ← Price pulls back after the move</span>
+<span style="color:var(--muted);">         |   ← Price pulls back after the impulse move</span>
          |
-<span style="color:var(--amber);">  ── 23.6% ──────────────────────────────────────── (Shallow retracement)</span>
+<span style="color:var(--amber);">  ── 23.6% ──────────────────────────────────────── (Shallow — momentum pause)</span>
          |
-<span style="color:var(--amber);">  ── 38.2% ──────────────────────────────────────── (Moderate / trend-health)</span>
+<span style="color:var(--amber);">  ── 38.2% ──────────────────────────────────────── (Moderate — trend-health level)</span>
          |
-<span style="color:var(--blue);">  ── 50.0% ──────────────────────────────────────── (Midpoint / Dow)</span>
+<span style="color:var(--blue);">  ── 50.0% ──────────────────────────────────────── (Midpoint — Dow Theory)</span>
          |
 <span style="color:var(--green);">  ── 61.8% ──────────────────────────────────────── (Golden Ratio ★ PRIME LEVEL)</span>
          |
@@ -391,9 +425,9 @@
   RULE: Draw from swing HIGH → swing LOW for downtrend retracements.</span></div>
   </div>
 
-  <!-- Fibonacci Extensions -->
-  <div class="section-title">Fibonacci Extensions — Profit Target Zones</div>
-  <div class="table-wrap">
+  <!-- Extensions Table -->
+  <div class="section-title reveal">Fibonacci Extensions — Profit Target Zones</div>
+  <div class="table-wrap reveal">
     <table>
       <thead>
         <tr>
@@ -407,7 +441,7 @@
         <tr>
           <td>127.2%</td>
           <td>First extension</td>
-          <td>Modest profit target — common in shallow-trend moves</td>
+          <td>Modest target — common in shallow-trend moves</td>
           <td>Take partial profits (25–33%) here</td>
         </tr>
         <tr>
@@ -418,14 +452,14 @@
         </tr>
         <tr>
           <td>161.8%</td>
-          <td>Golden extension</td>
+          <td>Golden extension ★</td>
           <td>Primary institutional target — derived from golden ratio</td>
           <td>Primary profit target; take 50% off position</td>
         </tr>
         <tr>
           <td>200.0%</td>
           <td>Second leg</td>
-          <td>Equal move from origin (AB = CD pattern)</td>
+          <td>Equal move from origin (AB=CD pattern)</td>
           <td>Secondary target in strong momentum moves</td>
         </tr>
         <tr>
@@ -438,34 +472,34 @@
     </table>
   </div>
 
-  <!-- Drawing steps -->
-  <div class="section-title">How to Draw — 4-Step Protocol</div>
+  <!-- Drawing Steps -->
+  <div class="section-title reveal">How to Draw — 4-Step Protocol</div>
   <div class="steps-grid">
-    <div class="step-card">
+    <div class="step-card reveal">
       <div class="step-number">01</div>
       <div class="step-title">Identify the significant swing</div>
-      <div class="step-body">Find a clear, impulsive move: a strong rally (uptrend) or strong decline (downtrend). The move should be obvious on the chart — not a minor wiggle. The bigger and cleaner the swing, the more reliable the levels.</div>
+      <div class="step-body">Find a clear, impulsive move — a strong rally (uptrend) or strong decline (downtrend). The move should be obvious on your chart without zooming in. The <strong>bigger and cleaner the swing, the more reliable the levels</strong>.</div>
     </div>
-    <div class="step-card">
+    <div class="step-card reveal" style="transition-delay:60ms">
       <div class="step-number">02</div>
       <div class="step-title">Anchor at swing extremes</div>
-      <div class="step-body">Place the tool at the swing <strong>low → high</strong> for uptrend retracements. Place at swing <strong>high → low</strong> for downtrend. Use wick extremes (not candle bodies) as anchor points. This sets the 0% and 100% levels.</div>
+      <div class="step-body">Place the tool at swing <strong>low → high</strong> for uptrend retracements. At swing <strong>high → low</strong> for downtrend. Use <strong>wick extremes</strong> — not candle bodies — as anchor points. This sets the 0% and 100% levels.</div>
     </div>
-    <div class="step-card">
+    <div class="step-card reveal" style="transition-delay:120ms">
       <div class="step-number">03</div>
       <div class="step-title">Wait for price to retrace</div>
-      <div class="step-body">After anchoring, wait — do not trade the Fibonacci level until price reaches it AND shows a reaction. A level alone is not an entry signal. Look for: candlestick reversal pattern at the level, volume spike, momentum divergence.</div>
+      <div class="step-body">After anchoring, wait — do not trade the level until price reaches it AND shows a reaction. A level alone is not an entry. Look for: candlestick reversal pattern at the level, volume spike, momentum divergence.</div>
     </div>
-    <div class="step-card">
+    <div class="step-card reveal" style="transition-delay:180ms">
       <div class="step-number">04</div>
-      <div class="step-title">Look for confluence</div>
-      <div class="step-body">The best Fibonacci entries occur when multiple signals converge at the same level: Fib level + prior support/resistance + moving average + volume. Each additional signal raises probability. One signal alone = noise.</div>
+      <div class="step-title">Require confluence</div>
+      <div class="step-body">The best Fibonacci entries occur when multiple signals converge: <strong>Fib level + prior S/R + moving average + volume</strong>. Each additional signal raises probability. One signal alone = noise.</div>
     </div>
   </div>
 
   <!-- FINN Rules -->
-  <div class="section-title">FINN Rules — Fibonacci</div>
-  <div class="rules-grid">
+  <div class="section-title reveal">FINN Rules — Fibonacci</div>
+  <div class="rules-grid reveal">
     <div class="rule-card">
       <div class="rule-title">61.8% is the highest-probability level</div>
       <div class="rule-body">The golden ratio level is where institutional algo orders cluster. If price reaches 61.8% and holds, it is often a high-quality entry in the direction of the prior trend. Treat it as your primary watch level.</div>
@@ -474,69 +508,112 @@
       <div class="rule-title">Confluence makes the trade</div>
       <div class="rule-body">A Fibonacci level by itself is not an edge. Fib level + S&R zone + candlestick signal + volume reaction = tradeable confluence. Stack the signals before entering.</div>
     </div>
+    <div class="rule-card">
+      <div class="rule-title">Extensions tell you where to exit</div>
+      <div class="rule-body">Use extensions (127.2%, 161.8%, 200%) as profit targets, not entries. When a retracement entry works, these levels give you data-backed exits. 161.8% is the primary target; scale out in thirds.</div>
+    </div>
     <div class="rule-card warn">
       <div class="rule-title">Don't anchor to noise swings</div>
-      <div class="rule-body">Fibonacci levels are only as reliable as the swing you anchor them to. A valid swing is impulsive, clearly directional, and visible on your primary timeframe without zooming in excessively.</div>
+      <div class="rule-body">Fibonacci levels are only as reliable as the swing you anchor them to. A valid swing is impulsive, clearly directional, and visible on your primary timeframe without excessive zoom.</div>
     </div>
     <div class="rule-card warn">
       <div class="rule-title">Timeframe determines strength</div>
       <div class="rule-body">A 61.8% on a weekly chart is more powerful than a 61.8% on a 5-minute chart. Draw Fibonacci on your analysis timeframe (weekly or daily) and execute entries on a lower timeframe for precision.</div>
     </div>
     <div class="rule-card danger">
-      <div class="rule-title">Invalidate cleanly</div>
-      <div class="rule-body">If price closes through the 100% level (below the swing low in an uptrend), the retracement has become a reversal. Exit the trade — don't rationalize. Close beyond 100% is a hard invalidation.</div>
-    </div>
-    <div class="rule-card">
-      <div class="rule-title">Extensions tell you where to exit</div>
-      <div class="rule-body">Use extensions (127.2%, 161.8%, 200%) as profit targets, not entries. When a retracement entry works, these levels give you data-backed exits instead of guessing. 161.8% is the primary target; scale out in thirds.</div>
+      <div class="rule-title">Invalidate cleanly at 100%</div>
+      <div class="rule-body">If price closes through the 100% level — below the swing low in an uptrend — the retracement has become a reversal. Exit the trade. Close beyond 100% is a hard invalidation. Don't rationalize.</div>
     </div>
   </div>
 
-  <!-- Confluence combos -->
-  <div class="section-title">Confluence Combos — What to Stack</div>
+  <!-- Confluence Combos -->
+  <div class="section-title reveal">Confluence Combos — What to Stack</div>
   <div class="combo-grid">
-    <div class="combo-card">
-      <h4>Fib + Support/Resistance</h4>
-      <p>If a prior S&R zone lines up within 0.5% of a Fibonacci level, the zone is doubly validated. Both institutional buyers (algo Fib orders) and manual traders (S&R) are watching the same price.</p>
+    <div class="combo-card reveal">
+      <h4>Fib + Support / Resistance</h4>
+      <div class="combo-body">If a prior S&R zone lines up within 0.5% of a Fibonacci level, the zone is doubly validated. Both institutional buyers (algo Fib orders) and manual traders (S&R) are watching the same price.</div>
       <div class="combo-signals">
         <span class="signal-pill yes">Fib level</span>
         <span class="signal-pill plus">+ Prior S/R zone</span>
         <span class="signal-pill yes">= High-priority watch</span>
       </div>
+      <div class="finn-accordion">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+        <div class="accordion-body">
+          <div class="finn-analysis-box">
+            <div class="fa-title">FINN Check</div>
+            When a Fib level and a prior S&R zone overlap within 0.5%, you have two independent reasons for the same price to matter. That's not a coincidence — both were formed by price behavior. Every participant who bought at the prior support AND every algo watching the 61.8% is now defending the same level. That's your trade.
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="combo-card">
+    <div class="combo-card reveal" style="transition-delay:60ms">
       <h4>Fib + Moving Average</h4>
-      <p>A Fibonacci level that aligns with the 20-EMA, 50-SMA, or 200-SMA creates a strong dynamic support. Price often bounces off the Fib zone because the MA reinforces it simultaneously.</p>
+      <div class="combo-body">A Fibonacci level that aligns with the 20-EMA, 50-SMA, or 200-SMA creates strong dynamic support. Price often bounces off the Fib zone because the MA reinforces it simultaneously.</div>
       <div class="combo-signals">
         <span class="signal-pill yes">Fib level</span>
         <span class="signal-pill plus">+ 20/50/200 MA</span>
         <span class="signal-pill yes">= Dynamic confluence</span>
       </div>
+      <div class="finn-accordion">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+        <div class="accordion-body">
+          <div class="finn-analysis-box">
+            <div class="fa-title">FINN Check</div>
+            The moving average is dynamic — it moves with price. When a static Fib level and a dynamic MA arrive at the same price at the same time, the probability is compounding. Two completely different calculation methods producing the same support zone. Log this setup every time it appears and track the IC. What does the data say?
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="combo-card">
+    <div class="combo-card reveal">
       <h4>Fib + Volume Reaction</h4>
-      <p>When price reaches a Fib level and volume dries up (exhaustion of selling in an uptrend), then spikes as price bounces, this is the cleanest signal that institutional demand is present at that exact level.</p>
+      <div class="combo-body">When price reaches a Fib level and volume dries up (exhaustion of selling in an uptrend), then spikes as price bounces — this is the cleanest signal that institutional demand is present at that exact level.</div>
       <div class="combo-signals">
         <span class="signal-pill yes">Fib level reached</span>
         <span class="signal-pill plus">+ Volume dries</span>
         <span class="signal-pill plus">+ Volume spike on bounce</span>
         <span class="signal-pill yes">= Entry signal</span>
       </div>
+      <div class="finn-accordion">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+        <div class="accordion-body">
+          <div class="finn-analysis-box">
+            <div class="fa-title">FINN Check</div>
+            The volume dry-up IS the signal that sellers are exhausted at this level. The volume spike on the bounce confirms that buyers stepped in at the same level. This is the sequence: level → dry-up → spike → entry. Three steps, not one. Missing the dry-up step means entering before the signal, not with it.
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="combo-card">
+    <div class="combo-card reveal" style="transition-delay:60ms">
       <h4>Fib + Candlestick Pattern</h4>
-      <p>A hammer, bullish engulfing, or doji at a Fibonacci level provides visual confirmation that a reversal is occurring at that precise price. This is the most direct entry timing signal.</p>
+      <div class="combo-body">A hammer, bullish engulfing, or doji at a Fibonacci level provides visual confirmation that a reversal is occurring at that precise price. This is the most direct entry timing signal.</div>
       <div class="combo-signals">
         <span class="signal-pill yes">Fib level</span>
-        <span class="signal-pill plus">+ Hammer/Engulfing</span>
+        <span class="signal-pill plus">+ Hammer / Engulfing</span>
         <span class="signal-pill yes">= Triggered entry</span>
+      </div>
+      <div class="finn-accordion">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">FINN Analysis <span class="chevron">▼</span></div>
+        <div class="accordion-body">
+          <div class="finn-analysis-box">
+            <div class="fa-title">FINN Check</div>
+            The Fibonacci level tells you where to watch. The candlestick tells you when to act. Without the candle, you're anticipating. Without the Fib, you're entering anywhere. Together: a price level with a mechanism. The candle is the trigger — don't enter before it forms.
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Python code -->
-  <div class="section-title">Python — Fibonacci Calculator</div>
-  <div class="code-block"><span class="kw">import</span> <span class="var">yfinance</span> <span class="kw">as</span> <span class="var">yf</span>
+  <!-- FINN Voice -->
+  <div class="finn-callout reveal" style="margin-top:28px">
+    <div class="finn-callout-head">⬡ FINN</div>
+    <div class="finn-callout-body">"Fibonacci is not magic. It is the documentation of where enough institutional participants agree to act — because they are all running the same calculation. The golden ratio matters because it is in every algo, every textbook, every risk system that's paying attention. When you trade the 61.8%, you're not trading a number. You're trading the fact that everyone else is watching the same number."</div>
+    <div class="finn-callout-sig">— FINN: Show me the confluence. Then show me the candle.</div>
+  </div>
+
+  <!-- Python Code -->
+  <div class="section-title reveal">Python — Fibonacci Calculator</div>
+  <div class="code-block reveal"><span class="kw">import</span> <span class="var">yfinance</span> <span class="kw">as</span> <span class="var">yf</span>
 <span class="kw">import</span> <span class="var">pandas</span> <span class="kw">as</span> <span class="var">pd</span>
 
 <span class="kw">def</span> <span class="fn">fib_levels</span>(<span class="var">ticker</span>, <span class="var">period</span>=<span class="str">"6mo"</span>):
@@ -556,7 +633,6 @@
         <span class="str">'61.8% ★ Golden'</span>: <span class="var">swing_high</span> - <span class="num">0.618</span> * <span class="var">diff</span>,
         <span class="str">'78.6%'</span>          : <span class="var">swing_high</span> - <span class="num">0.786</span> * <span class="var">diff</span>,
         <span class="str">'100%  (Low)'</span>    : <span class="var">swing_low</span>,
-        <span class="cm"># Extensions</span>
         <span class="str">'127.2% Ext'</span>     : <span class="var">swing_low</span>  - <span class="num">0.272</span> * <span class="var">diff</span>,
         <span class="str">'161.8% Ext ★'</span>   : <span class="var">swing_low</span>  - <span class="num">0.618</span> * <span class="var">diff</span>,
     }
@@ -572,10 +648,43 @@
 
   <!-- Footer -->
   <div class="page-footer">
-    <span>FINN Knowledge Base · Fibonacci Retracements · HB P6 §6.1</span>
-    <span>Session C4.b · Built May 2026</span>
+    <div class="footer-left">
+      <div class="footer-logo">F</div>
+      <span>FINN Knowledge Base · Fibonacci Retracements · HB P6 §6.1</span>
+    </div>
+    <span><span class="footer-version">v2.0</span> · May 2026 · ig_fibonacci</span>
   </div>
 
 </div>
+
+<script>
+  // Scroll-triggered reveal + level bar animation
+  const obs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.level-bar-fill[data-w]').forEach(animateBar);
+    }
+  }), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  function animateBar(bar) {
+    if (bar.dataset.animated) return;
+    bar.dataset.animated = '1';
+    requestAnimationFrame(() => { bar.style.width = bar.dataset.w + '%'; });
+  }
+
+  function toggleAccordion(trigger) {
+    const body = trigger.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    const card = trigger.closest('.combo-card');
+    if (card) {
+      card.querySelectorAll('.accordion-trigger').forEach(t => {
+        t.classList.remove('open');
+        t.nextElementSibling.classList.remove('open');
+      });
+    }
+    if (!isOpen) { trigger.classList.add('open'); body.classList.add('open'); }
+  }
+</script>
 </body>
 </html>
